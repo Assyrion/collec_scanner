@@ -4,7 +4,7 @@ import QtMultimedia 5.8
 import QtQuick.Controls 2.2
 import Qt.labs.platform 1.0
 
-Item {
+Rectangle {
     id: root
 
     signal barcodeFound(string barcode)
@@ -16,6 +16,8 @@ Item {
     function stopScanning() {
         camera.stop()
     }
+
+    color: "black"
 
     VideoOutput {
         id: output

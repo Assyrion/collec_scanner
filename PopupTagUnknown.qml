@@ -7,10 +7,10 @@ Popup {
     signal accepted(string tag)
     signal refused
 
-    property string barcode
+    property string tag
 
-    function show(barcode) {
-        popup.barcode = barcode
+    function show(tag) {
+        popup.tag = tag
         open()
     }
 
@@ -25,7 +25,7 @@ Popup {
         Text {
             width: parent.width
             anchors.centerIn: parent
-            text: qsTr("Game with tag = %1 is new, add it ?").arg(popup.barcode)
+            text: qsTr("Game with tag = %1 is new, add it ?").arg(popup.tag)
             wrapMode: Text.WordWrap
             font.pointSize: 20
             font.family: "calibri"

@@ -2,11 +2,22 @@ import QtQuick 2.4
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs.qml 1.0
+import GameData 1.0
 
-Item {
+Pane {
     id: root
 
     signal backToMenuRequired
+    property alias tag: tagTextField.text
+
+    GameData {
+        id: game
+        tag       : root.tag
+        title     : titleTextField.text
+        platform  : platformComboBox.currentText
+        publisher : publisherTextField.text
+        developer : developerTextField.text
+    }
 
     ColumnLayout {
         id: columnLayout
@@ -18,30 +29,35 @@ Item {
 
         TextField {
             id: tagTextField
-            text: qsTr("")
-            Layout.fillWidth: true
             enabled: false
-            font.family: "Calibri"
+            leftPadding: 10
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter | Qt.AlignBaseline
             readOnly: true
-            background: Rectangle {
-                color: "white"
-                opacity: 0.5
-            }
         }
 
         TextField {
             id: titleTextField
-            topPadding: 10
             leftPadding: 10
             Layout.fillWidth: true
-            renderType: Text.NativeRendering
             Layout.alignment: Qt.AlignHCenter | Qt.AlignBaseline
             placeholderText: qsTr("Title")
-            background: Rectangle {
-                color: "white"
-                opacity: 0.5
-            }
+        }
+
+        TextField {
+            id: publisherTextField
+            leftPadding: 10
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignBaseline
+            placeholderText: qsTr("Publisher")
+        }
+
+        TextField {
+            id: developerTextField
+            leftPadding: 10
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignBaseline
+            placeholderText: qsTr("Developer")
         }
 
         ComboBox {
@@ -60,6 +76,8 @@ Item {
             anchors.bottom: parent.bottom
             text: "ok"
             onClicked: {
+                dbManager.addEntry(game)
+                backToMenuRequired()
             }
         }
         Button {

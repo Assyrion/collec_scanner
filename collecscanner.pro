@@ -39,6 +39,7 @@ include (qzxing/QZXing.pri)
 
 HEADERS += \
     filemanager.h \
-    dbmanager.h
+    dbmanager.h \
+    gamedata.h
 
 DISTFILES +=

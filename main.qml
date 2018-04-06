@@ -10,17 +10,11 @@ Window {
     height:1000
     width: 1000
 
-    Rectangle {
-        id: bckgnd
-        anchors.fill: parent
-        color: "black"
-    }
-
     Component {
         id: vbsCpt
         ViewBarcodeScanner {
             onNewGameCreationRequired: {
-                stackView.push(vcgCpt)
+                stackView.replace(vcgCpt, {"tag": tag})
             }
             onBackToMenuRequired: {
                 stackView.pop()
@@ -39,9 +33,10 @@ Window {
 
     StackView {
         id: stackView
-        anchors.fill: bckgnd
+        anchors.fill: parent
 
-        initialItem: vcgCpt/*Item {
+        initialItem: Pane {
+            id: menu
             Row {
                 anchors.centerIn: parent
                 spacing: 20
@@ -57,6 +52,6 @@ Window {
                     text: "show list"
                 }
             }
-        }*/
+        }
     }
 }

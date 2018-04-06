@@ -2,9 +2,10 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>AENPopup.qml</file>
+        <file>PopupTagUnknown.qml</file>
         <file>BarcodeScanner.qml</file>
         <file>ViewBarcodeScanner.qml</file>
         <file>ViewCreateGame.qml</file>
+        <file>PopupGameData.qml</file>
     </qresource>
 </RCC>

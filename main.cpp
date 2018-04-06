@@ -8,6 +8,7 @@
 
 #include "filemanager.h"
 #include "dbmanager.h"
+#include "gamedata.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +20,7 @@ int main(int argc, char *argv[])
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QZXing::registerQMLTypes();
+    GameData::registerQMLTypes();
 
     QGuiApplication app(argc, argv);
 

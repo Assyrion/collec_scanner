@@ -5,14 +5,15 @@
 #include <QDebug>
 #include <QSqlDatabase>
 
+class GameData;
 class DBManager : public QObject
 {
     Q_OBJECT
 public:
     explicit DBManager(QObject *parent = nullptr);
 
-    Q_INVOKABLE void addEntry(QString barcode, QString title);
-    Q_INVOKABLE QString getEntry(QString barcode);
+    Q_INVOKABLE void addEntry(GameData* game);
+    Q_INVOKABLE GameData* getEntry(QString tag);
 
 private:
     QSqlDatabase m_db;
