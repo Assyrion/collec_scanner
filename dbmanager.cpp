@@ -5,7 +5,7 @@
 #include "gamedata.h"
 
 #ifdef Q_OS_ANDROID
-    const QString DATAPATH = "/mnt/sdcard/CollecScanner"
+    const QString DATAPATH = "/storage/E0FD-1813/CollecScanner";
 #else
     const QString DATAPATH = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
 #endif

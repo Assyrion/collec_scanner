@@ -20,7 +20,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     filemanager.cpp \
-    dbmanager.cpp
+    dbmanager.cpp \
+    android_permissions.cpp
 
 RESOURCES += qml.qrc
 
@@ -40,6 +41,7 @@ include (qzxing/QZXing.pri)
 HEADERS += \
     filemanager.h \
     dbmanager.h \
-    gamedata.h
+    gamedata.h \
+    android_permissions.h
 
 DISTFILES +=
