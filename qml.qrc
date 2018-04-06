@@ -4,5 +4,7 @@
         <file>qtquickcontrols2.conf</file>
         <file>AENPopup.qml</file>
         <file>BarcodeScanner.qml</file>
+        <file>ViewBarcodeScanner.qml</file>
+        <file>ViewCreateGame.qml</file>
     </qresource>
 </RCC>

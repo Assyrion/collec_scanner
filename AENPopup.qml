@@ -4,8 +4,15 @@ import QtQuick.Controls 2.2
 Popup {
     id: popup
 
-    signal accepted
+    signal accepted(string tag)
     signal refused
+
+    property string barcode
+
+    function show(barcode) {
+        popup.barcode = barcode
+        open()
+    }
 
     modal: true
     closePolicy: Popup.NoAutoClose
@@ -16,8 +23,10 @@ Popup {
 
     contentItem : Item {
         Text {
+            width: parent.width
             anchors.centerIn: parent
-            text: "New game detected... add it ?"
+            text: qsTr("Game with tag = %1 is new, add it ?").arg(popup.barcode)
+            wrapMode: Text.WordWrap
             font.pointSize: 20
             font.family: "calibri"
         }
@@ -26,7 +35,7 @@ Popup {
             anchors.bottom: parent.bottom
             text: "yep"
             onClicked: {
-                accepted()
+                accepted(popup.tag)
                 popup.close()
             }
         }

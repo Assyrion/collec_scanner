@@ -1,5 +1,6 @@
 import QtQuick 2.6
 import QtQuick.Window 2.2
+import QtQuick.Controls 2.2
 
 Window {
     id: root
@@ -15,25 +16,47 @@ Window {
         color: "black"
     }
 
-    AENPopup {
-        id: popup
-        width: parent.width/2
-        height: parent.height/2
-        x: width/2
-        y: height/2
-        onRefused: {
-            barcodeScanner.startScanning()
+    Component {
+        id: vbsCpt
+        ViewBarcodeScanner {
+            onNewGameCreationRequired: {
+                stackView.push(vcgCpt)
+            }
+            onBackToMenuRequired: {
+                stackView.pop()
+            }
         }
     }
 
-    BarcodeScanner {
-        id: barcodeScanner
-        anchors.fill: parent
-        onBarcodeFound: {
-            stopScanning()
-            if(dbManager.getEntry(barcode) === "") {
-                popup.open()
+    Component {
+        id: vcgCpt
+        ViewCreateGame {
+            onBackToMenuRequired: {
+                stackView.pop()
             }
         }
+    }
+
+    StackView {
+        id: stackView
+        anchors.fill: bckgnd
+
+        initialItem: vcgCpt/*Item {
+            Row {
+                anchors.centerIn: parent
+                spacing: 20
+                Button {
+                    id: scanBtn
+                    text: "scan barcode"
+                    onClicked: {
+                        stackView.push(vbsCpt)
+                    }
+                }
+                Button {
+                    id: showListBtn
+                    text: "show list"
+                }
+            }
+        }*/
     }
 }
