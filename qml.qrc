@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>AENPopup.qml</file>
+        <file>BarcodeScanner.qml</file>
     </qresource>
 </RCC>

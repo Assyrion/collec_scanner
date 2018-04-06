@@ -1,7 +1,11 @@
-QT += quick
+QT += quick sql
 CONFIG += qzxing_qml
 CONFIG += qzxing_multimedia
 CONFIG += c++11
+
+deployment.files += myfile.sqlite
+deployment.path = /assets
+INSTALLS += deployment
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -15,7 +19,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
-    filemanager.cpp
+    filemanager.cpp \
+    dbmanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -30,7 +35,10 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-include (../qzxing/QZXing.pri)
+include (qzxing/QZXing.pri)
 
 HEADERS += \
-    filemanager.h
+    filemanager.h \
+    dbmanager.h
+
+DISTFILES +=
