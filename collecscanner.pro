@@ -1,7 +1,8 @@
 QT += quick sql
+android: QT += androidextras
 CONFIG += qzxing_qml
 CONFIG += qzxing_multimedia
-CONFIG += c++11
+CONFIG += c++14
 
 deployment.files += myfile.sqlite
 deployment.path = /assets
@@ -20,10 +21,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     filemanager.cpp \
-    dbmanager.cpp \
-    android_permissions.cpp
+    dbmanager.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += \
+    qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -41,7 +42,4 @@ include (qzxing/QZXing.pri)
 HEADERS += \
     filemanager.h \
     dbmanager.h \
-    gamedata.h \
-    android_permissions.h
-
-DISTFILES +=
+    gamedata.h

@@ -1,14 +1,15 @@
 import QtQuick 2.6
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
+import "qml"
 
 Window {
     id: root
     visible: true
     visibility: Window.AutomaticVisibility
     //    title: qsTr("Hello World")
-    height:1000
-    width: 1000
+    height:1280
+    width: 720
 
     Component {
         id: vbsCpt

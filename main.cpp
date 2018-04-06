@@ -6,17 +6,29 @@
 #include <QZXing.h>
 #include <QDebug>
 
+#ifdef Q_OS_ANDROID
+#include <QAndroidJniObject>
+#include <QAndroidJniEnvironment>
+#include <QtAndroid>
+#endif
+
 #include "filemanager.h"
 #include "dbmanager.h"
 #include "gamedata.h"
 
 int main(int argc, char *argv[])
 {
-//    QImage imageToDecode(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "/IMG_00000003.jpg");
-//    QZXing decoder;
-//    decoder.setDecoder( QZXing::DecoderFormat_EAN_13 );
-//    QString result = decoder.decodeImage(imageToDecode/*, 1000, 1000, true*/);
-//    qDebug() << result;
+#ifdef Q_OS_ANDROID
+//    auto permissionCallback = [](const auto permissionResult) {
+//        for(const auto &key : permissionResult.keys()) {
+//            // Permission 0 = granted, 1 = denied
+//            qDebug() << "Permission:" << key << "granted?" << !static_cast<bool>(permissionResult.value(key));
+//        }
+//    };
+//    QtAndroid::requestPermissions({"android.permission.WRITE_EXTERNAL_STORAGE"}, permissionCallback);
+//    QtAndroid::requestPermissionsSync({"android.permission.WRITE_EXTERNAL_STORAGE"});
+//    QAndroidJniObject javaCall = QAndroidJniObject::fromString("android.permission.WRITE_EXTERNAL_STORAGE");
+#endif
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QZXing::registerQMLTypes();
