@@ -5,8 +5,11 @@
         <file>qml/BarcodeScanner.qml</file>
         <file>qml/PopupGameData.qml</file>
         <file>qml/PopupTagUnknown.qml</file>
+        <file>qml/PopupTakeSnapshot.qml</file>
         <file>qml/ViewBarcodeScanner.qml</file>
         <file>qml/ViewCreateGame.qml</file>
         <file>qml/utils/CSButton.qml</file>
+        <file>qml/utils/CSGlowImage.qml</file>
+        <file>qml/utils/CSCameraOutput.qml</file>
     </qresource>
 </RCC>

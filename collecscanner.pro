@@ -21,10 +21,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     filemanager.cpp \
-    dbmanager.cpp
+    dbmanager.cpp \
+    gamedata.cpp
 
 RESOURCES += \
-    qml.qrc
+    qml.qrc \
+    media.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

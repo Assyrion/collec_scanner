@@ -3,6 +3,7 @@ import QtQuick 2.6
 import QtMultimedia 5.8
 import QtQuick.Controls 2.2
 import Qt.labs.platform 1.0
+import "utils"
 
 Rectangle {
     id: root
@@ -10,42 +11,23 @@ Rectangle {
     signal barcodeFound(string barcode)
 
     function startScanning() {
-        camera.start()
+        cameraOutput.camera.start()
     }
 
     function stopScanning() {
-        camera.stop()
+        cameraOutput.camera.stop()
     }
 
     color: "black"
 
-    VideoOutput {
-        id: output
+    CSCameraOutput {
+        id: cameraOutput
 
         anchors.fill: parent
-        autoOrientation: true
         filters: [ zxingFilter ]
-
-        source: Camera {
-            id: camera
-            position:    Camera.BackFace
-            captureMode: Camera.CaptureStillImage
-            imageProcessing {
-                whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
-            }
-            focus {
-                focusMode:      Camera.FocusContinuous
-                focusPointMode: Camera.FocusPointAuto
-            }
-            exposure {
-                exposureMode: Camera.ExposureAuto
-            }
-            imageCapture {
-                onImageCaptured:{
-                    snapshot.source = preview
-                    decoder.decodeImageQML(snapshot);
-                }
-            }
+        onImageCaptured:{
+            snapshot.source = preview
+            decoder.decodeImageQML(preview);
         }
     }
 
@@ -68,13 +50,14 @@ Rectangle {
     QZXingFilter {
         id: zxingFilter
         captureRect: {
-            output.contentRect;
-            output.sourceRect;
-            return output.mapRectToSource(output.mapNormalizedRectToItem(Qt.rect(0.25, 0.25, 0.5, 0.5)));
+            cameraOutput.contentRect;
+            cameraOutput.sourceRect;
+            return cameraOutput.mapRectToSource(cameraOutput.mapNormalizedRectToItem(Qt.rect(0.25, 0.25, 0.5, 0.5)));
         }
 
         decoder {
             enabledDecoders: QZXing.DecoderFormat_EAN_13
+                           | QZXing.DecoderFormat_EAN_8
             onTagFound: {
                 barcodeFound(tag)
             }

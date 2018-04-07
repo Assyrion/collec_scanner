@@ -1,7 +1,8 @@
-import QtQuick 2.4
+import QtQuick 2.8
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs.qml 1.0
+import QtGraphicalEffects 1.0
 import GameData 1.0
 import "utils"
 
@@ -10,14 +11,30 @@ Popup {
 
     property bool editMode: false
 
+    onClosed: {
+        editMode = false
+        game.clear()
+    }
+
     function show(game) {
         tagTextField.text       = game.tag
         titleTextField.text     = game.title
         platformTextField.text  = game.platform
         publisherTextField.text = game.publisher
         developerTextField.text = game.developer
+        picFrontImg.source      = game.picFront
+        picBackImg.source       = game.picBack
 
         open()
+    }
+
+    GameData {
+        id: game
+        tag       : tagTextField.text
+        title     : titleTextField.text
+        platform  : platformTextField.text
+        publisher : publisherTextField.text
+        developer : developerTextField.text
     }
 
     padding: 0
@@ -26,12 +43,38 @@ Popup {
     closePolicy: Popup.NoAutoClose
 
     contentItem : Pane {
+        Row {
+            id : picRow
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: 20
+            spacing: 50
+            height: root.height/5
+            enabled: root.editMode
+
+            CSGlowImage {
+                id : picFrontImg
+                height: parent.height
+                width: implicitWidth
+                onClicked: {
+                    viewTakeSnapshot.open()
+                }
+            }
+            CSGlowImage {
+                id : picBackImg
+                height: parent.height
+                width: implicitWidth
+                onClicked: {
+                    viewTakeSnapshot.open()
+                }
+            }
+        }
         GridLayout {
             id: columnLayout
             width: 2/3 * parent.width
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.topMargin: 20
+            anchors.top: picRow.bottom
+            anchors.topMargin: 50
             enabled: root.editMode
             columns: 2
             columnSpacing: 50
@@ -112,7 +155,7 @@ Popup {
         Row {
             anchors.top: columnLayout.bottom
             anchors.horizontalCenter: columnLayout.horizontalCenter
-            anchors.topMargin: 20
+            anchors.topMargin: 50
             spacing: 20
             Button {
                 width: 100
@@ -133,9 +176,26 @@ Popup {
                 text: qsTr("save")
                 enabled: root.editMode
                 onClicked: {
+                    dbManager.editEntry(game)
                     close()
                 }
             }
         }
+
+
+    }
+
+    PopupTakeSnapshot {
+        id: viewTakeSnapshot
+
+        width : root.width/2
+        height: root.height/2
+        x : width/2
+        y : height/2
     }
 }
+
+
+
+
+
