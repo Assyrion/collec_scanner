@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs.qml 1.0
 import GameData 1.0
+import "utils"
 
 Pane {
     id: root
@@ -80,7 +81,7 @@ Pane {
                 backToMenuRequired()
             }
         }
-        Button {
+        CSButton {
             id: cancelBtn
             anchors.right: parent.right
             anchors.bottom: parent.bottom

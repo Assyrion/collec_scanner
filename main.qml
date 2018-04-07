@@ -2,12 +2,13 @@ import QtQuick 2.6
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import "qml"
+import "qml/utils"
 
 Window {
     id: root
     visible: true
     visibility: Window.AutomaticVisibility
-    //    title: qsTr("Hello World")
+
     height:1280
     width: 720
 
@@ -40,17 +41,17 @@ Window {
             id: menu
             Row {
                 anchors.centerIn: parent
-                spacing: 20
-                Button {
+                spacing: 50
+                CSButton {
                     id: scanBtn
-                    text: "scan barcode"
+                    text: qsTr("scan barcode")
                     onClicked: {
                         stackView.push(vbsCpt)
                     }
                 }
-                Button {
+                CSButton {
                     id: showListBtn
-                    text: "show list"
+                    text: qsTr("show list")
                 }
             }
         }

@@ -4,6 +4,7 @@ import QtMultimedia 5.8
 import QtQuick.Controls 2.2
 import Qt.labs.platform 1.0
 import GameData 1.0
+import "utils"
 
 Item {
     id: root
@@ -14,16 +15,6 @@ Item {
 
     Component.onCompleted: {
         barcodeScanner.startScanning()
-    }
-
-    Button {
-        id: returnBtn
-        anchors.top: parent.top
-        anchors.left: parent.left
-        text: "Menu"
-        onClicked: {
-            backToMenuRequired()
-        }
     }
 
     PopupTagUnknown {
@@ -44,18 +35,34 @@ Item {
         id: popupGameData
         width: parent.width
         height: parent.height
+        onClosed: {
+            barcodeScanner.startScanning()
+        }
     }
 
     BarcodeScanner {
         id: barcodeScanner
         anchors.fill: parent
         onBarcodeFound: {
+            barcodeScanner.stopScanning()
             var game = dbManager.getEntry(barcode)
             if(game) {
                 popupGameData.show(game)
             } else {
                 popupTagUnknown.show(barcode)
             }
+        }
+    }
+
+    CSButton {
+        id: returnBtn
+        anchors.top: parent.top
+        anchors.topMargin: 20
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        text: "Menu"
+        onClicked: {
+            backToMenuRequired()
         }
     }
 }

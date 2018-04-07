@@ -1,5 +1,6 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.2
+import "utils"
 
 Popup {
     id: popup
@@ -14,6 +15,7 @@ Popup {
         open()
     }
 
+    padding: 0
     modal: true
     closePolicy: Popup.NoAutoClose
 
@@ -21,31 +23,37 @@ Popup {
         border.color: "#444"
     }
 
-    contentItem : Item {
+    contentItem : Pane {
         Text {
             width: parent.width
             anchors.centerIn: parent
-            text: qsTr("Game with tag = %1 is new, add it ?").arg(popup.tag)
+            horizontalAlignment: Text.AlignHCenter
+            text: qsTr("Game with tag = %1 is new.<br><br>Add it ?").arg(popup.tag)
             wrapMode: Text.WordWrap
             font.pointSize: 20
             font.family: "calibri"
+            color: "white"
         }
-        Button {
-            anchors.left: parent.left
+        Row {
+            anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
-            text: "yep"
-            onClicked: {
-                accepted(popup.tag)
-                popup.close()
+            anchors.bottomMargin: 20
+            spacing: 50
+            Button {
+                width: 100
+                text: qsTr("yes")
+                onClicked: {
+                    accepted(popup.tag)
+                    popup.close()
+                }
             }
-        }
-        Button {
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            text: "nope"
-            onClicked: {
-                refused()
-                popup.close()
+            Button {
+                width: 100
+                text: qsTr("no")
+                onClicked: {
+                    refused()
+                    popup.close()
+                }
             }
         }
     }

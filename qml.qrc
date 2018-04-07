@@ -7,5 +7,6 @@
         <file>qml/PopupTagUnknown.qml</file>
         <file>qml/ViewBarcodeScanner.qml</file>
         <file>qml/ViewCreateGame.qml</file>
+        <file>qml/utils/CSButton.qml</file>
     </qresource>
 </RCC>
