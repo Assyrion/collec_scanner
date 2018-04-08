@@ -22,7 +22,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp \
     filemanager.cpp \
     dbmanager.cpp \
-    gamedata.cpp
+    gamedata.cpp \
+    imagemanager.cpp
 
 RESOURCES += \
     qml.qrc \
@@ -44,4 +45,6 @@ include (qzxing/QZXing.pri)
 HEADERS += \
     filemanager.h \
     dbmanager.h \
-    gamedata.h
+    gamedata.h \
+    imagemanager.h \
+    global.h

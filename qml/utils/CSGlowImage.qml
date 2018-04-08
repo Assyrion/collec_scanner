@@ -5,15 +5,18 @@ Item {
     id: root
 
     signal clicked
-    property string source
+    property alias source: pic.source
+    property var grabResult
+    onGrabResultChanged: {
+        if(grabResult)
+            source = grabResult.url
+    }
 
     implicitWidth: pic.width
 
     Component.onCompleted: {
         mouseArea.clicked.connect(clicked)
     }
-
-    opacity: enabled ? 1 : 0.8
 
     RectangularGlow {
         id: effect
@@ -39,14 +42,20 @@ Item {
         mipmap: true
         smooth: true
         fillMode: Image.PreserveAspectFit
-        source: root.source == "" ? "qrc:/no_pic"
-                                  : "file:///"+root.source
     }
 
+
     OpacityMask {
+        id: opacityMask
         anchors.fill: pic
         source: pic
         maskSource: maskRec
+        layer.enabled: !enabled
+        layer.effect: Colorize {
+            saturation: 0
+            lightness: 0
+            hue: 0
+        }
     }
 
     MouseArea {

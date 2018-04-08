@@ -34,8 +34,6 @@ public:
 private:
     QSqlDatabase m_db;
 
-    QString toGlobalPath(QString path);
-
 signals:
 
 public slots:

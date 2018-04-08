@@ -31,33 +31,28 @@ Rectangle {
         }
     }
 
-    Image {
-        id: snapshot
-        width: parent.width/4
-        height: parent.height/4
-        anchors.left: parent.left
-        anchors.top: parent.top
-        function show() {
-            fadeInOut.start()
-        }
-        SequentialAnimation on opacity {
-            id: fadeInOut
-            NumberAnimation {from: 0; to: 1; duration: 100 }
-            NumberAnimation {from: 1; to: 0; duration: 1000}
-        }
-    }
+//    Rectangle {
+//        x:cameraOutput.contentRect.x
+//        y:cameraOutput.contentRect.y
+//        width: zxingFilter.captureRect.width
+//        height: zxingFilter.captureRect.height
+//        color: "red"
+//        opacity: 0.5
+//    }
 
     QZXingFilter {
         id: zxingFilter
         captureRect: {
             cameraOutput.contentRect;
             cameraOutput.sourceRect;
-            return cameraOutput.mapRectToSource(cameraOutput.mapNormalizedRectToItem(Qt.rect(0.25, 0.25, 0.5, 0.5)));
+            var rect = Qt.rect(0.25, 0.25, 0.5, 0.5)
+            var normalizedRect = cameraOutput.mapNormalizedRectToItem(rect)
+            return cameraOutput.mapRectToSource(normalizedRect)
         }
 
         decoder {
             enabledDecoders: QZXing.DecoderFormat_EAN_13
-                           | QZXing.DecoderFormat_EAN_8
+//                           | QZXing.DecoderFormat_EAN_8
             onTagFound: {
                 barcodeFound(tag)
             }

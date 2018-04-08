@@ -12,6 +12,7 @@
 #include <QtAndroid>
 #endif
 
+#include "imagemanager.h"
 #include "filemanager.h"
 #include "dbmanager.h"
 #include "gamedata.h"
@@ -41,9 +42,11 @@ int main(int argc, char *argv[])
     if (engine.rootObjects().isEmpty())
         return -1;
 
-    FileManager fileManager;
-    DBManager   dbManager;
+    ImageManager imageManager;
+    FileManager  fileManager;
+    DBManager    dbManager;
 
+    engine.rootContext()->setContextProperty("imageManager", &imageManager);
     engine.rootContext()->setContextProperty("fileManager", &fileManager);
     engine.rootContext()->setContextProperty("dbManager",   &dbManager);
 

@@ -22,9 +22,8 @@ Popup {
         platformTextField.text  = game.platform
         publisherTextField.text = game.publisher
         developerTextField.text = game.developer
-        picFrontImg.source      = game.picFront
-        picBackImg.source       = game.picBack
-
+        picFrontImg.source      = imageManager.getFrontPicGrab(game.tag)
+        picBackImg.source       = imageManager.getBackPicGrab(game.tag)
         open()
     }
 
@@ -46,7 +45,8 @@ Popup {
         Row {
             id : picRow
             anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.horizontalCenter:
+                parent.horizontalCenter
             anchors.topMargin: 20
             spacing: 50
             height: root.height/5
@@ -57,7 +57,7 @@ Popup {
                 height: parent.height
                 width: implicitWidth
                 onClicked: {
-                    viewTakeSnapshot.open()
+                    loader.loadSnapshotPopup(this)
                 }
             }
             CSGlowImage {
@@ -65,14 +65,15 @@ Popup {
                 height: parent.height
                 width: implicitWidth
                 onClicked: {
-                    viewTakeSnapshot.open()
+                    loader.loadSnapshotPopup(this)
                 }
             }
         }
         GridLayout {
             id: columnLayout
             width: 2/3 * parent.width
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.horizontalCenter:
+                parent.horizontalCenter
             anchors.top: picRow.bottom
             anchors.topMargin: 50
             enabled: root.editMode
@@ -176,26 +177,23 @@ Popup {
                 text: qsTr("save")
                 enabled: root.editMode
                 onClicked: {
+                    imageManager.saveFrontPicGrab(game.tag, picFrontImg.grabResult)
+                    imageManager.saveBackPicGrab( game.tag, picBackImg.grabResult)
                     dbManager.editEntry(game)
                     close()
                 }
             }
         }
-
-
     }
-
-    PopupTakeSnapshot {
-        id: viewTakeSnapshot
-
-        width : root.width/2
-        height: root.height/2
-        x : width/2
-        y : height/2
+    Loader {
+        id: loader
+        function loadSnapshotPopup(img) {
+            loader.setSource("PopupTakeSnapshot.qml",
+                             { "boundImg": img,
+                                 "width" : root.width/2,
+                                 "height": root.height/2,
+                                 "x"     : root.width/4,
+                                 "y"     : root.height/4})
+        }
     }
 }
-
-
-
-
-

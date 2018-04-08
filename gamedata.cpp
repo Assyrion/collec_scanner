@@ -3,17 +3,14 @@
 
 GameData::GameData(QString tag, QString title,  QString platform,
                    QString publisher, QString developer,
-                   QDate releaseDate, QUrl picFront,
-                   QUrl picBack, QObject* parent)
+                   QDate releaseDate, QObject* parent)
     : QObject(parent),
       tag(tag),
       title(title),
       platform(platform),
       publisher(publisher),
       developer(developer),
-      releaseDate(releaseDate),
-      picFront(picFront),
-      picBack(picBack)
+      releaseDate(releaseDate)
 {}
 
 GameData::GameData(QObject *parent)

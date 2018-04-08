@@ -1,17 +1,15 @@
-import QtQuick 2.6
+import QtQuick 2.8
 import QtMultimedia 5.8
 import QtQuick.Controls 2.2
-import QtMultimedia 5.8
-import QtQuick.Controls 2.2
-import Qt.labs.platform 1.0
 import "utils"
 
 Popup {
     id: root
-
     Component.onCompleted:  {
-//        cameraOutput.imageCaptured.connect()
+        open()
     }
+
+    property var boundImg
 
     onOpened: {
         loader.sourceComponent = cameraOutputCpt
@@ -26,15 +24,22 @@ Popup {
     contentItem : Pane {
         Loader {
             id: loader
-            anchors.fill: parent
+            width: 13.7*height/17
+            height: 2*parent.height/3
+            anchors.top: parent.top
+            anchors.topMargin: 20
+            anchors.horizontalCenter:
+                parent.horizontalCenter
         }
 
         Component {
             id: cameraOutputCpt
             CSCameraOutput {
                 id: cameraOutput
+                fillMode:
+                    VideoOutput.PreserveAspectCrop
                 onImageCaptured: {
-                    snapshot.source = preview
+//                    snapshot.source = preview
                 }
             }
         }
@@ -42,18 +47,14 @@ Popup {
         CSButton {
             text : "Take pic"
             anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.horizontalCenter:
+                parent.horizontalCenter
             onClicked: {
-                loader.item.capture()
+//                loader.item.capture()
+                loader.item.grabToImage(function(result) {
+                    boundImg.grabResult = result;
+                });
             }
-        }
-
-        Image {
-            id: snapshot
-            width: parent.width/4
-            height: parent.height/4
-            anchors.left: parent.left
-            anchors.top: parent.top
         }
     }
 }
