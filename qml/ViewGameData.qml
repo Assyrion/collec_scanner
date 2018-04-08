@@ -27,143 +27,155 @@ Pane {
         developer : developerTextField.text
     }
 
-    Row {
-        id : picRow
+    ScrollView {
         anchors.top: parent.top
-        anchors.horizontalCenter:
-            parent.horizontalCenter
-        anchors.topMargin: 20
-        spacing: 50
-        height: root.height/5
-        enabled: root.editMode
+        anchors.bottom: btnRow.top
+        anchors.bottomMargin: 25
+        contentWidth: parent.width
+        ScrollBar.vertical.policy:
+            ScrollBar.AlwaysOff
 
-        CSGlowImage {
-            id : picFrontImg
-            height: parent.height
-            width: implicitWidth
-            onClicked: {
-                loader.loadSnapshotPopup(this)
+        Row {
+            id : picRow
+            anchors.top: parent.top
+            anchors.horizontalCenter:
+                parent.horizontalCenter
+            spacing: 25
+            height : root.height/4
+            enabled: root.editMode
+
+            CSGlowImage {
+                id : picFrontImg
+                height: parent.height
+                width: implicitWidth
+                onClicked: {
+                    loader.loadSnapshotPopup(this)
+                }
+            }
+            CSGlowImage {
+                id : picBackImg
+                height: parent.height
+                width: implicitWidth
+                onClicked: {
+                    loader.loadSnapshotPopup(this)
+                }
             }
         }
-        CSGlowImage {
-            id : picBackImg
-            height: parent.height
-            width: implicitWidth
-            onClicked: {
-                loader.loadSnapshotPopup(this)
-            }
-        }
-    }
-    GridLayout {
-        id: columnLayout
-        width: 2/3 * parent.width
-        anchors.horizontalCenter:
-            parent.horizontalCenter
-        anchors.top: picRow.bottom
-        anchors.topMargin: 50
-        enabled: root.editMode
-        columns: 2
-        columnSpacing: 50
-        rowSpacing: 20
 
-        Label {
-            text: qsTr("Tag")
-            font.family: "Calibri"
-            font.pixelSize: 20
-            font.bold: true
-            color: "white"
-            bottomPadding: 10
-            Layout.alignment: Qt.AlignRight
-        }
-        TextField {
-            id: tagTextField
-            enabled: false
-            leftPadding: 10
-            Layout.fillWidth: true
-            text: initial_game.tag
-        }
-        Label {
-            text: qsTr("Title")
-            font.family: "Calibri"
-            font.pixelSize: 20
-            font.bold: true
-            color: "white"
-            bottomPadding: 10
-            Layout.alignment: Qt.AlignRight
-        }
-        TextField {
-            id: titleTextField
-            leftPadding: 10
-            Layout.fillWidth: true
-            text: initial_game.title
-        }
-        Label {
-            text: qsTr("Platform")
-            font.family: "Calibri"
-            font.pixelSize: 20
-            font.bold: true
-            color: "white"
-            bottomPadding: 10
-            Layout.alignment: Qt.AlignRight
-        }
-        TextField {
-            id: platformTextField
-            leftPadding: 10
-            Layout.fillWidth: true
-            text: initial_game.platform
-        }
-        Label {
-            text: qsTr("Publisher")
-            font.family: "Calibri"
-            font.pixelSize: 20
-            font.bold: true
-            color: "white"
-            bottomPadding: 10
-            Layout.alignment: Qt.AlignRight
-        }
-        TextField {
-            id: publisherTextField
-            leftPadding: 10
-            Layout.fillWidth: true
-            text: initial_game.publisher
-        }
-        Label {
-            text: qsTr("Developer")
-            font.family: "Calibri"
-            font.pixelSize: 20
-            font.bold: true
-            color: "white"
-            bottomPadding: 10
-            Layout.alignment: Qt.AlignRight
-        }
-        TextField {
-            id: developerTextField
-            leftPadding: 10
-            Layout.fillWidth: true
-            text: initial_game.developer
+        GridLayout {
+            id: columnLayout
+            anchors.top: picRow.bottom
+            anchors.topMargin: 25
+            width: parent.width
+            enabled: root.editMode
+            columns: 2
+            columnSpacing: 20
+            rowSpacing: 20
+
+            Label {
+                text: qsTr("Tag")
+                font.family: "Calibri"
+                font.pixelSize: 20
+                font.bold: true
+                color: "white"
+                bottomPadding: 10
+                width: parent.width/3
+                Layout.alignment: Qt.AlignRight
+            }
+            TextField {
+                id: tagTextField
+                enabled: false
+                leftPadding: 10
+                Layout.fillWidth: true
+                text: initial_game.tag
+            }
+            Label {
+                text: qsTr("Title")
+                font.family: "Calibri"
+                font.pixelSize: 20
+                font.bold: true
+                color: "white"
+                bottomPadding: 10
+                width: parent.width/3
+                Layout.alignment: Qt.AlignRight
+            }
+            TextField {
+                id: titleTextField
+                leftPadding: 10
+                Layout.fillWidth: true
+                text: initial_game.title
+            }
+            Label {
+                text: qsTr("Platform")
+                font.family: "Calibri"
+                font.pixelSize: 20
+                font.bold: true
+                color: "white"
+                bottomPadding: 10
+                width: parent.width/3
+                Layout.alignment: Qt.AlignRight
+            }
+            TextField {
+                id: platformTextField
+                leftPadding: 10
+                Layout.fillWidth: true
+                text: initial_game.platform
+            }
+            Label {
+                text: qsTr("Publisher")
+                font.family: "Calibri"
+                font.pixelSize: 20
+                font.bold: true
+                color: "white"
+                bottomPadding: 10
+                width: parent.width/3
+                Layout.alignment: Qt.AlignRight
+            }
+            TextField {
+                id: publisherTextField
+                leftPadding: 10
+                Layout.fillWidth: true
+                text: initial_game.publisher
+            }
+            Label {
+                text: qsTr("Developer")
+                font.family: "Calibri"
+                font.pixelSize: 20
+                font.bold: true
+                color: "white"
+                bottomPadding: 10
+                width: parent.width/3
+                Layout.alignment: Qt.AlignRight
+            }
+            TextField {
+                id: developerTextField
+                leftPadding: 10
+                Layout.fillWidth: true
+                text: initial_game.developer
+            }
         }
     }
     Row {
-        anchors.top: columnLayout.bottom
-        anchors.horizontalCenter: columnLayout.horizontalCenter
-        anchors.topMargin: 50
-        spacing: 20
-        Button {
-            width: 100
+        id: btnRow
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: -20
+        anchors.horizontalCenter:
+            parent.horizontalCenter
+        spacing: 10
+        scale: 0.77
+        CSButton {
             text: qsTr("close")
             onClicked: {
                 closed()
             }
         }
-        Button {
-            width: 100
+        CSButton {
             text: qsTr("edit")
             onClicked: {
                 root.editMode = true
             }
         }
-        Button {
-            width: 100
+        CSButton {
             text: qsTr("save")
             enabled: root.editMode
             onClicked: {
@@ -181,10 +193,10 @@ Pane {
         function loadSnapshotPopup(img) {
             loader.setSource("PopupTakeSnapshot.qml",
                              { "boundImg": img,
-                                 "width" : root.width/2,
-                                 "height": root.height/2,
-                                 "x"     : root.width/4,
-                                 "y"     : root.height/4})
+                                 "width" : 2*root.width/3,
+                                 "height": 2*root.height/3,
+                                 "x"     : (2*root.width/3)-root.width/2,
+                                 "y"     : (2*root.height/3)-root.height/2})
         }
     }
 }

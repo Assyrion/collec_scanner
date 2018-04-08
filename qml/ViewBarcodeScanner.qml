@@ -19,10 +19,8 @@ Item {
 
     PopupTagUnknown {
         id: popupTagUnknown
-        width: parent.width/2
-        height: parent.height/2
-        x: width/2
-        y: height/2
+        width : parent.width
+        height: parent.height
         onRefused: {
             barcodeScanner.startScanning()
         }

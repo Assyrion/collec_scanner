@@ -38,17 +38,15 @@ Popup {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 20
-            spacing: 50
-            Button {
-                width: 100
+            spacing: 25
+            CSButton {
                 text: qsTr("yes")
                 onClicked: {
                     accepted(popup.tag)
                     popup.close()
                 }
             }
-            Button {
-                width: 100
+            CSButton {
                 text: qsTr("no")
                 onClicked: {
                     refused()

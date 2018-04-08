@@ -21,17 +21,18 @@ Item {
     RectangularGlow {
         id: effect
         anchors.fill: pic
-        glowRadius: 10
+        glowRadius: 7
         spread: 0.2
-        color: "white"
-        cornerRadius: maskRec.radius + glowRadius
+        color: "black"
+        cornerRadius: maskRec.radius
+                      + glowRadius
     }
 
     Rectangle {
         id: maskRec
         visible: false
         anchors.fill: pic
-        radius : 25
+        radius : 10
     }
 
     Image {
