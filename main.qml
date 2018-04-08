@@ -1,6 +1,7 @@
 import QtQuick 2.6
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
+import GameData 1.0
 import "qml"
 import "qml/utils"
 
@@ -16,7 +17,12 @@ Window {
         id: vbsCpt
         ViewBarcodeScanner {
             onNewGameCreationRequired: {
-                stackView.replace(vcgCpt, {"tag": tag})
+                var game = {tag: tag,
+                title: "", platform: "ps3",
+                publisher: "", developer: ""}
+
+                stackView.replace(vcgCpt, {"editMode"    : true,
+                                           "initial_game": game})
             }
             onBackToMenuRequired: {
                 stackView.pop()
@@ -26,8 +32,8 @@ Window {
 
     Component {
         id: vcgCpt
-        ViewCreateGame {
-            onBackToMenuRequired: {
+        ViewGameData {
+            onClosed: {
                 stackView.pop()
             }
         }

@@ -13,7 +13,7 @@ public:
     explicit DBManager(QObject *parent = nullptr);
 
     Q_INVOKABLE void addEntry(GameData* game);
-    Q_INVOKABLE void editEntry(GameData* game);
+    Q_INVOKABLE void writeEntry(GameData* game);
     Q_INVOKABLE GameData* getEntry(QString tag);
 
 //    const QString MyImageClasse::picture()

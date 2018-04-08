@@ -31,15 +31,6 @@ Item {
         }
     }
 
-    PopupGameData {
-        id: popupGameData
-        width: parent.width
-        height: parent.height
-        onClosed: {
-            barcodeScanner.startScanning()
-        }
-    }
-
     BarcodeScanner {
         id: barcodeScanner
         anchors.fill: parent
@@ -47,7 +38,7 @@ Item {
             barcodeScanner.stopScanning()
             var game = dbManager.getEntry(barcode)
             if(game) {
-                popupGameData.show(game)
+                gameDataLoader.setSource("ViewGameData.qml", {"initial_game": game})
             } else {
                 popupTagUnknown.show(barcode)
             }
@@ -63,6 +54,19 @@ Item {
         text: "Menu"
         onClicked: {
             backToMenuRequired()
+        }
+    }
+
+    Loader {
+        id: gameDataLoader
+        anchors.fill: parent
+        Connections {
+            target: gameDataLoader.item ?
+                        gameDataLoader.item : null
+            onClosed: {
+                gameDataLoader.sourceComponent = undefined
+                barcodeScanner.startScanning()
+            }
         }
     }
 }

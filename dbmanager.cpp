@@ -29,7 +29,7 @@ void DBManager::addEntry(GameData* game)
     query.exec();
 }
 
-void DBManager::editEntry(GameData *game)
+void DBManager::writeEntry(GameData *game)
 {
     QSqlQuery query;
     query.prepare("UPDATE games SET "
@@ -43,7 +43,9 @@ void DBManager::editEntry(GameData *game)
     query.bindValue(":platform",  game->platform);
     query.bindValue(":publisher", game->publisher);
     query.bindValue(":developer", game->developer);
-    query.exec();
+    if(query.numRowsAffected() <= 0) {
+        addEntry(game);
+    }
 }
 
 GameData* DBManager::getEntry(QString tag)
