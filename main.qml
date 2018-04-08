@@ -1,17 +1,18 @@
 import QtQuick 2.6
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
+import QtQuick.Layouts 1.3
 import GameData 1.0
 import "qml"
 import "qml/utils"
 
 Window {
-    id: root
+    id: mainWindow
     visible: true
     visibility: Window.AutomaticVisibility
 
-    height:1280
-    width: 720
+    height: 568
+    width : 360
 
     Component {
         id: vbsCpt
@@ -46,8 +47,9 @@ Window {
         initialItem: Pane {
             id: menu
             Row {
+                width: implicitWidth
                 anchors.centerIn: parent
-                spacing: 50
+                spacing: 25
                 CSButton {
                     id: scanBtn
                     text: qsTr("scan barcode")
@@ -61,5 +63,14 @@ Window {
                 }
             }
         }
+    }
+
+    Text {
+        id: debug
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        font.family: "Calibri"
+        font.pointSize: 20
+        color: "white"
     }
 }

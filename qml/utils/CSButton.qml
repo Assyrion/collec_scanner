@@ -4,6 +4,6 @@ import QtQuick.Controls 2.2
 Button {
     id: btn
 
-    width: 200
-    height: implicitHeight*2
+    width: mainWindow.height/4
+    height: mainWindow.width/4
 }
