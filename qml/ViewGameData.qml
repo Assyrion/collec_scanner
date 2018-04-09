@@ -13,28 +13,37 @@ Pane {
     property bool editMode: false
     property var game
 
-    Component.onCompleted:  {
-        // for initial game
-        tagTextField.text       = game.tag
-        titleTextField.text     = game.title
-        platformTextField.text  = game.platform
-        publisherTextField.text = game.publisher
-        developerTextField.text = game.developer
-        picFrontImg.source      = imageManager.getFrontPicGrab(game.tag)
-        picBackImg.source       = imageManager.getBackPicGrab( game.tag)
+    function readGame() {
+        dataRepeater.itemAt(0).entry = game.tag
+        dataRepeater.itemAt(1).entry = game.title
+        dataRepeater.itemAt(2).entry = game.platform
+        dataRepeater.itemAt(3).entry = game.publisher
+        dataRepeater.itemAt(4).entry = game.developer
+        picFrontImg.source = imageManager.getFrontPicGrab(game.tag)
+        picBackImg.source  = imageManager.getBackPicGrab( game.tag)
+    }
 
-        // binding modifs
-        game.title     = Qt.binding(function(){return titleTextField.text})
-        game.platform  = Qt.binding(function(){return platformTextField.text})
-        game.publisher = Qt.binding(function(){return publisherTextField.text})
-        game.developer = Qt.binding(function(){return developerTextField.text})
+    function writeGame() {
+        game.title     = dataRepeater.itemAt(1).entry
+        game.platform  = dataRepeater.itemAt(2).entry
+        game.publisher = dataRepeater.itemAt(3).entry
+        game.developer = dataRepeater.itemAt(4).entry
+        imageManager.saveFrontPicGrab(game.tag, picFrontImg.grabResult)
+        imageManager.saveBackPicGrab( game.tag, picBackImg.grabResult)
+        dbManager.writeEntry(game)
+    }
+
+    Component.onCompleted:  {
+        readGame()
     }
 
     ScrollView {
+        id: scrollView
         anchors.top: parent.top
-        anchors.bottom: btnRow.top
-        anchors.bottomMargin: 25
+        height: parent.height-btnRow.height
         contentWidth: parent.width
+        enabled: root.editMode
+
         ScrollBar.vertical.policy:
             ScrollBar.AlwaysOff
 
@@ -45,7 +54,6 @@ Pane {
                 parent.horizontalCenter
             spacing: 25
             height : root.height/4
-            enabled: root.editMode
 
             CSGlowImage {
                 id : picFrontImg
@@ -65,99 +73,58 @@ Pane {
             }
         }
 
-        GridLayout {
-            id: columnLayout
+        Column {
+            id: dataColumn
+            width: parent.width
             anchors.top: picRow.bottom
             anchors.topMargin: 25
-            width: parent.width
-            enabled: root.editMode
-            columns: 2
-            columnSpacing: 20
-            rowSpacing: 20
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 25
+            spacing: 5
+            Repeater {
+                id: dataRepeater
+                model: ListModel {
+                    ListElement { name: qsTr("Tag");       editable: false }
+                    ListElement { name: qsTr("Title");     editable: true  }
+                    ListElement { name: qsTr("Platform");  editable: true  }
+                    ListElement { name: qsTr("Publisher"); editable: true  }
+                    ListElement { name: qsTr("Developer"); editable: true  }
+                }
+                delegate: Item {
+                    property alias entry: tagTextField.text
 
-            Label {
-                text: qsTr("Tag")
-                font.family: "Calibri"
-                font.pixelSize: 20
-                font.bold: true
-                color: "white"
-                bottomPadding: 10
-                width: parent.width/3
-                Layout.alignment: Qt.AlignRight
-            }
-            TextField {
-                id: tagTextField
-                enabled: false
-                leftPadding: 10
-                Layout.fillWidth: true
-//                text: initial_game.tag
-            }
-            Label {
-                text: qsTr("Title")
-                font.family: "Calibri"
-                font.pixelSize: 20
-                font.bold: true
-                color: "white"
-                bottomPadding: 10
-                width: parent.width/3
-                Layout.alignment: Qt.AlignRight
-            }
-            TextField {
-                id: titleTextField
-                leftPadding: 10
-                Layout.fillWidth: true
-//                text: initial_game.title
-            }
-            Label {
-                text: qsTr("Platform")
-                font.family: "Calibri"
-                font.pixelSize: 20
-                font.bold: true
-                color: "white"
-                bottomPadding: 10
-                width: parent.width/3
-                Layout.alignment: Qt.AlignRight
-            }
-            TextField {
-                id: platformTextField
-                leftPadding: 10
-                Layout.fillWidth: true
-//                text: initial_game.platform
-            }
-            Label {
-                text: qsTr("Publisher")
-                font.family: "Calibri"
-                font.pixelSize: 20
-                font.bold: true
-                color: "white"
-                bottomPadding: 10
-                width: parent.width/3
-                Layout.alignment: Qt.AlignRight
-            }
-            TextField {
-                id: publisherTextField
-                leftPadding: 10
-                Layout.fillWidth: true
-//                text: initial_game.publisher
-            }
-            Label {
-                text: qsTr("Developer")
-                font.family: "Calibri"
-                font.pixelSize: 20
-                font.bold: true
-                color: "white"
-                bottomPadding: 10
-                width: parent.width/3
-                Layout.alignment: Qt.AlignRight
-            }
-            TextField {
-                id: developerTextField
-                leftPadding: 10
-                Layout.fillWidth: true
-//                text: initial_game.developer
+                    width: parent.width
+                    height: parent.height
+                            /dataRepeater.count
+
+                    Label {
+                        id: labelName
+                        width: parent.width/3
+                        height: parent.height
+                        verticalAlignment:
+                            Label.AlignVCenter
+                        text: name
+                        font.family: "Calibri"
+                        font.pixelSize: 20
+                        font.bold: true
+                        color: "white"
+                    }
+                    TextField {
+                        id: tagTextField
+                        width: 2*parent.width/3
+                        height: parent.height
+                        anchors.left: labelName.right
+                        anchors.verticalCenter:
+                            labelName.verticalCenter
+                        verticalAlignment:
+                            Label.AlignBottom
+                        enabled: editable
+                    }
+                }
             }
         }
     }
+
     Row {
         id: btnRow
         anchors.bottom: parent.bottom
@@ -182,10 +149,7 @@ Pane {
             text: qsTr("save")
             enabled: root.editMode
             onClicked: {
-                imageManager.saveFrontPicGrab(game.tag, picFrontImg.grabResult)
-                imageManager.saveBackPicGrab( game.tag, picBackImg.grabResult)
-
-                dbManager.writeEntry(game)
+                writeGame()
                 closed()
             }
         }

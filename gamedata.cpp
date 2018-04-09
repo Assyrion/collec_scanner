@@ -34,7 +34,7 @@ GameData::GameData(const std::initializer_list<QString>& il)
 {}
 
 GameData::GameData(QString tag)
-    : GameData(tag, "undefined", "ps3")
+    : GameData(tag, "", "ps3")
 {}
 
 GameData::GameData(QString tag, QString title,  QString platform,

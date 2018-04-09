@@ -36,12 +36,12 @@ class GameData : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString tag         MEMBER tag         CONSTANT)
-    Q_PROPERTY(QString title       MEMBER title       NOTIFY titleChanged)
-    Q_PROPERTY(QString platform    MEMBER platform    NOTIFY platformChanged)
-    Q_PROPERTY(QString publisher   MEMBER publisher   NOTIFY publisherChanged)
-    Q_PROPERTY(QString developer   MEMBER developer   NOTIFY developerChanged)
-    Q_PROPERTY(QString releaseDate MEMBER releaseDate NOTIFY releaseDateChanged)
+    Q_PROPERTY(QString tag         MEMBER tag CONSTANT)
+    Q_PROPERTY(QString title       MEMBER title)
+    Q_PROPERTY(QString platform    MEMBER platform)
+    Q_PROPERTY(QString publisher   MEMBER publisher)
+    Q_PROPERTY(QString developer   MEMBER developer)
+    Q_PROPERTY(QString releaseDate MEMBER releaseDate)
 
     friend class GameDataMaker;
     GameData(QString tag);

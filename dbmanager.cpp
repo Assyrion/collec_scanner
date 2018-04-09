@@ -53,8 +53,10 @@ void DBManager::writeEntry(GameData *game)
     query.bindValue(":publisher",    game->publisher);
     query.bindValue(":developer",    game->developer);
     query.bindValue(":release_date", game->releaseDate);
-    if(query.numRowsAffected() <= 0) {
-        addEntry(game);
+    query.exec();
+
+    if(query.numRowsAffected() == 0) { // nothing to update
+        addEntry(game); // add new game
     }
 }
 
