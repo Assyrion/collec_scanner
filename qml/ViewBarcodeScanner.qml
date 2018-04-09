@@ -10,7 +10,6 @@ Item {
     id: root
 
     signal newGameCreationRequired(string tag)
-    signal gameShowInfo(GameData game)
     signal backToMenuRequired
 
     Component.onCompleted: {
@@ -36,7 +35,8 @@ Item {
             barcodeScanner.stopScanning()
             var game = dbManager.getEntry(barcode)
             if(game) {
-                gameDataLoader.setSource("ViewGameData.qml", {"initial_game": game})
+                gameDataLoader.setSource("ViewGameData.qml",
+                                         {"game": game})
             } else {
                 popupTagUnknown.show(barcode)
             }

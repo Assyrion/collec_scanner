@@ -11,20 +11,23 @@ Pane {
 
     signal closed
     property bool editMode: false
-    property var initial_game
+    property var game
 
     Component.onCompleted:  {
-        picFrontImg.source = imageManager.getFrontPicGrab(new_game.tag)
-        picBackImg.source  = imageManager.getBackPicGrab( new_game.tag)
-    }
+        // for initial game
+        tagTextField.text       = game.tag
+        titleTextField.text     = game.title
+        platformTextField.text  = game.platform
+        publisherTextField.text = game.publisher
+        developerTextField.text = game.developer
+        picFrontImg.source      = imageManager.getFrontPicGrab(game.tag)
+        picBackImg.source       = imageManager.getBackPicGrab( game.tag)
 
-    GameData {
-        id: new_game
-        tag       : tagTextField.text
-        title     : titleTextField.text
-        platform  : platformTextField.text
-        publisher : publisherTextField.text
-        developer : developerTextField.text
+        // binding modifs
+        game.title     = Qt.binding(function(){return titleTextField.text})
+        game.platform  = Qt.binding(function(){return platformTextField.text})
+        game.publisher = Qt.binding(function(){return publisherTextField.text})
+        game.developer = Qt.binding(function(){return developerTextField.text})
     }
 
     ScrollView {
@@ -87,7 +90,7 @@ Pane {
                 enabled: false
                 leftPadding: 10
                 Layout.fillWidth: true
-                text: initial_game.tag
+//                text: initial_game.tag
             }
             Label {
                 text: qsTr("Title")
@@ -103,7 +106,7 @@ Pane {
                 id: titleTextField
                 leftPadding: 10
                 Layout.fillWidth: true
-                text: initial_game.title
+//                text: initial_game.title
             }
             Label {
                 text: qsTr("Platform")
@@ -119,7 +122,7 @@ Pane {
                 id: platformTextField
                 leftPadding: 10
                 Layout.fillWidth: true
-                text: initial_game.platform
+//                text: initial_game.platform
             }
             Label {
                 text: qsTr("Publisher")
@@ -135,7 +138,7 @@ Pane {
                 id: publisherTextField
                 leftPadding: 10
                 Layout.fillWidth: true
-                text: initial_game.publisher
+//                text: initial_game.publisher
             }
             Label {
                 text: qsTr("Developer")
@@ -151,7 +154,7 @@ Pane {
                 id: developerTextField
                 leftPadding: 10
                 Layout.fillWidth: true
-                text: initial_game.developer
+//                text: initial_game.developer
             }
         }
     }
@@ -179,10 +182,10 @@ Pane {
             text: qsTr("save")
             enabled: root.editMode
             onClicked: {
-                imageManager.saveFrontPicGrab(new_game.tag, picFrontImg.grabResult)
-                imageManager.saveBackPicGrab( new_game.tag, picBackImg.grabResult)
+                imageManager.saveFrontPicGrab(game.tag, picFrontImg.grabResult)
+                imageManager.saveBackPicGrab( game.tag, picBackImg.grabResult)
 
-                dbManager.writeEntry(new_game)
+                dbManager.writeEntry(game)
                 closed()
             }
         }

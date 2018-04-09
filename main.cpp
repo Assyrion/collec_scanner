@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
 #endif
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    GameDataMaker::registerQMLTypes();
     QZXing::registerQMLTypes();
-    GameData::registerQMLTypes();
 
     QGuiApplication app(argc, argv);
 

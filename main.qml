@@ -18,12 +18,9 @@ Window {
         id: vbsCpt
         ViewBarcodeScanner {
             onNewGameCreationRequired: {
-                var game = {tag: tag,
-                title: "", platform: "ps3",
-                publisher: "", developer: ""}
-
-                stackView.replace(vcgCpt, {"editMode"    : true,
-                                           "initial_game": game})
+                var game = GameDataMaker.createNew(tag)
+                stackView.replace(vcgCpt, {"editMode" : true,
+                                           "game"     : game})
             }
             onBackToMenuRequired: {
                 stackView.pop()
