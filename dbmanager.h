@@ -30,13 +30,6 @@ public:
 
 //      return image;
 //    }
-
-private:
-    QSqlDatabase m_db;
-
-signals:
-
-public slots:
 };
 
 #endif // DBMANAGER_H

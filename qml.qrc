@@ -7,6 +7,7 @@
         <file>qml/PopupTakeSnapshot.qml</file>
         <file>qml/ViewBarcodeScanner.qml</file>
         <file>qml/ViewGameData.qml</file>
+        <file>qml/ViewGameList.qml</file>
         <file>qml/utils/CSButton.qml</file>
         <file>qml/utils/CSGlowImage.qml</file>
         <file>qml/utils/CSCameraOutput.qml</file>

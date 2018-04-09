@@ -8,12 +8,7 @@
 
 DBManager::DBManager(QObject *parent) : QObject(parent)
 {
-    m_db = QSqlDatabase::addDatabase("QSQLITE");
-    QStringList path({DATAPATH, qApp->applicationName(), DBNAME});
-    m_db.setDatabaseName(path.join('/'));
-    if (!m_db.open()) {
-        qDebug() << "Error: connection with database fail";
-    }
+
 }
 
 void DBManager::addEntry(GameData* game)

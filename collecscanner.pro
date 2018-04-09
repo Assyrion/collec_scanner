@@ -23,7 +23,8 @@ SOURCES += main.cpp \
     filemanager.cpp \
     dbmanager.cpp \
     gamedata.cpp \
-    imagemanager.cpp
+    imagemanager.cpp \
+    sqltablemodel.cpp
 
 RESOURCES += \
     qml.qrc \
@@ -47,4 +48,5 @@ HEADERS += \
     dbmanager.h \
     gamedata.h \
     imagemanager.h \
-    global.h
+    global.h \
+    sqltablemodel.h

@@ -1,5 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QSqlDatabase>
 #include <QQmlContext>
 #include <QStandardPaths>
 #include <QZXingFilter.h>
@@ -12,10 +13,12 @@
 #include <QtAndroid>
 #endif
 
+#include "sqltablemodel.h"
 #include "imagemanager.h"
 #include "filemanager.h"
 #include "dbmanager.h"
 #include "gamedata.h"
+#include "global.h"
 
 int main(int argc, char *argv[])
 {
@@ -42,13 +45,22 @@ int main(int argc, char *argv[])
     if (engine.rootObjects().isEmpty())
         return -1;
 
-    ImageManager imageManager;
-    FileManager  fileManager;
-    DBManager    dbManager;
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    QStringList path({DATAPATH, qApp->applicationName(), DBNAME});
+    db.setDatabaseName(path.join('/'));
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+    }
 
-    engine.rootContext()->setContextProperty("imageManager", &imageManager);
-    engine.rootContext()->setContextProperty("fileManager", &fileManager);
-    engine.rootContext()->setContextProperty("dbManager",   &dbManager);
+    SqlTableModel sqlTableModel;
+    ImageManager  imageManager;
+    FileManager   fileManager;
+    DBManager     dbManager;
+
+    engine.rootContext()->setContextProperty("sqlTableModel", &sqlTableModel);
+    engine.rootContext()->setContextProperty("imageManager",  &imageManager);
+    engine.rootContext()->setContextProperty("fileManager",   &fileManager);
+    engine.rootContext()->setContextProperty("dbManager",     &dbManager);
 
     return app.exec();
 }

@@ -19,7 +19,7 @@ Window {
         ViewBarcodeScanner {
             onNewGameCreationRequired: {
                 var game = GameDataMaker.createNew(tag)
-                stackView.replace(vcgCpt, {"editMode" : true,
+                stackView.replace(vgdCpt, {"editMode" : true,
                                            "game"     : game})
             }
             onBackToMenuRequired: {
@@ -29,7 +29,16 @@ Window {
     }
 
     Component {
-        id: vcgCpt
+        id: vglCpt
+        ViewGameList {
+            onBackToMenuRequired: {
+                stackView.pop()
+            }
+        }
+    }
+
+    Component {
+        id: vgdCpt
         ViewGameData {
             onClosed: {
                 stackView.pop()
@@ -57,6 +66,9 @@ Window {
                 CSButton {
                     id: showListBtn
                     text: qsTr("show list")
+                    onClicked: {
+                        stackView.push(vglCpt)
+                    }
                 }
             }
         }
