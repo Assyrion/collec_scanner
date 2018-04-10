@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
     db.setDatabaseName(path.join('/'));
     if (!db.open()) {
         qDebug() << "Error: connection with database fail";
+        return -1;
     }
 
     SqlTableModel sqlTableModel;
@@ -57,10 +58,11 @@ int main(int argc, char *argv[])
     FileManager   fileManager;
     DBManager     dbManager;
 
-    engine.rootContext()->setContextProperty("sqlTableModel", &sqlTableModel);
-    engine.rootContext()->setContextProperty("imageManager",  &imageManager);
-    engine.rootContext()->setContextProperty("fileManager",   &fileManager);
-    engine.rootContext()->setContextProperty("dbManager",     &dbManager);
+    auto context = engine.rootContext();
+    context->setContextProperty("sqlTableModel", &sqlTableModel);
+    context->setContextProperty("imageManager",  &imageManager);
+    context->setContextProperty("fileManager",   &fileManager);
+    context->setContextProperty("dbManager",     &dbManager);
 
     return app.exec();
 }
