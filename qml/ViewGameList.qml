@@ -40,18 +40,23 @@ Pane {
                     }
                     delegate: TextField {
                         id: textField
-                        text: delegateTextEditMetrics.elidedText
+                        text: textFieldMetrics.elidedText
                         height: parent.height
                         width: root.width/4
+                        onEditingFinished: {
+                            var modelIdx = sqlTableModel.index(gameRow.rowIdx, index+1)
+                            sqlTableModel.setData(modelIdx, textField.text)
+                        }
+
                         verticalAlignment:
                             TextField.AlignBottom
                         horizontalAlignment:
                             TextField.AlignLeft
                         leftPadding: 5
                         TextMetrics {
-                            id: delegateTextEditMetrics
+                            id: textFieldMetrics
                             text: name
-                            elideWidth: textField.width-20
+                            elideWidth: textField.width-35
                             elide: Text.ElideRight
                         }
                         background: Rectangle {
@@ -71,7 +76,7 @@ Pane {
                 model: sqlTableModel.headers
                 Label {
                     id: label
-                    text: delegateLabel.elidedText
+                    text: labelMetrics.elidedText
                     height: parent.height
                     width: root.width/4
                     verticalAlignment:
@@ -80,7 +85,7 @@ Pane {
                         Label.AlignLeft
                     leftPadding: 5
                     TextMetrics {
-                        id: delegateLabel
+                        id: labelMetrics
                         text: modelData
                         elideWidth: label.width-20
                         elide: Text.ElideRight
