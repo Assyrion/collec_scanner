@@ -14,72 +14,25 @@ Window {
     height: 568
     width : 360
 
-    Component {
-        id: vbsCpt
-        ViewBarcodeScanner {
-            onNewGameCreationRequired: {
-                var game = GameDataMaker.createNew(tag)
-                stackView.replace(vgdCpt, {"editMode" : true,
-                                           "game"     : game})
-            }
-            onBackToMenuRequired: {
-                stackView.pop()
-            }
-        }
-    }
-
-    Component {
-        id: vglCpt
-        ViewGameList {
-            onBackToMenuRequired: {
-                stackView.pop()
-            }
-        }
-    }
-
-    Component {
-        id: vgdCpt
-        ViewGameData {
-            onClosed: {
-                stackView.pop()
-            }
-        }
-    }
-
-    StackView {
-        id: stackView
+    SwipeView {
+        id: view
         anchors.fill: parent
 
-        initialItem: Pane {
-            id: menu
-            Row {
-                width: implicitWidth
-                anchors.centerIn: parent
-                spacing: 25
-                CSButton {
-                    id: scanBtn
-                    text: qsTr("scan barcode")
-                    onClicked: {
-                        stackView.push(vbsCpt)
-                    }
-                }
-                CSButton {
-                    id: showListBtn
-                    text: qsTr("show list")
-                    onClicked: {
-                        stackView.push(vglCpt)
-                    }
-                }
-            }
+        ViewBarcodeScanner {
+            id: vsb
+        }
+        ViewGameList {
+            id: vgl
         }
     }
+    PageIndicator {
+        id: indicator
 
-    Text {
-        id: debug
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        font.family: "Calibri"
-        font.pointSize: 20
-        color: "white"
+        count: view.count
+        currentIndex: view.currentIndex
+
+        anchors.bottom: view.bottom
+        anchors.horizontalCenter:
+            parent.horizontalCenter
     }
 }

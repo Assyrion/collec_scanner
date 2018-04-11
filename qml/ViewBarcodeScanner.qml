@@ -9,11 +9,13 @@ import "utils"
 Item {
     id: root
 
-    signal newGameCreationRequired(string tag)
-    signal backToMenuRequired
-
     Component.onCompleted: {
         barcodeScanner.startScanning()
+    }
+
+    function showGameData(game) {
+        gameDataLoader.setSource("ViewGameData.qml",
+                                 {"game": game})
     }
 
     PopupTagUnknown {
@@ -24,7 +26,8 @@ Item {
             barcodeScanner.startScanning()
         }
         onAccepted: {
-            newGameCreationRequired(tag)
+            var game = GameDataMaker.createNew(tag)
+            showGameData(game)
         }
     }
 
@@ -35,23 +38,10 @@ Item {
             barcodeScanner.stopScanning()
             var game = dbManager.getEntry(barcode)
             if(game) {
-                gameDataLoader.setSource("ViewGameData.qml",
-                                         {"game": game})
+                showGameData(game)
             } else {
                 popupTagUnknown.show(barcode)
             }
-        }
-    }
-
-    CSButton {
-        id: returnBtn
-        anchors.top: parent.top
-        anchors.topMargin: 20
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        text: "Menu"
-        onClicked: {
-            backToMenuRequired()
         }
     }
 
@@ -59,8 +49,7 @@ Item {
         id: gameDataLoader
         anchors.fill: parent
         Connections {
-            target: gameDataLoader.item ?
-                        gameDataLoader.item : null
+            target: gameDataLoader.item
             onClosed: {
                 gameDataLoader.sourceComponent = undefined
                 barcodeScanner.startScanning()

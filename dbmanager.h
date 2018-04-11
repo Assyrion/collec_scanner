@@ -4,8 +4,10 @@
 #include <QObject>
 #include <QDebug>
 #include <QSqlDatabase>
+#include "sqltablemodel.h"
 
 class GameData;
+class SqlTableModel;
 class DBManager : public QObject
 {
     Q_OBJECT
@@ -15,6 +17,9 @@ public:
     Q_INVOKABLE void addEntry(GameData* game);
     Q_INVOKABLE void writeEntry(GameData* game);
     Q_INVOKABLE GameData* getEntry(QString tag);
+
+private:
+    SqlTableModel m_model;
 
 //    const QString MyImageClasse::picture()
 //    {

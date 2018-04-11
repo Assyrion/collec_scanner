@@ -3,10 +3,13 @@
 #include <QStandardPaths>
 #include <QSqlRecord>
 #include <QSqlQuery>
+
+#include "sqltablemodel.h"
 #include "gamedata.h"
 #include "global.h"
 
-DBManager::DBManager(QObject *parent) : QObject(parent)
+DBManager::DBManager(QObject *parent)
+    : QObject(parent)
 {
 
 }
@@ -57,6 +60,9 @@ void DBManager::writeEntry(GameData *game)
 
 GameData* DBManager::getEntry(QString tag)
 {
+    m_model.setFilter(QString("tag = %1").arg(tag));
+    QSqlQuery q = m_model.query();
+    qDebug() << m_model.query().lastQuery() << m_model.record().value("title").toString();
     QSqlQuery query;
     query.prepare("SELECT title, "
                   "platform, "

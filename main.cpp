@@ -23,15 +23,15 @@
 int main(int argc, char *argv[])
 {
 #ifdef Q_OS_ANDROID
-//    auto permissionCallback = [](const auto permissionResult) {
-//        for(const auto &key : permissionResult.keys()) {
-//            // Permission 0 = granted, 1 = denied
-//            qDebug() << "Permission:" << key << "granted?" << !static_cast<bool>(permissionResult.value(key));
-//        }
-//    };
-//    QtAndroid::requestPermissions({"android.permission.WRITE_EXTERNAL_STORAGE"}, permissionCallback);
-//    QtAndroid::requestPermissionsSync({"android.permission.WRITE_EXTERNAL_STORAGE"});
-//    QAndroidJniObject javaCall = QAndroidJniObject::fromString("android.permission.WRITE_EXTERNAL_STORAGE");
+    auto permissionCallback = [](const auto permissionResult) {
+        for(const auto &key : permissionResult.keys()) {
+            // Permission 0 = granted, 1 = denied
+            qDebug() << "Permission:" << key << "granted?" << !static_cast<bool>(permissionResult.value(key));
+        }
+    };
+    QtAndroid::requestPermissions({"android.permission.WRITE_EXTERNAL_STORAGE"}, permissionCallback);
+    QtAndroid::requestPermissionsSync({"android.permission.WRITE_EXTERNAL_STORAGE"});
+    QAndroidJniObject javaCall = QAndroidJniObject::fromString("android.permission.WRITE_EXTERNAL_STORAGE");
 #endif
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
