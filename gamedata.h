@@ -16,7 +16,7 @@ class GameDataMaker : public QObject
 
 public:
     Q_INVOKABLE GameData* createNew(const QString& tag);
-    Q_INVOKABLE GameData* createComplete(const std::initializer_list<QString> &il);
+    Q_INVOKABLE GameData* createComplete(const QStringList &il);
     static GameDataMaker* get();
 
     static void registerQMLTypes() {
@@ -46,7 +46,7 @@ class GameData : public QObject
     friend class GameDataMaker;
     GameData(QString tag);
     GameData(QObject *parent = nullptr);
-    GameData(const std::initializer_list<QString>& il);
+    GameData(const QStringList& il);
     GameData(QString tag, QString title,  QString platform,
              QString publisher = "", QString developer = "",
              QString release_date = "");

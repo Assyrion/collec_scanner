@@ -9,7 +9,7 @@ GameData* GameDataMaker::createNew(const QString &tag)
     return new GameData(tag);
 }
 
-GameData *GameDataMaker::createComplete(const std::initializer_list<QString> &il)
+GameData *GameDataMaker::createComplete(const QStringList &il)
 {
     return new GameData(il);
 }
@@ -28,7 +28,7 @@ GameData::GameData(QObject *parent)
     : QObject(parent)
 {}
 
-GameData::GameData(const std::initializer_list<QString>& il)
+GameData::GameData(const QStringList &il)
     : GameData(*il.begin(),    *(il.begin()+1), *(il.begin()+2),
               *(il.begin()+3), *(il.begin()+4)) // ugly
 {}

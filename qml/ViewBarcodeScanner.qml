@@ -9,9 +9,7 @@ import "utils"
 Item {
     id: root
 
-    Component.onCompleted: {
-        barcodeScanner.startScanning()
-    }
+    property alias barcodeScanner: barcodeScanner
 
     function showGameData(game) {
         gameDataLoader.setSource("ViewGameData.qml",

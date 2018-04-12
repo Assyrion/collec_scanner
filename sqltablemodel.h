@@ -15,6 +15,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const Q_DECL_OVERRIDE;
 
+    Q_INVOKABLE void setMapping(QObject *object, int role, const QByteArray &property);
 private:
     QHash<int, QByteArray> m_roles;
     QStringList m_headers;

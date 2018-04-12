@@ -10,9 +10,7 @@
 
 DBManager::DBManager(QObject *parent)
     : QObject(parent)
-{
-
-}
+{}
 
 void DBManager::addEntry(GameData* game)
 {

@@ -19,14 +19,14 @@ VideoOutput {
     source: Camera {
         id: camera
         position:    Camera.BackFace
+        cameraState: Camera.UnloadedState
         captureMode: Camera.CaptureStillImage
-
-        imageProcessing {
-            whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
-        }
         focus {
             focusMode:      Camera.FocusContinuous
             focusPointMode: Camera.FocusPointAuto
+        }
+        imageProcessing {
+            whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
         }
         exposure {
             exposureMode: Camera.ExposureAuto

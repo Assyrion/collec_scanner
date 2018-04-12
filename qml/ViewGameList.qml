@@ -1,5 +1,6 @@
 import QtQuick 2.8
 import QtQuick.Controls 2.2
+import GameData 1.0
 import "utils"
 
 Pane {
@@ -23,6 +24,19 @@ Pane {
             Row {
                 height: parent.height
                 width: contentWidth
+
+                RoundButton {
+//                    padding: 0
+                    height: parent.height
+                    width : height
+                    radius: 10
+                    onClicked: {
+                        var arr = [tag, title, platform, publisher,
+                                   developer, release_date]
+                        var game = GameDataMaker.createComplete(arr)
+                        showGameData(game)
+                    }
+                }
 
                 Repeater {
                     id: dataRepeater
@@ -95,6 +109,22 @@ Pane {
                         border.color: "white"
                     }
                 }
+            }
+        }
+    }
+
+    function showGameData(game) {
+        gameDataLoader.setSource("ViewGameData.qml",
+                                 {"game": game})
+    }
+
+    Loader {
+        id: gameDataLoader
+        anchors.fill: parent
+        Connections {
+            target: gameDataLoader.item
+            onClosed: {
+                gameDataLoader.sourceComponent = undefined
             }
         }
     }

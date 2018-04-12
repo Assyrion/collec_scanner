@@ -18,11 +18,23 @@ Window {
         id: view
         anchors.fill: parent
 
-        ViewBarcodeScanner {
-            id: vsb
+        // Need to check when the item is fully loaded on the view
+        property int contentX : contentItem.contentX
+        onContentXChanged: {
+            if(contentX % width == 0) {
+                if(vbs == currentItem) {
+                    vbs.barcodeScanner.startScanning()
+                } else {
+                    vbs.barcodeScanner.stopScanning()
+                }
+            }
         }
+
         ViewGameList {
             id: vgl
+        }
+        ViewBarcodeScanner {
+            id: vbs
         }
     }
     PageIndicator {
