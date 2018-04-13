@@ -34,7 +34,7 @@ Item {
         anchors.fill: parent
         onBarcodeFound: {
             barcodeScanner.stopScanning()
-            var game = dbManager.getEntry(barcode)
+            var game = sqlTableModel.get(barcode)
             if(game) {
                 showGameData(game)
             } else {

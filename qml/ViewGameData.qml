@@ -12,6 +12,7 @@ Pane {
     signal closed
     property bool editMode: false
     property var game
+    property int row: -1
 
     function readGame() {
         dataRepeater.itemAt(0).entry = game.tag
@@ -30,7 +31,8 @@ Pane {
         game.developer = dataRepeater.itemAt(4).entry
         imageManager.saveFrontPicGrab(game.tag, picFrontImg.grabResult)
         imageManager.saveBackPicGrab( game.tag, picBackImg.grabResult)
-        dbManager.writeEntry(game)
+
+        sqlTableModel.update(row, game)
     }
 
     Component.onCompleted:  {
@@ -79,7 +81,7 @@ Pane {
             anchors.top: picRow.bottom
             anchors.topMargin: 25
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 25
+            anchors.bottomMargin: 50
             spacing: 5
             Repeater {
                 id: dataRepeater
@@ -125,33 +127,40 @@ Pane {
         }
     }
 
-    Row {
+    RowLayout {
         id: btnRow
+        height: 50
+        width: parent.width
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: -20
+        anchors.bottomMargin: 20
         anchors.horizontalCenter:
             parent.horizontalCenter
-        spacing: 10
-        scale: 0.77
+        spacing: 15
         CSButton {
             text: qsTr("close")
             onClicked: {
                 closed()
             }
+            Layout.fillHeight: true
+            Layout.preferredWidth: 100
         }
         CSButton {
             text: qsTr("edit")
             onClicked: {
                 root.editMode = true
             }
+            Layout.fillHeight: true
+            Layout.preferredWidth: 100
         }
         CSButton {
-            text: qsTr("save")
+            text: qsTr("save") // todo edit devient save !
             enabled: root.editMode
             onClicked: {
                 writeGame()
                 closed()
             }
+            Layout.fillHeight: true
+            Layout.preferredWidth: 100
         }
     }
 

@@ -1,4 +1,6 @@
 #include "sqltablemodel.h"
+#include "gamedata.h"
+
 #include <QSqlDriver>
 #include <QSqlRecord>
 #include <QSqlField>
@@ -12,12 +14,9 @@ SqlTableModel::SqlTableModel()
 
     auto rec = record();
     for(int i = 0; i < rec.count(); i++) {
-        //        setHeaderData(i, Qt::Horizontal, rec.fieldName(i));
         m_roles.insert(Qt::UserRole + i + 1, rec.fieldName(i).toUtf8());
-        m_headers.push_back(rec.fieldName(i));
     }
 
-    //    emit headerDataChanged(Qt::Horizontal, 0, rec.count());
     emit headersChanged();
 }
 
@@ -45,6 +44,50 @@ QVariant SqlTableModel::data(const QModelIndex &index, int role) const
     return value;
 }
 
+void SqlTableModel::update(int row, GameData* game)
+{
+    if(!game || row >= rowCount())
+        return;
+
+    QSqlRecord rec = record(row);
+    rec.setValue("title",        game->title);
+    rec.setValue("platform",     game->platform);
+    rec.setValue("publisher",    game->publisher);
+    rec.setValue("developer",    game->developer);
+    rec.setValue("release_date", game->releaseDate);
+
+    if(row < 0) {
+        insertRecord(row, rec);
+    } else {
+        setRecord(row, rec);
+    }
+//    selectRow(row); // does not work ??
+    select();
+}
+
+GameData* SqlTableModel::get(const QString& tag)
+{
+    setFilter("tag = " + tag);
+
+    GameData* game;
+    if(rowCount() != 1) {
+        game = GameDataMaker::get()->createNew(tag);
+    } else {
+        QSqlRecord rec = record(0);
+        auto list = { tag,
+                    rec.value(1).toString(), // need to add 2 = full_title
+                    rec.value(3).toString(),
+                    rec.value(4).toString(),
+                    rec.value(5).toString(),
+                    rec.value(6).toString()};
+        game = GameDataMaker::get()->createComplete(list);
+    }
+
+    setFilter(""); // remove filter
+
+    return game;
+}
+
 bool SqlTableModel::setData(const QModelIndex &item, const QVariant &value, int role)
 {
     if (item.isValid() && role == Qt::EditRole) {
@@ -57,25 +100,9 @@ bool SqlTableModel::setData(const QModelIndex &item, const QVariant &value, int 
             rec.setNull(item.column());
         }
 
-        updateRowInTable(item.row(), rec); // dirty but don't know how to do otherwise
         emit dataChanged(item, item);
+        updateRowInTable(item.row(), rec); // dirty but don't know how to do otherwise
         return true;
     }
     return false;
 }
-
-QVariant SqlTableModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    if(role < Qt::UserRole) {
-        return QAbstractItemModel::headerData(section, orientation, role);
-    }
-    return m_roles.value(role);
-}
-
-void SqlTableModel::setMapping(QObject *object, int role, const QByteArray &property)
-{
-    if(object) {
-        object->setProperty(property, data(this->index(0, 0), Qt::UserRole+1));
-    }
-}
-

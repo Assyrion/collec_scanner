@@ -27,8 +27,6 @@ Rectangle {
         sourceComponent: Component {
             CSCameraOutput {
                 id: cameraOutput
-                /*fillMode:
-                    VideoOutput.PreserveAspectCrop*/
                 filters: [ zxingFilter ]
                 onImageCaptured:{
                     snapshot.source = preview

@@ -11,7 +11,6 @@
 #include "sqltablemodel.h"
 #include "imagemanager.h"
 #include "filemanager.h"
-#include "dbmanager.h"
 #include "gamedata.h"
 #include "global.h"
 
@@ -71,13 +70,11 @@ int main(int argc, char *argv[])
     SqlTableModel sqlTableModel;
     ImageManager  imageManager;
     FileManager   fileManager;
-    DBManager     dbManager;
 
     auto context = engine.rootContext();
     context->setContextProperty("sqlTableModel", &sqlTableModel);
     context->setContextProperty("imageManager",  &imageManager);
     context->setContextProperty("fileManager",   &fileManager);
-    context->setContextProperty("dbManager",     &dbManager);
 
     return app.exec();
 }

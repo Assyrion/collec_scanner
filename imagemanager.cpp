@@ -43,7 +43,12 @@ void ImageManager::saveBackPicGrab(const QString& tag, QQuickItemGrabResult* res
 
 void ImageManager::savePicGrab(const QString& fileName, QQuickItemGrabResult* result)
 {
+#ifdef Q_OS_ANDROID
+    QString path = QDir::currentPath() + QDir::separator() + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
+#else
+    QString path = PICPATH_ABS + QDir::separator() + fileName;
+#endif
     if(result) {
-        result->saveToFile(PICPATH_ABS + QDir::separator() + fileName);
+        result->saveToFile(path);
     }
 }

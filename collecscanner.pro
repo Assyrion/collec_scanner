@@ -24,7 +24,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     filemanager.cpp \
-    dbmanager.cpp \
     gamedata.cpp \
     imagemanager.cpp \
     sqltablemodel.cpp
@@ -48,7 +47,6 @@ include (qzxing/QZXing.pri)
 
 HEADERS += \
     filemanager.h \
-    dbmanager.h \
     gamedata.h \
     imagemanager.h \
     global.h \

@@ -2,10 +2,10 @@
 #define SQLTABLEMODEL_H
 #include <QSqlTableModel>
 
+class GameData;
 class SqlTableModel : public QSqlTableModel
 {
     Q_OBJECT
-    Q_PROPERTY(QStringList headers MEMBER m_headers NOTIFY headersChanged)
 public:
     SqlTableModel();
     ~SqlTableModel() Q_DECL_OVERRIDE;
@@ -13,12 +13,12 @@ public:
     QHash<int, QByteArray> roleNames() const Q_DECL_OVERRIDE;
     bool setData(const QModelIndex &index, const QVariant &value, int role) Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const Q_DECL_OVERRIDE;
 
-    Q_INVOKABLE void setMapping(QObject *object, int role, const QByteArray &property);
+    Q_INVOKABLE void update(int row, GameData* game);
+    Q_INVOKABLE GameData* get(const QString &tag);
+
 private:
     QHash<int, QByteArray> m_roles;
-    QStringList m_headers;
 
 signals:
     void headersChanged();

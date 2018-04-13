@@ -11,111 +11,61 @@ Pane {
     ListView {
         id: listView
         model: sqlTableModel
-        height: parent.height
-        width: contentWidth
-        flickableDirection:
-            Flickable.HorizontalAndVerticalFlick
-        spacing: 5
-        delegate: Item {
-            id: gameRow
-            height: 50
-            width: contentWidth
+        anchors.fill: parent
+        spacing: -7
+        delegate: RoundButton {
+            implicitWidth:  parent.width
+            implicitHeight: root.height/9
             readonly property int rowIdx : index
-            Row {
-                height: parent.height
-                width: contentWidth
-
-                RoundButton {
-//                    padding: 0
-                    height: parent.height
-                    width : height
-                    radius: 10
-                    onClicked: {
-                        var arr = [tag, title, platform, publisher,
-                                   developer, release_date]
-                        var game = GameDataMaker.createComplete(arr)
-                        showGameData(game)
-                    }
-                }
-
-                Repeater {
-                    id: dataRepeater
-
-                    model: ListModel {
-                        id: dataModel
-                        Component.onCompleted: {
-                            dataModel.append({"name": title});
-                            dataModel.append({"name": full_title});
-                            dataModel.append({"name": platform});
-                            dataModel.append({"name": publisher});
-                            dataModel.append({"name": developer});
-                            dataModel.append({"name": release_date});
-                        }
-                    }
-                    delegate: TextField {
-                        id: textField
-                        text: textFieldMetrics.elidedText
-                        height: parent.height
-                        width: root.width/4
-                        onEditingFinished: {
-                            var modelIdx = sqlTableModel.index(gameRow.rowIdx, index+1)
-                            sqlTableModel.setData(modelIdx, textField.text)
-                        }
-
-                        verticalAlignment:
-                            TextField.AlignBottom
-                        horizontalAlignment:
-                            TextField.AlignLeft
-                        leftPadding: 5
-                        TextMetrics {
-                            id: textFieldMetrics
-                            text: name
-                            elideWidth: textField.width-35
-                            elide: Text.ElideRight
-                        }
-                        background: Rectangle {
-                            color: "transparent"
-                            border.color: gameRow.rowIdx%2 ? "#21be2b" : "red"
-                        }
-                    }
-                }
+            radius: 5
+            onClicked: {
+                var arr = [tag, title, platform, publisher,
+                           developer, release_date]
+                var game = GameDataMaker.createComplete(arr)
+                showGameData(index, game)
             }
-        }
-        headerPositioning:
-            ListView.OverlayHeader
-        header: Row {
-            height: 25
-            width: parent.width
-            Repeater {
-                model: sqlTableModel.headers
-                Label {
-                    id: label
-                    text: labelMetrics.elidedText
-                    height: parent.height
-                    width: root.width/4
-                    verticalAlignment:
-                        Label.AlignVCenter
-                    horizontalAlignment:
-                        Label.AlignLeft
-                    leftPadding: 5
-                    TextMetrics {
-                        id: labelMetrics
-                        text: modelData
-                        elideWidth: label.width-20
-                        elide: Text.ElideRight
-                    }
-                    background: Rectangle {
-                        color: "transparent"
-                        border.color: "white"
-                    }
-                }
+            Image {
+                id: frontPicImg
+                height: parent.height-12
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                anchors.verticalCenter: parent.verticalCenter
+                source: imageManager.getFrontPicGrab(tag)
+                fillMode: Image.PreserveAspectFit
+            }
+            Text {
+                id: titleText
+                text: title
+                anchors.left:
+                    parent.horizontalCenter
+                anchors.leftMargin: -root.width/4-20
+                anchors.right: platformText.left
+                anchors.rightMargin: 10
+                anchors.verticalCenter:
+                    parent.verticalCenter
+                elide: Text.ElideRight
+                font.pointSize: 17
+                font.family: "Calibri"
+                color: "white"
+            }
+            Text {
+                id: platformText
+                anchors.right: parent.right
+                anchors.rightMargin: 10
+                anchors.verticalCenter:
+                    parent.verticalCenter
+                text: platform
+                font.pointSize: 17
+                font.family: "Calibri"
+                color: "white"
             }
         }
     }
 
-    function showGameData(game) {
+    function showGameData(index, game) {
         gameDataLoader.setSource("ViewGameData.qml",
-                                 {"game": game})
+                                 {"game": game,
+                                  "row" :index})
     }
 
     Loader {
