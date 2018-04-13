@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+#include <QDir>
 
 #include "imagemanager.h"
 
@@ -19,8 +20,11 @@ QString ImageManager::getBackPicGrab(const QString& tag)
 
 QString ImageManager::getPicGrab(const QString& fileName)
 {
-    QStringList pathList({DATAPATH, qApp->applicationName(), PICPATH, fileName});
-    QString path = pathList.join('/');
+#ifdef Q_OS_ANDROID
+    QString path = QDir::currentPath() + QDir::separator() + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
+#else
+    QString path = PICPATH_ABS + QDir::separator() + fileName;
+#endif
     if(QFile::exists(path)) {
         return QString("file:///%1").arg(path);
     }
@@ -40,7 +44,6 @@ void ImageManager::saveBackPicGrab(const QString& tag, QQuickItemGrabResult* res
 void ImageManager::savePicGrab(const QString& fileName, QQuickItemGrabResult* result)
 {
     if(result) {
-        QStringList path({DATAPATH, qApp->applicationName(), PICPATH, fileName});
-        result->saveToFile(path.join('/'));
+        result->saveToFile(PICPATH_ABS + QDir::separator() + fileName);
     }
 }

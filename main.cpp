@@ -1,17 +1,12 @@
-#include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QGuiApplication>
+#include <QStandardPaths>
 #include <QSqlDatabase>
 #include <QQmlContext>
-#include <QStandardPaths>
 #include <QZXingFilter.h>
 #include <QZXing.h>
 #include <QDebug>
-
-#ifdef Q_OS_ANDROID
-#include <QAndroidJniObject>
-#include <QAndroidJniEnvironment>
-#include <QtAndroid>
-#endif
+#include <QDir>
 
 #include "sqltablemodel.h"
 #include "imagemanager.h"
@@ -22,18 +17,6 @@
 
 int main(int argc, char *argv[])
 {
-#ifdef Q_OS_ANDROID
-    auto permissionCallback = [](const auto permissionResult) {
-        for(const auto &key : permissionResult.keys()) {
-            // Permission 0 = granted, 1 = denied
-            qDebug() << "Permission:" << key << "granted?" << !static_cast<bool>(permissionResult.value(key));
-        }
-    };
-    QtAndroid::requestPermissions({"android.permission.WRITE_EXTERNAL_STORAGE"}, permissionCallback);
-    QtAndroid::requestPermissionsSync({"android.permission.WRITE_EXTERNAL_STORAGE"});
-    QAndroidJniObject javaCall = QAndroidJniObject::fromString("android.permission.WRITE_EXTERNAL_STORAGE");
-#endif
-
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     GameDataMaker::registerQMLTypes();
     QZXing::registerQMLTypes();
@@ -46,8 +29,40 @@ int main(int argc, char *argv[])
         return -1;
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    QStringList path({DATAPATH, qApp->applicationName(), DBNAME});
-    db.setDatabaseName(path.join('/'));
+
+#ifdef Q_OS_ANDROID    
+    QDir picPath(PICPATH_ABS);
+    if(!picPath.exists()) {
+        picPath.mkdir(".");
+    }
+    QDir fromDir("assets:/" + PICPATH);
+    auto list = fromDir.entryInfoList({"*.png"}, QDir::Files);
+    for(auto fileinfo: list) {
+        QFile pic(fileinfo.absoluteFilePath());
+        QString toPath = PICPATH_ABS + QDir::separator() + fileinfo.fileName();
+        if(!QFile::exists(toPath)) {
+            pic.copy(toPath);
+            QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
+        }
+//        errMsg += "after : " + toPath
+//                + QString::number(QFile::exists(toPath)) + '\n';
+    }
+
+    QFile dfile("assets:/" + DBNAME);
+    if (dfile.exists()) {
+        if(!QFile::exists(DB_PATH_ABS_NAME)) {
+            dfile.copy(DB_PATH_ABS_NAME);
+            QFile::setPermissions(DB_PATH_ABS_NAME, QFile::WriteOwner | QFile::ReadOwner);
+        }
+    } else {
+        return -1;
+    }
+
+//    QMetaObject::invokeMethod(engine.rootObjects()[0], "showError",
+//            Q_ARG(QVariant, QVariant::fromValue(errMsg)));
+
+#endif
+    db.setDatabaseName(DB_PATH_ABS_NAME);
     if (!db.open()) {
         qDebug() << "Error: connection with database fail";
         return -1;

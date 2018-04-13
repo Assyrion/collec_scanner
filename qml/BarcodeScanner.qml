@@ -11,43 +11,41 @@ Rectangle {
     signal barcodeFound(string barcode)
 
     function startScanning() {
-        cameraOutput.camera.start()
+        loader.active = true
     }
 
     function stopScanning() {
-        cameraOutput.camera.stop()
+        loader.active = false
     }
 
     color: "black"
 
-    CSCameraOutput {
-        id: cameraOutput
-
+    Loader {
+        id: loader
+        active: false
         anchors.fill: parent
-        filters: [ zxingFilter ]
-        onImageCaptured:{
-            snapshot.source = preview
-            decoder.decodeImageQML(preview);
+        sourceComponent: Component {
+            CSCameraOutput {
+                id: cameraOutput
+                /*fillMode:
+                    VideoOutput.PreserveAspectCrop*/
+                filters: [ zxingFilter ]
+                onImageCaptured:{
+                    snapshot.source = preview
+                    decoder.decodeImageQML(preview);
+                }
+            }
         }
     }
-
-//    Rectangle {
-//        x:cameraOutput.contentRect.x
-//        y:cameraOutput.contentRect.y
-//        width: zxingFilter.captureRect.width
-//        height: zxingFilter.captureRect.height
-//        color: "red"
-//        opacity: 0.5
-//    }
 
     QZXingFilter {
         id: zxingFilter
         captureRect: {
-            cameraOutput.contentRect;
-            cameraOutput.sourceRect;
+            loader.item.contentRect;
+            loader.item.sourceRect;
             var rect = Qt.rect(0.25, 0.25, 0.5, 0.5)
-            var normalizedRect = cameraOutput.mapNormalizedRectToItem(rect)
-            return cameraOutput.mapRectToSource(normalizedRect)
+            var normalizedRect = loader.item.mapNormalizedRectToItem(rect)
+            return loader.item.mapRectToSource(normalizedRect)
         }
 
         decoder {
@@ -56,7 +54,6 @@ Rectangle {
             onTagFound: {
                 barcodeFound(tag)
             }
-
             tryHarder: false
         }
     }

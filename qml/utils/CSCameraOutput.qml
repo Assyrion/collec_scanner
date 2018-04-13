@@ -14,6 +14,13 @@ VideoOutput {
         camera.imageCapture.capture()
     }
 
+    Component.onCompleted: {
+        camera.start()
+    }
+    Component.onDestruction: {
+        camera.stop()
+    }
+
     autoOrientation: true
 
     source: Camera {

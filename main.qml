@@ -14,6 +14,21 @@ Window {
     height: 568
     width : 360
 
+    function showError(err) {
+        pop.lol = err
+        pop.open()
+    }
+
+    Popup {
+        id: pop
+
+        property alias lol: lol.text
+        Text {
+            id: lol
+            color: "white"
+        }
+    }
+
     SwipeView {
         id: view
         anchors.fill: parent

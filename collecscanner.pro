@@ -1,12 +1,15 @@
 QT += quick sql
-android: QT += androidextras
-CONFIG += qzxing_qml
-CONFIG += qzxing_multimedia
-CONFIG += c++14
+CONFIG += c++14 qzxing_qml qzxing_multimedia
+TARGET = collecscanner
+DEFINES += APPNAME='\\"$${TARGET}\\"'
 
-deployment.files += myfile.sqlite
-deployment.path = /assets
-INSTALLS += deployment
+android {
+    QT += androidextras
+
+    deployment.files += $$PWD/gameData/*
+    deployment.path = /assets/
+    INSTALLS += deployment
+}
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings

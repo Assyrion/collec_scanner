@@ -12,11 +12,11 @@ Popup {
     property var boundImg
 
     onOpened: {
-        loader.sourceComponent = cameraOutputCpt
+        loader.active = true
     }
 
     onClosed: {
-        loader.sourceComponent = undefined
+        loader.active = false
     }
 
     padding:  0
@@ -24,22 +24,21 @@ Popup {
     contentItem : Pane {
         Loader {
             id: loader
+            active: false
             width: 13.7*height/17
             height: 2*parent.height/3
             anchors.top: parent.top
             anchors.topMargin: 20
             anchors.horizontalCenter:
                 parent.horizontalCenter
-        }
-
-        Component {
-            id: cameraOutputCpt
-            CSCameraOutput {
-                id: cameraOutput
-                fillMode:
-                    VideoOutput.PreserveAspectCrop
-                onImageCaptured: {
-//                    snapshot.source = preview
+            sourceComponent: Component {
+                CSCameraOutput {
+                    id: cameraOutput
+                    fillMode:
+                        VideoOutput.PreserveAspectCrop
+                    onImageCaptured: {
+    //                    snapshot.source = preview
+                    }
                 }
             }
         }
