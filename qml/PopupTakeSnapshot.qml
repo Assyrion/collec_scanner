@@ -20,6 +20,7 @@ Popup {
     }
 
     padding:  0
+    modal: true
 
     contentItem : Pane {
         Loader {

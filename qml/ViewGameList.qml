@@ -26,12 +26,13 @@ Pane {
             }
             Image {
                 id: frontPicImg
-                height: parent.height-12
+                height: parent.height-13
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
-                source: imageManager.getFrontPicGrab(tag)
+                source: imageManager.getFrontPic(tag)
                 fillMode: Image.PreserveAspectFit
+                cache: false
             }
             Text {
                 id: titleText

@@ -13,7 +13,8 @@ Item {
 
     function showGameData(game) {
         gameDataLoader.setSource("ViewGameData.qml",
-                                 {"game": game})
+                                 {"game"    : game,
+                                  "editMode": true})
     }
 
     PopupTagUnknown {

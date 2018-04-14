@@ -1,6 +1,5 @@
 #include <QQmlApplicationEngine>
 #include <QGuiApplication>
-#include <QStandardPaths>
 #include <QSqlDatabase>
 #include <QQmlContext>
 #include <QZXingFilter.h>
@@ -43,8 +42,6 @@ int main(int argc, char *argv[])
             pic.copy(toPath);
             QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
         }
-//        errMsg += "after : " + toPath
-//                + QString::number(QFile::exists(toPath)) + '\n';
     }
 
     QFile dfile("assets:/" + DBNAME);
@@ -56,9 +53,6 @@ int main(int argc, char *argv[])
     } else {
         return -1;
     }
-
-//    QMetaObject::invokeMethod(engine.rootObjects()[0], "showError",
-//            Q_ARG(QVariant, QVariant::fromValue(errMsg)));
 
 #endif
     db.setDatabaseName(DB_PATH_ABS_NAME);

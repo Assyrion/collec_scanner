@@ -10,6 +10,7 @@ Pane {
     id: root
 
     signal closed
+
     property bool editMode: false
     property var game
     property int row: -1
@@ -20,8 +21,8 @@ Pane {
         dataRepeater.itemAt(2).entry = game.platform
         dataRepeater.itemAt(3).entry = game.publisher
         dataRepeater.itemAt(4).entry = game.developer
-        picFrontImg.source = imageManager.getFrontPicGrab(game.tag)
-        picBackImg.source  = imageManager.getBackPicGrab( game.tag)
+        picFrontImg.source = imageManager.getFrontPic(game.tag)
+        picBackImg.source  = imageManager.getBackPic( game.tag)
     }
 
     function writeGame() {
@@ -29,10 +30,14 @@ Pane {
         game.platform  = dataRepeater.itemAt(2).entry
         game.publisher = dataRepeater.itemAt(3).entry
         game.developer = dataRepeater.itemAt(4).entry
-        imageManager.saveFrontPicGrab(game.tag, picFrontImg.grabResult)
-        imageManager.saveBackPicGrab( game.tag, picBackImg.grabResult)
-
+        imageManager.saveFrontPic(game.tag, picFrontImg.grabResult)
+        imageManager.saveBackPic( game.tag, picBackImg.grabResult)
         sqlTableModel.update(row, game)
+    }
+
+    function removeGame() {
+        imageManager.removePics(game.tag)
+        sqlTableModel.remove(row)
     }
 
     Component.onCompleted:  {
@@ -141,26 +146,32 @@ Pane {
             onClicked: {
                 closed()
             }
-            Layout.fillHeight: true
             Layout.preferredWidth: 100
+            Layout.alignment: Qt.AlignCenter
         }
         CSButton {
-            text: qsTr("edit")
+            text: editMode ? qsTr("save")
+                           : qsTr("edit")
             onClicked: {
-                root.editMode = true
+                if(editMode) {
+                    writeGame()
+                    closed()
+                } else {
+                    root.editMode = true
+                }
             }
-            Layout.fillHeight: true
             Layout.preferredWidth: 100
+            Layout.alignment: Qt.AlignCenter
         }
         CSButton {
-            text: qsTr("save") // todo edit devient save !
-            enabled: root.editMode
+            text: qsTr("delete")
+            visible: row >= 0
             onClicked: {
-                writeGame()
+                removeGame()
                 closed()
             }
-            Layout.fillHeight: true
             Layout.preferredWidth: 100
+            Layout.alignment: Qt.AlignCenter
         }
     }
 

@@ -7,17 +7,23 @@
 
 #include <QDebug>
 
-SqlTableModel::SqlTableModel()
+SqlTableModel::SqlTableModel(QObject* parent)
+    : QSqlTableModel(parent)
 {
     setTable("games");
-    select();
-
+    setEditStrategy(OnFieldChange);
     auto rec = record();
     for(int i = 0; i < rec.count(); i++) {
         m_roles.insert(Qt::UserRole + i + 1, rec.fieldName(i).toUtf8());
     }
+    connect(this, &QSqlTableModel::beforeInsert, [](QSqlRecord &record) {
+        qDebug() << "beforeInsert " << record;
+    });
+    connect(this, &QSqlTableModel::primeInsert, [](int row, QSqlRecord &record) {
+        qDebug() << "primeInsert " << row << record;
+    });
 
-    emit headersChanged();
+    select();
 }
 
 SqlTableModel::~SqlTableModel()
@@ -44,12 +50,32 @@ QVariant SqlTableModel::data(const QModelIndex &index, int role) const
     return value;
 }
 
+void SqlTableModel::remove(int row)
+{
+    if(row < 0 || row >= rowCount()) {
+        return;
+    }
+    removeRow(row);
+    select();
+}
+
 void SqlTableModel::update(int row, GameData* game)
 {
     if(!game || row >= rowCount())
         return;
 
-    QSqlRecord rec = record(row);
+    if(row < 0) {
+        auto list = match(this->index(0, 0), Qt::UserRole + 1, game->tag);
+        if(list.count() > 1) {
+            return;
+        }
+        if(list.count() == 1) {
+            row = list[0].row();
+        }
+    }
+
+    QSqlRecord rec = record();
+    rec.setValue("tag",          game->tag);
     rec.setValue("title",        game->title);
     rec.setValue("platform",     game->platform);
     rec.setValue("publisher",    game->publisher);
@@ -61,7 +87,6 @@ void SqlTableModel::update(int row, GameData* game)
     } else {
         setRecord(row, rec);
     }
-//    selectRow(row); // does not work ??
     select();
 }
 
@@ -69,40 +94,20 @@ GameData* SqlTableModel::get(const QString& tag)
 {
     setFilter("tag = " + tag);
 
-    GameData* game;
-    if(rowCount() != 1) {
-        game = GameDataMaker::get()->createNew(tag);
-    } else {
+    GameData* game = nullptr;
+
+    if(rowCount() == 1) {
         QSqlRecord rec = record(0);
         auto list = { tag,
-                    rec.value(1).toString(), // need to add 2 = full_title
-                    rec.value(3).toString(),
-                    rec.value(4).toString(),
-                    rec.value(5).toString(),
-                    rec.value(6).toString()};
+                      rec.value(1).toString(), // need to add 2 = full_title
+                      rec.value(3).toString(),
+                      rec.value(4).toString(),
+                      rec.value(5).toString(),
+                      rec.value(6).toString()};
         game = GameDataMaker::get()->createComplete(list);
     }
 
     setFilter(""); // remove filter
 
     return game;
-}
-
-bool SqlTableModel::setData(const QModelIndex &item, const QVariant &value, int role)
-{
-    if (item.isValid() && role == Qt::EditRole) {
-        QSqlRecord rec = record(item.row());
-        rec.setGenerated(item.column(), true);
-
-        if(!value.isNull()) {
-            rec.setValue(item.column(), value);
-        } else {
-            rec.setNull(item.column());
-        }
-
-        emit dataChanged(item, item);
-        updateRowInTable(item.row(), rec); // dirty but don't know how to do otherwise
-        return true;
-    }
-    return false;
 }

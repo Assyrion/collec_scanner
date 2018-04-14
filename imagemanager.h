@@ -14,14 +14,16 @@ class ImageManager : public QObject
 public:
     explicit ImageManager(QObject *parent = nullptr);
 
-    Q_INVOKABLE QString getFrontPicGrab(const QString& tag);
-    Q_INVOKABLE QString getBackPicGrab( const QString& tag);
-    Q_INVOKABLE void saveFrontPicGrab(  const QString& tag, QQuickItemGrabResult* result);
-    Q_INVOKABLE void saveBackPicGrab(   const QString& tag, QQuickItemGrabResult* result);
+    Q_INVOKABLE void removePics(    const QString& tag);
+    Q_INVOKABLE QString getFrontPic(const QString& tag);
+    Q_INVOKABLE QString getBackPic( const QString& tag);
+    Q_INVOKABLE void saveFrontPic(  const QString& tag, QQuickItemGrabResult* result);
+    Q_INVOKABLE void saveBackPic(   const QString& tag, QQuickItemGrabResult* result);
 
 private:
-    void savePicGrab(  const QString& fileName, QQuickItemGrabResult* result);
-    QString getPicGrab(const QString& fileName);
+    void savePic(  const QString& fileName, QQuickItemGrabResult* result);
+    QString getPic(const QString& fileName);
+    void removePic(const QString& fileName);
 
 public slots:
 };

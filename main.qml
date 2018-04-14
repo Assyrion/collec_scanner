@@ -11,23 +11,8 @@ Window {
     visible: true
     visibility: Window.AutomaticVisibility
 
-    height: 568
-    width : 360
-
-    function showError(err) {
-        pop.lol = err
-        pop.open()
-    }
-
-    Popup {
-        id: pop
-
-        property alias lol: lol.text
-        Text {
-            id: lol
-            color: "white"
-        }
-    }
+    width : Screen.desktopAvailableWidth  // 360
+    height: Screen.desktopAvailableHeight // 568
 
     SwipeView {
         id: view
