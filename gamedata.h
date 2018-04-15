@@ -36,36 +36,34 @@ class GameData : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString tag         MEMBER tag CONSTANT)
-    Q_PROPERTY(QString title       MEMBER title)
-    Q_PROPERTY(QString platform    MEMBER platform)
-    Q_PROPERTY(QString publisher   MEMBER publisher)
-    Q_PROPERTY(QString developer   MEMBER developer)
-    Q_PROPERTY(QString releaseDate MEMBER releaseDate)
+    Q_PROPERTY(QString tag          MEMBER tag CONSTANT)
+    Q_PROPERTY(QString title        MEMBER title)
+    Q_PROPERTY(QString full_title   MEMBER full_title)
+    Q_PROPERTY(QString platform     MEMBER platform)
+    Q_PROPERTY(QString publisher    MEMBER publisher)
+    Q_PROPERTY(QString developer    MEMBER developer)
+    Q_PROPERTY(QString release_date MEMBER release_date)
+    Q_PROPERTY(QString info         MEMBER info)
 
     friend class GameDataMaker;
     GameData(QString tag);
     GameData(QObject *parent = nullptr);
     GameData(const QStringList& il);
-    GameData(QString tag, QString title,  QString platform,
-             QString publisher = "", QString developer = "",
-             QString release_date = "");
+    GameData(QString tag, QString title, QString full_title = "",
+             QString platform = "ps3",   QString publisher = "",
+             QString developer = "",     QString release_date = "",
+             QString info = "");
     ~GameData();
 
 public:
     QString tag;
+    QString info;
     QString title;
+    QString full_title;
     QString platform;
     QString publisher;
     QString developer;
-    QString releaseDate;
-
-signals:
-    void titleChanged();
-    void platformChanged();
-    void publisherChanged();
-    void developerChanged();
-    void releaseDateChanged();
+    QString release_date;
 };
 
 #endif // GAMEDATA_H

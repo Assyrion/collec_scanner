@@ -19,8 +19,9 @@ Pane {
             readonly property int rowIdx : index
             radius: 5
             onClicked: {
-                var arr = [tag, title, platform, publisher,
-                           developer, release_date]
+                var arr = [tag, title, full_title, platform,
+                           publisher,  developer, release_date,
+                           info]
                 var game = GameDataMaker.createComplete(arr)
                 showGameData(index, game)
             }

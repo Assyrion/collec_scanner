@@ -16,13 +16,6 @@ SqlTableModel::SqlTableModel(QObject* parent)
     for(int i = 0; i < rec.count(); i++) {
         m_roles.insert(Qt::UserRole + i + 1, rec.fieldName(i).toUtf8());
     }
-    connect(this, &QSqlTableModel::beforeInsert, [](QSqlRecord &record) {
-        qDebug() << "beforeInsert " << record;
-    });
-    connect(this, &QSqlTableModel::primeInsert, [](int row, QSqlRecord &record) {
-        qDebug() << "primeInsert " << row << record;
-    });
-
     select();
 }
 
@@ -77,10 +70,12 @@ void SqlTableModel::update(int row, GameData* game)
     QSqlRecord rec = record();
     rec.setValue("tag",          game->tag);
     rec.setValue("title",        game->title);
+    rec.setValue("full_title",   game->full_title);
     rec.setValue("platform",     game->platform);
     rec.setValue("publisher",    game->publisher);
     rec.setValue("developer",    game->developer);
-    rec.setValue("release_date", game->releaseDate);
+    rec.setValue("release_date", game->release_date);
+    rec.setValue("info",         game->info);
 
     if(row < 0) {
         insertRecord(row, rec);
@@ -99,11 +94,14 @@ GameData* SqlTableModel::get(const QString& tag)
     if(rowCount() == 1) {
         QSqlRecord rec = record(0);
         auto list = { tag,
-                      rec.value(1).toString(), // need to add 2 = full_title
+                      rec.value(1).toString(),
+                      rec.value(2).toString(),
                       rec.value(3).toString(),
                       rec.value(4).toString(),
                       rec.value(5).toString(),
-                      rec.value(6).toString()};
+                      rec.value(6).toString(),
+                      rec.value(7).toString()};
+        qDebug() << list.size();
         game = GameDataMaker::get()->createComplete(list);
     }
 

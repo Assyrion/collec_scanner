@@ -11,7 +11,7 @@ Window {
     visible: true
     visibility: Window.AutomaticVisibility
 
-    width : Screen.desktopAvailableWidth  // 360
+    width : Screen.desktopAvailableWidth // 360
     height: Screen.desktopAvailableHeight // 568
 
     SwipeView {

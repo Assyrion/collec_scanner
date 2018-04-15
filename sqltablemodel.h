@@ -1,6 +1,8 @@
 #ifndef SQLTABLEMODEL_H
 #define SQLTABLEMODEL_H
+
 #include <QSqlTableModel>
+#include <QSqlQuery>
 
 class GameData;
 class SqlTableModel : public QSqlTableModel
