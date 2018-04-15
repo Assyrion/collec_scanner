@@ -89,7 +89,7 @@ void SqlTableModel::update(int row, GameData* game)
 
 GameData* SqlTableModel::get(const QString& tag)
 {
-    setFilter("tag = " + tag);
+    setFilter("tag = \'" + tag + "\'");
 
     GameData* game = nullptr;
 

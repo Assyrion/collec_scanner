@@ -23,7 +23,7 @@ Pane {
                            publisher,  developer, release_date,
                            info]
                 var game = GameDataMaker.createComplete(arr)
-                showGameData(index, game)
+                showGameData(game, index)
             }
             Image {
                 id: frontPicImg
@@ -64,10 +64,10 @@ Pane {
         }
     }
 
-    function showGameData(index, game) {
+    function showGameData(game, index) {
         gameDataLoader.setSource("ViewGameData.qml",
                                  {"game": game,
-                                  "row" :index})
+                                  "row" : index})
     }
 
     Loader {

@@ -11,10 +11,10 @@ Item {
 
     property alias barcodeScanner: barcodeScanner
 
-    function showGameData(game) {
+    function showGameData(game, editMode) {
         gameDataLoader.setSource("ViewGameData.qml",
                                  {"game"    : game,
-                                  "editMode": true})
+                                  "editMode": editMode})
     }
 
     PopupTagUnknown {
@@ -26,7 +26,7 @@ Item {
         }
         onAccepted: {
             var game = GameDataMaker.createNew(tag)
-            showGameData(game)
+            showGameData(game, true)
         }
     }
 
@@ -37,7 +37,7 @@ Item {
             barcodeScanner.stopScanning()
             var game = sqlTableModel.get(barcode)
             if(game) {
-                showGameData(game)
+                showGameData(game, false)
             } else {
                 popupTagUnknown.show(barcode)
             }
