@@ -12,6 +12,8 @@ SqlTableModel::SqlTableModel(QObject* parent)
 {
     setTable("games");
     setEditStrategy(OnFieldChange);
+    setSort(1, Qt::AscendingOrder);
+
     auto rec = record();
     for(int i = 0; i < rec.count(); i++) {
         m_roles.insert(Qt::UserRole + i + 1, rec.fieldName(i).toUtf8());
@@ -101,7 +103,6 @@ GameData* SqlTableModel::get(const QString& tag)
                       rec.value(5).toString(),
                       rec.value(6).toString(),
                       rec.value(7).toString()};
-        qDebug() << list.size();
         game = GameDataMaker::get()->createComplete(list);
     }
 

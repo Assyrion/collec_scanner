@@ -57,18 +57,15 @@ Pane {
             Flickable.VerticalFlick
         clip: true
 
-        contentWidth: root.width;
         contentHeight: picRow.height
                        + dataColumn.implicitHeight
                        + 10
 
         RowLayout {
             id : picRow
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.leftMargin: -10
+            anchors.horizontalCenter:
+                parent.horizontalCenter
             height : root.height/4
-            width: parent.width
             enabled: root.editMode
             spacing: 20
 
@@ -127,8 +124,8 @@ Pane {
                     }
                     TextField {
                         id: textField
-                        width: 2*parent.width/3
                         height: parent.height
+                        anchors.right: parent.right
                         anchors.left: labelName.right
                         anchors.verticalCenter:
                             labelName.verticalCenter
@@ -190,14 +187,14 @@ Pane {
                              { "boundImg": img,
                                  "width" : 2*root.width/3,
                                  "height": 2*root.height/3,
-                                 "x"     : root.width/6-10,
+                                 "x"     : root.width/6-12,
                                  "y"     : root.height/3-40})
         }
         function loadConfirmDelete() {
             loader.setSource("PopupConfirmDelete.qml",
                              {   "width" : 2*root.width/3,
                                  "height": root.height/3,
-                                 "x"     : root.width/6-10,
+                                 "x"     : root.width/6-12,
                                  "y"     : root.height/4+20})
         }
         Connections {
