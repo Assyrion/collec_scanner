@@ -13,7 +13,7 @@ Pane {
         anchors.fill: parent
         onPinchUpdated: {
             var diff = pinch.scale
-                     - pinch.previousScale
+                    - pinch.previousScale
             if(diff < 0) {
                 listView.scaleHeight
                         = Math.max(listView.scaleHeight-0.03, 0.4)
@@ -47,17 +47,17 @@ Pane {
                 gradient: Gradient {
                     GradientStop {
                         position: 0.0;
-                        color: ma.pressed ? "#585858"
+                        color: ma.pressed ? "#bbbbbb"
                                           : "#4e4e4e";
                     }
                     GradientStop {
                         position: 0.5;
-                        color: ma.pressed ? "#4e4e4e"
+                        color: ma.pressed ? "#bbbbbb"
                                           : "#585858";
                     }
                     GradientStop {
                         position: 1.0;
-                        color: ma.pressed ? "#585858"
+                        color: ma.pressed ? "#bbbbbb"
                                           : "#4e4e4e";
                     }
                 }
@@ -112,10 +112,51 @@ Pane {
         }
     }
 
+    Rectangle {
+        id: addGameBtn
+        width: 55
+        height: width
+        radius: width/2
+        visible: false
+        color: maBtn.pressed ? "#00ff49"
+                             : "#00be49"
+        border.color: "black"
+        border.width: 3
+        Drag.active: maBtn.drag.active
+        Drag.hotSpot.x: width/2
+        Drag.hotSpot.y: height/2
+        x: Math.random()*maBtn.drag.maximumX
+        y: Math.random()*maBtn.drag.maximumY
+        Component.onCompleted: {
+            visible = true // fix bug on android
+        }
+
+        MouseArea {
+            id: maBtn
+            anchors.fill: parent
+            drag.target: parent
+            drag.minimumX: 0
+            drag.maximumX: root.width
+                           -parent.width
+            drag.minimumY: 0
+            drag.maximumY: root.height
+                           -parent.height
+            onClicked: {
+                showNewGameData()
+            }
+        }
+    }
+
+
     function showGameData(game, index) {
         gameDataLoader.setSource("ViewGameData.qml",
                                  {"game": game,
                                   "row" : index})
+    }
+    function showNewGameData() {
+        gameDataLoader.setSource("ViewGameData.qml",
+                                 {"editMode": true,
+                                  "manuMode": true})
     }
 
     Loader {
@@ -124,7 +165,8 @@ Pane {
         Connections {
             target: gameDataLoader.item
             onClosed: {
-                gameDataLoader.sourceComponent = undefined
+                gameDataLoader.sourceComponent
+                        = undefined
             }
         }
     }

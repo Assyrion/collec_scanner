@@ -9,6 +9,11 @@ GameData* GameDataMaker::createNew(const QString &tag)
     return new GameData(tag);
 }
 
+GameData* GameDataMaker::createEmpty()
+{
+    return new GameData;
+}
+
 GameData *GameDataMaker::createComplete(const QStringList &il)
 {
     return new GameData(il);
@@ -24,8 +29,8 @@ GameDataMaker* GameDataMaker::get()
     return instance;
 }
 
-GameData::GameData(QObject *parent)
-    : QObject(parent)
+GameData::GameData()
+    : GameData("", "", "", "ps3")
 {}
 
 GameData::GameData(const QStringList &il)

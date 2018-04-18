@@ -12,11 +12,23 @@ Pane {
     signal closed
 
     property bool editMode: false
-    property var game
+    property bool manuMode: false
+    property var game :
+        GameDataMaker.createEmpty()
     property int row: -1
 
     function readGame() {
-        dataRepeater.itemAt(0).entry = game.tag
+        if(manuMode) {
+            var rand = Math.random().toFixed(6)
+            dataRepeater.itemAt(0).entry = Qt.binding(function() {
+                var _in  = "notag_" + dataRepeater.itemAt(1).entry
+                        + '_' + rand // very unlikely that 2 games have same tag
+                _in = _in.replace(/\W/g,'')
+                return _in
+            })
+        } else {
+            dataRepeater.itemAt(0).entry = game.tag
+        }
         dataRepeater.itemAt(1).entry = game.title
         dataRepeater.itemAt(2).entry = game.platform
         dataRepeater.itemAt(3).entry = game.publisher
@@ -27,6 +39,7 @@ Pane {
     }
 
     function writeGame() {
+        game.tag       = dataRepeater.itemAt(0).entry
         game.title     = dataRepeater.itemAt(1).entry
         game.platform  = dataRepeater.itemAt(2).entry
         game.publisher = dataRepeater.itemAt(3).entry
@@ -46,23 +59,28 @@ Pane {
         readGame()
     }
 
+    topPadding: 0
+    bottomPadding: 0
+
     Flickable {
         id: scrollView
         anchors.top: parent.top
+        width: parent.width
         height: parent.height
                 -btnRow.height
                 - 20
-        width: parent.width
         flickableDirection:
             Flickable.VerticalFlick
         clip: true
 
         contentHeight: picRow.height
                        + dataColumn.implicitHeight
-                       + 10
+                       + 30
 
         RowLayout {
             id : picRow
+            anchors.top: parent.top
+            anchors.topMargin: 20
             anchors.horizontalCenter:
                 parent.horizontalCenter
             height : root.height/4
@@ -73,6 +91,7 @@ Pane {
                 id : picFrontImg
                 Layout.fillHeight: true
                 Layout.alignment: Qt.AlignRight
+                source: "qrc:/no_pic" // default
                 onClicked: {
                     loader.loadSnapshotPopup(this)
                 }
@@ -81,6 +100,7 @@ Pane {
                 id : picBackImg
                 Layout.fillHeight: true
                 Layout.alignment: Qt.AlignLeft
+                source: "qrc:/no_pic" // default
                 onClicked: {
                     loader.loadSnapshotPopup(this)
                 }
@@ -96,6 +116,7 @@ Pane {
             spacing: 7
             Repeater {
                 id: dataRepeater
+
                 model: ListModel {
                     ListElement { name: qsTr("Tag");       editable: false }
                     ListElement { name: qsTr("Title");     editable: true  }
