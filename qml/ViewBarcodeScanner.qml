@@ -11,12 +11,6 @@ Item {
 
     property alias barcodeScanner: barcodeScanner
 
-    function showGameData(game, editMode) {
-        gameDataLoader.setSource("ViewGameData.qml",
-                                 {"game"    : game,
-                                  "editMode": editMode})
-    }
-
     PopupTagUnknown {
         id: popupTagUnknown
         width : parent.width
@@ -26,7 +20,7 @@ Item {
         }
         onAccepted: {
             var game = GameDataMaker.createNew(tag)
-            showGameData(game, true)
+            loader.showGameData(game, true)
         }
     }
 
@@ -37,7 +31,7 @@ Item {
             barcodeScanner.stopScanning()
             var game = sqlTableModel.get(barcode)
             if(game) {
-                showGameData(game, false)
+                loader.showGameData(game, false)
             } else {
                 popupTagUnknown.show(barcode)
             }
@@ -45,12 +39,17 @@ Item {
     }
 
     Loader {
-        id: gameDataLoader
+        id: loader
         anchors.fill: parent
+        function showGameData(game, editMode) {
+            loader.setSource("ViewGameData.qml",
+                             {"game"    : game,
+                              "editMode": editMode})
+        }
         Connections {
-            target: gameDataLoader.item
+            target: loader.item
             onClosed: {
-                gameDataLoader.sourceComponent = undefined
+                loader.sourceComponent = undefined
                 barcodeScanner.startScanning()
             }
         }

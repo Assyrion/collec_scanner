@@ -1,5 +1,6 @@
 import QtQuick 2.8
 import QtQuick.Controls 2.2
+import QtGraphicalEffects 1.0
 import GameData 1.0
 import "utils"
 
@@ -40,65 +41,58 @@ Pane {
                 interactive: false
                 width: 10
             }
-            delegate: Rectangle {
+            delegate: Item {
                 width:  listView.width - 10
                 height: listView.scaleHeight * 46.2
-                radius: 5
-                gradient: Gradient {
-                    GradientStop {
-                        position: 0.0;
-                        color: ma.pressed ? "#bbbbbb"
-                                          : "#4e4e4e";
-                    }
-                    GradientStop {
-                        position: 0.5;
-                        color: ma.pressed ? "#bbbbbb"
-                                          : "#585858";
-                    }
-                    GradientStop {
-                        position: 1.0;
-                        color: ma.pressed ? "#bbbbbb"
-                                          : "#4e4e4e";
-                    }
-                }
-                Image {
+
+                Item {
                     id: frontPicImg
-                    height: parent.height
-                    anchors.left: parent.left
-                    anchors.leftMargin: parent.radius
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: imageManager.getFrontPic(tag)
-                    fillMode: Image.PreserveAspectFit
-                    cache: false
+                    anchors.fill: parent
+                    Image {
+                        sourceSize.width :
+                            parent.width + 20
+                        anchors.top: parent.top
+                        anchors.topMargin:
+                            -implicitHeight/3
+                        anchors.horizontalCenter:
+                            parent.horizontalCenter
+                        source: imageManager.getFrontPic(tag)
+                        fillMode: Image.PreserveAspectCrop
+                        antialiasing: true
+                        cache: false
+                        mipmap: true
+                        smooth: true
+                    }
+                    layer.enabled: true
+                    layer.effect: OpacityMask {
+                        maskSource: Rectangle {
+                            width : frontPicImg.width
+                            height: frontPicImg.height
+                            radius: 10
+                        }
+                    }
                 }
-                Text {
+                CSGlowText {
                     id: titleText
-                    text: title
-                    anchors.left:
-                        parent.horizontalCenter
-                    anchors.leftMargin: -root.width/4-20
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                    anchors.verticalCenter:
+                        parent.verticalCenter
                     anchors.right: platformText.left
+                    anchors.rightMargin: 10
+                    font.pointSize: 17*listView.scaleHeight
+                    text: title
+                }
+                CSGlowText {
+                    id: platformText
+                    anchors.right: parent.right
                     anchors.rightMargin: 10
                     anchors.verticalCenter:
                         parent.verticalCenter
-                    elide: Text.ElideRight
                     font.pointSize: 17*listView.scaleHeight
-                    font.family: "Calibri"
-                    color: "white"
-                }
-                Text {
-                    id: platformText
-                    anchors.right: parent.right
-                    anchors.rightMargin: parent.radius
-                    anchors.verticalCenter:
-                        parent.verticalCenter
                     text: platform
-                    font.pointSize: titleText.font.pointSize
-                    font.family: "Calibri"
-                    color: "white"
                 }
                 MouseArea {
-                    id: ma
                     anchors.fill: parent
                     onClicked: {
                         var arr = [tag, title, full_title, platform,
@@ -156,7 +150,7 @@ Pane {
     function showNewGameData() {
         gameDataLoader.setSource("ViewGameData.qml",
                                  {"editMode": true,
-                                  "manuMode": true})
+                                     "manuMode": true})
     }
 
     Loader {

@@ -12,5 +12,6 @@
         <file>qml/utils/CSGlowImage.qml</file>
         <file>qml/utils/CSCameraOutput.qml</file>
         <file>qml/PopupConfirmDelete.qml</file>
+        <file>qml/utils/CSGlowText.qml</file>
     </qresource>
 </RCC>

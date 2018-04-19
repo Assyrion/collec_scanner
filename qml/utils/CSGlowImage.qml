@@ -45,7 +45,6 @@ Item {
         fillMode: Image.PreserveAspectFit
     }
 
-
     OpacityMask {
         id: opacityMask
         anchors.fill: pic

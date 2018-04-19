@@ -1,5 +1,7 @@
 #include <QQmlApplicationEngine>
 #include <QGuiApplication>
+#include <QSurfaceFormat>
+#include <QQuickWindow>
 #include <QSqlDatabase>
 #include <QQmlContext>
 #include <QZXingFilter.h>
@@ -23,8 +25,17 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-    if (engine.rootObjects().isEmpty())
+    if (engine.rootObjects().isEmpty()) {
         return -1;
+    }
+
+    QQuickWindow* window = (QQuickWindow*) engine.rootObjects().first();
+    if (window) {
+        // Set anti-aliasing
+        QSurfaceFormat  format;
+        format.setSamples(8);
+        window->setFormat(format);
+    }
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
 

@@ -63,7 +63,8 @@ Popup {
 //                loader.item.capture()
                 loader.item.grabToImage(function(result) {
                     boundImg.grabResult = result;
-                });
+                }, Qt.size(loader.width*2,
+                           loader.height*2));
             }
         }
     }
