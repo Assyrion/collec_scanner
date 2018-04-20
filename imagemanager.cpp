@@ -40,7 +40,6 @@ void ImageManager::saveBackPic(const QString& tag, QQuickItemGrabResult* result)
     savePic(QString("%1_back.png").arg(tag), result);
 }
 
-
 void ImageManager::savePic(const QString& fileName, QQuickItemGrabResult* result)
 {
 #ifdef Q_OS_ANDROID

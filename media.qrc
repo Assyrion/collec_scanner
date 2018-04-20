@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file alias="no_pic">img/no_pic.png</file>
+        <file alias="add_notag">img/add_notag.png</file>
     </qresource>
 </RCC>

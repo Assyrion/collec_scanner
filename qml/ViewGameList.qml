@@ -53,7 +53,7 @@ Pane {
                             parent.width + 20
                         anchors.top: parent.top
                         anchors.topMargin:
-                            -implicitHeight/3
+                            -implicitHeight/2
                         anchors.horizontalCenter:
                             parent.horizontalCenter
                         source: imageManager.getFrontPic(tag)
@@ -106,25 +106,25 @@ Pane {
         }
     }
 
-    Rectangle {
+    Image {
         id: addGameBtn
-        width: 55
-        height: width
-        radius: width/2
+        Component.onCompleted: {
+            visible = true // fix bug on android
+        }
         visible: false
-        color: maBtn.pressed ? "#00ff49"
-                             : "#00be49"
-        border.color: "black"
-        border.width: 3
+        sourceSize.width: 55
+        sourceSize.height: 55
+        source: "qrc:/add_notag"
         Drag.active: maBtn.drag.active
         Drag.hotSpot.x: width/2
         Drag.hotSpot.y: height/2
         x: Math.random()*maBtn.drag.maximumX
         y: Math.random()*maBtn.drag.maximumY
-        Component.onCompleted: {
-            visible = true // fix bug on android
+        layer.enabled: maBtn.pressed
+        layer.effect: BrightnessContrast {
+            brightness: 0.5
+            contrast: 0.5
         }
-
         MouseArea {
             id: maBtn
             anchors.fill: parent

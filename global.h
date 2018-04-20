@@ -23,6 +23,4 @@ const QString DB_PATH_ABS_NAME = DATAPATH + QDir::separator()
         + DBNAME;
 #endif
 
-
-
 #endif // GLOBAL_H

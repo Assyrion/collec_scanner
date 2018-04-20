@@ -65,6 +65,26 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    /***** Uncomment to backup db & pic ******/
+
+//    QDir dirCur = QDir::current();
+//    QString downloadPath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+//    auto dbL = dirCur.entryInfoList({DBNAME}, QDir::Files);
+//    for(auto fileinfo: dbL) {
+//        QFile dbf(fileinfo.absoluteFilePath());
+//        QString toPath = downloadPath + QDir::separator() + fileinfo.fileName();
+//        dbf.copy(toPath);
+//        QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
+//    }
+//    auto pngL = dirCur.entryInfoList({"*.png"}, QDir::Files);
+//    for(auto fileinfo: pngL) {
+//        QFile pic(fileinfo.absoluteFilePath());
+//        QString toPath = downloadPath + QDir::separator() + PICPATH
+//                + QDir::separator() + fileinfo.fileName();
+//        pic.copy(toPath);
+//        QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
+//    }
+
 #endif
     db.setDatabaseName(DB_PATH_ABS_NAME);
     if (!db.open()) {
