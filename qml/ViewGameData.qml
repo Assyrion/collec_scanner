@@ -17,11 +17,18 @@ Pane {
         GameDataMaker.createEmpty()
     property int row: -1
 
+    Component.onCompleted:  {
+        readGame()
+    }
+
+    topPadding: 0
+    bottomPadding: 0
+
     function readGame() {
         if(manuMode) {
             var rand = Math.random().toFixed(6)
             dataRepeater.itemAt(0).entry = Qt.binding(function() {
-                var _in  = "notag_" + dataRepeater.itemAt(1).entry
+                var _in  = "notag_" + dataRepeater.itemAt(2).entry
                         + '_' + rand // very unlikely that 2 games have same tag
                 _in = _in.replace(/\W/g,'')
                 return _in
@@ -29,22 +36,24 @@ Pane {
         } else {
             dataRepeater.itemAt(0).entry = game.tag
         }
-        dataRepeater.itemAt(1).entry = game.title
-        dataRepeater.itemAt(2).entry = game.platform
-        dataRepeater.itemAt(3).entry = game.publisher
-        dataRepeater.itemAt(4).entry = game.developer
-        dataRepeater.itemAt(5).entry = game.info
+        dataRepeater.itemAt(1).entry = row >= 0 ? (row+1) + '/'
+                + sqlTableModel.rowCount() : "unknown"
+        dataRepeater.itemAt(2).entry = game.title
+        dataRepeater.itemAt(3).entry = game.platform
+        dataRepeater.itemAt(4).entry = game.info
+        dataRepeater.itemAt(5).entry = game.publisher
+        dataRepeater.itemAt(6).entry = game.developer
         picFrontImg.source = imageManager.getFrontPic(game.tag)
         picBackImg.source  = imageManager.getBackPic( game.tag)
     }
 
     function writeGame() {
         game.tag       = dataRepeater.itemAt(0).entry
-        game.title     = dataRepeater.itemAt(1).entry
-        game.platform  = dataRepeater.itemAt(2).entry
-        game.publisher = dataRepeater.itemAt(3).entry
-        game.developer = dataRepeater.itemAt(4).entry
-        game.info      = dataRepeater.itemAt(5).entry
+        game.title     = dataRepeater.itemAt(2).entry
+        game.platform  = dataRepeater.itemAt(3).entry
+        game.info      = dataRepeater.itemAt(4).entry
+        game.publisher = dataRepeater.itemAt(5).entry
+        game.developer = dataRepeater.itemAt(6).entry
         imageManager.saveFrontPic(game.tag, picFrontImg.grabResult)
         imageManager.saveBackPic( game.tag, picBackImg.grabResult)
         sqlTableModel.update(row, game)
@@ -55,12 +64,6 @@ Pane {
         sqlTableModel.remove(row)
     }
 
-    Component.onCompleted:  {
-        readGame()
-    }
-
-    topPadding: 0
-    bottomPadding: 0
 
     Flickable {
         id: scrollView
@@ -69,14 +72,12 @@ Pane {
         height: parent.height
                 -btnRow.height
                 - 20
-        flickableDirection:
-            Flickable.VerticalFlick
         clip: true
-
+        boundsBehavior:     Flickable.StopAtBounds
+        flickableDirection: Flickable.VerticalFlick
         contentHeight: picRow.height
                        + dataColumn.implicitHeight
                        + 30
-
         RowLayout {
             id : picRow
             anchors.top: parent.top
@@ -119,11 +120,12 @@ Pane {
 
                 model: ListModel {
                     ListElement { name: qsTr("Tag");       editable: false }
+                    ListElement { name: qsTr("Index");     editable: false }
                     ListElement { name: qsTr("Title");     editable: true  }
                     ListElement { name: qsTr("Platform");  editable: true  }
+                    ListElement { name: qsTr("info");      editable: true  }
                     ListElement { name: qsTr("Publisher"); editable: true  }
                     ListElement { name: qsTr("Developer"); editable: true  }
-                    ListElement { name: qsTr("info");      editable: true  }
                 }
                 delegate: Item {
                     property alias entry: textField.text
