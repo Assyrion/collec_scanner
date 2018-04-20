@@ -50,12 +50,12 @@ Item {
         anchors.fill: pic
         source: pic
         maskSource: maskRec
-        layer.enabled: !enabled
-        layer.effect: Colorize {
-            saturation: 0
-            lightness: 0
-            hue: 0
-        }
+//        layer.enabled: !enabled
+//        layer.effect: Colorize {
+//            saturation: 0
+//            lightness: 0
+//            hue: 0
+//        }
     }
 
     MouseArea {

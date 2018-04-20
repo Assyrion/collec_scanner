@@ -64,7 +64,6 @@ Pane {
         sqlTableModel.remove(row)
     }
 
-
     Flickable {
         id: scrollView
         anchors.top: parent.top

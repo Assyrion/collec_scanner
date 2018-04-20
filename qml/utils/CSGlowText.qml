@@ -22,7 +22,7 @@ Item {
         color: "black"
         glowRadius: 20
         spread : 0.2
-        opacity: 0.25
+        opacity: 0.5
     }
     Text {
         id: contentText
@@ -31,7 +31,6 @@ Item {
         anchors.right: parent.right
         anchors.verticalCenter:
             background.verticalCenter
-        anchors.verticalCenterOffset: -3
         elide: Text.ElideRight
         font.family: "Calibri"
         color: "white"

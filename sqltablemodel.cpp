@@ -12,7 +12,7 @@ SqlTableModel::SqlTableModel(QObject* parent)
 {
     setTable("games");
     setEditStrategy(OnFieldChange);
-    setSort(1, Qt::AscendingOrder);
+    setFilter("");
 
     auto rec = record();
     for(int i = 0; i < rec.count(); i++) {
@@ -43,6 +43,15 @@ QVariant SqlTableModel::data(const QModelIndex &index, int role) const
         }
     }
     return value;
+}
+
+void SqlTableModel::setFilter(const QString &filter)
+{
+    if(filter.isEmpty()) {
+        QSqlTableModel::setFilter("1=1 ORDER BY title COLLATE NOCASE ASC"); // default filter
+    } else {
+        QSqlTableModel::setFilter(filter);
+    }
 }
 
 void SqlTableModel::remove(int row)
@@ -106,7 +115,7 @@ GameData* SqlTableModel::get(const QString& tag)
         game = GameDataMaker::get()->createComplete(list);
     }
 
-    setFilter(""); // remove filter
+    setFilter("");
 
     return game;
 }

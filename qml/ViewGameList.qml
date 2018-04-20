@@ -36,6 +36,8 @@ Pane {
             anchors.topMargin: 5
             spacing: 5 * scaleHeight
             snapMode: ListView.SnapToItem
+            highlightRangeMode:
+                ListView.StrictlyEnforceRange
             ScrollBar.vertical: ScrollBar {
                 policy: ScrollBar.AlwaysOn
                 interactive: false
@@ -44,20 +46,18 @@ Pane {
             delegate: Item {
                 width:  listView.width - 10
                 height: listView.scaleHeight * 46.2
-
                 Item {
                     id: frontPicImg
                     anchors.fill: parent
                     Image {
-                        sourceSize.width :
-                            parent.width + 20
+                        width: parent.width + 5 // not sourceSize !
                         anchors.top: parent.top
                         anchors.topMargin:
-                            -implicitHeight/2
+                            -implicitHeight/2 + 30
                         anchors.horizontalCenter:
                             parent.horizontalCenter
                         source: imageManager.getFrontPic(tag)
-                        fillMode: Image.PreserveAspectCrop
+                        fillMode: Image.Stretch
                         antialiasing: true
                         cache: false
                         mipmap: true
