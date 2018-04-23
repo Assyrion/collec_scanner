@@ -43,64 +43,15 @@ Pane {
                 interactive: false
                 width: 10
             }
-            delegate: Item {
+            delegate: DelegateGame {
                 width:  listView.width - 10
                 height: listView.scaleHeight * 46.2
-                Item {
-                    id: frontPicImg
-                    anchors.fill: parent
-                    Image {
-                        width: parent.width + 5 // not sourceSize !
-                        anchors.top: parent.top
-                        anchors.topMargin:
-                            -implicitHeight/2 + 30
-                        anchors.horizontalCenter:
-                            parent.horizontalCenter
-                        source: imageManager.getFrontPic(tag)
-                        fillMode: Image.Stretch
-                        antialiasing: true
-                        cache: false
-                        mipmap: true
-                        smooth: true
-                    }
-                    layer.enabled: true
-                    layer.effect: OpacityMask {
-                        maskSource: Rectangle {
-                            width : frontPicImg.width
-                            height: frontPicImg.height
-                            radius: 10
-                        }
-                    }
-                }
-                CSGlowText {
-                    id: titleText
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
-                    anchors.verticalCenter:
-                        parent.verticalCenter
-                    anchors.right: platformText.left
-                    anchors.rightMargin: 10
-                    font.pointSize: 17*listView.scaleHeight
-                    text: title
-                }
-                CSGlowText {
-                    id: platformText
-                    anchors.right: parent.right
-                    anchors.rightMargin: 10
-                    anchors.verticalCenter:
-                        parent.verticalCenter
-                    font.pointSize: 17*listView.scaleHeight
-                    text: platform
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        var arr = [tag, title, full_title, platform,
-                                   publisher,  developer, release_date,
-                                   info]
-                        var game = GameDataMaker.createComplete(arr)
-                        showGameData(game, index)
-                    }
+                onClicked: {
+                    var arr = [tag, title, full_title, platform,
+                               publisher,  developer, release_date,
+                               info]
+                    var game = GameDataMaker.createComplete(arr)
+                    showGameData(game, index)
                 }
             }
         }
@@ -141,11 +92,17 @@ Pane {
         }
     }
 
+    DrawerConfig {
+        id: drawer
+        width: 1*parent.width/2
+        height: parent.height
+    }
+
 
     function showGameData(game, index) {
         gameDataLoader.setSource("ViewGameData.qml",
                                  {"game": game,
-                                  "row" : index})
+                                     "row" : index})
     }
     function showNewGameData() {
         gameDataLoader.setSource("ViewGameData.qml",

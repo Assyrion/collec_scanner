@@ -39,14 +39,14 @@ Popup {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 20
             spacing: 25
-            CSButton {
+            Button {
                 text: qsTr("yes")
                 onClicked: {
                     accepted(popup.tag)
                     popup.close()
                 }
             }
-            CSButton {
+            Button {
                 text: qsTr("no")
                 onClicked: {
                     refused()

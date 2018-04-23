@@ -43,6 +43,7 @@ Pane {
         dataRepeater.itemAt(4).entry = game.info
         dataRepeater.itemAt(5).entry = game.publisher
         dataRepeater.itemAt(6).entry = game.developer
+
         picFrontImg.source = imageManager.getFrontPic(game.tag)
         picBackImg.source  = imageManager.getBackPic( game.tag)
     }
@@ -54,9 +55,10 @@ Pane {
         game.info      = dataRepeater.itemAt(4).entry
         game.publisher = dataRepeater.itemAt(5).entry
         game.developer = dataRepeater.itemAt(6).entry
+        sqlTableModel.update(row, game)
+
         imageManager.saveFrontPic(game.tag, picFrontImg.grabResult)
         imageManager.saveBackPic( game.tag, picBackImg.grabResult)
-        sqlTableModel.update(row, game)
     }
 
     function removeGame() {
@@ -169,7 +171,7 @@ Pane {
         anchors.horizontalCenter:
             parent.horizontalCenter
         spacing: 15
-        CSButton {
+        Button {
             text: qsTr("close")
             onClicked: {
                 closed()
@@ -177,7 +179,7 @@ Pane {
             Layout.preferredWidth: 100
             Layout.alignment: Qt.AlignCenter
         }
-        CSButton {
+        Button {
             text: editMode ? qsTr("save")
                            : qsTr("edit")
             onClicked: {
@@ -191,7 +193,7 @@ Pane {
             Layout.preferredWidth: 100
             Layout.alignment: Qt.AlignCenter
         }
-        CSButton {
+        Button {
             text: qsTr("delete")
             visible: row >= 0
             onClicked: {

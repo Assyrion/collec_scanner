@@ -19,9 +19,9 @@ Window {
         anchors.fill: parent
 
         // Need to check when the item is fully loaded on the view
-        property int contentX : contentItem.contentX
-        onContentXChanged: {
-            if(contentX % width == 0) {
+        property int viewX : contentItem.contentX
+        onViewXChanged: {
+            if(viewX % width == 0) {
                 if(vbs == currentItem) {
                     vbs.barcodeScanner.startScanning()
                 } else {
