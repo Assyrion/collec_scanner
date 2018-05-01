@@ -119,3 +119,13 @@ GameData* SqlTableModel::get(const QString& tag)
 
     return game;
 }
+
+void SqlTableModel::filterByTitle(const QString &title)
+{
+    if(title.isEmpty()) {
+        setFilter("");
+        return;
+    }
+
+    setFilter("title LIKE \'%" + title + "%\'");
+}

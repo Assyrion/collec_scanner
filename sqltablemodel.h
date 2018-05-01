@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE void remove(int row);
     Q_INVOKABLE void update(int row, GameData* game);
     Q_INVOKABLE GameData* get(const QString &tag);
+    Q_INVOKABLE void filterByTitle(const QString& title);
 
 private:
     QHash<int, QByteArray> m_roles;
