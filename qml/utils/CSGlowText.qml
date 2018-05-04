@@ -35,5 +35,4 @@ Item {
         font.family: "Calibri"
         color: "white"
     }
-
 }

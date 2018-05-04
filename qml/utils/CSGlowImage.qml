@@ -4,6 +4,7 @@ import QtGraphicalEffects 1.0
 Item {
     id: root
 
+
     signal clicked
     property alias source: pic.source
     property var grabResult
@@ -12,11 +13,11 @@ Item {
             source = grabResult.url
     }
 
-    implicitWidth: pic.width
-
     Component.onCompleted: {
         mouseArea.clicked.connect(clicked)
     }
+
+    implicitWidth: pic.width
 
     RectangularGlow {
         id: effect
@@ -50,12 +51,6 @@ Item {
         anchors.fill: pic
         source: pic
         maskSource: maskRec
-//        layer.enabled: !enabled
-//        layer.effect: Colorize {
-//            saturation: 0
-//            lightness: 0
-//            hue: 0
-//        }
     }
 
     MouseArea {

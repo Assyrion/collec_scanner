@@ -13,6 +13,7 @@
         <file>qml/PopupConfirmDelete.qml</file>
         <file>qml/utils/CSGlowText.qml</file>
         <file>qml/DrawerConfig.qml</file>
-        <file>qml/DelegateGame.qml</file>
+        <file>qml/DelegateGameData.qml</file>
+        <file>qml/DelegateGameList.qml</file>
     </qresource>
 </RCC>

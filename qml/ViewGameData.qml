@@ -37,7 +37,7 @@ Pane {
             dataRepeater.itemAt(0).entry = game.tag
         }
         dataRepeater.itemAt(1).entry = row >= 0 ? (row+1) + '/'
-                + sqlTableModel.rowCount() : "unknown"
+                + sqlTableModel.rowCount() : ""
         dataRepeater.itemAt(2).entry = game.title
         dataRepeater.itemAt(3).entry = game.platform
         dataRepeater.itemAt(4).entry = game.info
@@ -128,35 +128,9 @@ Pane {
                     ListElement { name: qsTr("Publisher"); editable: true  }
                     ListElement { name: qsTr("Developer"); editable: true  }
                 }
-                delegate: Item {
-                    property alias entry: textField.text
-
+                delegate: DelegateGameData {
                     width: parent.width
                     height: 55
-
-                    Label {
-                        id: labelName
-                        width: parent.width/3
-                        height: parent.height
-                        verticalAlignment:
-                            Label.AlignVCenter
-                        text: name
-                        font.family: "Calibri"
-                        font.pixelSize: 20
-                        font.bold: true
-                        color: "white"
-                    }
-                    TextField {
-                        id: textField
-                        height: parent.height
-                        anchors.right: parent.right
-                        anchors.left: labelName.right
-                        anchors.verticalCenter:
-                            labelName.verticalCenter
-                        verticalAlignment:
-                            Label.AlignBottom
-                        enabled: editable
-                    }
                 }
             }
         }

@@ -26,16 +26,17 @@ Drawer {
         anchors.topMargin: 10
         anchors.left: parent.left
         anchors.leftMargin: 5
+        anchors.right: parent.right
+        anchors.rightMargin: 5
         placeholderText: "Search by name"
     }
     Button {
-        id: clearBtn
-        anchors.left: filterName.right
-        anchors.leftMargin: 5
-        anchors.verticalCenter:
-            filterName.verticalCenter
-        width: 40
-        text: "OK"
+        id: applyFilterBtn
+        anchors.top: filterName.bottom
+        anchors.topMargin: 5
+        anchors.horizontalCenter:
+            filterName.horizontalCenter
+        text: filterName.text == "" ? "X" : "OK"
         onClicked: {
             sqlTableModel.filterByTitle(filterName.text)
             close()

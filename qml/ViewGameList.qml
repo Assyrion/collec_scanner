@@ -43,7 +43,7 @@ Pane {
                 interactive: false
                 width: 10
             }
-            delegate: DelegateGame {
+            delegate: DelegateGameList {
                 width:  listView.width - 10
                 height: listView.scaleHeight * 46.2
                 onClicked: {
