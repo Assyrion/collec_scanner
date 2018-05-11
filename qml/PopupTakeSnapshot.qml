@@ -44,6 +44,8 @@ Popup {
             sourceComponent: Component {
                 CSCameraOutput {
                     id: cameraOutput
+                    camera.exposure.exposureMode:
+                        Camera.ExposurePortrait
                     fillMode:
                         VideoOutput.PreserveAspectCrop
                     onImageCaptured: {
