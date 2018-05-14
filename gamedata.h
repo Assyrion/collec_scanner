@@ -1,13 +1,12 @@
 #ifndef GAMEDATA_H
 #define GAMEDATA_H
 
+#include <QTextStream>
 #include <QQmlEngine>
 #include <QMutex>
 #include <QObject>
 #include <QDate>
 #include <QUrl>
-
-#include <QDebug>
 
 class GameData;
 class GameDataMaker : public QObject
@@ -65,6 +64,15 @@ public:
     QString publisher;
     QString developer;
     QString release_date;
+
+    friend QTextStream& operator<<(QTextStream& out, const GameData& game)
+    {
+        out << game.tag << ';' << game.title << ';' <<game.platform << ';'
+            << game.publisher << ';' << game.developer << ';'
+            << game.release_date << ';' <<game.info;
+        return out;
+    }
 };
+
 
 #endif // GAMEDATA_H

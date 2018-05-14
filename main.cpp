@@ -95,6 +95,7 @@ int main(int argc, char *argv[])
     SqlTableModel sqlTableModel;
     ImageManager  imageManager;
     FileManager   fileManager;
+    fileManager.registerQMLTypes();
 
     auto context = engine.rootContext();
     context->setContextProperty("sqlTableModel", &sqlTableModel);

@@ -1,4 +1,5 @@
 #include "sqltablemodel.h"
+#include "filemanager.h"
 #include "gamedata.h"
 
 #include <QSqlDriver>
@@ -128,4 +129,19 @@ void SqlTableModel::filterByTitle(const QString &title)
     }
 
     setFilter("title LIKE \'%" + title + "%\'");
+}
+
+void SqlTableModel::saveDBToFile(FileManager* fileManager)
+{
+    if(!fileManager) {
+        return;
+    }
+    for(int r = 0; r < rowCount(); r++) {
+        QStringList list;
+        for(int c = 0; c < columnCount(); c++) {
+            list.append(data(index(r, c), 0).toString());
+        }
+        auto game = GameDataMaker::get()->createComplete(list);
+        fileManager->addEntry(game);
+    }
 }

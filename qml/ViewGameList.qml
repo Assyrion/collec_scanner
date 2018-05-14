@@ -35,7 +35,6 @@ Pane {
             anchors.top: parent.top
             anchors.topMargin: 5
             spacing: 5 * scaleHeight
-            snapMode: ListView.SnapToItem
             highlightRangeMode:
                 ListView.StrictlyEnforceRange
             ScrollBar.vertical: ScrollBar {

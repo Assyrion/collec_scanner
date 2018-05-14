@@ -1,5 +1,4 @@
 #include "gamedata.h"
-#include <QDebug>
 
 GameDataMaker* GameDataMaker::instance = nullptr;
 QMutex GameDataMaker::mutex;

@@ -1,14 +1,11 @@
 #ifndef FILEMANAGER_H
 #define FILEMANAGER_H
 
+#include <QQmlEngine>
 #include <QObject>
 #include <QFile>
 
-struct JV {
-    QString id;
-    QString title;
-};
-
+class GameData;
 class FileManager : public QObject
 {
     Q_OBJECT
@@ -17,8 +14,12 @@ public:
     explicit FileManager(QObject *parent = nullptr);
     ~FileManager();
 
+    static void registerQMLTypes() {
+        qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");
+    }
+
     Q_INVOKABLE bool checkEntry(QString id);
-    Q_INVOKABLE void addEntry(QString id, QString title);
+    Q_INVOKABLE void addEntry(GameData *game);
     Q_INVOKABLE QString getEntry(QString id);
 
 private:

@@ -1,13 +1,14 @@
-#include "filemanager.h"
 #include <QStandardPaths>
-#include <QTextStream>
 #include <QFileInfo>
-#include <QDebug>
+
+#include "filemanager.h"
+#include "gamedata.h"
 
 FileManager::FileManager(QObject *parent) : QObject(parent)
 {
-    m_jvFile.setFileName(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/jvList.csv");
-    m_jvFile.open(QIODevice::ReadWrite | QIODevice::Append);
+    m_jvFile.setFileName(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)
+                         + "/game_list.csv");
+    m_jvFile.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
 }
 
 FileManager::~FileManager()
@@ -15,11 +16,11 @@ FileManager::~FileManager()
     m_jvFile.close();
 }
 
-void FileManager::addEntry(QString id, QString title)
+void FileManager::addEntry(GameData* game)
 {
     QTextStream ts(&m_jvFile);
-    ts.seek(0);
-    ts << id << ';' << title << '\n';
+    ts.setCodec("UTF-8");
+    ts << *game << '\n';
 }
 
 QString FileManager::getEntry(QString id)
@@ -47,7 +48,6 @@ bool FileManager::checkEntry(QString id)
     while(!ts.atEnd()) {
         line = ts.readLine();
         data = line.split(';');
-        qDebug() << data;
         if(data.size() > 0 && data[0] == id) {
             return true;
         }
