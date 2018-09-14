@@ -59,6 +59,8 @@ void ImageManager::savePic(const QString& fileName, QQuickItemGrabResult* result
     if(result) {
         result->saveToFile(path);
     }
+    m_path = path;
+    emit pathChanged();
 }
 
 void ImageManager::removePics(const QString &tag) const
@@ -79,4 +81,14 @@ void ImageManager::removePic(const QString &fileName) const
             + sep + fileName;
 #endif
     QFile::remove(path);
+}
+
+QString ImageManager::path() const
+{
+    return m_path;
+}
+
+void ImageManager::setPath(const QString &path)
+{
+    m_path = path;
 }

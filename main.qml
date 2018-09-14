@@ -11,8 +11,8 @@ Window {
     visible: true
     visibility: Window.AutomaticVisibility
 
-    width : /*Screen.desktopAvailableWidth*/  360
-    height: /*Screen.desktopAvailableHeight*/  568
+    width : Screen.desktopAvailableWidth  /*360*/
+    height: Screen.desktopAvailableHeight /* 568*/
 
     SwipeView {
         id: view
@@ -46,5 +46,18 @@ Window {
         anchors.bottom: view.bottom
         anchors.horizontalCenter:
             parent.horizontalCenter
+    }
+
+
+    Text {
+        id: debug
+        text: imageManager.path
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        font.family: "Calibri"
+        font.pointSize: 20
+        width: parent.width - 10
+        wrapMode: Text.WordWrap
+        color: "yellow"
     }
 }
