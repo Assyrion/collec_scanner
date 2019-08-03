@@ -6,8 +6,8 @@ DEFINES += APPNAME='\\"$${TARGET}\\"'
 android {
     QT += androidextras
 
-    deployment.files += $$PWD/gameData/*
-    deployment.path = /assets/
+    deployment.files += $$getenv(LOCALAPPDATA)/$${TARGET}/*
+    deployment.path = /assets
     INSTALLS += deployment
 }
 
