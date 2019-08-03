@@ -32,7 +32,7 @@ Item {
         anchors.verticalCenter:
             background.verticalCenter
         elide: Text.ElideRight
-        font.family: "Calibri"
+        font.family: "Roboto"
         color: "white"
     }
 }

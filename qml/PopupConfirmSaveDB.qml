@@ -35,7 +35,7 @@ Popup {
             text: qsTr("DB will be saved in <DownloadPath>/game_list.csv")
             wrapMode: Text.WordWrap
             font.pointSize: 15
-            font.family: "calibri"
+            font.family: "Roboto"
             color: "white"
         }
         Row {

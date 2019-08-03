@@ -19,10 +19,15 @@ QString ImageManager::getBackPic(const QString& tag)
 
 QString ImageManager::getPic(const QString& fileName)
 {
+    const auto sep = QDir::separator();
 #ifdef Q_OS_ANDROID
-    QString path = QDir::currentPath() + QDir::separator() + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
+    QString path = QDir::currentPath()
+            + sep + PICPATH
+            + sep + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
 #else
-    QString path = PICPATH_ABS + QDir::separator() + fileName;
+    QString path = PICPATH_ABS
+            + QDir::separator()
+            + fileName;
 #endif
     if(QFile::exists(path)) {
         return QString("file:///%1").arg(path);
@@ -42,10 +47,14 @@ void ImageManager::saveBackPic(const QString& tag, QQuickItemGrabResult* result)
 
 void ImageManager::savePic(const QString& fileName, QQuickItemGrabResult* result)
 {
+    const auto sep = QDir::separator();
 #ifdef Q_OS_ANDROID
-    QString path = QDir::currentPath() + QDir::separator() + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
+    QString path = QDir::currentPath()
+            + sep + PICPATH
+            + sep + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
 #else
-    QString path = PICPATH_ABS + QDir::separator() + fileName;
+    QString path = PICPATH_ABS
+            + sep + fileName;
 #endif
     if(result) {
         result->saveToFile(path);
@@ -60,10 +69,14 @@ void ImageManager::removePics(const QString &tag)
 
 void ImageManager::removePic(const QString &fileName)
 {
+    const auto sep = QDir::separator();
 #ifdef Q_OS_ANDROID
-    QString path = QDir::currentPath() + QDir::separator() + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
+    QString path = QDir::currentPath()
+            + sep + PICPATH
+            + sep + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
 #else
-    QString path = PICPATH_ABS + QDir::separator() + fileName;
+    QString path = PICPATH_ABS
+            + sep + fileName;
 #endif
     QFile::remove(path);
 }

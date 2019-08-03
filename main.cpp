@@ -3,6 +3,7 @@
 #include <QSurfaceFormat>
 #include <QQuickWindow>
 #include <QSqlDatabase>
+#include <QSqlError>
 #include <QQmlContext>
 #include <QZXingFilter.h>
 #include <QZXing.h>
@@ -29,7 +30,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    QQuickWindow* window = (QQuickWindow*) engine.rootObjects().first();
+    QQuickWindow* window = static_cast<QQuickWindow*>(engine.rootObjects().first());
     if (window) {
         // Set anti-aliasing
         QSurfaceFormat  format;
@@ -39,22 +40,28 @@ int main(int argc, char *argv[])
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
 
-#ifdef Q_OS_ANDROID    
+#ifdef Q_OS_ANDROID
+
+    // copy pics from assets folder to app folder
     QDir picPath(PICPATH_ABS);
     if(!picPath.exists()) {
-        picPath.mkdir(".");
+        picPath.mkpath(".");
     }
+
     QDir fromDir("assets:/" + PICPATH);
     auto list = fromDir.entryInfoList({"*.png"}, QDir::Files);
     for(auto fileinfo: list) {
         QFile pic(fileinfo.absoluteFilePath());
-        QString toPath = PICPATH_ABS + QDir::separator() + fileinfo.fileName();
+        QString toPath = picPath.absolutePath()
+                + QDir::separator()
+                + fileinfo.fileName();
         if(!QFile::exists(toPath)) {
             pic.copy(toPath);
-            QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
+             QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
         }
     }
 
+    // copy database file from assets folder to app folder
     QFile dfile("assets:/" + DBNAME);
     if (dfile.exists()) {
         if(!QFile::exists(DB_PATH_ABS_NAME)) {
@@ -67,6 +74,8 @@ int main(int argc, char *argv[])
 
     /***** Uncomment to backup db & pic ******/
 
+//    TO CHECK
+
 //    QDir dirCur = QDir::current();
 //    QString downloadPath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
 //    auto dbL = dirCur.entryInfoList({DBNAME}, QDir::Files);
@@ -76,19 +85,24 @@ int main(int argc, char *argv[])
 //        dbf.copy(toPath);
 //        QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
 //    }
+//    dirCur.cd(PICPATH);
 //    auto pngL = dirCur.entryInfoList({"*.png"}, QDir::Files);
 //    for(auto fileinfo: pngL) {
 //        QFile pic(fileinfo.absoluteFilePath());
-//        QString toPath = downloadPath + QDir::separator() + PICPATH
-//                + QDir::separator() + fileinfo.fileName();
+//        QString toPath = downloadPath
+//                + QDir::separator()
+//                + PICPATH
+//                + QDir::separator()
+//                + fileinfo.fileName();
 //        pic.copy(toPath);
 //        QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
 //    }
 
 #endif
+    db.close();
     db.setDatabaseName(DB_PATH_ABS_NAME);
     if (!db.open()) {
-        qDebug() << "Error: connection with database fail";
+        qDebug() << "Error: connection with database fail" << db.lastError();
         return -1;
     }
 

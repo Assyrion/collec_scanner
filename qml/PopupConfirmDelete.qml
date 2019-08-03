@@ -35,7 +35,7 @@ Popup {
             text: qsTr("Are you sure ?")
             wrapMode: Text.WordWrap
             font.pointSize: 20
-            font.family: "calibri"
+            font.family: "Roboto"
             color: "white"
         }
         Row {
