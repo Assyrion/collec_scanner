@@ -7,17 +7,17 @@ ImageManager::ImageManager(QObject *parent)
     : QObject(parent)
 {}
 
-QString ImageManager::getFrontPic(const QString &tag) const
+QUrl ImageManager::getFrontPic(const QString &tag) const
 {
     return getPic(QString("%1_front.png").arg(tag));
 }
 
-QString ImageManager::getBackPic(const QString& tag) const
+QUrl ImageManager::getBackPic(const QString& tag) const
 {
     return getPic(QString("%1_back.png").arg(tag));
 }
 
-QString ImageManager::getPic(const QString& fileName) const
+QUrl ImageManager::getPic(const QString& fileName) const
 {
     const auto sep = QDir::separator();
 #ifdef Q_OS_ANDROID
@@ -30,22 +30,22 @@ QString ImageManager::getPic(const QString& fileName) const
             + fileName;
 #endif
     if(QFile::exists(path)) {
-        return QString("file:///%1").arg(path);
+        return QUrl(QString("file:///%1").arg(path));
     }
-    return "qrc:/no_pic";
+    return QUrl("qrc:/no_pic");
 }
 
-void ImageManager::saveFrontPic(const QString& tag, QQuickItemGrabResult* result) const
+void ImageManager::saveFrontPic(const QString& tag, const QImage& pic) const
 {
-    savePic(QString("%1_front.png").arg(tag), result);
+    savePic(QString("%1_front.png").arg(tag), pic);
 }
 
-void ImageManager::saveBackPic(const QString& tag, QQuickItemGrabResult* result) const
+void ImageManager::saveBackPic(const QString& tag, const QImage& pic) const
 {
-    savePic(QString("%1_back.png").arg(tag), result);
+    savePic(QString("%1_back.png").arg(tag), pic);
 }
 
-void ImageManager::savePic(const QString& fileName, QQuickItemGrabResult* result) const
+void ImageManager::savePic(const QString& fileName, const QImage& pic) const
 {
     const auto sep = QDir::separator();
 #ifdef Q_OS_ANDROID
@@ -56,8 +56,8 @@ void ImageManager::savePic(const QString& fileName, QQuickItemGrabResult* result
     QString path = PICPATH_ABS
             + sep + fileName;
 #endif
-    if(result) {
-        result->saveToFile(path);
+    if(!pic.isNull()) {
+        pic.save(path);
     }
 }
 

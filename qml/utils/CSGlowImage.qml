@@ -4,14 +4,10 @@ import QtGraphicalEffects 1.0
 Item {
     id: root
 
-
     signal clicked
-    property alias source: pic.source
-    property var grabResult
-    onGrabResultChanged: {
-        if(grabResult)
-            source = grabResult.url
-    }
+
+    property var imgData
+    property url imgUrl
 
     Component.onCompleted: {
         mouseArea.clicked.connect(clicked)
@@ -40,6 +36,7 @@ Item {
         id: pic
         visible: false
         height: parent.height
+        source: root.imgUrl
         cache: false
         mipmap: true
         smooth: true

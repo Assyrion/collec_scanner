@@ -64,7 +64,8 @@ Popup {
             onClicked: {
 //                loader.item.capture()
                 loader.item.grabToImage(function(result) {
-                    boundImg.grabResult = result;
+                    boundImg.imgData = result.image;
+                    boundImg.imgUrl  = result.url;
                 }, Qt.size(loader.width*2,
                            loader.height*2));
             }

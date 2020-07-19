@@ -44,8 +44,8 @@ Pane {
         dataRepeater.itemAt(5).entry = game.publisher
         dataRepeater.itemAt(6).entry = game.developer
 
-        picFrontImg.source = imageManager.getFrontPic(game.tag)
-        picBackImg.source  = imageManager.getBackPic( game.tag)
+        picFrontImg.imgUrl = imageManager.getFrontPic(game.tag)
+        picBackImg.imgUrl  = imageManager.getBackPic( game.tag)
     }
 
     function writeGame() {
@@ -57,8 +57,8 @@ Pane {
         game.developer = dataRepeater.itemAt(6).entry
         sqlTableModel.update(row, game)
 
-        imageManager.saveFrontPic(game.tag, picFrontImg.grabResult)
-        imageManager.saveBackPic( game.tag, picBackImg.grabResult)
+        imageManager.saveFrontPic(game.tag, picFrontImg.imgData)
+        imageManager.saveBackPic( game.tag, picBackImg.imgData)
     }
 
     function removeGame() {
@@ -93,7 +93,7 @@ Pane {
                 id : picFrontImg
                 Layout.fillHeight: true
                 Layout.alignment: Qt.AlignRight
-                source: "qrc:/no_pic" // default
+                imgUrl: "qrc:/no_pic" // default
                 onClicked: {
                     loader.loadSnapshotPopup(this)
                 }
@@ -102,7 +102,7 @@ Pane {
                 id : picBackImg
                 Layout.fillHeight: true
                 Layout.alignment: Qt.AlignLeft
-                source: "qrc:/no_pic" // default
+                imgUrl: "qrc:/no_pic" // default
                 onClicked: {
                     loader.loadSnapshotPopup(this)
                 }

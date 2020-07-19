@@ -2,8 +2,8 @@
 #define IMAGEMANAGER_H
 
 #include <QObject>
-#include <QQuickItem>
-#include <QQuickItemGrabResult>
+#include <QImage>
+#include <QUrl>
 
 #include "global.h"
 
@@ -14,15 +14,15 @@ class ImageManager : public QObject
 public:
     explicit ImageManager(QObject *parent = nullptr);
 
-    Q_INVOKABLE void removePics(    const QString& tag) const;
-    Q_INVOKABLE QString getFrontPic(const QString& tag) const;
-    Q_INVOKABLE QString getBackPic( const QString& tag) const;
-    Q_INVOKABLE void saveFrontPic(  const QString& tag, QQuickItemGrabResult* result) const;
-    Q_INVOKABLE void saveBackPic(   const QString& tag, QQuickItemGrabResult* result) const;
+    Q_INVOKABLE void removePics(  const QString& tag) const;
+    Q_INVOKABLE QUrl getFrontPic( const QString& tag) const;
+    Q_INVOKABLE QUrl getBackPic(  const QString& tag) const;
+    Q_INVOKABLE void saveFrontPic(const QString& tag, const QImage& pic) const;
+    Q_INVOKABLE void saveBackPic( const QString& tag, const QImage& pic) const;
 
 private:
-    void savePic(  const QString& fileName, QQuickItemGrabResult* result) const;
-    QString getPic(const QString& fileName) const;
+    void savePic(  const QString& fileName, const QImage& pic) const;
+    QUrl getPic(   const QString& fileName) const;
     void removePic(const QString& fileName) const;
 
 public slots:
