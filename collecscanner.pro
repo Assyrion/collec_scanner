@@ -9,6 +9,13 @@ android {
     deployment.files += $$getenv(LOCALAPPDATA)/$${TARGET}/*
     deployment.path = /assets
     INSTALLS += deployment
+
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+
+    DISTFILES += \
+        android/AndroidManifest.xml \
+        android/build.gradle \
+        android/res/values/libs.xml
 }
 
 # The following define makes your compiler emit warnings if you use
