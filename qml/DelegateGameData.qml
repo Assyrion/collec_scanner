@@ -11,7 +11,7 @@ Item {
         verticalAlignment:
             Label.AlignVCenter
         text: name
-        font.family: "Calibri"
+        font.family: "Roboto"
         font.pixelSize: 20
         font.bold: true
         color: "white"

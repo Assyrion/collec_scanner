@@ -16,7 +16,7 @@ Drawer {
         anchors.horizontalCenter:
             parent.horizontalCenter
         text: "Filter"
-        font.family: "Calibri"
+        font.family: "Roboto"
         font.underline: true
         font.pixelSize: 20
         font.bold: true

@@ -31,7 +31,7 @@ Popup {
             text: qsTr("Game with tag = %1 is new.<br><br>Add it ?").arg(popup.tag)
             wrapMode: Text.WordWrap
             font.pointSize: 20
-            font.family: "calibri"
+            font.family: "Roboto"
             color: "white"
         }
         Row {

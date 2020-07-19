@@ -46,7 +46,7 @@ Item {
         anchors.rightMargin: 10
         font.pointSize:
             Math.min(17, parent.width/3)
-        font.family: "calibri"
+        font.family: "Roboto"
         text: title
     }
     CSGlowText {
@@ -57,7 +57,7 @@ Item {
             parent.verticalCenter
         font.pointSize:
             Math.min(17, parent.width/3)
-        font.family: "calibri"
+        font.family: "Roboto"
         text: platform
     }
     MouseArea {
