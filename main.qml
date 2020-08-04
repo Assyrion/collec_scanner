@@ -30,10 +30,10 @@ Window {
             }
         }
 
-        ViewGameList {
+        GameListView {
             id: vgl
         }
-        ViewBarcodeScanner {
+        BarcodeScannerView {
             id: vbs
         }
     }

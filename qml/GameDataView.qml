@@ -128,7 +128,7 @@ Pane {
                     ListElement { name: qsTr("Publisher"); editable: true  }
                     ListElement { name: qsTr("Developer"); editable: true  }
                 }
-                delegate: DelegateGameData {
+                delegate: GameDataDelegate {
                     width: parent.width
                     height: 55
                 }
@@ -181,7 +181,7 @@ Pane {
     Loader {
         id: loader
         function loadSnapshotPopup(img) {
-            loader.setSource("PopupTakeSnapshot.qml",
+            loader.setSource("TakeSnapshotPopup.qml",
                              { "boundImg": img,
                                  "width" : 2*root.width/3,
                                  "height": root.height/2,
@@ -189,7 +189,7 @@ Pane {
                                  "y"     : root.height/3-40})
         }
         function loadConfirmDelete() {
-            loader.setSource("PopupConfirmDelete.qml",
+            loader.setSource("ConfirmDeletePopup.qml",
                              {   "width" : 2*root.width/3,
                                  "height": root.height/3,
                                  "x"     : root.width/6-12,

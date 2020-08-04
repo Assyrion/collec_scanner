@@ -42,7 +42,7 @@ Pane {
                 interactive: false
                 width: 10
             }
-            delegate: DelegateGameList {
+            delegate: GameListDelegate {
                 width:  listView.width - 10
                 height: listView.scaleHeight * 46.2
                 onClicked: {
@@ -91,7 +91,7 @@ Pane {
         }
     }
 
-    DrawerConfig {
+    ConfigDrawer {
         id: drawer
         width: 1*parent.width/2
         height: parent.height
@@ -99,12 +99,12 @@ Pane {
 
 
     function showGameData(game, index) {
-        gameDataLoader.setSource("ViewGameData.qml",
+        gameDataLoader.setSource("GameDataView.qml",
                                  {"game": game,
                                      "row" : index})
     }
     function showNewGameData() {
-        gameDataLoader.setSource("ViewGameData.qml",
+        gameDataLoader.setSource("GameDataView.qml",
                                  {"editMode": true,
                                      "manuMode": true})
     }

@@ -11,8 +11,8 @@ Item {
 
     property alias barcodeScanner: barcodeScanner
 
-    PopupTagUnknown {
-        id: popupTagUnknown
+    TagUnknownPopup {
+        id: tagUnknownPopup
         width : parent.width
         height: parent.height
         onRefused: {
@@ -33,7 +33,7 @@ Item {
             if(game) {
                 loader.showGameData(game, false)
             } else {
-                popupTagUnknown.show(barcode)
+                tagUnknownPopup.show(barcode)
             }
         }
     }
@@ -42,7 +42,7 @@ Item {
         id: loader
         anchors.fill: parent
         function showGameData(game, editMode) {
-            loader.setSource("ViewGameData.qml",
+            loader.setSource("GameDataView.qml",
                              {"game"    : game,
                               "editMode": editMode})
         }
