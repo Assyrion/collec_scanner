@@ -184,7 +184,7 @@ Pane {
             loader.setSource("PopupTakeSnapshot.qml",
                              { "boundImg": img,
                                  "width" : 2*root.width/3,
-                                 "height": 2*root.height/3,
+                                 "height": root.height/2,
                                  "x"     : root.width/6-12,
                                  "y"     : root.height/3-40})
         }
