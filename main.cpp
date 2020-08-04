@@ -7,6 +7,7 @@
 #include <QQmlContext>
 #include <QZXingFilter.h>
 #include <QZXing.h>
+#include <QSaveFile>
 #include <QDebug>
 #include <QDir>
 
@@ -77,27 +78,35 @@ int main(int argc, char *argv[])
 
 //    TO CHECK
 
-//    QDir dirCur = QDir::current();
-//    QString downloadPath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
-//    auto dbL = dirCur.entryInfoList({DBNAME}, QDir::Files);
-//    for(auto fileinfo: dbL) {
-//        QFile dbf(fileinfo.absoluteFilePath());
-//        QString toPath = downloadPath + QDir::separator() + fileinfo.fileName();
-//        dbf.copy(toPath);
-//        QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
-//    }
-//    dirCur.cd(PICPATH);
-//    auto pngL = dirCur.entryInfoList({"*.png"}, QDir::Files);
-//    for(auto fileinfo: pngL) {
-//        QFile pic(fileinfo.absoluteFilePath());
-//        QString toPath = downloadPath
-//                + QDir::separator()
-//                + PICPATH
-//                + QDir::separator()
-//                + fileinfo.fileName();
-//        pic.copy(toPath);
-//        QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
-//    }
+    QDir dirCur = QDir::current();
+    QString downloadPath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+    auto dbL = dirCur.entryInfoList({DBNAME}, QDir::Files);
+    for(auto fileinfo: dbL) {
+        QFile from_dbf(fileinfo.absoluteFilePath());
+        qDebug() << from_dbf.open(QIODevice::ReadOnly);
+        QString toPath = downloadPath + QDir::separator() + fileinfo.fileName();        
+        QFile to_dbf(toPath);
+//        to_dbf.setDirectWriteFallback(true);
+        qDebug() << to_dbf.open(QIODevice::WriteOnly);
+        QByteArray array = from_dbf.readAll();
+        qDebug() << to_dbf.write(array);
+//        qDebug() << "commiting ; " << to_dbf.commit();
+        qDebug() << to_dbf.setPermissions(QFile::WriteOwner | QFile::ReadOwner);
+        from_dbf.close();
+        to_dbf.close();
+    }
+    dirCur.cd(PICPATH);
+    auto pngL = dirCur.entryInfoList({"*.png"}, QDir::Files);
+    for(auto fileinfo: pngL) {
+        QFile pic(fileinfo.absoluteFilePath());
+        QString toPath = downloadPath
+                + QDir::separator()
+                + PICPATH
+                + QDir::separator()
+                + fileinfo.fileName();
+        pic.copy(toPath);
+        QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
+    }
 
 #endif
     db.close();
