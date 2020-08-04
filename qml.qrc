@@ -16,5 +16,6 @@
         <file>qml/GameListDelegate.qml</file>
         <file>qml/utils/CSGlowImage.qml</file>
         <file>qml/utils/CSCameraOutput.qml</file>
+        <file>qml/ViewSelectorDrawer.qml</file>
     </qresource>
 </RCC>

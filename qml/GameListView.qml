@@ -93,8 +93,14 @@ Pane {
 
     ConfigDrawer {
         id: drawer
-        width: 1*parent.width/2
+        width: parent.width/2
         height: parent.height
+    }
+
+    ViewSelectorDrawer {
+        id: viewSelectorDrawer
+        width: parent.width
+        height: parent.height/10
     }
 
 
