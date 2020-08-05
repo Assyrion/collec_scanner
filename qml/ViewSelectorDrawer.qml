@@ -19,6 +19,7 @@ Drawer {
             text: "list"
             onClicked: {
                 listViewRequired()
+                close()
             }
         }
 
@@ -27,8 +28,8 @@ Drawer {
             text: "grid"
             onClicked: {
                 gridViewRequired()
+                close()
             }
-
         }
     }
 }

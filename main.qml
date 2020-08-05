@@ -22,19 +22,19 @@ Window {
         property int viewX : contentItem.contentX
         onViewXChanged: {
             if(viewX % width == 0) {
-                if(vbs == currentItem) {
-                    vbs.barcodeScanner.startScanning()
+                if(bsv == currentItem) {
+                    bsv.barcodeScanner.startScanning()
                 } else {
-                    vbs.barcodeScanner.stopScanning()
+                    bsv.barcodeScanner.stopScanning()
                 }
             }
         }
 
-        GameListView {
-            id: vgl
+        CollectionView {
+            id: cl
         }
         BarcodeScannerView {
-            id: vbs
+            id: bsv
         }
     }
     PageIndicator {

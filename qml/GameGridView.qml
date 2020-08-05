@@ -8,16 +8,19 @@ PinchArea {
         var diff = pinch.scale
                 - pinch.previousScale
         if(diff < 0) {
-            listView.scaleHeight
-                    = Math.max(listView.scaleHeight-0.03, 0.4)
+            gridView.scaleHeight
+                    = Math.max(gridView.scaleHeight-0.03, 0.4)
         } else if(diff > 0){
-            listView.scaleHeight
-                    = Math.min(listView.scaleHeight+0.03, 1.0)
+            gridView.scaleHeight
+                    = Math.min(gridView.scaleHeight+0.03, 1.0)
         }
     }
-    ListView {
-        id: listView
+    GridView {
+        id: gridView
         property real scaleHeight: 1.0
+
+        cellWidth: width/4
+        cellHeight: 108 // hardcoded...
 
         model: sqlTableModel
         width : parent.width-5
@@ -26,17 +29,15 @@ PinchArea {
         anchors.leftMargin: 5
         anchors.top: parent.top
         anchors.topMargin: 5
-        spacing: 5 * scaleHeight
         highlightRangeMode:
-            ListView.StrictlyEnforceRange
+            GridView.StrictlyEnforceRange
         ScrollBar.vertical: ScrollBar {
             policy: ScrollBar.AlwaysOn
             interactive: false
             width: 10
         }
-        delegate: GameListDelegate {
-            width:  listView.width - 10
-            height: listView.scaleHeight * 46.2
+        delegate: GameGridDelegate {
+            width: (gridView.cellWidth - 10) * gridView.scaleHeight
             onClicked: {
                 var arr = [tag, title, full_title, platform,
                            publisher,  developer, release_date,
