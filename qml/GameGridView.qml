@@ -8,19 +8,20 @@ PinchArea {
         var diff = pinch.scale
                 - pinch.previousScale
         if(diff < 0) {
-            gridView.scaleHeight
-                    = Math.max(gridView.scaleHeight-0.03, 0.4)
+            gridView.scaleSize
+                    = Math.max(gridView.scaleSize-0.03, 0.4)
         } else if(diff > 0){
-            gridView.scaleHeight
-                    = Math.min(gridView.scaleHeight+0.03, 1.0)
+            gridView.scaleSize
+                    = Math.min(gridView.scaleSize+0.03, 1.0)
         }
     }
+
     GridView {
         id: gridView
-        property real scaleHeight: 1.0
+        property real scaleSize: 1.0
 
-        cellWidth: width/4
-        cellHeight: 108 // hardcoded...
+        cellWidth: width/4 * gridView.scaleSize
+        cellHeight: 108 * gridView.scaleSize // hardcoded...
 
         model: sqlTableModel
         width : parent.width-5
@@ -37,7 +38,7 @@ PinchArea {
             width: 10
         }
         delegate: GameGridDelegate {
-            width: (gridView.cellWidth - 10) * gridView.scaleHeight
+            width: gridView.cellWidth - 10
             onClicked: {
                 var arr = [tag, title, full_title, platform,
                            publisher,  developer, release_date,
