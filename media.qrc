@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file alias="no_pic">img/no_pic.png</file>
         <file alias="add_notag">img/add_notag.png</file>
+        <file alias="grid_view">img/gridview.png</file>
+        <file alias="list_view">img/listview.png</file>
     </qresource>
 </RCC>

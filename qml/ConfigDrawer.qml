@@ -58,7 +58,7 @@ Drawer {
     Loader {
         id: loader
         function loadConfirmSaveDB() {
-            loader.setSource("PopupConfirmSaveDB.qml",
+            loader.setSource("ConfirmSaveDBPopup.qml",
                              {   "width" : 2*mainWindow.width/3,
                                  "height": mainWindow.height/3,
                                  "x"     : mainWindow.width/6,

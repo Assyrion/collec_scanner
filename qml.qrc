@@ -3,18 +3,22 @@
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>qml/BarcodeScanner.qml</file>
-        <file>qml/PopupTagUnknown.qml</file>
-        <file>qml/PopupTakeSnapshot.qml</file>
-        <file>qml/PopupConfirmDelete.qml</file>
-        <file>qml/PopupConfirmSaveDB.qml</file>
-        <file>qml/ViewBarcodeScanner.qml</file>
-        <file>qml/ViewGameData.qml</file>
-        <file>qml/ViewGameList.qml</file>
+        <file>qml/TagUnknownPopup.qml</file>
+        <file>qml/TakeSnapshotPopup.qml</file>
+        <file>qml/ConfirmDeletePopup.qml</file>
+        <file>qml/ConfirmSaveDBPopup.qml</file>
+        <file>qml/BarcodeScannerView.qml</file>
+        <file>qml/GameDataView.qml</file>
+        <file>qml/GameListView.qml</file>
         <file>qml/utils/CSGlowText.qml</file>
-        <file>qml/DrawerConfig.qml</file>
-        <file>qml/DelegateGameData.qml</file>
-        <file>qml/DelegateGameList.qml</file>
+        <file>qml/ConfigDrawer.qml</file>
+        <file>qml/GameDataDelegate.qml</file>
+        <file>qml/GameListDelegate.qml</file>
         <file>qml/utils/CSGlowImage.qml</file>
         <file>qml/utils/CSCameraOutput.qml</file>
+        <file>qml/ViewSelectorDrawer.qml</file>
+        <file>qml/GameGridDelegate.qml</file>
+        <file>qml/GameGridView.qml</file>
+        <file>qml/CollectionView.qml</file>
     </qresource>
 </RCC>
