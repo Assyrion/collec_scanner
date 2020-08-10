@@ -6,7 +6,7 @@
         <file>qml/TagUnknownPopup.qml</file>
         <file>qml/TakeSnapshotPopup.qml</file>
         <file>qml/ConfirmDeletePopup.qml</file>
-        <file>qml/ConfirmSaveDBPopup.qml</file>
+        <file>qml/ConfirmActionPopup.qml</file>
         <file>qml/BarcodeScannerView.qml</file>
         <file>qml/GameDataView.qml</file>
         <file>qml/GameListView.qml</file>

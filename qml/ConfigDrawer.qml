@@ -44,32 +44,51 @@ Drawer {
             close()
         }
     }
-    Button {
-        id: saveDBBtn
+    Row {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 5
-        anchors.horizontalCenter:
-            parent.horizontalCenter
-        text: "save DB"
-        onClicked: {
-            loader.loadConfirmSaveDB()
+        anchors.horizontalCenter: parent.horizontalCenter
+        spacing: 5
+
+        Button {
+            id: saveDBBtn
+
+            text: " file DB "
+            onClicked: {
+                loader.loadConfirmSaveDB()
+            }
+        }
+        Button {
+            id: exportDBBtn
+
+            text: "export DB"
+            onClicked: {
+                loader.loadConfirmExportDB()
+            }
         }
     }
     Loader {
         id: loader
         function loadConfirmSaveDB() {
-            loader.setSource("ConfirmSaveDBPopup.qml",
-                             {   "width" : 2*mainWindow.width/3,
+            loader.setSource("ConfirmActionPopup.qml",
+                             {   "contentText" : qsTr("DB content will be written in <DownloadPath>/game_list.csv"),
+                                 "width" : 2*mainWindow.width/3,
                                  "height": mainWindow.height/3,
                                  "x"     : mainWindow.width/6,
                                  "y"     : mainWindow.height/4+50})
+
+            loader.item.accepted.connect( function() { sqlTableModel.saveDBToFile(fileManager) } )
         }
-        Connections {
-            target: loader.item
-            onAccepted: {
-                sqlTableModel.saveDBToFile(fileManager)
-                close()
-            }
+
+        function loadConfirmExportDB() {
+            loader.setSource("ConfirmActionPopup.qml",
+                             {   "contentText" : qsTr("DB and pics will be export in <DownloadPath>"),
+                                 "width" : 2*mainWindow.width/3,
+                                 "height": mainWindow.height/3,
+                                 "x"     : mainWindow.width/6,
+                                 "y"     : mainWindow.height/4+50})
+
+            loader.item.accepted.connect( function() { comManager.exportDB() } )
         }
     }
 }
