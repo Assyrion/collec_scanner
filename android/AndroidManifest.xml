@@ -1,19 +1,23 @@
 <?xml version="1.0"?>
-<manifest package="org.qtproject.collecscanner" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0" android:versionCode="1" android:installLocation="auto">
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29"/>
-
+<manifest package="org.qtproject.example.collecscanner" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0" android:versionCode="1" android:installLocation="auto">
     <!-- The following comment will be replaced upon deployment with default permissions based on the dependencies of the application.
          Remove the comment if you do not require these default permissions. -->
 
 
+
+
+
+
     <!-- The following comment will be replaced upon deployment with default features based on the dependencies of the application.
          Remove the comment if you do not require these default features. -->
-
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.microphone" android:required="false"/>
 
     <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
 
-    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="CollecScanner">
-        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:label="CollecScanner" android:screenOrientation="unspecified" android:launchMode="singleTop">
+    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="collecscanner" android:extractNativeLibs="true">
+        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:label="collecscanner" android:screenOrientation="unspecified" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -29,15 +33,14 @@
             <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
             <meta-data android:name="android.app.bundled_libs_resource_id" android:resource="@array/bundled_libs"/>
             <!-- Deploy Qt libs as part of package -->
-            <meta-data android:name="android.app.bundle_local_qt_libs" android:value="-- %%BUNDLE_LOCAL_QT_LIBS%% --"/>
-            <meta-data android:name="android.app.bundled_in_lib_resource_id" android:resource="@array/bundled_in_lib"/>
-            <meta-data android:name="android.app.bundled_in_assets_resource_id" android:resource="@array/bundled_in_assets"/>
+            <meta-data android:name="android.app.bundle_local_qt_libs" android:value="1"/>
+
             <!-- Run with local libs -->
-            <meta-data android:name="android.app.use_local_qt_libs" android:value="-- %%USE_LOCAL_QT_LIBS%% --"/>
+            <meta-data android:name="android.app.use_local_qt_libs" android:value="1"/>
             <meta-data android:name="android.app.libs_prefix" android:value="/data/local/tmp/qt/"/>
-            <meta-data android:name="android.app.load_local_libs" android:value="-- %%INSERT_LOCAL_LIBS%% --"/>
-            <meta-data android:name="android.app.load_local_jars" android:value="-- %%INSERT_LOCAL_JARS%% --"/>
-            <meta-data android:name="android.app.static_init_classes" android:value="-- %%INSERT_INIT_CLASSES%% --"/>
+            <meta-data android:name="android.app.load_local_libs_resource_id" android:resource="@array/load_local_libs"/>
+            <meta-data android:name="android.app.load_local_jars" android:value="jar/QtAndroid.jar:jar/QtAndroidBearer.jar:jar/QtAndroidExtras.jar:jar/QtMultimedia.jar"/>
+            <meta-data android:name="android.app.static_init_classes" android:value="org.qtproject.qt5.android.multimedia.QtMultimediaUtils"/>
             <!-- Used to specify custom system library path to run with local system libs -->
             <!-- <meta-data android:name="android.app.system_libs_prefix" android:value="/system/lib/"/> -->
             <!--  Messages maps -->
@@ -77,7 +80,7 @@
                 * minimal - useful for Quick Controls 2 apps, it is much faster than "full"
                 * none - useful for apps that don't use any of the above Qt modules
                 -->
-            <meta-data android:name="android.app.extract_android_style" android:value="full"/>
+            <meta-data android:name="android.app.extract_android_style" android:value="default"/>
             <!-- extract android style -->
     </activity>
 
@@ -85,6 +88,7 @@
 
     </application>
 
-<uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29"/>
+    <!-- %%INSERT_PERMISSIONS -->
+    <!-- %%INSERT_FEATURES -->
 </manifest>
