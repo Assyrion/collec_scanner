@@ -10,6 +10,8 @@ Popup {
         open()
     }
 
+    property alias contentText : messageText.text
+
     signal accepted
     signal refused
 
@@ -26,13 +28,13 @@ Popup {
 
     contentItem : Pane {
         Text {
+            id: messageText
             width: parent.width
             anchors.horizontalCenter:
                 parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: 10
             horizontalAlignment: Text.AlignHCenter
-            text: qsTr("DB will be saved in <DownloadPath>/game_list.csv")
             wrapMode: Text.WordWrap
             font.pointSize: 15
             font.family: "Roboto"

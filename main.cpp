@@ -14,6 +14,7 @@
 #include "sqltablemodel.h"
 #include "imagemanager.h"
 #include "filemanager.h"
+#include "commanager.h"
 #include "gamedata.h"
 #include "global.h"
 
@@ -73,42 +74,8 @@ int main(int argc, char *argv[])
     } else {
         return -1;
     }
-
-    /***** Uncomment to backup db & pic ******/
-
-//    TO CHECK
-
-    QDir dirCur = QDir::current();
-    QString downloadPath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
-    auto dbL = dirCur.entryInfoList({DBNAME}, QDir::Files);
-    for(auto fileinfo: dbL) {
-        QFile from_dbf(fileinfo.absoluteFilePath());
-        qDebug() << from_dbf.open(QIODevice::ReadOnly);
-        QString toPath = downloadPath + QDir::separator() + fileinfo.fileName();        
-        QFile to_dbf(toPath);
-//        to_dbf.setDirectWriteFallback(true);
-        qDebug() << to_dbf.open(QIODevice::WriteOnly);
-        QByteArray array = from_dbf.readAll();
-        qDebug() << to_dbf.write(array);
-//        qDebug() << "commiting ; " << to_dbf.commit();
-        qDebug() << to_dbf.setPermissions(QFile::WriteOwner | QFile::ReadOwner);
-        from_dbf.close();
-        to_dbf.close();
-    }
-    dirCur.cd(PICPATH);
-    auto pngL = dirCur.entryInfoList({"*.png"}, QDir::Files);
-    for(auto fileinfo: pngL) {
-        QFile pic(fileinfo.absoluteFilePath());
-        QString toPath = downloadPath
-                + QDir::separator()
-                + PICPATH
-                + QDir::separator()
-                + fileinfo.fileName();
-        pic.copy(toPath);
-        QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
-    }
-
 #endif
+
     db.close();
     db.setDatabaseName(DB_PATH_ABS_NAME);
     if (!db.open()) {
@@ -119,12 +86,14 @@ int main(int argc, char *argv[])
     SqlTableModel sqlTableModel;
     ImageManager  imageManager;
     FileManager   fileManager;
+    ComManager    comManager;
     fileManager.registerQMLTypes();
 
     auto context = engine.rootContext();
     context->setContextProperty("sqlTableModel", &sqlTableModel);
     context->setContextProperty("imageManager",  &imageManager);
     context->setContextProperty("fileManager",   &fileManager);
+    context->setContextProperty("comManager",    &comManager);
 
     return app.exec();
 }
