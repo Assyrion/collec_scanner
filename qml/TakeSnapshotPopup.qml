@@ -21,15 +21,20 @@ Popup {
         loader.active = false
     }
 
-    topPadding: 4
-    bottomPadding: 4
+    topPadding: 1
+    bottomPadding: 1
     leftPadding: 1
     rightPadding: 1
 
     modal: true
     dim: false
 
-    background: DropShadow {}
+    background: RectangularGlow {
+        glowRadius: 10
+        spread: 0
+        color: "#222222"
+        cornerRadius: 0
+    }
 
     contentItem : Pane {
         Loader {

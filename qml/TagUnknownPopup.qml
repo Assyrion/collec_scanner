@@ -1,5 +1,6 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.2
+import QtGraphicalEffects 1.0
 import "utils"
 
 Popup {
@@ -18,10 +19,6 @@ Popup {
     padding: 0
     modal: true
     closePolicy: Popup.NoAutoClose
-
-    background: Rectangle {
-        border.color: "#444"
-    }
 
     contentItem : Pane {
         Text {

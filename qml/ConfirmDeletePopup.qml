@@ -13,8 +13,8 @@ Popup {
     signal accepted
     signal refused
 
-    topPadding: 4
-    bottomPadding: 4
+    topPadding: 1
+    bottomPadding: 1
     leftPadding: 1
     rightPadding: 1
 
@@ -22,7 +22,12 @@ Popup {
     modal: true
     closePolicy: Popup.NoAutoClose
 
-    background: DropShadow {}
+    background: RectangularGlow {
+        glowRadius: 10
+        spread: 0
+        color: "#222222"
+        cornerRadius: 0
+    }
 
     contentItem : Pane {
         Text {
