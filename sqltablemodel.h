@@ -17,6 +17,7 @@ public:
     QHash<int, QByteArray> roleNames() const Q_DECL_OVERRIDE;
     void setFilter(const QString& filter) Q_DECL_OVERRIDE;
 
+    Q_INVOKABLE int rowCount();
     Q_INVOKABLE void remove(int row);
     Q_INVOKABLE void update(int row, GameData* game);
     Q_INVOKABLE GameData* get(const QString &tag);

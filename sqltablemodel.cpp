@@ -121,6 +121,15 @@ GameData* SqlTableModel::get(const QString& tag)
     return game;
 }
 
+int SqlTableModel::rowCount()
+{
+    while(canFetchMore()) {
+        QSqlQueryModel::fetchMore();
+    }
+
+    return QSqlTableModel::rowCount();
+}
+
 void SqlTableModel::filterByTitle(const QString &title)
 {
     if(title.isEmpty()) {
