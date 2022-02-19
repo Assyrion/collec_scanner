@@ -1,6 +1,6 @@
 import QZXing 3.3
 import QtQuick 2.6
-import QtMultimedia 5.8
+import QtMultimedia
 import QtQuick.Controls 2.2
 import Qt.labs.platform 1.0
 import "utils"
@@ -27,7 +27,7 @@ Rectangle {
         sourceComponent: Component {
             CSCameraOutput {
                 id: cameraOutput
-                filters: [ zxingFilter ]
+//                camera.filters: [ zxingFilter ]
                 onImageCaptured:{
                     snapshot.source = preview
                     decoder.decodeImageQML(preview);

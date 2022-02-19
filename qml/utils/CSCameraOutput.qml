@@ -4,12 +4,12 @@ import QtQuick.Controls 2.2
 import Qt.labs.platform 1.0
 import Qt5Compat.GraphicalEffects
 
-CaptureSession {
+Item {
     id: root
 
     signal imageCaptured(string preview)
-    property alias camera: camera
-//    focus: visible
+    property alias camera: mainCamera
+    //    focus: visible
     function capture() {
         camera.imageCapture.capture()
     }
@@ -21,33 +21,41 @@ CaptureSession {
         camera.stop()
     }
 
-    videoOutput : VideoOutput {
-        id: videoOutput
-        anchors.fill: parent
-
+    MediaDevices {
+        id: deviceList
     }
-//    autoOrientation: true
 
+    Camera {
+        id: mainCamera
+        //        position:    Camera.BackFace
+        //        cameraState: Camera.UnloadedState
+        //        captureMode: Camera.CaptureStillImage
 
-    camera: Camera {
-        id: camera
-        position:    Camera.BackFace
-        cameraState: Camera.UnloadedState
-        captureMode: Camera.CaptureStillImage
-        focus {
-            focusMode:      Camera.FocusContinuous
-            focusPointMode: Camera.FocusPointAuto
-        }
-        imageProcessing {
-            whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
-        }
-        exposure {
-            exposureMode: Camera.ExposureAuto
-        }
-        imageCapture {
-            onImageCaptured:{
-                root.imageCaptured(preview)
-            }
-        }
+        cameraDevice: deviceList.defaultVideoInput
+        focusMode: Camera.FocusModeAutoNear
+
+        //        focus {
+        //            focusMode:      Camera.FocusContinuous
+        //            focusPointMode: Camera.FocusPointAuto
+        //        }
+        //        imageProcessing {
+        //            whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
+        //        }
+        //        exposure {
+        //            exposureMode: Camera.ExposureAuto
+        //        }
+    }
+
+    VideoOutput {
+        id: mainVideoOutput
+        anchors.fill: parent
+        fillMode: VideoOutput.PreserveAspectFit
+    }
+
+    CaptureSession {
+        videoOutput : mainVideoOutput
+        camera: mainCamera
+
+        onImageCaptureChanged: root.imageCaptured(preview)
     }
 }

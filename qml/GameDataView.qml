@@ -1,8 +1,8 @@
 import QtQuick 2.8
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import QtQuick.Dialogs.qml 1.0
-import QtGraphicalEffects 1.0
+import QtQuick.Dialogs
+import Qt5Compat.GraphicalEffects
 import GameData 1.0
 import "utils"
 

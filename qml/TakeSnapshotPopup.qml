@@ -1,7 +1,7 @@
 import QtQuick 2.8
-import QtMultimedia 5.8
+import QtMultimedia
 import QtQuick.Controls 2.2
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 import "utils"
 
 Popup {
