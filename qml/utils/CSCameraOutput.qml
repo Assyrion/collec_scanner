@@ -1,15 +1,15 @@
 import QtQuick 2.8
-import QtMultimedia 5.8
+import QtMultimedia
 import QtQuick.Controls 2.2
 import Qt.labs.platform 1.0
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 
-VideoOutput {
+CaptureSession {
     id: root
 
     signal imageCaptured(string preview)
     property alias camera: camera
-    focus: visible
+//    focus: visible
     function capture() {
         camera.imageCapture.capture()
     }
@@ -21,9 +21,15 @@ VideoOutput {
         camera.stop()
     }
 
-    autoOrientation: true
+    videoOutput : VideoOutput {
+        id: videoOutput
+        anchors.fill: parent
 
-    source: Camera {
+    }
+//    autoOrientation: true
+
+
+    camera: Camera {
         id: camera
         position:    Camera.BackFace
         cameraState: Camera.UnloadedState
