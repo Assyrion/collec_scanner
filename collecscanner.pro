@@ -1,5 +1,5 @@
-QT += quick sql
-CONFIG += c++14 qzxing_qml qzxing_multimedia
+QT += sql
+CONFIG += c++14 qzxing_multimedia
 TARGET = collecscanner
 DEFINES += APPNAME='\\"$${TARGET}\\"'
 

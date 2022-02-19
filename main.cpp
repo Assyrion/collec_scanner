@@ -5,7 +5,6 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QQmlContext>
-#include <QZXingFilter.h>
 #include <QZXing.h>
 #include <QSaveFile>
 #include <QDebug>
