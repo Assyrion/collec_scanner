@@ -19,8 +19,6 @@
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
     GameDataMaker::registerQMLTypes();
     QZXing::registerQMLTypes();
 
@@ -52,7 +50,7 @@ int main(int argc, char *argv[])
 
     QDir fromDir("assets:/" + PICPATH);
     auto list = fromDir.entryInfoList({"*.png"}, QDir::Files);
-    for(auto fileinfo: list) {
+    for(const auto &fileinfo: list) {
         QFile pic(fileinfo.absoluteFilePath());
         QString toPath = picPath.absolutePath()
                 + QDir::separator()

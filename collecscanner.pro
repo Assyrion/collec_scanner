@@ -4,7 +4,7 @@ TARGET = collecscanner
 DEFINES += APPNAME='\\"$${TARGET}\\"'
 
 android {
-    QT += androidextras
+    QT += core-private
 
     deployment.files += $$getenv(LOCALAPPDATA)/$${TARGET}/*
     deployment.path = /assets

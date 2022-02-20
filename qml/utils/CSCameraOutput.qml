@@ -8,8 +8,10 @@ Item {
     id: root
 
     signal imageCaptured(string preview)
+
     property alias camera: mainCamera
-    //    focus: visible
+    property alias videoOutput: mainVideoOutput
+
     function capture() {
         camera.imageCapture.capture()
     }
@@ -27,23 +29,14 @@ Item {
 
     Camera {
         id: mainCamera
-        //        position:    Camera.BackFace
-        //        cameraState: Camera.UnloadedState
+        cameraDevice:  deviceList.defaultVideoInput
+//                cameraState: Camera.UnloadedState
         //        captureMode: Camera.CaptureStillImage
 
-        cameraDevice: deviceList.defaultVideoInput
+//        cameraDevice: deviceList.defaultVideoInput
         focusMode: Camera.FocusModeAutoNear
-
-        //        focus {
-        //            focusMode:      Camera.FocusContinuous
-        //            focusPointMode: Camera.FocusPointAuto
-        //        }
-        //        imageProcessing {
-        //            whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
-        //        }
-        //        exposure {
-        //            exposureMode: Camera.ExposureAuto
-        //        }
+        whiteBalanceMode: Camera.WhiteBalanceFlash
+        exposureMode: Camera.ExposureBarcode
     }
 
     VideoOutput {
