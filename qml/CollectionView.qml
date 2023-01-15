@@ -98,7 +98,7 @@ Pane {
         anchors.fill: parent
         Connections {
             target: gameDataLoader.item
-            onClosed: {
+            function onClosed() {
                 gameDataLoader.sourceComponent
                         = undefined
             }
