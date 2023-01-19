@@ -1,6 +1,6 @@
-import QtQuick 2.6
+import QtQuick 6.2
 import QtQuick.Window 2.2
-import QtQuick.Controls 2.2
+import QtQuick.Controls 6.2
 import QtQuick.Layouts 1.3
 import GameData 1.0
 import "qml"
@@ -11,8 +11,8 @@ Window {
     visible: true
     visibility: Window.AutomaticVisibility
 
-    width : Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight
+    width : Screen.desktopAvailableWidth / 8
+    height: Screen.desktopAvailableHeight / 2
 
     SwipeView {
         id: view

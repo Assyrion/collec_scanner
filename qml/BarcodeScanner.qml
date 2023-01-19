@@ -1,7 +1,7 @@
 import QZXing 3.3
-import QtQuick 2.6
+import QtQuick 6.2
 import QtMultimedia
-import QtQuick.Controls 2.2
+import QtQuick.Controls 6.2
 import Qt.labs.platform 1.0
 import "utils"
 
@@ -27,7 +27,6 @@ Rectangle {
         sourceComponent: Component {
             CSCameraOutput {
                 id: cameraOutput
-//                camera.filters: [ zxingFilter ]
                 onImageCaptured:{
                     snapshot.source = preview
                     decoder.decodeImageQML(preview);
@@ -36,23 +35,40 @@ Rectangle {
         }
     }
 
+
+
     QZXingFilter {
         id: zxingFilter
         captureRect: {
-            loader.item.contentRect;
-            loader.item.sourceRect;
-            var rect = Qt.rect(0.25, 0.25, 0.5, 0.5)
-            var normalizedRect = loader.item.mapNormalizedRectToItem(rect)
-            return loader.item.mapRectToSource(normalizedRect)
+            rec.x = root.width * 0.25
+            rec.y = root.height * 0.25
+            rec.width = root.width * 0.5
+            rec.height = root.height * 0.5
+            return Qt.rect(root.width * 0.25,
+                           root.height * 0.25,
+                           root.width * 0.5,
+                           root.height * 0.5)
         }
 
+        videoSink:  loader.item.videoOutput.videoSink
         decoder {
             enabledDecoders: QZXing.DecoderFormat_EAN_13
 //                           | QZXing.DecoderFormat_EAN_8
             onTagFound: {
+                textLOL.text = qsTr(tag + " found")
                 barcodeFound(tag)
             }
             tryHarder: false
         }
+    }
+    Text {
+        id: textLOL
+        anchors.centerIn: parent
+        color: "red"
+    }
+    Rectangle {
+        id: rec
+        color : "yellow"
+        opacity : 0.3
     }
 }

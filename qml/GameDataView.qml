@@ -1,5 +1,5 @@
-import QtQuick 2.8
-import QtQuick.Controls 2.2
+import QtQuick 6.2
+import QtQuick.Controls 6.2
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs
 import Qt5Compat.GraphicalEffects
@@ -198,7 +198,7 @@ Pane {
         Connections {
             target: loader.item
             ignoreUnknownSignals: true
-            onAccepted: {
+            function onAccepted() {
                 removeGame()
                 closed()
             }
