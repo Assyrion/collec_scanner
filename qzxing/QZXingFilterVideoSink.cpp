@@ -40,11 +40,11 @@ void QZXingFilter::handleDecodingFinished(bool succeeded)
 void QZXingFilter::setOrientation(int orientation)
 {
     if (orientation_ == orientation) {
-            return;
-        }
+        return;
+    }
 
-        orientation_ = orientation;
-        emit orientationChanged(orientation_);
+    orientation_ = orientation;
+    emit orientationChanged(orientation_);
 }
 
 int QZXingFilter::orientation() const
@@ -55,60 +55,72 @@ int QZXingFilter::orientation() const
 void QZXingFilter::setVideoSink(QObject *videoSink){
     m_videoSink = qobject_cast<QVideoSink*>(videoSink);
 
-    connect(m_videoSink, &QVideoSink::videoFrameChanged, this, &QZXingFilter::processFrame);
+    connect(m_videoSink, &QVideoSink::videoFrameChanged, this, &QZXingFilter::processFrame, Qt::DirectConnection);
 }
 
 void QZXingFilter::processFrame(const QVideoFrame &frame) {
+    if(!m_decoding && (!m_elapsedTimer.isValid() || m_elapsedTimer.elapsed() >= 200)){
+        m_elapsedTimer.restart();
+        m_decoding = true;
+
+        bool didWeMapTheFrame = false;
+        if(!static_cast<QVideoFrame>(frame).isMapped()){
+
 #ifdef Q_OS_ANDROID
-    m_videoSink->setRhi(nullptr); // https://bugreports.qt.io/browse/QTBUG-97789
-    QVideoFrame f(frame);
-    f.map(QVideoFrame::ReadOnly);
-#else
-    const QVideoFrame &f = frame;
+//            m_videoSink->setRhi(nullptr); // https://bugreports.qt.io/browse/QTBUG-97789
+            didWeMapTheFrame = static_cast<QVideoFrame>(frame).map(QVideoFrame::ReadOnly);
+            //#else
+            //    const QVideoFrame &f = frame;
 #endif // Q_OS_ANDROID
+//        }
+//        if(static_cast<QVideoFrame>(frame).isMapped()){
+//            QImage image = static_cast<QVideoFrame>(frame).toImage();
+//            if(image.isNull())
+//            {
+//                qDebug() << "QZXingFilter error: Cant create image file to process.";
+//                m_decoding = false;
+//                return;
+//            }
+//            else {
+//                processThread = QtConcurrent::run([=](){
 
-    if(!isDecoding() && processThread.isFinished()){
-        decoding = true;
+//                    QThread::msleep(500);
+//                    QImage frameToProcess(image);
+//                    m_decoding = false;
+//                    //                    const QRect& rect = captureRect.toRect();
 
-        QImage image = f.toImage();
-        processThread = QtConcurrent::run([=](){
-            if(image.isNull())
-            {
-                qDebug() << "QZXingFilter error: Cant create image file to process.";
-                decoding = false;
-                return;
-            }
+//                    //                    if (captureRect.isValid() && frameToProcess.size() != rect.size()) {
+//                    //                        frameToProcess = image.copy(rect);
+//                    //                    }
 
-            QImage frameToProcess(image);
-            const QRect& rect = captureRect.toRect();
+//                    //                    if (!orientation_) {
+//                    //                        decoder.decodeImage(frameToProcess);
+//                    //                    } else {
+//                    //                        QTransform transformation;
+//                    //                        transformation.translate(frameToProcess.rect().center().x(), frameToProcess.rect().center().y());
+//                    //                        transformation.rotate(-orientation_);
 
-            if (captureRect.isValid() && frameToProcess.size() != rect.size()) {
-                frameToProcess = image.copy(rect);
-            }
+//                    //                        QImage translatedImage = frameToProcess.transformed(transformation);
 
-            if (!orientation_) {
-                decoder.decodeImage(frameToProcess);
-            } else {
-                QTransform transformation;
-                transformation.translate(frameToProcess.rect().center().x(), frameToProcess.rect().center().y());
-                transformation.rotate(-orientation_);
+//                    //                        decoder.decodeImage(translatedImage);
+//                    //                    }
 
-                QImage translatedImage = frameToProcess.transformed(transformation);
+//                    //        static int i=0;
+//                    //        qDebug() << "image.size()" << frameToProcess.size();
+//                    //        qDebug() << "image.format()" << frameToProcess.format();
+//                    //        const QString path = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation) + "/qrtest/test_" + QString::number(i++ % 100) + ".png";
+//                    //        qDebug() << "saving image" << i << "at:" << path << frameToProcess.save(path);
 
-                decoder.decodeImage(translatedImage);
-            }
+//                    //                    decoder.decodeImage(frameToProcess, frameToProcess.width(), frameToProcess.height());
+//                });
+//            }
+//            if(didWeMapTheFrame) static_cast<QVideoFrame>(frame).unmap();
+        } else {
+            m_decoding = false;
+        }
 
-            //        static int i=0;
-            //        qDebug() << "image.size()" << frameToProcess.size();
-            //        qDebug() << "image.format()" << frameToProcess.format();
-            //        const QString path = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation) + "/qrtest/test_" + QString::number(i++ % 100) + ".png";
-            //        qDebug() << "saving image" << i << "at:" << path << frameToProcess.save(path);
-
-            decoder.decodeImage(frameToProcess, frameToProcess.width(), frameToProcess.height());
-        });
+////#ifdef Q_OS_ANDROID
+////        if(didWeMapTheFrame) f.unmap();
+////#endif
     }
-
-#ifdef Q_OS_ANDROID
-    f.unmap();
-#endif
 }
