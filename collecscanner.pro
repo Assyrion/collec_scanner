@@ -6,9 +6,9 @@ DEFINES += APPNAME='\\"$${TARGET}\\"'
 android {
     QT += core-private
 
-    deployment.files += $$getenv(LOCALAPPDATA)/$${TARGET}/*
-    deployment.path = /assets
-    INSTALLS += deployment
+    assets.files += $$getenv(LOCALAPPDATA)/$${TARGET}/*
+    assets.path = /assets
+    INSTALLS += assets
 }
 
 # The following define makes your compiler emit warnings if you use
@@ -53,3 +53,9 @@ HEADERS += \
     imagemanager.h \
     global.h \
     sqltablemodel.h
+
+contains(ANDROID_TARGET_ARCH,arm64-v8a) {
+    ANDROID_PACKAGE_SOURCE_DIR = \
+        $$PWD/android
+}
+
