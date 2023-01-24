@@ -35,8 +35,6 @@ Rectangle {
         }
     }
 
-
-
     QZXingFilter {
         id: zxingFilter
         captureRect: {
@@ -53,7 +51,7 @@ Rectangle {
         videoSink:  loader.item.videoOutput.videoSink
         decoder {
             enabledDecoders: QZXing.DecoderFormat_EAN_13
-//                           | QZXing.DecoderFormat_EAN_8
+                             | QZXing.DecoderFormat_QR_CODE
             onTagFound: {
                 textLOL.text = qsTr(tag + " found")
                 barcodeFound(tag)
@@ -68,7 +66,7 @@ Rectangle {
     }
     Rectangle {
         id: rec
-        color : "yellow"
+        color : "blue"
         opacity : 0.3
     }
 }

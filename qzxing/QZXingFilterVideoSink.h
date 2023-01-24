@@ -57,9 +57,6 @@ class QZXingFilter : public QObject
         QVideoSink *m_videoSink;
         QFuture<void> processThread;
 
-        QElapsedTimer m_elapsedTimer;
-        bool m_decoding = false;
-
     public:  /// Methods
         explicit QZXingFilter(QObject *parent = 0);
         void setVideoSink(QObject *videoSink);

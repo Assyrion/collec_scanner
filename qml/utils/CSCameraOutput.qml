@@ -3,6 +3,7 @@ import QtMultimedia
 import QtQuick.Controls 6.2
 import Qt.labs.platform 1.0
 import Qt5Compat.GraphicalEffects
+import QZXing 3.3
 
 Item {
     id: root
@@ -33,7 +34,6 @@ Item {
 //                cameraState: Camera.UnloadedState
         //        captureMode: Camera.CaptureStillImage
 
-//        cameraDevice: deviceList.defaultVideoInput
         focusMode: Camera.FocusModeAutoNear
         whiteBalanceMode: Camera.WhiteBalanceFlash
         exposureMode: Camera.ExposureBarcode
@@ -42,7 +42,7 @@ Item {
     VideoOutput {
         id: mainVideoOutput
         anchors.fill: parent
-        fillMode: VideoOutput.PreserveAspectFit
+        fillMode: VideoOutput.Stretch
     }
 
     CaptureSession {
