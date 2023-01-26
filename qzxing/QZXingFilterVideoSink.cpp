@@ -54,12 +54,9 @@ int QZXingFilter::orientation() const
 
 void QZXingFilter::setVideoSink(QObject *videoSink)
 {
-    if(!videoSink)
-        return;
-
     m_videoSink = qobject_cast<QVideoSink*>(videoSink);
 
-    connect(m_videoSink, &QVideoSink::videoFrameChanged, this, &QZXingFilter::processFrame);
+    connect(m_videoSink, &QVideoSink::videoFrameChanged, this, &QZXingFilter::processFrame, Qt::DirectConnection);
 }
 
 void QZXingFilter::processFrame(const QVideoFrame &frame)
@@ -68,9 +65,7 @@ void QZXingFilter::processFrame(const QVideoFrame &frame)
         decoding = true;
         bool didWeMapTheFrame = false;
         if (!static_cast<QVideoFrame>(frame).isMapped()) {
-#ifdef Q_OS_ANDROID
-            m_videoSink->setRhi(nullptr); // https://bugreports.qt.io/browse/QTBUG-97789
-#endif
+
             didWeMapTheFrame = static_cast<QVideoFrame>(frame).map(QVideoFrame::ReadOnly);
         }
 
@@ -105,11 +100,10 @@ void QZXingFilter::processFrame(const QVideoFrame &frame)
                     decoding = false;
                 });
             } else {
-
                 decoding = false;
             }
             if(didWeMapTheFrame) static_cast<QVideoFrame>(frame).unmap();
-        }else {
+        } else {
             decoding = false;
         }
     }
