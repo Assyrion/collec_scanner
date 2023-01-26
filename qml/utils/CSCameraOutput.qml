@@ -30,12 +30,8 @@ Item {
 
     Camera {
         id: mainCamera
-        cameraDevice:  deviceList.defaultVideoInput
-//                cameraState: Camera.UnloadedState
-        //        captureMode: Camera.CaptureStillImage
-
+        cameraDevice: deviceList.defaultVideoInput
         focusMode: Camera.FocusModeAutoNear
-        whiteBalanceMode: Camera.WhiteBalanceFlash
         exposureMode: Camera.ExposureBarcode
     }
 

@@ -51,8 +51,8 @@ Popup {
                     id: cameraOutput
                     camera.exposureMode:
                         Camera.ExposurePortrait
-                    videoOutput.fillMode:
-                        VideoOutput.PreserveAspectCrop
+//                    videoOutput.fillMode:
+//                        VideoOutput.PreserveAspectCrop
                     onImageCaptured: {
     //                    snapshot.source = preview
                     }
