@@ -1,15 +1,18 @@
-import QtQuick 2.8
-import QtMultimedia 5.8
-import QtQuick.Controls 2.2
+import QtQuick 6.2
+import QtMultimedia
+import QtQuick.Controls 6.2
 import Qt.labs.platform 1.0
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
+import QZXing 3.3
 
-VideoOutput {
+Item {
     id: root
 
     signal imageCaptured(string preview)
-    property alias camera: camera
-    focus: visible
+
+    property alias camera: mainCamera
+    property alias videoOutput: mainVideoOutput
+
     function capture() {
         camera.imageCapture.capture()
     }
@@ -21,27 +24,27 @@ VideoOutput {
         camera.stop()
     }
 
-    autoOrientation: true
+    MediaDevices {
+        id: deviceList
+    }
 
-    source: Camera {
-        id: camera
-        position:    Camera.BackFace
-        cameraState: Camera.UnloadedState
-        captureMode: Camera.CaptureStillImage
-        focus {
-            focusMode:      Camera.FocusContinuous
-            focusPointMode: Camera.FocusPointAuto
-        }
-        imageProcessing {
-            whiteBalanceMode: CameraImageProcessing.WhiteBalanceFlash
-        }
-        exposure {
-            exposureMode: Camera.ExposureAuto
-        }
-        imageCapture {
-            onImageCaptured:{
-                root.imageCaptured(preview)
-            }
-        }
+    Camera {
+        id: mainCamera
+        cameraDevice: deviceList.defaultVideoInput
+        focusMode: Camera.FocusModeAutoNear
+        exposureMode: Camera.ExposureBarcode
+    }
+
+    VideoOutput {
+        id: mainVideoOutput
+        anchors.fill: parent
+        fillMode: VideoOutput.Stretch
+    }
+
+    CaptureSession {
+        videoOutput : mainVideoOutput
+        camera: mainCamera
+
+        onImageCaptureChanged: root.imageCaptured(preview)
     }
 }

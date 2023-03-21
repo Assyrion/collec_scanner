@@ -1,7 +1,7 @@
-import QZXing 2.3
-import QtQuick 2.6
-import QtMultimedia 5.8
-import QtQuick.Controls 2.2
+import QZXing 3.3
+import QtQuick 6.2
+import QtMultimedia
+import QtQuick.Controls 6.2
 import Qt.labs.platform 1.0
 import GameData 1.0
 import "utils"

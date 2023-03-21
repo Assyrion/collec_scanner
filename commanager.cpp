@@ -10,7 +10,7 @@
 #include "global.h"
 
 #ifdef Q_OS_ANDROID
-#include <QtAndroid>
+#include <QtCore/private/qandroidextras_p.h>
 #endif
 
 ComManager::ComManager(QObject *parent) : QObject(parent)
@@ -22,10 +22,10 @@ void ComManager::exportDB() const
 #ifdef Q_OS_ANDROID
 
     // ask permission dynamically is required
-    auto  result = QtAndroid::checkPermission(QString("android.permission.WRITE_EXTERNAL_STORAGE"));
-    if(result == QtAndroid::PermissionResult::Denied){
-        QtAndroid::PermissionResultMap resultHash = QtAndroid::requestPermissionsSync(QStringList({"android.permission.WRITE_EXTERNAL_STORAGE"}));
-        if(resultHash["android.permission.WRITE_EXTERNAL_STORAGE"] == QtAndroid::PermissionResult::Denied)
+    auto result = QtAndroidPrivate::checkPermission(QString("android.permission.WRITE_EXTERNAL_STORAGE"));
+    if(result.result() != QtAndroidPrivate::PermissionResult::Authorized){
+        auto resultHash = QtAndroidPrivate::requestPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+        if(resultHash.result() != QtAndroidPrivate::PermissionResult::Authorized)
             return;
     }
 
@@ -35,7 +35,7 @@ void ComManager::exportDB() const
     QDir dirCur = QDir::current();
     QString downloadPath = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
     auto dbL = dirCur.entryInfoList({DBNAME}, QDir::Files);
-    for(auto fileinfo: dbL) {
+    for(const auto &fileinfo: dbL) {
         QFile from_dbf(fileinfo.absoluteFilePath());
         from_dbf.open(QIODevice::ReadOnly);
         QString toPath = downloadPath

@@ -43,6 +43,7 @@ QZXingFilter::QZXingFilter(QObject *parent)
     : QAbstractVideoFilter(parent)
     , decoder(QZXing::DecoderFormat_QR_CODE)
     , decoding(false)
+    , orientation_(0)
 {
     /// Connecting signals to handlers that will send signals to QML
     connect(&decoder, &QZXing::decodingStarted,
@@ -53,10 +54,6 @@ QZXingFilter::QZXingFilter(QObject *parent)
 
 QZXingFilter::~QZXingFilter()
 {
-    if(!processThread.isFinished()) {
-      processThread.cancel();
-      processThread.waitForFinished();
-    }
 }
 
 void QZXingFilter::handleDecodingStarted()
@@ -71,6 +68,21 @@ void QZXingFilter::handleDecodingFinished(bool succeeded)
     decoding = false;
     emit decodingFinished(succeeded, decoder.getProcessTimeOfLastDecoding());
     emit isDecodingChanged();
+}
+
+void QZXingFilter::setOrientation(int orientation)
+{
+    if (orientation_ == orientation) {
+            return;
+        }
+
+        orientation_ = orientation;
+        emit orientationChanged(orientation_);
+}
+
+int QZXingFilter::orientation() const
+{
+    return orientation_;
 }
 
 QVideoFilterRunnable * QZXingFilter::createFilterRunnable()
@@ -90,6 +102,12 @@ QZXingFilterRunnable::QZXingFilterRunnable(QZXingFilter * filter)
 }
 QZXingFilterRunnable::~QZXingFilterRunnable()
 {
+    if(filter != ZXING_NULLPTR && !filter->processThread.isFinished())
+    {
+        filter->processThread.cancel();
+        filter->processThread.waitForFinished();
+    }
+
     filter = ZXING_NULLPTR;
 }
 
@@ -177,8 +195,8 @@ static QImage* rgbDataToGrayscale(const uchar* data, const CaptureRect& captureR
     data += (captureRect.startY * captureRect.sourceWidth + captureRect.startX) * stride;
     for (int y = 1; y <= captureRect.targetHeight; ++y) {
 
-    //Quick fix for iOS devices. Will be handled better in the future
-#ifdef Q_OS_IOS
+    //Quick fix for iOS & macOS devices. Will be handled better in the future
+#if defined(Q_OS_IOS) || defined (Q_OS_MAC) || defined(Q_OS_SAILFISH) || defined(Q_OS_UBUNTUTOUCH)
         uchar* pixel = pixelInit + (y - 1) * captureRect.targetWidth;
 #else
         uchar* pixel = pixelInit + (captureRect.targetHeight - y) * captureRect.targetWidth;
@@ -370,7 +388,19 @@ void QZXingFilterRunnable::processVideoFrameProbed(SimpleVideoFrame & videoFrame
 
     //QZXingImageProvider::getInstance()->storeImage(image);
 
-    decode(*image_ptr);
+    int orientation = filter ? filter->orientation() : 0;
+
+    if (!orientation) {
+        decode(*image_ptr);
+    } else {
+        QTransform transformation;
+        transformation.translate(image_ptr->rect().center().x(), image_ptr->rect().center().y());
+        transformation.rotate(-orientation);
+
+        QImage translatedImage = image_ptr->transformed(transformation);
+
+        decode(translatedImage);
+    }
 
     delete image_ptr;
 }

@@ -1,7 +1,7 @@
-import QtQuick 2.8
-import QtMultimedia 5.8
-import QtQuick.Controls 2.2
-import QtGraphicalEffects 1.0
+import QtQuick 6.2
+import QtMultimedia
+import QtQuick.Controls 6.2
+import Qt5Compat.GraphicalEffects
 import "utils"
 
 Popup {
@@ -49,10 +49,10 @@ Popup {
             sourceComponent: Component {
                 CSCameraOutput {
                     id: cameraOutput
-                    camera.exposure.exposureMode:
+                    camera.exposureMode:
                         Camera.ExposurePortrait
-                    fillMode:
-                        VideoOutput.PreserveAspectCrop
+//                    videoOutput.fillMode:
+//                        VideoOutput.PreserveAspectCrop
                     onImageCaptured: {
     //                    snapshot.source = preview
                     }

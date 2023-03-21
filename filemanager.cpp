@@ -19,7 +19,7 @@ FileManager::~FileManager()
 void FileManager::addEntry(GameData* game)
 {
     QTextStream ts(&m_jvFile);
-    ts.setCodec("UTF-8");
+    ts.setEncoding(QStringConverter::Utf8);
     ts << *game << '\n';
 }
 

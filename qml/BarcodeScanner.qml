@@ -1,7 +1,7 @@
-import QZXing 2.3
-import QtQuick 2.6
-import QtMultimedia 5.8
-import QtQuick.Controls 2.2
+import QZXing 3.3
+import QtQuick 6.2
+import QtMultimedia
+import QtQuick.Controls 6.2
 import Qt.labs.platform 1.0
 import "utils"
 
@@ -25,34 +25,38 @@ Rectangle {
         active: false
         anchors.fill: parent
         sourceComponent: Component {
-            CSCameraOutput {
-                id: cameraOutput
-                filters: [ zxingFilter ]
-                onImageCaptured:{
-                    snapshot.source = preview
-                    decoder.decodeImageQML(preview);
+            Item {
+                CSCameraOutput {
+                    id: cameraOutput
+                    anchors.fill: parent
+                    onImageCaptured:{
+                        snapshot.source = preview
+                        decoder.decodeImageQML(preview);
+                    }
+                }
+                QZXingFilter {
+                    id: zxingFilter
+                    captureRect: {
+                        cameraOutput.videoOutput.sourceRect;
+                        return Qt.rect(cameraOutput.videoOutput.sourceRect.width * 0.25,
+                                       cameraOutput.videoOutput.sourceRect.height * 0.25,
+                                       cameraOutput.videoOutput.sourceRect.width * 0.5,
+                                       cameraOutput.videoOutput.sourceRect.height * 0.5)
+
+                    }
+
+                    videoSink:  cameraOutput.videoOutput.videoSink
+                    orientation: cameraOutput.videoOutput.orientation
+
+                    decoder {
+                        enabledDecoders: QZXing.DecoderFormat_EAN_13
+                        onTagFound: {
+                            barcodeFound(tag)
+                        }
+                        tryHarder: false
+                    }
                 }
             }
-        }
-    }
-
-    QZXingFilter {
-        id: zxingFilter
-        captureRect: {
-            loader.item.contentRect;
-            loader.item.sourceRect;
-            var rect = Qt.rect(0.25, 0.25, 0.5, 0.5)
-            var normalizedRect = loader.item.mapNormalizedRectToItem(rect)
-            return loader.item.mapRectToSource(normalizedRect)
-        }
-
-        decoder {
-            enabledDecoders: QZXing.DecoderFormat_EAN_13
-//                           | QZXing.DecoderFormat_EAN_8
-            onTagFound: {
-                barcodeFound(tag)
-            }
-            tryHarder: false
         }
     }
 }
