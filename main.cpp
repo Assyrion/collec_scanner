@@ -1,6 +1,7 @@
 #include <QQmlApplicationEngine>
 #include <QGuiApplication>
 #include <QSurfaceFormat>
+#include <QAuthenticator>
 #include <QQuickWindow>
 #include <QSqlDatabase>
 #include <QSqlError>
@@ -16,6 +17,7 @@
 #include "commanager.h"
 #include "gamedata.h"
 #include "global.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -40,27 +42,47 @@ int main(int argc, char *argv[])
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
 
-#ifdef Q_OS_ANDROID
-
     // copy pics from assets folder to app folder
     QDir picPath(PICPATH_ABS);
     if(!picPath.exists()) {
         picPath.mkpath(".");
     }
 
-    QDir fromDir("assets:/" + PICPATH);
-    auto list = fromDir.entryInfoList({"*.png"}, QDir::Files);
-    for(const auto &fileinfo: list) {
-        QFile pic(fileinfo.absoluteFilePath());
-        QString realFileName = fileinfo.fileName().remove("assets:/");
-        QString toPath = picPath.absolutePath()
-                + QDir::separator()
-                + realFileName;
-        if(!QFile::exists(toPath)) {
-            pic.copy(toPath);
-            QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
+    picPath.setFilter(QDir::Files | QDir::NoSymLinks);
+    picPath.setNameFilters(QStringList() << "*.png");
+    int local_count = picPath.entryList().count();
+    qDebug() << "local_count : " << local_count;
+
+    QDir fromDir(REMOTE_PIC_PATH);
+
+    QAuthenticator auth;
+    auth.setUser(REMOTE_USER);
+    auth.setPassword(REMOTE_PWD);
+
+    if (!auth.isNull()) {
+        fromDir.setSorting(QDir::Name);
+        fromDir.setFilter(QDir::Files | QDir::NoSymLinks);
+        fromDir.setNameFilters(QStringList() << "*.png");
+        int remote_count = fromDir.entryList().count();
+        qDebug() << "remote_count : " << remote_count;
+
+        if (fromDir.exists() && local_count < remote_count) {
+            for(const auto &fileinfo: fromDir.entryInfoList()) {
+                QFile pic(fileinfo.absoluteFilePath());
+                qDebug() << fileinfo.absoluteFilePath();
+                QString toPath = picPath.absolutePath()
+                        + QDir::separator()
+                        + fileinfo.fileName();
+                if(!QFile::exists(toPath)) {
+                    qDebug() << pic.copy(toPath);
+                    QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
+                }
+            }
         }
     }
+
+#ifdef Q_OS_ANDROID
+
 
     // copy database file from assets folder to app folder
     QFile dfile("assets:/" + DBNAME);
