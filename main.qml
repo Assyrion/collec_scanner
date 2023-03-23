@@ -47,4 +47,12 @@ Window {
         anchors.horizontalCenter:
             parent.horizontalCenter
     }
+
+    CoverDownloadingPopup {
+        id: coverDowloadingPopup
+        objectName: "coverDowloadingPopup"
+        width: 2*parent.width/3
+        height: parent.height/5
+        anchors.centerIn: parent
+    }
 }

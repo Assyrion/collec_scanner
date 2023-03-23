@@ -10,6 +10,7 @@
 #include <QSaveFile>
 #include <QDebug>
 #include <QDir>
+#include <QThread>
 
 #include "sqltablemodel.h"
 #include "imagemanager.h"
@@ -18,6 +19,47 @@
 #include "gamedata.h"
 #include "global.h"
 
+void copyCover(QObject* dialog)
+{
+    // copy pics from assets folder to app folder
+    QDir picPath(PICPATH_ABS);
+    if(!picPath.exists()) {
+        picPath.mkpath(".");
+    }
+
+    picPath.setFilter(QDir::Files | QDir::NoSymLinks);
+    picPath.setNameFilters(QStringList() << "*.png");
+    int local_count = picPath.entryList().count();
+
+    QDir fromDir(REMOTE_PIC_PATH);
+
+    QAuthenticator auth;
+    auth.setUser(REMOTE_USER);
+    auth.setPassword(REMOTE_PWD);
+
+    if (!auth.isNull()) {
+        fromDir.setSorting(QDir::Name);
+        fromDir.setFilter(QDir::Files | QDir::NoSymLinks);
+        fromDir.setNameFilters(QStringList() << "*.png");
+        int remote_count = fromDir.entryList().count();
+
+        if (fromDir.exists() && local_count < remote_count) {
+            QMetaObject::invokeMethod(dialog, "setMaxValue", Q_ARG(QVariant, remote_count - local_count));
+            int count = 0;
+            for(const auto &fileinfo: fromDir.entryInfoList()) {
+                QFile pic(fileinfo.absoluteFilePath());
+                QString toPath = picPath.absolutePath()
+                        + QDir::separator()
+                        + fileinfo.fileName();
+                if(!QFile::exists(toPath)) {
+                    pic.copy(toPath);
+                    QMetaObject::invokeMethod(dialog, "setValue", Q_ARG(QVariant, ++count));
+                    QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
+                }
+            }
+        }
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -32,7 +74,8 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    QQuickWindow* window = static_cast<QQuickWindow*>(engine.rootObjects().first());
+    auto rootObject = engine.rootObjects().first();
+    QQuickWindow* window = static_cast<QQuickWindow*>(rootObject);
     if (window) {
         // Set anti-aliasing
         QSurfaceFormat  format;
@@ -42,47 +85,7 @@ int main(int argc, char *argv[])
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
 
-    // copy pics from assets folder to app folder
-    QDir picPath(PICPATH_ABS);
-    if(!picPath.exists()) {
-        picPath.mkpath(".");
-    }
-
-    picPath.setFilter(QDir::Files | QDir::NoSymLinks);
-    picPath.setNameFilters(QStringList() << "*.png");
-    int local_count = picPath.entryList().count();
-    qDebug() << "local_count : " << local_count;
-
-    QDir fromDir(REMOTE_PIC_PATH);
-
-    QAuthenticator auth;
-    auth.setUser(REMOTE_USER);
-    auth.setPassword(REMOTE_PWD);
-
-    if (!auth.isNull()) {
-        fromDir.setSorting(QDir::Name);
-        fromDir.setFilter(QDir::Files | QDir::NoSymLinks);
-        fromDir.setNameFilters(QStringList() << "*.png");
-        int remote_count = fromDir.entryList().count();
-        qDebug() << "remote_count : " << remote_count;
-
-        if (fromDir.exists() && local_count < remote_count) {
-            for(const auto &fileinfo: fromDir.entryInfoList()) {
-                QFile pic(fileinfo.absoluteFilePath());
-                qDebug() << fileinfo.absoluteFilePath();
-                QString toPath = picPath.absolutePath()
-                        + QDir::separator()
-                        + fileinfo.fileName();
-                if(!QFile::exists(toPath)) {
-                    qDebug() << pic.copy(toPath);
-                    QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
-                }
-            }
-        }
-    }
-
 #ifdef Q_OS_ANDROID
-
 
     // copy database file from assets folder to app folder
     QFile dfile("assets:/" + DBNAME);
@@ -94,6 +97,7 @@ int main(int argc, char *argv[])
     } else {
         return -1;
     }
+
 #endif
 
     db.close();
@@ -114,6 +118,19 @@ int main(int argc, char *argv[])
     context->setContextProperty("imageManager",  &imageManager);
     context->setContextProperty("fileManager",   &fileManager);
     context->setContextProperty("comManager",    &comManager);
+
+    auto dialog = rootObject->findChild<QObject*>("coverDowloadingPopup");
+    QMetaObject::invokeMethod(dialog, "show");
+
+    auto thread = new QThread();
+    QObject::connect(thread, &QThread::started, [=]() {
+        copyCover(dialog);
+        thread->quit();
+    });
+    QObject::connect(thread, &QThread::finished, [=]() {
+        QMetaObject::invokeMethod(dialog, "hide");
+    });
+    thread->start();
 
     return app.exec();
 }
