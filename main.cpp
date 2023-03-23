@@ -1,7 +1,6 @@
 #include <QQmlApplicationEngine>
 #include <QGuiApplication>
 #include <QSurfaceFormat>
-#include <QAuthenticator>
 #include <QQuickWindow>
 #include <QSqlDatabase>
 #include <QSqlError>
@@ -22,42 +21,41 @@
 void copyCover(QObject* dialog)
 {
     // copy pics from assets folder to app folder
-    QDir picPath(PICPATH_ABS);
-    if(!picPath.exists()) {
-        picPath.mkpath(".");
-    }
-
-    picPath.setFilter(QDir::Files | QDir::NoSymLinks);
-    picPath.setNameFilters(QStringList() << "*.png");
-    int local_count = picPath.entryList().count();
+    QString path = QDir::currentPath()
+            + QDir::separator()
+            + PICPATH;
+    QDir toDir(path);
+    if(!toDir.exists()) toDir.mkpath(".");
+    toDir.setFilter(QDir::Files | QDir::NoSymLinks);
+    toDir.setNameFilters(QStringList() << "*.png");
+    int local_count = toDir.entryList().count();
 
     QDir fromDir(REMOTE_PIC_PATH);
+    fromDir.setFilter(QDir::Files | QDir::NoSymLinks);
+    fromDir.setNameFilters(QStringList() << "*.png");
+    int remote_count = fromDir.entryList().count();
 
-    QAuthenticator auth;
-    auth.setUser(REMOTE_USER);
-    auth.setPassword(REMOTE_PWD);
+    QMetaObject::invokeMethod(dialog, "setText", Q_ARG(QVariant, (QString::number(remote_count) + " " + QString::number(local_count))));
 
-    if (!auth.isNull()) {
-        fromDir.setSorting(QDir::Name);
-        fromDir.setFilter(QDir::Files | QDir::NoSymLinks);
-        fromDir.setNameFilters(QStringList() << "*.png");
-        int remote_count = fromDir.entryList().count();
-
-        if (fromDir.exists() && local_count < remote_count) {
-            QMetaObject::invokeMethod(dialog, "setMaxValue", Q_ARG(QVariant, remote_count - local_count));
+    if (fromDir.exists()) {
+        qDebug() << local_count << remote_count;
+        if (local_count < remote_count) {
             int count = 0;
+            QMetaObject::invokeMethod(dialog, "setMaxValue", Q_ARG(QVariant, remote_count - local_count));
             for(const auto &fileinfo: fromDir.entryInfoList()) {
                 QFile pic(fileinfo.absoluteFilePath());
-                QString toPath = picPath.absolutePath()
+                QString toPath = toDir.absolutePath()
                         + QDir::separator()
                         + fileinfo.fileName();
                 if(!QFile::exists(toPath)) {
-                    pic.copy(toPath);
                     QMetaObject::invokeMethod(dialog, "setValue", Q_ARG(QVariant, ++count));
                     QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
                 }
             }
-        }
+        } else QMetaObject::invokeMethod(dialog, "setText", Q_ARG(QVariant, (QString::number(remote_count) + " " + QString::number(fromDir.exists()))));
+
+    } else {
+//        QMetaObject::invokeMethod(dialog, "setText", Q_ARG(QVariant, REMOTE_PIC_PATH + " n'existe pas"));
     }
 }
 
@@ -128,7 +126,7 @@ int main(int argc, char *argv[])
         thread->quit();
     });
     QObject::connect(thread, &QThread::finished, [=]() {
-        QMetaObject::invokeMethod(dialog, "hide");
+//        QMetaObject::invokeMethod(dialog, "hide");
     });
     thread->start();
 

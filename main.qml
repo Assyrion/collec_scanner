@@ -11,8 +11,8 @@ Window {
     visible: true
     visibility: Window.AutomaticVisibility
 
-    width : Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight
+    width : Screen.desktopAvailableWidth / 8
+    height: Screen.desktopAvailableHeight / 2
 
     SwipeView {
         id: view

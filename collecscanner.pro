@@ -1,4 +1,4 @@
-QT += sql networkauth
+QT += sql
 CONFIG += c++14 qzxing_multimedia
 TARGET = collecscanner
 DEFINES += APPNAME='\\"$${TARGET}\\"'

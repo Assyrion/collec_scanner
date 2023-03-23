@@ -25,10 +25,15 @@ Popup {
         progressBar.to = value;
     }
 
+    function setText(value) {
+        titleText.text = value;
+    }
+
     modal: true
     closePolicy : Popup.NoAutoClose
 
     Text {
+        id: titleText
         anchors.top: parent.top
         anchors.topMargin: 5
         anchors.horizontalCenter:
