@@ -52,12 +52,13 @@ int main(int argc, char *argv[])
     auto list = fromDir.entryInfoList({"*.png"}, QDir::Files);
     for(const auto &fileinfo: list) {
         QFile pic(fileinfo.absoluteFilePath());
+        QString realFileName = fileinfo.fileName().remove("assets:/");
         QString toPath = picPath.absolutePath()
                 + QDir::separator()
-                + fileinfo.fileName();
+                + realFileName;
         if(!QFile::exists(toPath)) {
             pic.copy(toPath);
-             QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
+            QFile::setPermissions(toPath, QFile::WriteOwner | QFile::ReadOwner);
         }
     }
 
