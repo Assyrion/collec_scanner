@@ -1,19 +1,19 @@
 #include <QQmlApplicationEngine>
+#include <QNetworkAccessManager>
+#include <QRegularExpression>
 #include <QGuiApplication>
+#include <QNetworkRequest>
 #include <QSurfaceFormat>
+#include <QNetworkReply>
 #include <QQuickWindow>
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QQmlContext>
-#include <QZXing.h>
 #include <QSaveFile>
+#include <QZXing.h>
+#include <QThread>
 #include <QDebug>
 #include <QDir>
-#include <QThread>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>>
-#include <QNetworkReply>
-#include <QRegularExpression>
 
 #include "sqltablemodel.h"
 #include "imagemanager.h"
@@ -24,14 +24,12 @@
 
 void downloadCovers(QObject* dialog)
 {
-    QString path = QDir::currentPath()
-            + QDir::separator()
-            + PICPATH;
-    QDir toDir(path);
+    QDir toDir(PICPATH_ABS);
     if(!toDir.exists()) toDir.mkpath(".");
     toDir.setFilter(QDir::Files | QDir::NoSymLinks);
     toDir.setNameFilters(QStringList() << "*.png");
     int local_count = toDir.entryList().count();
+
     QUrl url(REMOTE_PIC_PATH);
     QNetworkAccessManager manager;
     QNetworkRequest request(url);

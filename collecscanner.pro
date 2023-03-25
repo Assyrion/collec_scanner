@@ -6,7 +6,7 @@ DEFINES += APPNAME='\\"$${TARGET}\\"'
 android {
     QT += core-private
 
-    assets.files += $$getenv(LOCALAPPDATA)/$${TARGET}/*
+    assets.files += $$getenv(LOCALAPPDATA)/$${TARGET}/games.db
     assets.path = /assets
     INSTALLS += assets
 }

@@ -25,10 +25,6 @@ Popup {
         progressBar.to = value;
     }
 
-    function setText(value) {
-        titleText.text = value;
-    }
-
     modal: true
     closePolicy : progressBar.value > 0 ? Popup.NoAutoClose
                                         : Popup.CloseOnPressOutside
