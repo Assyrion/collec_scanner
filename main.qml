@@ -11,8 +11,8 @@ Window {
     visible: true
     visibility: Window.AutomaticVisibility
 
-    width : Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight
+    width : Screen.desktopAvailableWidth / 8
+    height: Screen.desktopAvailableHeight / 2
 
     SwipeView {
         id: view
@@ -46,5 +46,13 @@ Window {
         anchors.bottom: view.bottom
         anchors.horizontalCenter:
             parent.horizontalCenter
+    }
+
+    CoverDownloadingPopup {
+        id: coverDowloadingPopup
+        objectName: "coverDowloadingPopup"
+        width: 2*parent.width/3
+        height: parent.height/5
+        anchors.centerIn: parent
     }
 }
