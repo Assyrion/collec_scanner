@@ -5,11 +5,10 @@
 #include <QDir>
 
 const QString DBNAME  = "games.db";
-const QString PICPATH = "pic_test"; // pic
+const QString PICPATH = "pic_test/"; // pic
 
-const QString REMOTE_PATH = "//RASPBERRYPI/public";
-const QString REMOTE_PIC_PATH = REMOTE_PATH + QDir::separator()
-        + PICPATH;
+const QString REMOTE_PATH = "http://192.168.0.23/";
+const QString REMOTE_PIC_PATH = REMOTE_PATH + PICPATH;
 
 #ifdef Q_OS_ANDROID
 const QString DATAPATH = ".";

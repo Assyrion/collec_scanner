@@ -30,7 +30,8 @@ Popup {
     }
 
     modal: true
-    closePolicy : Popup.NoAutoClose
+    closePolicy : progressBar.value > 0 ? Popup.NoAutoClose
+                                        : Popup.CloseOnPressOutside
 
     Text {
         id: titleText
@@ -38,7 +39,10 @@ Popup {
         anchors.topMargin: 5
         anchors.horizontalCenter:
             parent.horizontalCenter
-        text : "Downloading missing covers..."
+        text : progressBar.value > 0 ?
+                   "Downloading " + progressBar.value
+                   + "/" + progressBar.to
+                 : "Checking missing covers..."
         color: "white"
         font.family: "Roboto"
         font.pointSize: 11
@@ -49,6 +53,7 @@ Popup {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         value: 0
+        indeterminate : value == 0
         width: parent.width - 20
     }
 }

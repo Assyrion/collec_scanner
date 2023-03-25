@@ -32,7 +32,7 @@ void downloadCovers(QObject* dialog)
     toDir.setFilter(QDir::Files | QDir::NoSymLinks);
     toDir.setNameFilters(QStringList() << "*.png");
     int local_count = toDir.entryList().count();
-    QUrl url("http://192.168.0.23/pic_test/");
+    QUrl url(REMOTE_PIC_PATH);
     QNetworkAccessManager manager;
     QNetworkRequest request(url);
     QNetworkReply *reply = manager.get(request);
