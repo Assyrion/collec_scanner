@@ -7,9 +7,13 @@ import "utils"
 Item {
     id: root
     signal clicked
-    Component.onCompleted: {
-        mouseArea.clicked.connect(clicked)
+
+    // because connect function does not work anymore with Qt 6.5 ?
+    Connections {
+        target: mouseArea
+        function onClicked() { clicked() }
     }
+
     Item {
         id: frontPicImg
         anchors.fill: parent

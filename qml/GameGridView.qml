@@ -39,7 +39,7 @@ PinchArea {
         }
         delegate: GameGridDelegate {
             width: gridView.cellWidth - 10
-            onClicked: {
+            onClicked: function() {
                 var arr = [tag, title, full_title, platform,
                            publisher,  developer, release_date,
                            info]

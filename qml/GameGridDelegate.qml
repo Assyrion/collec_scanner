@@ -6,11 +6,15 @@ import "utils"
 
 Item {
     id: root
+
     signal clicked
 
-    Component.onCompleted: {
-        mainImgMa.clicked.connect(clicked)
+    // because connect function does not work anymore with Qt 6.5 ?
+    Connections {
+        target: mouseArea
+        function onClicked() { clicked() }
     }
+
     Image {
         id: mainImg
         width: parent.width
@@ -22,7 +26,7 @@ Item {
         smooth: true
 
         MouseArea {
-            id: mainImgMa
+            id: mouseArea
             anchors.fill: parent
         }
     }

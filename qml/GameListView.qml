@@ -37,7 +37,7 @@ PinchArea {
         delegate: GameListDelegate {
             width:  listView.width - 10
             height: listView.scaleHeight * 46.2
-            onClicked: {
+            onClicked: function() {
                 var arr = [tag, title, full_title, platform,
                            publisher,  developer, release_date,
                            info]

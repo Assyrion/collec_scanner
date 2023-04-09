@@ -9,8 +9,10 @@ Item {
     property var imgData
     property url imgUrl
 
-    Component.onCompleted: {
-        mouseArea.clicked.connect(clicked)
+    // because connect function does not work anymore with Qt 6.5 ?
+    Connections {
+        target: mouseArea
+        function onClicked() { clicked() }
     }
 
     implicitWidth: pic.width
