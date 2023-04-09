@@ -15,6 +15,8 @@ Item {
         function onClicked() { clicked() }
     }
 
+    height: mainImg.height + 10
+
     Image {
         id: mainImg
         width: parent.width

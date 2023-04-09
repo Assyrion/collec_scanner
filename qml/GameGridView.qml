@@ -21,7 +21,7 @@ PinchArea {
         property real scaleSize: 1.0
 
         cellWidth: width/4 * gridView.scaleSize
-        cellHeight: 108 * gridView.scaleSize // hardcoded...
+        cellHeight: currentItem.height * gridView.scaleSize
 
         model: sqlTableModel
         width : parent.width-5
