@@ -21,5 +21,6 @@
         <file>qml/GameGridView.qml</file>
         <file>qml/CollectionView.qml</file>
         <file>qml/CoverDownloadingPopup.qml</file>
+        <file>qml/AddGameButton.qml</file>
     </qresource>
 </RCC>
