@@ -38,7 +38,6 @@ Item {
     VideoOutput {
         id: mainVideoOutput
         anchors.fill: parent
-        fillMode: VideoOutput.Stretch
     }
 
     CaptureSession {
