@@ -141,14 +141,18 @@ int main(int argc, char *argv[])
     SqlTableModel sqlTableModel;
     ImageManager  imageManager;
     FileManager   fileManager;
-    ComManager    comManager;
+
     fileManager.registerQMLTypes();
 
     auto context = engine.rootContext();
     context->setContextProperty("sqlTableModel", &sqlTableModel);
     context->setContextProperty("imageManager",  &imageManager);
     context->setContextProperty("fileManager",   &fileManager);
-    context->setContextProperty("comManager",    &comManager);
+
+#ifdef Q_OS_ANDROID
+    ComManager comManager;
+    context->setContextProperty("comManager", &comManager);
+#endif
 
     auto dialog = rootObject->findChild<QObject*>("coverDowloadingPopup");
 

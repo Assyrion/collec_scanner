@@ -1,5 +1,9 @@
 #include "commanager.h"
 
+#ifdef Q_OS_ANDROID
+
+#include "global.h"
+
 #include <QFile>
 #include <QDir>
 #include <QFile>
@@ -7,27 +11,21 @@
 #include <QSaveFile>
 #include <QStandardPaths>
 
-#include "global.h"
-
-#ifdef Q_OS_ANDROID
-#include <QtCore/private/qandroidextras_p.h>
-#endif
-
 ComManager::ComManager(QObject *parent) : QObject(parent)
 {
 
+    m_permission = QtAndroidPrivate::checkPermission(QString("android.permission.WRITE_EXTERNAL_STORAGE"));
+    if(m_permission.result() != QtAndroidPrivate::PermissionResult::Authorized){
+        m_permission = QtAndroidPrivate::requestPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+    }
 }
+
 void ComManager::exportDB() const
 {
-#ifdef Q_OS_ANDROID
-
     // ask permission dynamically is required
-    auto result = QtAndroidPrivate::checkPermission(QString("android.permission.WRITE_EXTERNAL_STORAGE"));
-    if(result.result() != QtAndroidPrivate::PermissionResult::Authorized){
-        auto resultHash = QtAndroidPrivate::requestPermission("android.permission.WRITE_EXTERNAL_STORAGE");
-        if(resultHash.result() != QtAndroidPrivate::PermissionResult::Authorized)
-            return;
-    }
+
+    if(m_permission.result() != QtAndroidPrivate::PermissionResult::Authorized)
+        return;
 
     // Due to QTBUG-64103 since Qt5.10, direct file copy is not possible, so we need to copy file content
 
@@ -72,5 +70,6 @@ void ComManager::exportDB() const
         to_pic.setPermissions(QFile::WriteOwner | QFile::ReadOwner);
         from_pic.close();
     }
-#endif
 }
+
+#endif

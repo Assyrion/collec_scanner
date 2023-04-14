@@ -1,6 +1,12 @@
 #ifndef COMMANAGER_H
 #define COMMANAGER_H
 
+#include <QtGlobal>
+
+#ifdef Q_OS_ANDROID
+
+#include "private/qandroidextras_p.h"
+#include <QFileInfoList>
 #include <QObject>
 
 class ComManager : public QObject
@@ -10,7 +16,11 @@ class ComManager : public QObject
 public:
     explicit ComManager(QObject *parent = nullptr);
 
-    Q_INVOKABLE void exportDB() const;
+    void exportDB() const;
+
+private:
+    QFuture<QtAndroidPrivate::PermissionResult> m_permission;
 };
 
 #endif // COMMANAGER_H
+#endif // Q_OS_ANDROID
