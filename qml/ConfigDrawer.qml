@@ -44,14 +44,16 @@ Drawer {
             close()
         }
     }
-    Row {
+    Column {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 5
-        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width
         spacing: 5
 
         Button {
             id: saveDBBtn
+            anchors.horizontalCenter:
+                parent.horizontalCenter
 
             text: " file DB "
             onClicked: {
@@ -60,10 +62,22 @@ Drawer {
         }
         Button {
             id: exportDBBtn
+            anchors.horizontalCenter:
+                parent.horizontalCenter
 
             text: "export DB"
             onClicked: {
                 loader.loadConfirmExportDB()
+            }
+        }
+        Button {
+            id: uploadCoversBtn
+            anchors.horizontalCenter:
+                parent.horizontalCenter
+
+            text: "upload Covers"
+            onClicked: {
+                loader.loadConfirmUploadCovers()
             }
         }
     }
@@ -89,6 +103,17 @@ Drawer {
                                  "y"     : mainWindow.height/4+50})
 
             loader.item.accepted.connect( function() { comManager.exportDB() } )
+        }
+
+        function loadConfirmUploadCovers() {
+            loader.setSource("ConfirmActionPopup.qml",
+                             {   "contentText" : qsTr("New covers will be uploaded to server"),
+                                 "width" : 2*mainWindow.width/3,
+                                 "height": mainWindow.height/3,
+                                 "x"     : mainWindow.width/6,
+                                 "y"     : mainWindow.height/4+50})
+
+            loader.item.accepted.connect( function() { coverManager.uploadCovers() } )
         }
     }
 }
