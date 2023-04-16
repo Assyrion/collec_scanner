@@ -4,6 +4,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QEventLoop>
+#include <QHttpPart>
 
 #include "covermanager.h"
 #include "global.h"
@@ -18,7 +19,48 @@ CoverManager::CoverManager(QObject *parent)
 
 void CoverManager::uploadCovers()
 {
-    qDebug() << "covers uploading";
+    // Ouvrir le fichier PNG
+    QFile file(PICPATH_ABS + "TOTO.png");
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "Impossible d'ouvrir le fichier";
+        return;
+    }
+
+    QUrl url(REMOTE_PIC_PATH + "TOTO.png");
+    QNetworkRequest request(url);
+
+    QHttpPart filePart;
+    filePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/png"));
+    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\"; filename=\"TOTO.png\""));
+    filePart.setHeader(QNetworkRequest::ContentLengthHeader, file.size());
+    filePart.setBodyDevice(&file);
+
+    QHttpMultiPart multiPart(QHttpMultiPart::FormDataType);
+    multiPart.append(filePart);
+
+    // Envoyer la requête HTTP POST
+    QNetworkAccessManager manager;
+    QNetworkReply * reply = manager.post(request, &multiPart);
+
+    // Connexion du signal uploadProgress() pour afficher la progression de l'envoi
+    QObject::connect(reply, &QNetworkReply::uploadProgress, [&](qint64 bytesSent, qint64 bytesTotal) {
+        qDebug() << "Envoyé :" << bytesSent << "sur" << bytesTotal;
+    });
+
+    QEventLoop loop;
+    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec(); // Attendre la fin de la réponse
+
+    // Vérifier la réponse du serveur
+    if (reply->error() != QNetworkReply::NoError) {
+        qDebug() << "Erreur : " << reply->errorString();
+    } else {
+        qDebug() << "Fichier envoyé avec succès !";
+    }
+
+    // Nettoyer
+    file.close();
+    reply->deleteLater();
 }
 
 
