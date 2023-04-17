@@ -4,7 +4,6 @@ import QtQuick.Controls 6.2
 Popup {
     id: progressDialog
 
-
     function show() {
         visible = true
     }
@@ -36,9 +35,9 @@ Popup {
         anchors.horizontalCenter:
             parent.horizontalCenter
         text : progressBar.value > 0 ?
-                   "Downloading " + progressBar.value
+                   "Processing " + progressBar.value
                    + "/" + progressBar.to
-                 : "Checking missing covers..."
+                 : "Processing covers..."
         color: "white"
         font.family: "Roboto"
         font.pointSize: 11

@@ -83,8 +83,9 @@ int main(int argc, char *argv[])
     context->setContextProperty("comManager", &comManager);
 #endif
 
-    auto dialog = rootObject->findChild<QObject*>("coverDowloadingPopup");
+    auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
     coverManager.setProgressDialog(dialog);
+    coverManager.downloadCovers();
 
     return app.exec();
 }

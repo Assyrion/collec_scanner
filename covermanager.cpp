@@ -15,18 +15,17 @@ CoverManager::CoverManager(QObject *parent)
     : QObject{parent}
 {
     m_coversToUploadFile.setFileName(PICPATH_ABS + "covers_to_upload.txt");
-    m_coversToUploadFile.open(QIODevice::ReadWrite | QIODevice::Text);
 }
 
 CoverManager::~CoverManager()
 {
-    m_coversToUploadFile.close();
+    if(m_coversToUploadFile.isOpen())
+        m_coversToUploadFile.close();
 }
 
 bool CoverManager::uploadToServer(const QString& fileName)
 {
     // Ouvrir le fichier PNG
-    qDebug() << PICPATH_ABS + fileName;
     QFile file(PICPATH_ABS + fileName);
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << "Impossible d'ouvrir le fichier";
@@ -87,7 +86,6 @@ void CoverManager::downloadCovers()
     if(!toDir.exists()) toDir.mkpath(".");
     toDir.setFilter(QDir::Files | QDir::NoSymLinks);
     toDir.setNameFilters(QStringList() << "*.png");
-    int local_count = toDir.entryList().count();
     int count = 0;
 
     QUrl url(REMOTE_PIC_PATH);
@@ -104,7 +102,7 @@ void CoverManager::downloadCovers()
             QString data = QString::fromUtf8(reply->readAll());
             int remote_count = data.count(".png</a>");
 
-            QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, remote_count - local_count));
+            QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, remote_count));
 
             QStringList htmlLineList = data.split("\n", Qt::SkipEmptyParts);
 
@@ -166,20 +164,48 @@ void CoverManager::uploadCovers()
 {
     QMetaObject::invokeMethod(m_progressDialog, "show");
 
+    m_coversToUploadFile.open(QIODevice::ReadOnly | QIODevice::Text);
+
     QTextStream ts(&m_coversToUploadFile);
+    ts.seek(0);
+
     QString all(ts.readAll());
     QStringList sl(all.split('\n'));
+
+    QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, sl.count()));
+    int count = 0;
+
     foreach (auto s, sl) {
-        uploadToServer(s);
+        if(!s.isEmpty() && uploadToServer(s)) {
+
+            QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
+
+            sl.removeOne(s);
+        }
     }
+
+    m_coversToUploadFile.close();
+
+    m_coversToUploadFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+
+    foreach (auto s, sl) {
+        if(!s.isEmpty())
+            ts << s << '\n';
+    }
+
+    m_coversToUploadFile.close();
 
     QMetaObject::invokeMethod(m_progressDialog, "hide");
 }
 
 void CoverManager::uploadCover(const QString &tag)
 {
+    m_coversToUploadFile.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Append);
+
     appendToList(tag + "_front.png");
     appendToList(tag + "_back.png");
+
+    m_coversToUploadFile.close();
 }
 
 void CoverManager::setProgressDialog(QObject *dialog)
@@ -190,10 +216,12 @@ void CoverManager::setProgressDialog(QObject *dialog)
 void CoverManager::appendToList(const QString &fileName)
 {
     QTextStream ts(&m_coversToUploadFile);
+    ts.seek(0);
+
     QString all(ts.readAll());
     QStringList sl(all.split('\n'));
     if(!sl.contains(fileName)) {
-        ts << (fileName + '\n');
+        ts << fileName << '\n';
     }
 }
 

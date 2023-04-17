@@ -31,7 +31,6 @@ PinchArea {
             ListView.StrictlyEnforceRange
         ScrollBar.vertical: ScrollBar {
             policy: ScrollBar.AlwaysOn
-            interactive: false
             width: 10
         }
         delegate: GameListDelegate {

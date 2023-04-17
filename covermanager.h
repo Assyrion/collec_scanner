@@ -23,9 +23,11 @@ public:
 
 private:
     QFile m_coversToUploadFile;
+    int m_coversToUploadCount{0};
+
     void appendToList(const QString& fileName);
 
-    QObject* m_progressDialog;
+    QObject* m_progressDialog{nullptr};
 
 signals:
 
