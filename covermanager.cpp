@@ -14,24 +14,33 @@ const QRegularExpression re("href=\"([^\"]+\\.png)\">.*?(\\d{4}-\\d{2}-\\d{2}\\s
 CoverManager::CoverManager(QObject *parent)
     : QObject{parent}
 {
-
+    m_coversToUploadFile.setFileName(PICPATH_ABS + "covers_to_upload.txt");
+    m_coversToUploadFile.open(QIODevice::ReadWrite | QIODevice::Text);
 }
 
-void CoverManager::uploadCovers()
+CoverManager::~CoverManager()
+{
+    m_coversToUploadFile.close();
+}
+
+bool CoverManager::uploadToServer(const QString& fileName)
 {
     // Ouvrir le fichier PNG
-    QFile file(PICPATH_ABS + "TOTO.png");
+    qDebug() << PICPATH_ABS + fileName;
+    QFile file(PICPATH_ABS + fileName);
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << "Impossible d'ouvrir le fichier";
-        return;
+        return false;
     }
 
-    QUrl url(REMOTE_PIC_PATH + "TOTO.png");
+    QMetaObject::invokeMethod(m_progressDialog, "show");
+
+    QUrl url(REMOTE_UPLOAD_SCRIPT);
     QNetworkRequest request(url);
 
     QHttpPart filePart;
     filePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/png"));
-    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\"; filename=\"TOTO.png\""));
+    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\"; filename=\"" + fileName + "\""));
     filePart.setHeader(QNetworkRequest::ContentLengthHeader, file.size());
     filePart.setBodyDevice(&file);
 
@@ -51,21 +60,29 @@ void CoverManager::uploadCovers()
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec(); // Attendre la fin de la réponse
 
+    bool ret = false;
+    QByteArray response = reply->readAll();
     // Vérifier la réponse du serveur
     if (reply->error() != QNetworkReply::NoError) {
-        qDebug() << "Erreur : " << reply->errorString();
+        qDebug() << "Réponse du serveur: " << response;
+        ret = false;
     } else {
-        qDebug() << "Fichier envoyé avec succès !";
+        qDebug() << "Fichier envoyé avec succès !" << response;
+        ret = true;
     }
 
     // Nettoyer
     file.close();
     reply->deleteLater();
+
+    return ret;
 }
 
 
-void CoverManager::downloadCovers(QObject* dialog)
+void CoverManager::downloadCovers()
 {
+    QMetaObject::invokeMethod(m_progressDialog, "show");
+
     QDir toDir(PICPATH_ABS);
     if(!toDir.exists()) toDir.mkpath(".");
     toDir.setFilter(QDir::Files | QDir::NoSymLinks);
@@ -87,7 +104,7 @@ void CoverManager::downloadCovers(QObject* dialog)
             QString data = QString::fromUtf8(reply->readAll());
             int remote_count = data.count(".png</a>");
 
-            QMetaObject::invokeMethod(dialog, "setMaxValue", Q_ARG(QVariant, remote_count - local_count));
+            QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, remote_count - local_count));
 
             QStringList htmlLineList = data.split("\n", Qt::SkipEmptyParts);
 
@@ -125,7 +142,7 @@ void CoverManager::downloadCovers(QObject* dialog)
                                 file.write(fileReply->readAll());
                                 file.close();
 
-                                QMetaObject::invokeMethod(dialog, "setValue", Q_ARG(QVariant, ++count));
+                                QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
                             }
                         } else {
                             // Traitement de l'erreur
@@ -141,4 +158,42 @@ void CoverManager::downloadCovers(QObject* dialog)
     });
 
     loop.exec();
+
+    QMetaObject::invokeMethod(m_progressDialog, "hide");
 }
+
+void CoverManager::uploadCovers()
+{
+    QMetaObject::invokeMethod(m_progressDialog, "show");
+
+    QTextStream ts(&m_coversToUploadFile);
+    QString all(ts.readAll());
+    QStringList sl(all.split('\n'));
+    foreach (auto s, sl) {
+        uploadToServer(s);
+    }
+
+    QMetaObject::invokeMethod(m_progressDialog, "hide");
+}
+
+void CoverManager::uploadCover(const QString &tag)
+{
+    appendToList(tag + "_front.png");
+    appendToList(tag + "_back.png");
+}
+
+void CoverManager::setProgressDialog(QObject *dialog)
+{
+    m_progressDialog = dialog;
+}
+
+void CoverManager::appendToList(const QString &fileName)
+{
+    QTextStream ts(&m_coversToUploadFile);
+    QString all(ts.readAll());
+    QStringList sl(all.split('\n'));
+    if(!sl.contains(fileName)) {
+        ts << (fileName + '\n');
+    }
+}
+

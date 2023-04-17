@@ -84,10 +84,7 @@ int main(int argc, char *argv[])
 #endif
 
     auto dialog = rootObject->findChild<QObject*>("coverDowloadingPopup");
-
-    QMetaObject::invokeMethod(dialog, "show");
-    coverManager.downloadCovers(dialog);
-    QMetaObject::invokeMethod(dialog, "hide");
+    coverManager.setProgressDialog(dialog);
 
     return app.exec();
 }

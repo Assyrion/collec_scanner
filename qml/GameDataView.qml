@@ -59,6 +59,8 @@ Pane {
 
         imageManager.saveFrontPic(game.tag, picFrontImg.imgData)
         imageManager.saveBackPic( game.tag, picBackImg.imgData)
+
+        coverManager.uploadCover(game.tag)
     }
 
     function removeGame() {
