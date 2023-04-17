@@ -48,9 +48,9 @@ Window {
             parent.horizontalCenter
     }
 
-    CoverDownloadingPopup {
-        id: coverDowloadingPopup
-        objectName: "coverDowloadingPopup"
+    CoverProcessingPopup {
+        id: coverProcessingPopup
+        objectName: "coverProcessingPopup"
         width: 2*parent.width/3
         height: parent.height/5
         anchors.centerIn: parent

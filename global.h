@@ -9,6 +9,7 @@ const QString PICPATH = "pic/"; // pic
 
 const QString REMOTE_PATH = "http://192.168.0.23/";
 const QString REMOTE_PIC_PATH = REMOTE_PATH + PICPATH;
+const QString REMOTE_UPLOAD_SCRIPT = REMOTE_PATH + "upload_cover.php";
 
 #ifdef Q_OS_ANDROID
 const QString DATAPATH = ".";
