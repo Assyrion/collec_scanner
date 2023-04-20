@@ -37,7 +37,7 @@ Pane {
             dataRepeater.itemAt(0).entry = game.tag
         }
         dataRepeater.itemAt(1).entry = row >= 0 ? (row+1) + '/'
-                + sqlTableModel.rowCount() : ""
+                                                  + sqlTableModel.rowCount() : ""
         dataRepeater.itemAt(2).entry = game.code
         dataRepeater.itemAt(3).entry = game.title
         dataRepeater.itemAt(4).entry = game.platform
@@ -91,28 +91,78 @@ Pane {
             id : picRow
             anchors.top: parent.top
             anchors.topMargin: 20
+            height : root.height/4
             anchors.horizontalCenter:
                 parent.horizontalCenter
-            height : root.height/4
-            enabled: root.editMode
+            anchors.horizontalCenterOffset:
+                shiftFactor
             spacing: 20
+            z: 1
+
+            property int shiftFactor : 0
 
             CSGlowImage {
                 id : picFrontImg
-                Layout.fillHeight: true
-                Layout.alignment: Qt.AlignRight
+                property bool isZoomed : true
+
+                Layout.minimumHeight: parent.height
+                Layout.preferredHeight: Layout.minimumHeight
+                Layout.maximumHeight: scrollView.height * 0.6
+                Layout.alignment : Qt.AlignRight | Qt.AlignTop
+
                 imgUrl: "qrc:/no_pic" // default
                 onClicked: {
-                    loader.loadSnapshotPopup(this)
+                    if(root.editMode)
+                        loader.loadSnapshotPopup(this)
+                    else {
+                        isZoomed = !isZoomed
+                    }
+                }
+                onIsZoomedChanged : {
+                    if(isZoomed) {
+                        picRow.shiftFactor = 0
+                        Layout.preferredHeight = Layout.minimumHeight
+                    } else {
+                        picRow.shiftFactor = 90
+                        Layout.preferredHeight = Layout.maximumHeight
+                        globalMA.enabled = true
+                    }
+                }
+
+                Behavior on Layout.preferredHeight {
+                    PropertyAnimation { duration : 200 }
                 }
             }
             CSGlowImage {
                 id : picBackImg
-                Layout.fillHeight: true
-                Layout.alignment: Qt.AlignLeft
+                property bool isZoomed : true
+
+                Layout.minimumHeight: parent.height
+                Layout.preferredHeight: Layout.minimumHeight
+                Layout.maximumHeight: scrollView.height * 0.6
+                Layout.alignment : Qt.AlignLeft | Qt.AlignTop
+
                 imgUrl: "qrc:/no_pic" // default
                 onClicked: {
-                    loader.loadSnapshotPopup(this)
+                    if(root.editMode)
+                        loader.loadSnapshotPopup(this)
+                    else {
+                        isZoomed = !isZoomed
+                    }
+                }
+                onIsZoomedChanged : {
+                    if(isZoomed) {
+                        picRow.shiftFactor = 0
+                        Layout.preferredHeight = Layout.minimumHeight
+                    } else {
+                        picRow.shiftFactor = -90
+                        Layout.preferredHeight = Layout.maximumHeight
+                        globalMA.enabled = true
+                    }
+                }
+
+                Behavior on Layout.preferredHeight {
+                    PropertyAnimation { duration : 200 }
                 }
             }
         }
@@ -130,7 +180,7 @@ Pane {
                 model: ListModel {
                     ListElement { name: qsTr("Tag");       editable: false }
                     ListElement { name: qsTr("Index");     editable: false }
-                    ListElement { name: qsTr("Code");      editable: true }
+                    ListElement { name: qsTr("Code");      editable: true  }
                     ListElement { name: qsTr("Title");     editable: true  }
                     ListElement { name: qsTr("Platform");  editable: true  }
                     ListElement { name: qsTr("info");      editable: true  }
@@ -211,6 +261,17 @@ Pane {
                 removeGame()
                 closed()
             }
+        }
+    }
+
+    MouseArea {
+        id: globalMA
+        anchors.fill: parent
+        enabled : false
+        onClicked: {
+            picFrontImg.isZoomed = true
+            picBackImg.isZoomed  = true
+            enabled = false
         }
     }
 }
