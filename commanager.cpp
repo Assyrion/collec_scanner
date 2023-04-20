@@ -46,30 +46,6 @@ void ComManager::exportDB() const
         to_dbf.setPermissions(QFile::WriteOwner | QFile::ReadOwner);
         from_dbf.close();
     }
-
-    // Export pics to download path
-    QDir picPath( downloadPath
-                  + QDir::separator()
-                  + PICPATH);
-    if(!picPath.exists()) {
-        picPath.mkpath(".");
-    }
-
-    dirCur.cd(PICPATH);
-    auto pngL = dirCur.entryInfoList({"*.png"}, QDir::Files);
-    for(auto fileinfo: pngL) {
-        QFile from_pic(fileinfo.absoluteFilePath());
-        from_pic.open(QIODevice::ReadOnly);
-        QString toPath = picPath.absolutePath()
-                + QDir::separator()
-                + fileinfo.fileName();
-        QSaveFile to_pic(toPath);
-        to_pic.open(QIODevice::WriteOnly);
-        to_pic.write(from_pic.readAll());
-        to_pic.commit();
-        to_pic.setPermissions(QFile::WriteOwner | QFile::ReadOwner);
-        from_pic.close();
-    }
 }
 
 #endif
