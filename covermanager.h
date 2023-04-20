@@ -13,11 +13,11 @@ public:
     explicit CoverManager(QObject *parent = nullptr);
     ~CoverManager();
 
-    Q_INVOKABLE bool uploadToServer(const QString &fileName);
     Q_INVOKABLE void downloadCovers();
     Q_INVOKABLE void uploadCovers();
 
-    Q_INVOKABLE void uploadCover(const QString &fileName);
+    Q_INVOKABLE void handleFrontCover(const QString &tag);
+    Q_INVOKABLE void handleBackCover(const QString &tag);
 
     void setProgressDialog(QObject* dialog);
 
@@ -26,6 +26,7 @@ private:
     int m_coversToUploadCount{0};
 
     void appendToList(const QString& fileName);
+    bool uploadToServer(const QString &fileName);
 
     QObject* m_progressDialog{nullptr};
 

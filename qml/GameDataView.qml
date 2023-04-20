@@ -59,10 +59,14 @@ Pane {
         game.developer = dataRepeater.itemAt(7).entry
         sqlTableModel.update(row, game)
 
-        imageManager.saveFrontPic(game.tag, picFrontImg.imgData)
-        imageManager.saveBackPic( game.tag, picBackImg.imgData)
-
-        coverManager.uploadCover(game.tag)
+        if(picFrontImg.imgData) {
+            imageManager.saveFrontPic(game.tag, picFrontImg.imgData)
+            coverManager.handleFrontCover(game.tag)
+        }
+        if(picBackImg.imgData) {
+            imageManager.saveBackPic(game.tag, picBackImg.imgData)
+            coverManager.handleBackCover(game.tag)
+        }
     }
 
     function removeGame() {

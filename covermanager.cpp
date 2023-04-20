@@ -23,61 +23,6 @@ CoverManager::~CoverManager()
         m_coversToUploadFile.close();
 }
 
-bool CoverManager::uploadToServer(const QString& fileName)
-{
-    // Ouvrir le fichier PNG
-    QFile file(PICPATH_ABS + fileName);
-    if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << "Impossible d'ouvrir le fichier";
-        return false;
-    }
-
-    QMetaObject::invokeMethod(m_progressDialog, "show");
-
-    QUrl url(REMOTE_UPLOAD_SCRIPT);
-    QNetworkRequest request(url);
-
-    QHttpPart filePart;
-    filePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/png"));
-    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\"; filename=\"" + fileName + "\""));
-    filePart.setHeader(QNetworkRequest::ContentLengthHeader, file.size());
-    filePart.setBodyDevice(&file);
-
-    QHttpMultiPart multiPart(QHttpMultiPart::FormDataType);
-    multiPart.append(filePart);
-
-    // Envoyer la requête HTTP POST
-    QNetworkAccessManager manager;
-    QNetworkReply * reply = manager.post(request, &multiPart);
-
-    // Connexion du signal uploadProgress() pour afficher la progression de l'envoi
-    QObject::connect(reply, &QNetworkReply::uploadProgress, [&](qint64 bytesSent, qint64 bytesTotal) {
-        qDebug() << "Envoyé :" << bytesSent << "sur" << bytesTotal;
-    });
-
-    QEventLoop loop;
-    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-    loop.exec(); // Attendre la fin de la réponse
-
-    bool ret = false;
-    QByteArray response = reply->readAll();
-    // Vérifier la réponse du serveur
-    if (reply->error() != QNetworkReply::NoError) {
-        qDebug() << "Réponse du serveur: " << response;
-        ret = false;
-    } else {
-        qDebug() << "Fichier envoyé avec succès !" << response;
-        ret = true;
-    }
-
-    // Nettoyer
-    file.close();
-    reply->deleteLater();
-
-    return ret;
-}
-
-
 void CoverManager::downloadCovers()
 {
     QMetaObject::invokeMethod(m_progressDialog, "show");
@@ -160,6 +105,61 @@ void CoverManager::downloadCovers()
     QMetaObject::invokeMethod(m_progressDialog, "hide");
 }
 
+
+bool CoverManager::uploadToServer(const QString& fileName)
+{
+    // Ouvrir le fichier PNG
+    QFile file(PICPATH_ABS + fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "Impossible d'ouvrir le fichier";
+        return false;
+    }
+
+    QMetaObject::invokeMethod(m_progressDialog, "show");
+
+    QUrl url(REMOTE_UPLOAD_SCRIPT);
+    QNetworkRequest request(url);
+
+    QHttpPart filePart;
+    filePart.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/png"));
+    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\"; filename=\"" + fileName + "\""));
+    filePart.setHeader(QNetworkRequest::ContentLengthHeader, file.size());
+    filePart.setBodyDevice(&file);
+
+    QHttpMultiPart multiPart(QHttpMultiPart::FormDataType);
+    multiPart.append(filePart);
+
+    // Envoyer la requête HTTP POST
+    QNetworkAccessManager manager;
+    QNetworkReply * reply = manager.post(request, &multiPart);
+
+    // Connexion du signal uploadProgress() pour afficher la progression de l'envoi
+    QObject::connect(reply, &QNetworkReply::uploadProgress, [&](qint64 bytesSent, qint64 bytesTotal) {
+        qDebug() << "Envoyé :" << bytesSent << "sur" << bytesTotal;
+    });
+
+    QEventLoop loop;
+    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec(); // Attendre la fin de la réponse
+
+    bool ret = false;
+    QByteArray response = reply->readAll();
+    // Vérifier la réponse du serveur
+    if (reply->error() != QNetworkReply::NoError) {
+        qDebug() << "Réponse du serveur: " << response;
+                ret = false;
+    } else {
+        qDebug() << "Fichier envoyé avec succès !" << response;
+                ret = true;
+    }
+
+    // Nettoyer
+    file.close();
+    reply->deleteLater();
+
+    return ret;
+}
+
 void CoverManager::uploadCovers()
 {
     QMetaObject::invokeMethod(m_progressDialog, "show");
@@ -198,13 +198,17 @@ void CoverManager::uploadCovers()
     QMetaObject::invokeMethod(m_progressDialog, "hide");
 }
 
-void CoverManager::uploadCover(const QString &tag)
+void CoverManager::handleBackCover(const QString &tag)
 {
     m_coversToUploadFile.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Append);
-
-    appendToList(tag + "_front.png");
     appendToList(tag + "_back.png");
+    m_coversToUploadFile.close();
+}
 
+void CoverManager::handleFrontCover(const QString &tag)
+{
+    m_coversToUploadFile.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Append);
+    appendToList(tag + "_front.png");
     m_coversToUploadFile.close();
 }
 

@@ -6,7 +6,7 @@ Item {
 
     signal clicked
 
-    property var imgData
+    property var imgData: null
     property url imgUrl
 
     // because connect function does not work anymore with Qt 6.5 ?
