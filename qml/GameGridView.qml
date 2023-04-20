@@ -41,7 +41,7 @@ PinchArea {
             width: gridView.cellWidth - 10
             onClicked: function() {
                 var arr = [tag, title, full_title, platform,
-                           publisher,  developer, release_date,
+                           publisher,  developer, code,
                            info]
                 var game = GameDataMaker.createComplete(arr)
                 showGameData(game, index)

@@ -44,14 +44,14 @@ GameData::GameData(QString tag)
 
 GameData::GameData(QString tag, QString title, QString full_title,
                    QString platform,  QString publisher, QString developer,
-                   QString release_date, QString info)
+                   QString code, QString info)
     : tag(tag),
       title(title),
       full_title(full_title),
       platform(platform),
       publisher(publisher),
       developer(developer),
-      release_date(release_date),
+      code(code),
       info(info)
 {}
 

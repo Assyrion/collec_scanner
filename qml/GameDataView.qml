@@ -38,11 +38,12 @@ Pane {
         }
         dataRepeater.itemAt(1).entry = row >= 0 ? (row+1) + '/'
                 + sqlTableModel.rowCount() : ""
-        dataRepeater.itemAt(2).entry = game.title
-        dataRepeater.itemAt(3).entry = game.platform
-        dataRepeater.itemAt(4).entry = game.info
-        dataRepeater.itemAt(5).entry = game.publisher
-        dataRepeater.itemAt(6).entry = game.developer
+        dataRepeater.itemAt(2).entry = game.code
+        dataRepeater.itemAt(3).entry = game.title
+        dataRepeater.itemAt(4).entry = game.platform
+        dataRepeater.itemAt(5).entry = game.info
+        dataRepeater.itemAt(6).entry = game.publisher
+        dataRepeater.itemAt(7).entry = game.developer
 
         picFrontImg.imgUrl = imageManager.getFrontPic(game.tag)
         picBackImg.imgUrl  = imageManager.getBackPic( game.tag)
@@ -50,11 +51,12 @@ Pane {
 
     function writeGame() {
         game.tag       = dataRepeater.itemAt(0).entry
-        game.title     = dataRepeater.itemAt(2).entry
-        game.platform  = dataRepeater.itemAt(3).entry
-        game.info      = dataRepeater.itemAt(4).entry
-        game.publisher = dataRepeater.itemAt(5).entry
-        game.developer = dataRepeater.itemAt(6).entry
+        game.code      = dataRepeater.itemAt(2).entry
+        game.title     = dataRepeater.itemAt(3).entry
+        game.platform  = dataRepeater.itemAt(4).entry
+        game.info      = dataRepeater.itemAt(5).entry
+        game.publisher = dataRepeater.itemAt(6).entry
+        game.developer = dataRepeater.itemAt(7).entry
         sqlTableModel.update(row, game)
 
         imageManager.saveFrontPic(game.tag, picFrontImg.imgData)
@@ -124,6 +126,7 @@ Pane {
                 model: ListModel {
                     ListElement { name: qsTr("Tag");       editable: false }
                     ListElement { name: qsTr("Index");     editable: false }
+                    ListElement { name: qsTr("Code");      editable: true }
                     ListElement { name: qsTr("Title");     editable: true  }
                     ListElement { name: qsTr("Platform");  editable: true  }
                     ListElement { name: qsTr("info");      editable: true  }
@@ -132,7 +135,7 @@ Pane {
                 }
                 delegate: GameDataDelegate {
                     width: parent.width
-                    height: 55
+                    height: 45
                 }
             }
         }

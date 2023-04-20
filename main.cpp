@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 
     // copy database file from assets folder to app folder
     QFile dfile("assets:/" + DBNAME);
+//    QFile::remove(DB_PATH_ABS_NAME); // uncomment if needed
     if (dfile.exists()) {
         if(!QFile::exists(DB_PATH_ABS_NAME)) {
             dfile.copy(DB_PATH_ABS_NAME);

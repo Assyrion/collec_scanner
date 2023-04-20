@@ -42,7 +42,7 @@ class GameData : public QObject
     Q_PROPERTY(QString platform     MEMBER platform)
     Q_PROPERTY(QString publisher    MEMBER publisher)
     Q_PROPERTY(QString developer    MEMBER developer)
-    Q_PROPERTY(QString release_date MEMBER release_date)
+    Q_PROPERTY(QString code         MEMBER code)
     Q_PROPERTY(QString info         MEMBER info)
 
     friend class GameDataMaker;
@@ -51,7 +51,7 @@ class GameData : public QObject
     GameData(const QStringList& il);
     GameData(QString tag, QString title, QString full_title = "",
              QString platform = "ps3",   QString publisher = "",
-             QString developer = "",     QString release_date = "",
+             QString developer = "",     QString code = "",
              QString info = "");
     ~GameData();
 
@@ -63,13 +63,13 @@ public:
     QString platform;
     QString publisher;
     QString developer;
-    QString release_date;
+    QString code;
 
     friend QTextStream& operator<<(QTextStream& out, const GameData& game)
     {
         out << game.tag << ';' << game.title << ';' <<game.platform << ';'
             << game.publisher << ';' << game.developer << ';'
-            << game.release_date << ';' <<game.info;
+            << game.code << ';' <<game.info;
         return out;
     }
 };

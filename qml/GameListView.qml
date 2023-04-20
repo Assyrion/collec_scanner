@@ -38,8 +38,7 @@ PinchArea {
             height: listView.scaleHeight * 46.2
             onClicked: function() {
                 var arr = [tag, title, full_title, platform,
-                           publisher,  developer, release_date,
-                           info]
+                           publisher, developer, code, info]
                 var game = GameDataMaker.createComplete(arr)
                 showGameData(game, index)
             }

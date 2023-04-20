@@ -86,7 +86,7 @@ void SqlTableModel::update(int row, GameData* game)
     rec.setValue("platform",     game->platform);
     rec.setValue("publisher",    game->publisher);
     rec.setValue("developer",    game->developer);
-    rec.setValue("release_date", game->release_date);
+    rec.setValue("code",         game->code);
     rec.setValue("info",         game->info);
 
     if(row < 0) {
