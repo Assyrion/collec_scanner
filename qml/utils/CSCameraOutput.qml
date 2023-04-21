@@ -8,14 +8,8 @@ import QZXing 3.3
 Item {
     id: root
 
-    signal imageCaptured(string preview)
-
     property alias camera: mainCamera
     property alias videoOutput: mainVideoOutput
-
-    function capture() {
-        camera.imageCapture.capture()
-    }
 
     Component.onCompleted: {
         camera.start()
@@ -43,7 +37,5 @@ Item {
     CaptureSession {
         videoOutput : mainVideoOutput
         camera: mainCamera
-
-        onImageCaptureChanged: root.imageCaptured(preview)
     }
 }

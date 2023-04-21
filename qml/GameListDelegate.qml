@@ -50,7 +50,7 @@ Item {
         anchors.right: platformText.left
         anchors.rightMargin: 10
         font.pointSize:
-            Math.min(17, parent.width/3)
+            Math.min(17, parent.width/3 + 1)
         font.family: "Roboto"
         text: title
     }
@@ -61,7 +61,7 @@ Item {
         anchors.verticalCenter:
             parent.verticalCenter
         font.pointSize:
-            Math.min(17, parent.width/3)
+            Math.min(17, parent.width/3 + 1)
         font.family: "Roboto"
         text: platform
     }

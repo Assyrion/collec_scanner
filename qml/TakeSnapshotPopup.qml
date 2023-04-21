@@ -53,9 +53,6 @@ Popup {
                         Camera.ExposurePortrait
                     videoOutput.fillMode:
                         VideoOutput.PreserveAspectCrop
-                    onImageCaptured: {
-    //                    snapshot.source = preview
-                    }
                 }
             }
         }
@@ -67,7 +64,6 @@ Popup {
             anchors.horizontalCenter:
                 parent.horizontalCenter
             onClicked: {
-//                loader.item.capture()
                 loader.item.grabToImage(function(result) {
                     boundImg.imgData = result.image;
                     boundImg.imgUrl  = result.url;

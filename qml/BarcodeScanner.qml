@@ -29,10 +29,6 @@ Rectangle {
                 CSCameraOutput {
                     id: cameraOutput
                     anchors.fill: parent
-                    onImageCaptured:{
-                        snapshot.source = preview
-                        decoder.decodeImageQML(preview);
-                    }
                 }
                 QZXingFilter {
                     id: zxingFilter
@@ -50,7 +46,7 @@ Rectangle {
 
                     decoder {
                         enabledDecoders: QZXing.DecoderFormat_EAN_13
-                        onTagFound: {
+                        onTagFound: (tag) => {
                             barcodeFound(tag)
                         }
                         tryHarder: false

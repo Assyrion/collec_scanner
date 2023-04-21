@@ -27,7 +27,7 @@ Item {
     BarcodeScanner {
         id: barcodeScanner
         anchors.fill: parent
-        onBarcodeFound: {
+        onBarcodeFound: (barcode) => {
             barcodeScanner.stopScanning()
             var game = sqlTableModel.get(barcode)
             if(game) {
