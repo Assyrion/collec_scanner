@@ -101,6 +101,10 @@ Pane {
 
             property int shiftFactor : 0
 
+            Behavior on shiftFactor {
+                PropertyAnimation { duration : 200 }
+            }
+
             CSGlowImage {
                 id : picFrontImg
                 property bool isZoomed : true
