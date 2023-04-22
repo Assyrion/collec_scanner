@@ -8,14 +8,14 @@ Pane {
     padding: 0
 
     function showGameData(game, index) {
-        gameDataLoader.setSource("GameDataView.qml",
+        gameDataLoader.setSource("GameInfoView.qml",
                                  {"game": game,
-                                     "row" : index})
+                                  "row" : index})
     }
     function showNewGameData() {
-        gameDataLoader.setSource("GameDataView.qml",
+        gameDataLoader.setSource("GameInfoView.qml",
                                  {"editMode": true,
-                                     "manuMode": true})
+                                  "manuMode": true})
     }
 
     function diplayListView() {

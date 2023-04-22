@@ -25,8 +25,9 @@ Popup {
     }
 
     modal: true
-    closePolicy : progressBar.value > 0 ? Popup.NoAutoClose
-                                        : Popup.CloseOnPressOutside
+    closePolicy : progressBar.value > 0 ?
+                      Popup.NoAutoClose
+                    : Popup.CloseOnPressOutside
 
     Text {
         id: titleText
@@ -48,7 +49,7 @@ Popup {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         value: 0
-        indeterminate : value == 0
+        indeterminate : value === 0
         width: parent.width - 20
     }
 }

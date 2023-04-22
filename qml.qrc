@@ -8,11 +8,11 @@
         <file>qml/ConfirmDeletePopup.qml</file>
         <file>qml/ConfirmActionPopup.qml</file>
         <file>qml/BarcodeScannerView.qml</file>
-        <file>qml/GameDataView.qml</file>
+        <file>qml/GameInfoView.qml</file>
         <file>qml/GameListView.qml</file>
         <file>qml/utils/CSGlowText.qml</file>
         <file>qml/ConfigDrawer.qml</file>
-        <file>qml/GameDataDelegate.qml</file>
+        <file>qml/GameInfoListDelegate.qml</file>
         <file>qml/GameListDelegate.qml</file>
         <file>qml/utils/CSGlowImage.qml</file>
         <file>qml/utils/CSCameraOutput.qml</file>
@@ -22,5 +22,6 @@
         <file>qml/CollectionView.qml</file>
         <file>qml/CoverProcessingPopup.qml</file>
         <file>qml/AddGameButton.qml</file>
+        <file>qml/GameInfoCoverRow.qml</file>
     </qresource>
 </RCC>

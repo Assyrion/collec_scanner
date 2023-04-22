@@ -38,7 +38,7 @@ Drawer {
         anchors.topMargin: 5
         anchors.horizontalCenter:
             filterName.horizontalCenter
-        text: filterName.text == "" ? "X" : "OK"
+        text: filterName.text === "" ? "X" : "OK"
         onClicked: {
             sqlTableModel.filterByTitle(filterName.text)
             close()

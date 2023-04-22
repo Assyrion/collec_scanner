@@ -42,7 +42,7 @@ Item {
         id: loader
         anchors.fill: parent
         function showGameData(game, editMode) {
-            loader.setSource("GameDataView.qml",
+            loader.setSource("GameInfoView.qml",
                              {"game"    : game,
                               "editMode": editMode})
         }

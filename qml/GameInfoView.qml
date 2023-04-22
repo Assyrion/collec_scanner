@@ -11,10 +11,9 @@ Pane {
 
     signal closed
 
+    property var game: GameDataMaker.createEmpty()
     property bool editMode: false
     property bool manuMode: false
-    property var game :
-        GameDataMaker.createEmpty()
     property int row: -1
 
     Component.onCompleted:  {
@@ -45,8 +44,8 @@ Pane {
         dataRepeater.itemAt(6).entry = game.publisher
         dataRepeater.itemAt(7).entry = game.developer
 
-        picFrontImg.imgUrl = imageManager.getFrontPic(game.tag)
-        picBackImg.imgUrl  = imageManager.getBackPic( game.tag)
+        gameCoverRow.frontCoverUrl = imageManager.getFrontPic(game.tag)
+        gameCoverRow.backCoverUrl  = imageManager.getBackPic( game.tag)
     }
 
     function writeGame() {
@@ -59,12 +58,12 @@ Pane {
         game.developer = dataRepeater.itemAt(7).entry
         sqlTableModel.update(row, game)
 
-        if(picFrontImg.imgData) {
-            imageManager.saveFrontPic(game.tag, picFrontImg.imgData)
+        if(gameCoverRow.frontCoverData) {
+            imageManager.saveFrontPic(game.tag, gameCoverRow.frontCoverData)
             coverManager.handleFrontCover(game.tag)
         }
-        if(picBackImg.imgData) {
-            imageManager.saveBackPic(game.tag, picBackImg.imgData)
+        if(gameCoverRow.backCoverData) {
+            imageManager.saveBackPic(game.tag, gameCoverRow.backCoverData)
             coverManager.handleBackCover(game.tag)
         }
     }
@@ -79,16 +78,18 @@ Pane {
         anchors.top: parent.top
         width: parent.width
         height: parent.height
-                -btnRow.height
+                - btnRow.height
                 - 20
         clip: true
         boundsBehavior:     Flickable.StopAtBounds
         flickableDirection: Flickable.VerticalFlick
-        contentHeight: picRow.height
+        contentHeight: gameCoverRow.height
                        + dataColumn.implicitHeight
                        + 30
-        RowLayout {
-            id : picRow
+
+        GameInfoCoverRow {
+            id: gameCoverRow
+
             anchors.top: parent.top
             anchors.topMargin: 20
             height : root.height/4
@@ -96,85 +97,20 @@ Pane {
                 parent.horizontalCenter
             anchors.horizontalCenterOffset:
                 shiftFactor
-            spacing: 20
             z: 1
 
-            property int shiftFactor : 0
-
-            Behavior on shiftFactor {
-                PropertyAnimation { duration : 200 }
+            onEditCoverRequired:(img) => {
+                loader.loadSnapshotPopup(img)
             }
 
-            CSGlowImage {
-                id : picFrontImg
-                property bool isZoomed : true
-
-                Layout.minimumHeight: parent.height
-                Layout.preferredHeight: Layout.minimumHeight
-                Layout.maximumHeight: scrollView.height * 0.6
-                Layout.alignment : Qt.AlignRight | Qt.AlignTop
-
-                imgUrl: "qrc:/no_pic" // default
-                onClicked: {
-                    if(root.editMode)
-                        loader.loadSnapshotPopup(this)
-                    else {
-                        isZoomed = !isZoomed
-                    }
-                }
-                onIsZoomedChanged : {
-                    if(isZoomed) {
-                        picRow.shiftFactor = 0
-                        Layout.preferredHeight = Layout.minimumHeight
-                    } else {
-                        picRow.shiftFactor = 90
-                        Layout.preferredHeight = Layout.maximumHeight
-                        globalMA.enabled = true
-                    }
-                }
-
-                Behavior on Layout.preferredHeight {
-                    PropertyAnimation { duration : 200 }
-                }
-            }
-            CSGlowImage {
-                id : picBackImg
-                property bool isZoomed : true
-
-                Layout.minimumHeight: parent.height
-                Layout.preferredHeight: Layout.minimumHeight
-                Layout.maximumHeight: scrollView.height * 0.6
-                Layout.alignment : Qt.AlignLeft | Qt.AlignTop
-
-                imgUrl: "qrc:/no_pic" // default
-                onClicked: {
-                    if(root.editMode)
-                        loader.loadSnapshotPopup(this)
-                    else {
-                        isZoomed = !isZoomed
-                    }
-                }
-                onIsZoomedChanged : {
-                    if(isZoomed) {
-                        picRow.shiftFactor = 0
-                        Layout.preferredHeight = Layout.minimumHeight
-                    } else {
-                        picRow.shiftFactor = -90
-                        Layout.preferredHeight = Layout.maximumHeight
-                        globalMA.enabled = true
-                    }
-                }
-
-                Behavior on Layout.preferredHeight {
-                    PropertyAnimation { duration : 200 }
-                }
-            }
+            editMode: root.editMode
+            mouseArea: globalMa
         }
 
         Column {
             id: dataColumn
             width: parent.width
-            anchors.top: picRow.bottom
+            anchors.top: gameCoverRow.bottom
             anchors.topMargin: 15
             enabled: root.editMode
             spacing: 7
@@ -191,7 +127,7 @@ Pane {
                     ListElement { name: qsTr("Publisher"); editable: true  }
                     ListElement { name: qsTr("Developer"); editable: true  }
                 }
-                delegate: GameDataDelegate {
+                delegate: GameInfoListDelegate {
                     width: parent.width
                     height: 45
                 }
@@ -269,13 +205,8 @@ Pane {
     }
 
     MouseArea {
-        id: globalMA
+        id: globalMa
         anchors.fill: parent
         enabled : false
-        onClicked: {
-            picFrontImg.isZoomed = true
-            picBackImg.isZoomed  = true
-            enabled = false
-        }
     }
 }

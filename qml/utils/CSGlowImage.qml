@@ -9,12 +9,6 @@ Item {
     property var imgData: null
     property url imgUrl
 
-    // because connect function does not work anymore with Qt 6.5 ?
-    Connections {
-        target: mouseArea
-        function onClicked() { clicked() }
-    }
-
     implicitWidth: pic.width
 
     RectangularGlow {
@@ -55,5 +49,8 @@ Item {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+        onClicked: (mouse) => {
+            root.clicked()
+        }
     }
 }
