@@ -1,5 +1,6 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
+import QtQuick.Layouts 6.2
 
 Drawer {
     id: root
@@ -44,39 +45,42 @@ Drawer {
             close()
         }
     }
-    Text {
-        id: sortingText
-        anchors.verticalCenter:
-            sortingComboBox.verticalCenter
+    RowLayout {
+        id: sortingRow
+
+        anchors.top: applyFilterBtn.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 5
-        text: "Sort by"
-        font.family: "Roboto"
-        font.pixelSize: 14
-        color: "white"
-    }
-    ComboBox {
-        id: sortingComboBox
-        anchors.top: applyFilterBtn.bottom
-        anchors.topMargin: 5
-        anchors.left: sortingText.right
-        anchors.leftMargin: 5
-        model: sqlTableModel.roleNamesList
-        onModelChanged: currentIndex = 1
-        onActivated: sqlTableModel.orderBy(currentIndex,
-                                           ascDescBox.currentIndex)
-    }
-    ComboBox {
-        id: ascDescBox
-        anchors.top: applyFilterBtn.bottom
-        anchors.topMargin: 5
         anchors.right: parent.right
-        anchors.rightMargin: 5
-        anchors.left: sortingComboBox.right
-        anchors.leftMargin: 5
-        model: ["ASC", "DESC"]
-        onActivated: sqlTableModel.orderBy(sortingComboBox.currentIndex,
-                                           currentIndex)
+        anchors.margins: 5
+
+        Text {
+            id: sortingText
+            Layout.alignment : Qt.AlignVCenter
+
+            text: "Sort by"
+            font.family: "Roboto"
+            font.pixelSize: 14
+            color: "white"
+        }
+        ComboBox {
+            id: sortingComboBox
+            Layout.alignment : Qt.AlignVCenter
+            Layout.preferredWidth: parent.width * 0.4
+
+            model: sqlTableModel.roleNamesList
+            onModelChanged: currentIndex = 1
+            onActivated: sqlTableModel.orderBy(currentIndex,
+                                               ascDescBox.currentIndex)
+        }
+        ComboBox {
+            id: ascDescBox
+            Layout.alignment : Qt.AlignVCenter
+            Layout.preferredWidth: parent.width * 0.35
+
+            model: ["ASC", "DESC"]
+            onActivated: sqlTableModel.orderBy(sortingComboBox.currentIndex,
+                                               currentIndex)
+        }
     }
     Column {
         anchors.bottom: parent.bottom

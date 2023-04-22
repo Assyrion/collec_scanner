@@ -51,7 +51,7 @@ Pane {
 
     ConfigDrawer {
         id: drawer
-        width: parent.width/2
+        width: parent.width * 0.7
         height: parent.height
     }
 
