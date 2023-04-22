@@ -44,6 +44,40 @@ Drawer {
             close()
         }
     }
+    Text {
+        id: sortingText
+        anchors.verticalCenter:
+            sortingComboBox.verticalCenter
+        anchors.left: parent.left
+        anchors.leftMargin: 5
+        text: "Sort by"
+        font.family: "Roboto"
+        font.pixelSize: 14
+        color: "white"
+    }
+    ComboBox {
+        id: sortingComboBox
+        anchors.top: applyFilterBtn.bottom
+        anchors.topMargin: 5
+        anchors.left: sortingText.right
+        anchors.leftMargin: 5
+        model: sqlTableModel.roleNamesList
+        onModelChanged: currentIndex = 1
+        onActivated: sqlTableModel.orderBy(currentIndex,
+                                           ascDescBox.currentIndex)
+    }
+    ComboBox {
+        id: ascDescBox
+        anchors.top: applyFilterBtn.bottom
+        anchors.topMargin: 5
+        anchors.right: parent.right
+        anchors.rightMargin: 5
+        anchors.left: sortingComboBox.right
+        anchors.leftMargin: 5
+        model: ["ASC", "DESC"]
+        onActivated: sqlTableModel.orderBy(sortingComboBox.currentIndex,
+                                           currentIndex)
+    }
     Column {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 5

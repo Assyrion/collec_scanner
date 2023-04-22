@@ -13,7 +13,7 @@ SqlTableModel::SqlTableModel(QObject* parent)
 {
     setTable("games");
     setEditStrategy(OnFieldChange);
-    setFilter("");
+    setSort(1, Qt::AscendingOrder); // sort by title
 
     auto rec = record();
     for(int i = 0; i < rec.count(); i++) {
@@ -30,6 +30,15 @@ QHash<int, QByteArray> SqlTableModel::roleNames() const
     return m_roles;
 }
 
+QStringList SqlTableModel::roleNamesList() const
+{
+    QStringList names;
+    for(int i=0; i<record().count(); i++) {
+        names << record().fieldName(i);
+    }
+    return names;
+}
+
 QVariant SqlTableModel::data(const QModelIndex &index, int role) const
 {
     QVariant value;
@@ -44,15 +53,6 @@ QVariant SqlTableModel::data(const QModelIndex &index, int role) const
         }
     }
     return value;
-}
-
-void SqlTableModel::setFilter(const QString &filter)
-{
-    if(filter.isEmpty()) {
-        QSqlTableModel::setFilter("1=1 ORDER BY title COLLATE NOCASE ASC"); // default filter
-    } else {
-        QSqlTableModel::setFilter(filter);
-    }
 }
 
 void SqlTableModel::remove(int row)
@@ -138,6 +138,14 @@ void SqlTableModel::filterByTitle(const QString &title)
     }
 
     setFilter("title LIKE \'%" + title + "%\'");
+}
+
+void SqlTableModel::orderBy(int column, int order)
+{
+    // Sort the model by the specified role and order
+    if (column >= 0) {
+        sort(column, Qt::SortOrder(order));
+    }
 }
 
 void SqlTableModel::saveDBToFile(FileManager* fileManager)

@@ -40,7 +40,7 @@ RowLayout {
 
         Layout.minimumHeight: parent.height
         Layout.preferredHeight: Layout.minimumHeight
-        Layout.maximumHeight: parent.height * 3
+        Layout.maximumHeight: parent.height * 2
         Layout.alignment : Qt.AlignRight | Qt.AlignTop
 
         imgUrl: "qrc:/no_pic" // default
@@ -74,7 +74,7 @@ RowLayout {
 
         Layout.minimumHeight: parent.height
         Layout.preferredHeight: Layout.minimumHeight
-        Layout.maximumHeight: parent.height * 3
+        Layout.maximumHeight: parent.height * 2
         Layout.alignment : Qt.AlignLeft | Qt.AlignTop
 
         imgUrl: "qrc:/no_pic" // default
