@@ -72,7 +72,7 @@ Pane {
             onClicked: {
                 if(editMode) {
                     contentLoader.item.editMode = false
-                    contentLoader.item.save()
+                    contentLoader.item.saveGame()
                     closed()
                 } else {
                     contentLoader.item.editMode = true
@@ -113,7 +113,7 @@ Pane {
             target: popupLoader.item
             ignoreUnknownSignals: true
             function onAccepted() {
-                removeGame()
+                contentLoader.item.removeGame()
                 closed()
             }
         }

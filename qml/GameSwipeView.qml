@@ -12,8 +12,12 @@ SwipeView {
     orientation: Qt.Vertical
     currentIndex: 0
 
-    function save() {
+    function saveGame() {
         currentItem.item.saveGame()
+    }
+
+    function removeGame() {
+        currentItem.item.removeGame()
     }
 
     spacing : 5
