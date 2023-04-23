@@ -3,7 +3,6 @@ import QtQuick.Controls 6.2
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs
 import Qt5Compat.GraphicalEffects
-import GameData 1.0
 import "utils"
 
 Pane {
@@ -11,9 +10,9 @@ Pane {
 
     signal closed
 
-    property var currentGame: GameDataMaker.createEmpty()
-
     property bool editMode: false
+
+    property string currentGameTag: ""
     property int currentGameIndex: -1
 
     Component.onCompleted: showContent()
@@ -34,14 +33,17 @@ Pane {
 
         function showGameData() {
             setSource("GameSwipeView.qml",
-                      {"game": currentGame,
-                       "anchors.fill": parent})
+                      {"currentTag": currentGameTag,
+                       "currentIndex": currentGameIndex,
+                       "width": parent.width,
+                       "height": parent.height})
         }
         function showNewGameData() {
             setSource("GameSwipeDelegate.qml",
                       {"editMode": editMode,
-                       "game": currentGame,
-                       "anchors.fill": parent})
+                       "tag": currentGameTag,
+                       "width": parent.width,
+                       "height": parent.height})
         }
     }
 

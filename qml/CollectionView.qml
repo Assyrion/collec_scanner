@@ -7,9 +7,9 @@ Pane {
 
     padding: 0
 
-    function showGameData(game, index) {
+    function showGameData(tag, index) {
         gameDataLoader.setSource("GameInfoView.qml",
-                                 {"game": game,
+                                 {"currentGameTag": tag,
                                   "currentGameIndex" : index})
     }
     function showNewGameData() {

@@ -2,7 +2,9 @@ import QtQuick 6.2
 import QtQuick.Controls 6.0
 
 Item {
-    property alias entry: textField.text
+    property alias name :  labelName.text
+    property alias entry :  textField.text
+    property alias editable:  textField.enabled
 
     Label {
         id: labelName
@@ -10,7 +12,6 @@ Item {
         height: parent.height
         verticalAlignment:
             Label.AlignVCenter
-        text: name
         font.family: "Roboto"
         font.pixelSize: 20
         font.bold: true
@@ -25,6 +26,5 @@ Item {
             labelName.verticalCenter
         verticalAlignment:
             Label.AlignBottom
-        enabled: editable
     }
 }

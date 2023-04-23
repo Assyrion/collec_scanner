@@ -1,12 +1,18 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
+import QtQuick.Layouts 6.2
+
+import GameData 1.0
 
 Item {
     id: root
 
-    property var game
+    property var game: GameDataMaker.createEmpty()
+
     property bool editMode: false
     property int row: -1
+
+    property string currentTag: ""
 
     Component.onCompleted:  {
         readGame()
@@ -24,28 +30,26 @@ Item {
     }
 
     function readGame() {
-        if(game.tag === "") {
+        if(currentTag === "") {
             var rand = Math.random().toFixed(6)
-            dataRepeater.itemAt(0).entry = Qt.binding(function() {
-                var _in  = "notag_" + dataRepeater.itemAt(2).entry
+            currentTag = Qt.binding(function() {
+                var _in  = "notag_" + tagInfo.entry
                         + '_' + rand // very unlikely that 2 games have same tag
                 _in = _in.replace(/\W/g,'')
                 return _in
             })
         } else {
-            dataRepeater.itemAt(0).entry = game.tag
+            if(row < 0)
+                currentTag = tag
+            else {
+                var arr = [tag, title, full_title, platform,
+                           publisher, developer, code, info]
+                game = GameDataMaker.createComplete(arr)
+            }
         }
-        dataRepeater.itemAt(1).entry = row >= 0 ? (row+1) + '/'
-                                                  + sqlTableModel.rowCount() : ""
-        dataRepeater.itemAt(2).entry = game.code
-        dataRepeater.itemAt(3).entry = game.title
-        dataRepeater.itemAt(4).entry = game.platform
-        dataRepeater.itemAt(5).entry = game.info
-        dataRepeater.itemAt(6).entry = game.publisher
-        dataRepeater.itemAt(7).entry = game.developer
 
-        gameCoverRow.frontCoverUrl = imageManager.getFrontPic(game.tag)
-        gameCoverRow.backCoverUrl  = imageManager.getBackPic( game.tag)
+        gameCoverRow.frontCoverUrl = imageManager.getFrontPic(tag)
+        gameCoverRow.backCoverUrl  = imageManager.getBackPic(tag)
     }
 
     function writeGame() {
@@ -91,33 +95,65 @@ Item {
                             }
 
         editMode: root.editMode
-        mouseArea: globalMa
+        //        mouseArea: globalMa
     }
 
-    Column {
+    ColumnLayout {
         id: dataColumn
         width: parent.width
         anchors.top: gameCoverRow.bottom
         anchors.topMargin: 15
         enabled: root.editMode
         spacing: 7
-        Repeater {
-            id: dataRepeater
 
-            model: ListModel {
-                ListElement { name: qsTr("Tag");       editable: false }
-                ListElement { name: qsTr("Index");     editable: false }
-                ListElement { name: qsTr("Code");      editable: true  }
-                ListElement { name: qsTr("Title");     editable: true  }
-                ListElement { name: qsTr("Platform");  editable: true  }
-                ListElement { name: qsTr("info");      editable: true  }
-                ListElement { name: qsTr("Publisher"); editable: true  }
-                ListElement { name: qsTr("Developer"); editable: true  }
-            }
-            delegate: GameInfoListDelegate {
-                width: parent.width
-                height: 45
-            }
+        GameInfoListDelegate {
+            id: tagInfo
+            name: qsTr("Tag");  entry:  tag; editable: false
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: 45
+        }
+        GameInfoListDelegate {
+            id: indexInfo
+            name: qsTr("Index");  entry:  index; editable: false
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: 45
+        }
+        GameInfoListDelegate {
+            id: codeInfo
+            name: qsTr("Code");  entry:  code; editable: false
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: 45
+        }
+        GameInfoListDelegate {
+            id: titleInfo
+            name: qsTr("Title");  entry:  title; editable: false
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: 45
+        }
+        GameInfoListDelegate {
+            id: platformInfo
+            name: qsTr("Platform");  entry:  platform; editable: false
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: 45
+        }
+        GameInfoListDelegate {
+            id: infoInfo
+            name: qsTr("info");  entry: info ; editable: false
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: 45
+        }
+        GameInfoListDelegate {
+            id: publisherInfo
+            name: qsTr("Publisher");  entry:  publisher; editable: false
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: 45
+        }
+        GameInfoListDelegate {
+            id: developerInfo
+            name: qsTr("Developer");  entry:  developer; editable: false
+            Layout.preferredWidth: parent.width
+            Layout.preferredHeight: 45
         }
     }
 }
+
