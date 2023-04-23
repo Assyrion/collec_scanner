@@ -15,10 +15,10 @@ Item {
         id: tagUnknownPopup
         width : parent.width
         height: parent.height
-        onRefused: {
+        onRefused: () => {
             barcodeScanner.startScanning()
         }
-        onAccepted: {
+        onAccepted: (tag) => {
             var game = GameDataMaker.createNew(tag)
             loader.showGameData(game, true)
         }
@@ -43,12 +43,12 @@ Item {
         anchors.fill: parent
         function showGameData(game, editMode) {
             loader.setSource("GameInfoView.qml",
-                             {"game"    : game,
+                             {"currentGame" : game,
                               "editMode": editMode})
         }
         Connections {
             target: loader.item
-            onClosed: {
+            function onClosed() {
                 loader.sourceComponent = undefined
                 barcodeScanner.startScanning()
             }

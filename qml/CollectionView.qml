@@ -10,12 +10,11 @@ Pane {
     function showGameData(game, index) {
         gameDataLoader.setSource("GameInfoView.qml",
                                  {"game": game,
-                                  "row" : index})
+                                  "currentGameIndex" : index})
     }
     function showNewGameData() {
         gameDataLoader.setSource("GameInfoView.qml",
-                                 {"editMode": true,
-                                  "manuMode": true})
+                                 {"editMode": true})
     }
 
     function diplayListView() {
