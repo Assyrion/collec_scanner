@@ -48,7 +48,7 @@ Item {
     function saveGame() {
         var arr = [currentTag,
                    titleInfo.entry,
-                   full_title,
+                   "", // full_title to remove
                    platformInfo.entry,
                    publisherInfo.entry,
                    developerInfo.entry,
@@ -70,7 +70,7 @@ Item {
 
     function removeGame() {
         imageManager.removePics(currentTag)
-        sqlTableModel.remove(index)
+        sqlTableModel.remove(index, currentTag)
     }
 
 

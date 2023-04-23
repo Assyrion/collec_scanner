@@ -19,7 +19,7 @@ Item {
             barcodeScanner.startScanning()
         }
         onAccepted: (tag) => {
-            loader.showGameData(tag, true)
+            loader.showGameData(-1, tag, true)
         }
     }
 
@@ -28,8 +28,9 @@ Item {
         anchors.fill: parent
         onBarcodeFound: (barcode) => {
             barcodeScanner.stopScanning()
-            if(game) {
-                loader.showGameData(barcode, false)
+            var idx = sqlTableModel.getIndex(barcode)
+            if(idx >= 0) {
+                loader.showGameData(idx, barcode, false)
             } else {
                 tagUnknownPopup.show(barcode)
             }
@@ -39,9 +40,10 @@ Item {
     Loader {
         id: loader
         anchors.fill: parent
-        function showGameData(tag, editMode) {
+        function showGameData(idx, tag, editMode) {
             loader.setSource("GameInfoView.qml",
-                             {"currentGameTag" : tag,
+                             {"currentGameIndex": idx,
+                              "currentGameTag" : tag,
                               "editMode": editMode})
         }
         Connections {
