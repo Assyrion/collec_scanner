@@ -3,14 +3,18 @@ import QtQuick.Controls 6.2
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs
 import Qt5Compat.GraphicalEffects
+
+import GameData 1.0
+
 import "utils"
 
 Pane {
     id: root
 
     signal closed
+    signal saveRequired(int index, GameData game)
 
-    property bool editMode: false
+    property bool editMode: contentLoader.item.editMode
 
     property string currentGameTag: ""
     property int currentGameIndex: -1
@@ -27,9 +31,7 @@ Pane {
     Loader {
         id: contentLoader
 
-        anchors.top: parent.top
-        anchors.bottom: btnRow.top
-        width: parent.width
+        anchors.fill: parent
 
         function showGameData() {
             setSource("GameSwipeView.qml",
@@ -41,7 +43,7 @@ Pane {
         function showNewGameData() {
             setSource("GameSwipeDelegate.qml",
                       {"editMode": editMode,
-                       "tag": currentGameTag,
+                       "currentTag": currentGameTag,
                        "width": parent.width,
                        "height": parent.height})
         }
@@ -52,7 +54,7 @@ Pane {
         height: 50
         width: parent.width
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 15
+        anchors.bottomMargin: 10
         anchors.horizontalCenter:
             parent.horizontalCenter
         spacing: 15
@@ -69,10 +71,11 @@ Pane {
                            : qsTr("edit")
             onClicked: {
                 if(editMode) {
-                    writeGame()
+                    contentLoader.item.editMode = false
+                    contentLoader.item.save()
                     closed()
                 } else {
-                    root.editMode = true
+                    contentLoader.item.editMode = true
                 }
             }
             Layout.preferredWidth: 100
@@ -114,11 +117,5 @@ Pane {
                 closed()
             }
         }
-    }
-
-    MouseArea {
-        id: globalMa
-        anchors.fill: parent
-        enabled : false
     }
 }

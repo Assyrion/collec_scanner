@@ -94,7 +94,11 @@ void SqlTableModel::update(int row, GameData* game)
     } else {
         setRecord(row, rec);
     }
+
+    // not clean but no other solution found to make it quick
+    setFilter("tag = \'" + game->tag + "\'");
     select();
+    setFilter("");
 }
 
 GameData* SqlTableModel::get(const QString& tag)

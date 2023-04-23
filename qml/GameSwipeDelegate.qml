@@ -7,12 +7,11 @@ import GameData 1.0
 Item {
     id: root
 
-    property var game: GameDataMaker.createEmpty()
-
+    property int index: -1
     property bool editMode: false
-    property int row: -1
-
     property string currentTag: ""
+    property GameData currentGame:
+        GameDataMaker.createEmpty()
 
     Component.onCompleted:  {
         readGame()
@@ -33,48 +32,45 @@ Item {
         if(currentTag === "") {
             var rand = Math.random().toFixed(6)
             currentTag = Qt.binding(function() {
-                var _in  = "notag_" + tagInfo.entry
+                var _in  = "notag_" + titleInfo.entry
                         + '_' + rand // very unlikely that 2 games have same tag
                 _in = _in.replace(/\W/g,'')
                 return _in
             })
         } else {
-            if(row < 0)
-                currentTag = tag
-            else {
-                var arr = [tag, title, full_title, platform,
-                           publisher, developer, code, info]
-                game = GameDataMaker.createComplete(arr)
-            }
+            currentTag = tag
         }
 
-        gameCoverRow.frontCoverUrl = imageManager.getFrontPic(tag)
-        gameCoverRow.backCoverUrl  = imageManager.getBackPic(tag)
+        gameCoverRow.frontCoverUrl = imageManager.getFrontPic(currentTag)
+        gameCoverRow.backCoverUrl  = imageManager.getBackPic(currentTag)
     }
 
-    function writeGame() {
-        game.tag       = dataRepeater.itemAt(0).entry
-        game.code      = dataRepeater.itemAt(2).entry
-        game.title     = dataRepeater.itemAt(3).entry
-        game.platform  = dataRepeater.itemAt(4).entry
-        game.info      = dataRepeater.itemAt(5).entry
-        game.publisher = dataRepeater.itemAt(6).entry
-        game.developer = dataRepeater.itemAt(7).entry
-        sqlTableModel.update(row, game)
+    function saveGame() {
+        var arr = [currentTag,
+                   titleInfo.entry,
+                   full_title,
+                   platformInfo.entry,
+                   publisherInfo.entry,
+                   developerInfo.entry,
+                   codeInfo.entry,
+                   infoInfo.entry]
+
+        currentGame = GameDataMaker.createComplete(arr)
+        sqlTableModel.update(index, currentGame)
 
         if(gameCoverRow.frontCoverData) {
-            imageManager.saveFrontPic(game.tag, gameCoverRow.frontCoverData)
-            coverManager.handleFrontCover(game.tag)
+            imageManager.saveFrontPic(currentTag, gameCoverRow.frontCoverData)
+            coverManager.handleFrontCover(currentTag)
         }
         if(gameCoverRow.backCoverData) {
-            imageManager.saveBackPic(game.tag, gameCoverRow.backCoverData)
-            coverManager.handleBackCover(game.tag)
+            imageManager.saveBackPic(currentTag, gameCoverRow.backCoverData)
+            coverManager.handleBackCover(currentTag)
         }
     }
 
     function removeGame() {
-        imageManager.removePics(game.tag)
-        sqlTableModel.remove(row)
+        imageManager.removePics(currentTag)
+        sqlTableModel.remove(index)
     }
 
 
@@ -95,7 +91,7 @@ Item {
                             }
 
         editMode: root.editMode
-        //        mouseArea: globalMa
+        mouseArea: globalMa
     }
 
     ColumnLayout {
@@ -108,52 +104,58 @@ Item {
 
         GameInfoListDelegate {
             id: tagInfo
-            name: qsTr("Tag");  entry:  tag; editable: false
+            name: qsTr("Tag");  entry: currentTag; editable: false
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: 45
         }
         GameInfoListDelegate {
             id: indexInfo
-            name: qsTr("Index");  entry:  index; editable: false
+            name: qsTr("Index");  entry: index; editable: false
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: 45
         }
         GameInfoListDelegate {
             id: codeInfo
-            name: qsTr("Code");  entry:  code; editable: false
+            name: qsTr("Code");  entry: code; editable: editMode
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: 45
         }
         GameInfoListDelegate {
             id: titleInfo
-            name: qsTr("Title");  entry:  title; editable: false
+            name: qsTr("Title");  entry: title; editable: editMode
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: 45
         }
         GameInfoListDelegate {
             id: platformInfo
-            name: qsTr("Platform");  entry:  platform; editable: false
+            name: qsTr("Platform");  entry: platform; editable: editMode
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: 45
         }
         GameInfoListDelegate {
             id: infoInfo
-            name: qsTr("info");  entry: info ; editable: false
+            name: qsTr("info");  entry: info; editable: editMode
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: 45
         }
         GameInfoListDelegate {
             id: publisherInfo
-            name: qsTr("Publisher");  entry:  publisher; editable: false
+            name: qsTr("Publisher");  entry: publisher; editable: editMode
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: 45
         }
         GameInfoListDelegate {
             id: developerInfo
-            name: qsTr("Developer");  entry:  developer; editable: false
+            name: qsTr("Developer");  entry: developer; editable: editMode
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: 45
         }
+    }
+
+    MouseArea {
+        id: globalMa
+        anchors.fill: parent
+        enabled : false
     }
 }
 
