@@ -23,5 +23,7 @@
         <file>qml/CoverProcessingPopup.qml</file>
         <file>qml/AddGameButton.qml</file>
         <file>qml/GameInfoCoverRow.qml</file>
+        <file>qml/GameSwipeView.qml</file>
+        <file>qml/GameSwipeDelegate.qml</file>
     </qresource>
 </RCC>

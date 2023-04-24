@@ -20,9 +20,9 @@ public:
     QStringList roleNamesList() const;
 
     Q_INVOKABLE int rowCount();
-    Q_INVOKABLE void remove(int row);
+    Q_INVOKABLE void remove(int row, const QString &tag);
     Q_INVOKABLE void update(int row, GameData* game);
-    Q_INVOKABLE GameData* get(const QString &tag);
+    Q_INVOKABLE int getIndex(const QString &tag);
     Q_INVOKABLE void filterByTitle(const QString& title);
     Q_INVOKABLE void orderBy(int column, int order);
     Q_INVOKABLE void saveDBToFile(FileManager* fileManager);

@@ -40,11 +40,7 @@ PinchArea {
         delegate: GameGridDelegate {
             width: gridView.cellWidth - 10
             onClicked: function() {
-                var arr = [tag, title, full_title, platform,
-                           publisher,  developer, code,
-                           info]
-                var game = GameDataMaker.createComplete(arr)
-                showGameData(game, index)
+                showGameData(tag, index)
             }
         }
     }

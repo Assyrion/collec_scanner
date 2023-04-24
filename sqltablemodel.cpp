@@ -55,13 +55,18 @@ QVariant SqlTableModel::data(const QModelIndex &index, int role) const
     return value;
 }
 
-void SqlTableModel::remove(int row)
+void SqlTableModel::remove(int row, const QString& tag)
 {
     if(row < 0 || row >= rowCount()) {
         return;
     }
     removeRow(row);
+
+    // not clean but no other solution found to make it quick
+    auto savedFilter = filter();
+    setFilter("tag = \'" + tag + "\'");
     select();
+    setFilter(savedFilter);
 }
 
 void SqlTableModel::update(int row, GameData* game)
@@ -94,31 +99,28 @@ void SqlTableModel::update(int row, GameData* game)
     } else {
         setRecord(row, rec);
     }
+
+    // not clean but no other solution found to make it quick
+    auto savedFilter = filter();
+    setFilter("tag = \'" + game->tag + "\'");
     select();
+    setFilter(savedFilter);
 }
 
-GameData* SqlTableModel::get(const QString& tag)
+int SqlTableModel::getIndex(const QString& tag)
 {
-    setFilter("tag = \'" + tag + "\'");
-
-    GameData* game = nullptr;
-
-    if(rowCount() == 1) {
-        QSqlRecord rec = record(0);
-        auto list = { tag,
-                      rec.value(1).toString(),
-                      rec.value(2).toString(),
-                      rec.value(3).toString(),
-                      rec.value(4).toString(),
-                      rec.value(5).toString(),
-                      rec.value(6).toString(),
-                      rec.value(7).toString()};
-        game = GameDataMaker::get()->createComplete(list);
+    int col = fieldIndex("tag");
+    for(int row=0; row<rowCount(); ++row)
+    {
+        QVariant d = data(index(row,col), 0);
+        if(d.toString() == tag)
+        {
+            return row;
+        }
     }
 
-    setFilter("");
+    return -1;
 
-    return game;
 }
 
 int SqlTableModel::rowCount()

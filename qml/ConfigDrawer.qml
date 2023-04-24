@@ -67,7 +67,7 @@ Drawer {
             Layout.alignment : Qt.AlignVCenter
             Layout.preferredWidth: parent.width * 0.4
 
-            model: sqlTableModel.roleNamesList
+            model: sqlTableModel ? sqlTableModel.roleNamesList : null
             onModelChanged: currentIndex = 1
             onActivated: sqlTableModel.orderBy(currentIndex,
                                                ascDescBox.currentIndex)
