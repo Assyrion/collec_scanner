@@ -63,9 +63,10 @@ void SqlTableModel::remove(int row, const QString& tag)
     removeRow(row);
 
     // not clean but no other solution found to make it quick
+    auto savedFilter = filter();
     setFilter("tag = \'" + tag + "\'");
     select();
-    setFilter("");
+    setFilter(savedFilter);
 }
 
 void SqlTableModel::update(int row, GameData* game)
@@ -100,9 +101,10 @@ void SqlTableModel::update(int row, GameData* game)
     }
 
     // not clean but no other solution found to make it quick
+    auto savedFilter = filter();
     setFilter("tag = \'" + game->tag + "\'");
     select();
-    setFilter("");
+    setFilter(savedFilter);
 }
 
 int SqlTableModel::getIndex(const QString& tag)
