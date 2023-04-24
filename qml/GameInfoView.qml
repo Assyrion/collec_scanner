@@ -59,11 +59,16 @@ Pane {
             parent.horizontalCenter
         spacing: 15
         Button {
-            text: qsTr("close")
+            text: editMode ? qsTr("cancel")
+                           : qsTr("close")
             onClicked: {
-                closed()
+                if(editMode) {
+                    contentLoader.item.editMode = false
+                } else {
+                    closed()
+                }
             }
-            Layout.preferredWidth: 100
+            Layout.preferredWidth: 110
             Layout.alignment: Qt.AlignCenter
         }
         Button {
@@ -78,7 +83,7 @@ Pane {
                     contentLoader.item.editMode = true
                 }
             }
-            Layout.preferredWidth: 100
+            Layout.preferredWidth: 110
             Layout.alignment: Qt.AlignCenter
         }
         Button {
@@ -87,7 +92,7 @@ Pane {
             onClicked: {
                 popupLoader.loadConfirmDelete()
             }
-            Layout.preferredWidth: 100
+            Layout.preferredWidth: 110
             Layout.alignment: Qt.AlignCenter
         }
     }

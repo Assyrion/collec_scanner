@@ -9,6 +9,7 @@ SwipeView {
     property string currentTag: ""
     property bool editMode: false
 
+    interactive: !editMode
     orientation: Qt.Vertical
     currentIndex: 0
 
