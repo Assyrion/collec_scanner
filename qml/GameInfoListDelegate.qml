@@ -19,12 +19,14 @@ Item {
     }
     TextField {
         id: textField
-        height: parent.height
+        height: implicitBackgroundHeight
+        topInset: 5; bottomInset: 5
         anchors.right: parent.right
         anchors.left: labelName.right
         anchors.verticalCenter:
             labelName.verticalCenter
         verticalAlignment:
-            Label.AlignBottom
+            TextField.AlignVCenter
+        wrapMode: Text.WordWrap
     }
 }

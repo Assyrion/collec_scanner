@@ -104,51 +104,51 @@ Item {
 
         GameInfoListDelegate {
             id: tagInfo
-            name: qsTr("Tag");  entry: currentTag; editable: false
+            name: qsTr("Tag"); entry: currentTag; editable: false
             Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 45
+            Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: indexInfo
-            name: qsTr("Index");  entry: index; editable: false
+            name: qsTr("Index"); entry: index; editable: false
             Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 45
+            Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: codeInfo
-            name: qsTr("Code");  entry: code; editable: editMode
+            name: qsTr("Code"); entry: code; editable: editMode
             Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 45
+            Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: titleInfo
-            name: qsTr("Title");  entry: title; editable: editMode
+            name: qsTr("Title"); entry: title; editable: editMode
             Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 45
+            Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: platformInfo
-            name: qsTr("Platform");  entry: platform; editable: editMode
+            name: qsTr("Platform"); entry: platform; editable: editMode
             Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 45
+            Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: infoInfo
-            name: qsTr("info");  entry: info; editable: editMode
+            name: qsTr("info"); entry: info; editable: editMode
             Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 45
+            Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: publisherInfo
-            name: qsTr("Publisher");  entry: publisher; editable: editMode
+            name: qsTr("Publisher"); entry: publisher; editable: editMode
             Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 45
+            Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: developerInfo
-            name: qsTr("Developer");  entry: developer; editable: editMode
+            name: qsTr("Developer"); entry: developer; editable: editMode
             Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 45
+            Layout.preferredHeight: 50
         }
     }
 
