@@ -26,28 +26,13 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-    if (engine.rootObjects().isEmpty()) {
-        return -1;
-    }
-
-    auto rootObject = engine.rootObjects().first();
-    QQuickWindow* window = static_cast<QQuickWindow*>(rootObject);
-    if (window) {
-        // Set anti-aliasing
-        QSurfaceFormat  format;
-        format.setSamples(8);
-        window->setFormat(format);
-    }
-
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
 
 #ifdef Q_OS_ANDROID
 
     // copy database file from assets folder to app folder
     QFile dfile("assets:/" + DBNAME);
-//    QFile::remove(DB_PATH_ABS_NAME); // uncomment if needed
+    //    QFile::remove(DB_PATH_ABS_NAME); // uncomment if needed
     if (dfile.exists()) {
         if(!QFile::exists(DB_PATH_ABS_NAME)) {
             dfile.copy(DB_PATH_ABS_NAME);
@@ -66,6 +51,8 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    QQmlApplicationEngine engine;
+
     SqlTableModel sqlTableModel;
     ImageManager  imageManager;
     CoverManager  coverManager;
@@ -83,6 +70,20 @@ int main(int argc, char *argv[])
     ComManager comManager;
     context->setContextProperty("comManager", &comManager);
 #endif
+
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    if (engine.rootObjects().isEmpty()) {
+        return -1;
+    }
+
+    auto rootObject = engine.rootObjects().first();
+    QQuickWindow* window = static_cast<QQuickWindow*>(rootObject);
+    if (window) {
+        // Set anti-aliasing
+        QSurfaceFormat  format;
+        format.setSamples(8);
+        window->setFormat(format);
+    }
 
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
     coverManager.setProgressDialog(dialog);

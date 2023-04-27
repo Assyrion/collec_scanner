@@ -46,6 +46,17 @@ Item {
     }
 
     function saveGame() {
+
+        // handle cover before modifying DB !
+        if(gameCoverRow.frontCoverData) {
+            imageManager.saveFrontPic(currentTag, gameCoverRow.frontCoverData)
+            coverManager.handleFrontCover(currentTag)
+        }
+        if(gameCoverRow.backCoverData) {
+            imageManager.saveBackPic(currentTag, gameCoverRow.backCoverData)
+            coverManager.handleBackCover(currentTag)
+        }
+
         var arr = [currentTag,
                    titleInfo.entry,
                    "", // full_title to remove
@@ -57,15 +68,6 @@ Item {
 
         currentGame = GameDataMaker.createComplete(arr)
         sqlTableModel.update(index, currentGame)
-
-        if(gameCoverRow.frontCoverData) {
-            imageManager.saveFrontPic(currentTag, gameCoverRow.frontCoverData)
-            coverManager.handleFrontCover(currentTag)
-        }
-        if(gameCoverRow.backCoverData) {
-            imageManager.saveBackPic(currentTag, gameCoverRow.backCoverData)
-            coverManager.handleBackCover(currentTag)
-        }
     }
 
     function removeGame() {
