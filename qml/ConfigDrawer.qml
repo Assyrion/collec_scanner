@@ -103,9 +103,9 @@ Drawer {
             anchors.horizontalCenter:
                 parent.horizontalCenter
 
-            text: "export DB"
+            text: "upload DB"
             onClicked: {
-                loader.loadConfirmExportDB()
+                loader.loadConfirmUploadDB()
             }
         }
         Button {
@@ -132,15 +132,15 @@ Drawer {
             loader.item.accepted.connect( function() { sqlTableModel.saveDBToFile(fileManager) } )
         }
 
-        function loadConfirmExportDB() {
+        function loadConfirmUploadDB() {
             loader.setSource("ConfirmActionPopup.qml",
-                             {   "contentText" : qsTr("DB and pics will be export in <DownloadPath>"),
+                             {   "contentText" : qsTr("DB will be uploaded to server"),
                                  "width" : 2*mainWindow.width/3,
                                  "height": mainWindow.height/3,
                                  "x"     : mainWindow.width/6,
                                  "y"     : mainWindow.height/4+50})
 
-            loader.item.accepted.connect( function() { comManager.exportDB() } )
+            loader.item.accepted.connect( function() { comManager.uploadDB() } )
         }
 
         function loadConfirmUploadCovers() {
@@ -151,7 +151,7 @@ Drawer {
                                  "x"     : mainWindow.width/6,
                                  "y"     : mainWindow.height/4+50})
 
-            loader.item.accepted.connect( function() { coverManager.uploadCovers() } )
+            loader.item.accepted.connect( function() { comManager.uploadCovers() } )
         }
     }
 }

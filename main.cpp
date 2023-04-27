@@ -13,7 +13,6 @@
 
 #include "sqltablemodel.h"
 #include "imagemanager.h"
-#include "covermanager.h"
 #include "filemanager.h"
 #include "commanager.h"
 #include "gamedata.h"
@@ -55,7 +54,7 @@ int main(int argc, char *argv[])
 
     SqlTableModel sqlTableModel;
     ImageManager  imageManager;
-    CoverManager  coverManager;
+    ComManager    comManager;
     FileManager   fileManager;
 
     fileManager.registerQMLTypes();
@@ -63,13 +62,8 @@ int main(int argc, char *argv[])
     auto context = engine.rootContext();
     context->setContextProperty("sqlTableModel", &sqlTableModel);
     context->setContextProperty("imageManager",  &imageManager);
-    context->setContextProperty("coverManager",  &coverManager);
+    context->setContextProperty("comManager",    &comManager);
     context->setContextProperty("fileManager",   &fileManager);
-
-#ifdef Q_OS_ANDROID
-    ComManager comManager;
-    context->setContextProperty("comManager", &comManager);
-#endif
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty()) {
@@ -86,8 +80,8 @@ int main(int argc, char *argv[])
     }
 
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
-    coverManager.setProgressDialog(dialog);
-    coverManager.downloadCovers();
+    comManager.setProgressDialog(dialog);
+    comManager.downloadCovers();
 
     return app.exec();
 }

@@ -50,11 +50,11 @@ Item {
         // handle cover before modifying DB !
         if(gameCoverRow.frontCoverData) {
             imageManager.saveFrontPic(currentTag, gameCoverRow.frontCoverData)
-            coverManager.handleFrontCover(currentTag)
+            comManager.handleFrontCover(currentTag)
         }
         if(gameCoverRow.backCoverData) {
             imageManager.saveBackPic(currentTag, gameCoverRow.backCoverData)
-            coverManager.handleBackCover(currentTag)
+            comManager.handleBackCover(currentTag)
         }
 
         var arr = [currentTag,

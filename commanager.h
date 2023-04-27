@@ -1,26 +1,38 @@
 #ifndef COMMANAGER_H
 #define COMMANAGER_H
 
-#include <QtGlobal>
 
-#ifdef Q_OS_ANDROID
-
-#include "private/qandroidextras_p.h"
-#include <QFileInfoList>
 #include <QObject>
+#include <QFile>
 
 class ComManager : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(ComManager)
 public:
     explicit ComManager(QObject *parent = nullptr);
+    ~ComManager();
 
-    void exportDB() const;
+    Q_INVOKABLE void downloadCovers();
+    Q_INVOKABLE void uploadCovers();
+
+    Q_INVOKABLE void uploadDB();
+
+    Q_INVOKABLE void handleFrontCover(const QString &tag);
+    Q_INVOKABLE void handleBackCover(const QString &tag);
+
+    void setProgressDialog(QObject* dialog);
 
 private:
-    QFuture<QtAndroidPrivate::PermissionResult> m_permission;
+    QFile m_coversToUploadFile;
+    int m_coversToUploadCount{0};
+
+    void appendToList(const QString& fileName);
+    bool uploadToServer(const QString &fileName, const QString &scriptPath);
+
+    QObject* m_progressDialog{nullptr};
+
+signals:
+
 };
 
 #endif // COMMANAGER_H
-#endif // Q_OS_ANDROID
