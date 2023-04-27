@@ -14,12 +14,17 @@ Pane {
     signal closed
     signal saveRequired(int index, GameData game)
 
-    property bool editMode: contentLoader.item.editMode
+    property bool editMode: false
 
     property string currentGameTag: ""
     property int currentGameIndex: -1
 
-    Component.onCompleted: showContent()
+    Component.onCompleted: {
+        showContent()
+        editMode = Qt.binding(() => { // bind once item exists
+            return contentLoader.item.editMode
+        })
+    }
 
     function showContent() {
         if(currentGameIndex < 0)

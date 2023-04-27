@@ -2,9 +2,9 @@ import QtQuick 6.2
 import QtQuick.Controls 6.0
 
 Item {
-    property alias name :  labelName.text
-    property alias entry :  textField.text
-    property alias editable:  textField.enabled
+    property alias name:     labelName.text
+    property alias entry:    textField.text
+    property alias editable: textField.enabled
 
     Label {
         id: labelName
