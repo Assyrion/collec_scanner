@@ -87,7 +87,6 @@ void SqlTableModel::update(int row, GameData* game)
     QSqlRecord rec = record();
     rec.setValue("tag",          game->tag);
     rec.setValue("title",        game->title);
-    rec.setValue("full_title",   game->full_title);
     rec.setValue("platform",     game->platform);
     rec.setValue("publisher",    game->publisher);
     rec.setValue("developer",    game->developer);

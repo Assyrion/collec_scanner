@@ -59,7 +59,6 @@ Item {
 
         var arr = [currentTag,
                    titleInfo.entry,
-                   "", // full_title to remove
                    platformInfo.entry,
                    publisherInfo.entry,
                    developerInfo.entry,

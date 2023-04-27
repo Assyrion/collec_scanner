@@ -35,24 +35,23 @@ GameData::GameData()
 GameData::GameData(const QStringList &il)
     : GameData(*il.begin(),    *(il.begin()+1), *(il.begin()+2),
               *(il.begin()+3), *(il.begin()+4), *(il.begin()+5),
-              *(il.begin()+6), *(il.begin()+7)) // ugly
+              *(il.begin()+6)) // ugly
 {}
 
 GameData::GameData(QString tag)
     : GameData(tag, "", "", "ps3")
 {}
 
-GameData::GameData(QString tag, QString title, QString full_title,
-                   QString platform,  QString publisher, QString developer,
+GameData::GameData(QString tag, QString title, QString platform,
+                   QString publisher, QString developer,
                    QString code, QString info)
     : tag(tag),
-      title(title),
-      full_title(full_title),
-      platform(platform),
-      publisher(publisher),
-      developer(developer),
-      code(code),
-      info(info)
+    info(info),
+    title(title),
+    platform(platform),
+    publisher(publisher),
+    developer(developer),
+    code(code)
 {}
 
 GameData::~GameData()

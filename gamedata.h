@@ -38,7 +38,6 @@ class GameData : public QObject
 
     Q_PROPERTY(QString tag          MEMBER tag)
     Q_PROPERTY(QString title        MEMBER title)
-    Q_PROPERTY(QString full_title   MEMBER full_title)
     Q_PROPERTY(QString platform     MEMBER platform)
     Q_PROPERTY(QString publisher    MEMBER publisher)
     Q_PROPERTY(QString developer    MEMBER developer)
@@ -49,10 +48,9 @@ class GameData : public QObject
     GameData();
     GameData(QString tag);
     GameData(const QStringList& il);
-    GameData(QString tag, QString title, QString full_title = "",
-             QString platform = "ps3",   QString publisher = "",
-             QString developer = "",     QString code = "",
-             QString info = "");
+    GameData(QString tag, QString title, QString platform = "ps3",
+             QString publisher = "", QString developer = "",
+             QString code = "", QString info = "");
     ~GameData();
 
 public:
