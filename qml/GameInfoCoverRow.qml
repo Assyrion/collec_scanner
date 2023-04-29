@@ -57,6 +57,7 @@ RowLayout {
 
                 Layout.preferredHeight = Layout.minimumHeight
             } else {
+                picBackImg.isZoomed  = true
                 shiftFactor = maxShiftFactor
                 mouseArea.enabled = true
 
@@ -91,6 +92,7 @@ RowLayout {
 
                 Layout.preferredHeight = Layout.minimumHeight
             } else {
+                picFrontImg.isZoomed  = true
                 shiftFactor = -maxShiftFactor
                 mouseArea.enabled = true
 
