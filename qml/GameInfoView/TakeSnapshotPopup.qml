@@ -1,8 +1,9 @@
 import QtQuick 6.2
-import QtMultimedia
+import QtMultimedia 6.2
 import QtQuick.Controls 6.2
 import Qt5Compat.GraphicalEffects
-import "utils"
+
+import "../utils"
 
 Popup {
     id: root

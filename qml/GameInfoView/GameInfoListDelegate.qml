@@ -1,5 +1,5 @@
 import QtQuick 6.2
-import QtQuick.Controls 6.0
+import QtQuick.Controls 6.2
 
 Item {
     property alias name:     labelName.text

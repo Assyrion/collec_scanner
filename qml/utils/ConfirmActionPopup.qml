@@ -1,7 +1,6 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
 import Qt5Compat.GraphicalEffects
-import "utils"
 
 Popup {
     id: popup
@@ -9,6 +8,8 @@ Popup {
     Component.onCompleted:  {
         open()
     }
+
+    property alias contentText : messageText.text
 
     signal accepted
     signal refused
@@ -25,21 +26,21 @@ Popup {
     background: RectangularGlow {
         glowRadius: 10
         spread: 0
-        color: "#222222"
+        color: "#303030"
         cornerRadius: 0
     }
 
     contentItem : Pane {
         Text {
+            id: messageText
             width: parent.width
             anchors.horizontalCenter:
                 parent.horizontalCenter
             anchors.top: parent.top
-            anchors.topMargin: 30
+            anchors.topMargin: 10
             horizontalAlignment: Text.AlignHCenter
-            text: qsTr("Are you sure ?")
             wrapMode: Text.WordWrap
-            font.pointSize: 20
+            font.pointSize: 15
             font.family: "Roboto"
             color: "white"
         }
@@ -50,14 +51,14 @@ Popup {
             anchors.bottomMargin: 10
             spacing: 25
             Button {
-                text: qsTr("yes")
+                text: qsTr("OK")
                 onClicked: {
                     accepted()
                     popup.close()
                 }
             }
             Button {
-                text: qsTr("no")
+                text: qsTr("cancel")
                 onClicked: {
                     refused()
                     popup.close()

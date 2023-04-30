@@ -3,8 +3,8 @@ import QtQuick 6.2
 import QtMultimedia
 import QtQuick.Controls 6.2
 import Qt.labs.platform 1.0
-import GameData 1.0
-import "utils"
+
+import "../utils"
 
 Item {
     id: root
@@ -41,7 +41,7 @@ Item {
         id: loader
         anchors.fill: parent
         function showGameData(idx, tag, editMode) {
-            loader.setSource("GameInfoView.qml",
+            loader.setSource("../GameInfoView/GameInfoView.qml",
                              {"currentGameIndex": idx,
                               "currentGameTag" : tag,
                               "editMode": editMode})

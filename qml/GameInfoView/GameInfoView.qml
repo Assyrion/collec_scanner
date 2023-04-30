@@ -1,12 +1,11 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
-import QtQuick.Layouts 1.3
+import QtQuick.Layouts 6.2
 import QtQuick.Dialogs
-import Qt5Compat.GraphicalEffects
 
 import GameData 1.0
 
-import "utils"
+import "../utils"
 
 Pane {
     id: root
@@ -113,7 +112,7 @@ Pane {
                                  "y"     : root.height/3-40})
         }
         function loadConfirmDelete() {
-            popupLoader.setSource("ConfirmDeletePopup.qml",
+            popupLoader.setSource("../utils/ConfirmDeletePopup.qml",
                              {   "width" : 2*root.width/3,
                                  "height": root.height/3,
                                  "x"     : root.width/6-12,

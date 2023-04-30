@@ -1,8 +1,8 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
 import Qt5Compat.GraphicalEffects
-import GameData 1.0
-import "utils"
+
+import "../utils"
 
 Item {
     id: root

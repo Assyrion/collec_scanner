@@ -1,6 +1,8 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
-import "utils"
+
+import ".."
+import "../utils"
 
 Pane {
     id: root
@@ -8,12 +10,12 @@ Pane {
     padding: 0
 
     function showGameData(tag, index) {
-        gameDataLoader.setSource("GameInfoView.qml",
+        gameDataLoader.setSource("../GameInfoView/GameInfoView.qml",
                                  {"currentGameTag": tag,
                                   "currentGameIndex" : index})
     }
     function showNewGameData() {
-        gameDataLoader.setSource("GameInfoView.qml",
+        gameDataLoader.setSource("../GameInfoView/GameInfoView.qml",
                                  {"editMode": true})
     }
 

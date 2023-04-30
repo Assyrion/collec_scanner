@@ -1,6 +1,7 @@
 import QtQuick 6.2
 import QtQuick.Layouts 6.2
-import "utils"
+
+import "../utils"
 
 RowLayout {
     id : root

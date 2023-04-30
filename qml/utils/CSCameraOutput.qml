@@ -1,9 +1,6 @@
 import QtQuick 6.2
 import QtMultimedia
 import QtQuick.Controls 6.2
-import Qt.labs.platform 1.0
-import Qt5Compat.GraphicalEffects
-import QZXing 3.3
 
 Item {
     id: root

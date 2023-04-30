@@ -2,28 +2,28 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>qml/BarcodeScanner.qml</file>
-        <file>qml/TagUnknownPopup.qml</file>
-        <file>qml/TakeSnapshotPopup.qml</file>
-        <file>qml/ConfirmDeletePopup.qml</file>
-        <file>qml/ConfirmActionPopup.qml</file>
-        <file>qml/BarcodeScannerView.qml</file>
-        <file>qml/GameInfoView.qml</file>
-        <file>qml/GameListView.qml</file>
+        <file>qml/BarcodeScannerView/BarcodeScannerView.qml</file>
+        <file>qml/BarcodeScannerView/BarcodeScanner.qml</file>
+        <file>qml/BarcodeScannerView/TagUnknownPopup.qml</file>
+        <file>qml/CollectionView/CollectionView.qml</file>
+        <file>qml/CollectionView/ViewSelectorDrawer.qml</file>
+        <file>qml/CollectionView/GameListView.qml</file>
+        <file>qml/CollectionView/GameListDelegate.qml</file>
+        <file>qml/CollectionView/GameGridView.qml</file>
+        <file>qml/CollectionView/GameGridDelegate.qml</file>
+        <file>qml/CollectionView/AddGameButton.qml</file>
+        <file>qml/GameInfoView/GameInfoView.qml</file>
+        <file>qml/GameInfoView/GameInfoCoverRow.qml</file>
+        <file>qml/GameInfoView/GameSwipeView.qml</file>
+        <file>qml/GameInfoView/GameSwipeDelegate.qml</file>
+        <file>qml/GameInfoView/TakeSnapshotPopup.qml</file>
+        <file>qml/GameInfoView/GameInfoListDelegate.qml</file>
+        <file>qml/utils/ConfirmDeletePopup.qml</file>
+        <file>qml/utils/ConfirmActionPopup.qml</file>
         <file>qml/utils/CSGlowText.qml</file>
-        <file>qml/ConfigDrawer.qml</file>
-        <file>qml/GameInfoListDelegate.qml</file>
-        <file>qml/GameListDelegate.qml</file>
         <file>qml/utils/CSGlowImage.qml</file>
         <file>qml/utils/CSCameraOutput.qml</file>
-        <file>qml/ViewSelectorDrawer.qml</file>
-        <file>qml/GameGridDelegate.qml</file>
-        <file>qml/GameGridView.qml</file>
-        <file>qml/CollectionView.qml</file>
+        <file>qml/ConfigDrawer.qml</file>
         <file>qml/CoverProcessingPopup.qml</file>
-        <file>qml/AddGameButton.qml</file>
-        <file>qml/GameInfoCoverRow.qml</file>
-        <file>qml/GameSwipeView.qml</file>
-        <file>qml/GameSwipeDelegate.qml</file>
     </qresource>
 </RCC>

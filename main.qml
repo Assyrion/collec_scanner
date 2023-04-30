@@ -1,10 +1,12 @@
 import QtQuick 6.2
-import QtQuick.Window 2.2
+import QtQuick.Window 6.2
 import QtQuick.Controls 6.2
-import QtQuick.Layouts 1.3
-import GameData 1.0
+import QtQuick.Layouts 6.2
+
 import "qml"
 import "qml/utils"
+import "qml/CollectionView"
+import "qml/BarcodeScannerView"
 
 Window {
     id: mainWindow
