@@ -17,14 +17,14 @@ Item {
         readGame()
     }
 
-    function loadSnapshotPopup(img) {
+    function showSnapshotPopup(img) {
         var cpt = Qt.createComponent("TakeSnapshotPopup.qml")
         if (cpt.status === Component.Ready) {
             cpt.createObject(root, { "boundImg": img,
-                                 "width" : root.width * 0.66,
+                                 "width" : root.width * 0.8,
                                  "height": root.height * 0.6,
-                                 "x"     : root.width * 0.17,
-                                 "y"     : root.height * 0.3})
+                                 "x"     : root.width * 0.1,
+                                 "y"     : root.height * 0.27})
         }
     }
 
@@ -88,7 +88,7 @@ Item {
         z: 1
 
         onEditCoverRequired:(img) => {
-                                loadSnapshotPopup(img)
+                                showSnapshotPopup(img)
                             }
 
         editMode: root.editMode
