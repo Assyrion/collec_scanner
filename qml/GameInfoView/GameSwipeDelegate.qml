@@ -40,13 +40,10 @@ Item {
         } else {
             currentTag = tag
         }
-
-        gameCoverRow.frontCoverUrl = imageManager.getFrontPic(currentTag)
-        gameCoverRow.backCoverUrl  = imageManager.getBackPic(currentTag)
+        reloadCovers()
     }
 
     function saveGame() {
-
         // handle cover before modifying DB !
         if(gameCoverRow.frontCoverData) {
             imageManager.saveFrontPic(currentTag, gameCoverRow.frontCoverData)
@@ -56,7 +53,6 @@ Item {
             imageManager.saveBackPic(currentTag, gameCoverRow.backCoverData)
             comManager.handleBackCover(currentTag)
         }
-
         var arr = [currentTag,
                    titleInfo.entry,
                    platformInfo.entry,
@@ -72,6 +68,20 @@ Item {
     function removeGame() {
         imageManager.removePics(currentTag)
         sqlTableModel.remove(index, currentTag)
+    }
+
+    function cancelGame() {
+        for (var i = 0; i < dataColumn.children.length; i++) {
+            dataColumn.children[i].reset()
+        }
+        reloadCovers()
+    }
+
+    function reloadCovers() {
+        gameCoverRow.frontCoverUrl  = imageManager.getFrontPic(currentTag)
+        gameCoverRow.frontCoverData = null
+        gameCoverRow.backCoverUrl   = imageManager.getBackPic(currentTag)
+        gameCoverRow.backCoverData  = null
     }
 
 

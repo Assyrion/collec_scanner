@@ -79,7 +79,7 @@ Pane {
         height: 50
         width: parent.width
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
+        anchors.bottomMargin: 15
         anchors.horizontalCenter:
             parent.horizontalCenter
         spacing: 15
@@ -89,6 +89,7 @@ Pane {
             onClicked: {
                 if(editMode) {
                     contentLoader.item.editMode = false
+                    contentLoader.item.cancelGame()
                 } else {
                     closed()
                 }
@@ -101,9 +102,8 @@ Pane {
                            : qsTr("edit")
             onClicked: {
                 if(editMode) {
-                    contentLoader.item.editMode = false
                     contentLoader.item.saveGame()
-                    closed()
+                    closed() // important to do it (maybe make a new feature just to avoid it)
                 } else {
                     contentLoader.item.editMode = true
                 }

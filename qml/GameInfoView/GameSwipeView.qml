@@ -19,6 +19,10 @@ SwipeView {
         currentItem.item.removeGame()
     }
 
+    function cancelGame() {
+        currentItem.item.cancelGame()
+    }
+
     Repeater {
         model: sqlTableModel
         Loader {
