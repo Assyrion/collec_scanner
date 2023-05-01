@@ -31,6 +31,21 @@ Pane {
         })
     }
 
+    function showConfirmDelete() {
+        var cpt = Qt.createComponent("../utils/CSActionPopup.qml")
+        if (cpt.status === Component.Ready) {
+            var obj = cpt.createObject(root, {"contentText" : qsTr("Are you sure ?"),
+                                 "width" : 2*root.width/3,
+                                 "height": root.height/4,
+                                 "x"     : root.width/6,
+                                 "y"     : root.height/4+20})
+            obj.accepted.connect(function() {
+                contentLoader.item.removeGame()
+                closed()
+            })
+        }
+    }
+
     function showContent() {
         if(currentGameIndex < 0)
             contentLoader.showNewGameData()
@@ -100,38 +115,10 @@ Pane {
             text: qsTr("delete")
             visible: currentGameIndex >= 0
             onClicked: {
-                popupLoader.loadConfirmDelete()
+                showConfirmDelete()
             }
             Layout.preferredWidth: 110
             Layout.alignment: Qt.AlignCenter
-        }
-    }
-
-    Loader {
-        id: popupLoader
-        function loadSnapshotPopup(img) {
-            popupLoader.setSource("TakeSnapshotPopup.qml",
-                             { "boundImg": img,
-                                 "width" : 2*root.width/3,
-                                 "height": root.height/2,
-                                 "x"     : root.width/6-12,
-                                 "y"     : root.height/3-40})
-        }
-        function loadConfirmDelete() {
-            popupLoader.setSource("../utils/CSActionPopup.qml",
-                             {   "contentText" : qsTr("Are you sure ?"),
-                                 "width" : 2*root.width/3,
-                                 "height": root.height/4,
-                                 "x"     : root.width/6-12,
-                                 "y"     : root.height/4+20})
-        }
-        Connections {
-            target: popupLoader.item
-            ignoreUnknownSignals: true
-            function onAccepted() {
-                contentLoader.item.removeGame()
-                closed()
-            }
         }
     }
 }
