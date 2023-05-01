@@ -122,10 +122,10 @@ Drawer {
     Loader {
         id: loader
         function loadConfirmSaveDB() {
-            loader.setSource("utils/ConfirmActionPopup.qml",
+            loader.setSource("utils/CSActionPopup.qml",
                              {   "contentText" : qsTr("DB content will be written in <DownloadPath>/game_list.csv"),
                                  "width" : 2*mainWindow.width/3,
-                                 "height": mainWindow.height/3,
+                                 "height": mainWindow.height/4,
                                  "x"     : mainWindow.width/6,
                                  "y"     : mainWindow.height/4+50})
 
@@ -133,10 +133,10 @@ Drawer {
         }
 
         function loadConfirmUploadDB() {
-            loader.setSource("utils/ConfirmActionPopup.qml",
+            loader.setSource("utils/CSActionPopup.qml",
                              {   "contentText" : qsTr("DB will be uploaded to server"),
                                  "width" : 2*mainWindow.width/3,
-                                 "height": mainWindow.height/3,
+                                 "height": mainWindow.height/4,
                                  "x"     : mainWindow.width/6,
                                  "y"     : mainWindow.height/4+50})
 
@@ -144,10 +144,10 @@ Drawer {
         }
 
         function loadConfirmUploadCovers() {
-            loader.setSource("utils/ConfirmActionPopup.qml",
+            loader.setSource("utils/CSActionPopup.qml",
                              {   "contentText" : qsTr("New covers will be uploaded to server"),
                                  "width" : 2*mainWindow.width/3,
-                                 "height": mainWindow.height/3,
+                                 "height": mainWindow.height/4,
                                  "x"     : mainWindow.width/6,
                                  "y"     : mainWindow.height/4+50})
 

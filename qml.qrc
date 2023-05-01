@@ -18,8 +18,7 @@
         <file>qml/GameInfoView/GameSwipeDelegate.qml</file>
         <file>qml/GameInfoView/TakeSnapshotPopup.qml</file>
         <file>qml/GameInfoView/GameInfoListDelegate.qml</file>
-        <file>qml/utils/ConfirmDeletePopup.qml</file>
-        <file>qml/utils/ConfirmActionPopup.qml</file>
+        <file>qml/utils/CSActionPopup.qml</file>
         <file>qml/utils/CSGlowText.qml</file>
         <file>qml/utils/CSGlowImage.qml</file>
         <file>qml/utils/CSCameraOutput.qml</file>

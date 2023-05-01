@@ -112,9 +112,10 @@ Pane {
                                  "y"     : root.height/3-40})
         }
         function loadConfirmDelete() {
-            popupLoader.setSource("../utils/ConfirmDeletePopup.qml",
-                             {   "width" : 2*root.width/3,
-                                 "height": root.height/3,
+            popupLoader.setSource("../utils/CSActionPopup.qml",
+                             {   "contentText" : qsTr("Are you sure ?"),
+                                 "width" : 2*root.width/3,
+                                 "height": root.height/4,
                                  "x"     : root.width/6-12,
                                  "y"     : root.height/4+20})
         }
