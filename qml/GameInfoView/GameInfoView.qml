@@ -10,6 +10,12 @@ import "../utils"
 Pane {
     id: root
 
+    // Pane has a default padding non null
+    leftPadding: 0
+    rightPadding: 0
+    topPadding: 0
+    bottomPadding: 0
+
     signal closed
     signal saveRequired(int index, GameData game)
 

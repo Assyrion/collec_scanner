@@ -19,8 +19,6 @@ SwipeView {
         currentItem.item.removeGame()
     }
 
-    spacing : 5
-
     Repeater {
         model: sqlTableModel
         Loader {

@@ -21,9 +21,9 @@ Item {
         var cpt = Qt.createComponent("TakeSnapshotPopup.qml")
         if (cpt.status === Component.Ready) {
             cpt.createObject(root, { "boundImg": img,
-                                 "width" : root.width * 0.55,
+                                 "width" : root.width * 0.66,
                                  "height": root.height * 0.6,
-                                 "x"     : root.width * 0.22,
+                                 "x"     : root.width * 0.17,
                                  "y"     : root.height * 0.3})
         }
     }
@@ -97,7 +97,9 @@ Item {
 
     ColumnLayout {
         id: dataColumn
-        width: parent.width
+        width: parent.width - 20
+        anchors.horizontalCenter:
+            parent.horizontalCenter
         anchors.top: gameCoverRow.bottom
         anchors.topMargin: 15
         enabled: root.editMode
