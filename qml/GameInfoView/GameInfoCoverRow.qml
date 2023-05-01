@@ -17,27 +17,36 @@ RowLayout {
 
     property MouseArea mouseArea
 
+    property bool editMode : false
+
     readonly property int animationDuration : 200
     readonly property int maxShiftFactor : 90
 
-    property bool editMode : false
     property int shiftFactor : 0
-
     Behavior on shiftFactor {
         NumberAnimation { duration : animationDuration }
     }
 
-    Component.onCompleted: {
-        mouseArea.clicked.connect( function(mouse) {
-            mouseArea.enabled = false
-            picFrontImg.isZoomed = true
-            picBackImg.isZoomed  = true
-        })
-    }
+    states: [
+        State {
+            name: "frontCoverZoomed";
+            PropertyChanges { target: picFrontImg; Layout.preferredHeight: root.height * 2 }
+            PropertyChanges { target: root; shiftFactor: maxShiftFactor }
+            PropertyChanges { target: mouseArea; enabled: true }
+        },
+        State {
+            name: "backCoverZoomed";
+            PropertyChanges { target: picBackImg; Layout.preferredHeight: root.height * 2 }
+            PropertyChanges { target: root; shiftFactor: -maxShiftFactor }
+            PropertyChanges { target: mouseArea; enabled: true }
+        },
+        State { // default state
+            when: editMode || mouseArea.pressed
+        }
+    ]
 
     CSGlowImage {
         id : picFrontImg
-        property bool isZoomed : true
 
         Layout.minimumHeight: parent.height
         Layout.preferredHeight: Layout.minimumHeight
@@ -46,23 +55,12 @@ RowLayout {
 
         imgUrl: "qrc:/no_pic" // default
         onClicked: {
-            if(editMode)
+            if(editMode) {
                 editCoverRequired(this)
-            else {
-                isZoomed = !isZoomed
-            }
-        }
-        onIsZoomedChanged : {
-            if(isZoomed) {
-                shiftFactor = 0
-
-                Layout.preferredHeight = Layout.minimumHeight
+            } else if(root.state !== "frontCoverZoomed"){
+                root.state = "frontCoverZoomed"
             } else {
-                picBackImg.isZoomed  = true
-                shiftFactor = maxShiftFactor
-                mouseArea.enabled = true
-
-                Layout.preferredHeight = Layout.maximumHeight
+                root.state = ""
             }
         }
 
@@ -72,7 +70,6 @@ RowLayout {
     }
     CSGlowImage {
         id : picBackImg
-        property bool isZoomed : true
 
         Layout.minimumHeight: parent.height
         Layout.preferredHeight: Layout.minimumHeight
@@ -81,23 +78,12 @@ RowLayout {
 
         imgUrl: "qrc:/no_pic" // default
         onClicked: {
-            if(editMode)
+            if(editMode) {
                 editCoverRequired(this)
-            else {
-                isZoomed = !isZoomed
-            }
-        }
-        onIsZoomedChanged : {
-            if(isZoomed) {
-                shiftFactor = 0
-
-                Layout.preferredHeight = Layout.minimumHeight
+            } else if(root.state !== "backCoverZoomed"){
+                root.state = "backCoverZoomed"
             } else {
-                picFrontImg.isZoomed  = true
-                shiftFactor = -maxShiftFactor
-                mouseArea.enabled = true
-
-                Layout.preferredHeight = Layout.maximumHeight
+                root.state = ""
             }
         }
 
