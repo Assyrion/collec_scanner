@@ -24,5 +24,6 @@
         <file>qml/utils/CSCameraOutput.qml</file>
         <file>qml/ConfigDrawer.qml</file>
         <file>qml/CoverProcessingPopup.qml</file>
+        <file>qml/GameInfoView/NewGameView.qml</file>
     </qresource>
 </RCC>

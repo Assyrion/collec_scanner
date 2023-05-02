@@ -10,13 +10,12 @@ Pane {
     padding: 0
 
     function showGameData(tag, index) {
-        gameDataLoader.setSource("../GameInfoView/GameInfoView.qml",
+        gameDataLoader.setSource("../GameInfoView/GameSwipeView.qml",
                                  {"currentGameTag": tag,
                                   "currentGameIndex" : index})
     }
     function showNewGameData() {
-        gameDataLoader.setSource("../GameInfoView/GameInfoView.qml",
-                                 {"editMode": true})
+        gameDataLoader.setSource("../GameInfoView/NewGameView.qml")
     }
 
     function diplayListView() {

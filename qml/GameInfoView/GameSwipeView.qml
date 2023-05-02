@@ -7,6 +7,8 @@ Item {
 
     property string currentTag: ""
     property bool editMode: false
+    property alias currentIndex:
+        swipeView.currentIndex
 
     signal closed
 
@@ -62,8 +64,8 @@ Item {
                            : qsTr("close")
             onClicked: {
                 if(editMode) {
-//                    contentLoader.item.editMode = false
-//                    contentLoader.item.cancelGame()
+                    editMode = false
+                    swipeView.cancelGame()
                 } else {
                     closed()
                 }
@@ -76,10 +78,10 @@ Item {
                            : qsTr("edit")
             onClicked: {
                 if(editMode) {
-//                    contentLoader.item.saveGame()
-//                    closed() // important to do it (maybe make a new feature just to avoid it)
+                    swipeView.saveGame()
+                    closed() // important to do it (maybe make a new feature just to avoid it)
                 } else {
-//                    contentLoader.item.editMode = true
+                    editMode = true
                 }
             }
             Layout.preferredWidth: 110
