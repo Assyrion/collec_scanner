@@ -27,8 +27,9 @@ Item {
             parent.horizontalCenter
         spacing: 15
         Button {
-            text: newGameContent.editMode ? qsTr("cancel")
-                           : qsTr("close")
+            text: newGameContent.editMode
+                  ? qsTr("cancel")
+                  : qsTr("close")
             onClicked: {
                 if(newGameContent.editMode) {
                     newGameContent.editMode = false
@@ -41,8 +42,9 @@ Item {
             Layout.alignment: Qt.AlignCenter
         }
         Button {
-            text: newGameContent.editMode ? qsTr("save")
-                           : qsTr("edit")
+            text: newGameContent.editMode
+                  ? qsTr("save")
+                  : qsTr("edit")
             onClicked: {
                 if(newGameContent.editMode) {
                     newGameContent.saveGame()

@@ -7,6 +7,8 @@ Image {
     property double maxWidth
     property double maxHeight
 
+    signal clicked
+
     sourceSize.width: 55
     sourceSize.height: 55
     source: "qrc:/add_notag"
@@ -28,8 +30,6 @@ Image {
         drag.maximumX: maxWidth - parent.width
         drag.minimumY: 0
         drag.maximumY: maxHeight - parent.height
-        onClicked: {
-            showNewGameData()
-        }
+        onClicked: root.clicked()
     }
 }

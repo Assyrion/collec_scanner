@@ -5,6 +5,7 @@ import QtQuick.Layouts 6.2
 
 import "qml"
 import "qml/utils"
+import "qml/GameInfoView"
 import "qml/CollectionView"
 import "qml/BarcodeScannerView"
 
@@ -20,6 +21,7 @@ Window {
         id: view
         anchors.fill: parent
 
+        readonly property int defaultIndex: 1
         // Need to check when the item is fully loaded on the view
         property int viewX : contentItem.contentX
         onViewXChanged: {
@@ -32,11 +34,58 @@ Window {
             }
         }
 
+        currentIndex: defaultIndex
+
+        GameSwipeView {
+            id: gsv
+
+            onClosed: view.currentIndex = view.defaultIndex
+            onEditModeChanged: view.interactive = !editMode
+        }
         CollectionView {
-            id: cl
+            id: cv
+
+            onShowGameRequired : (idx) => {
+                                     view.currentIndex = 0
+                                     gsv.currentIndex = idx
+                                 }
+            onShowNewGameRequired :  () => {
+                                         view.interactive = false
+                                         var cpt = Qt.createComponent("qml/GameInfoView/NewGameView.qml")
+                                         if (cpt.status === Component.Ready) {
+                                             var obj = cpt.createObject(cv, {
+                                                                            "width": view.width,
+                                                                            "height": view.height
+                                                                        })
+                                             obj.closed.connect(function() {
+                                                 view.interactive = true
+                                                 obj.destroy()
+                                             })
+                                         }
+                                     }
         }
         BarcodeScannerView {
             id: bsv
+
+            onShowGameRequired : (idx) => {
+                                     view.currentIndex = 0
+                                     gsv.currentIndex = idx
+                                 }
+            onShowNewGameRequired : (tag) => {
+                                        view.interactive = false
+                                        var cpt = Qt.createComponent("qml/GameInfoView/NewGameView.qml")
+                                        if (cpt.status === Component.Ready) {
+                                            var obj = cpt.createObject(bsv, {
+                                                                           "tag": tag,
+                                                                           "width": view.width,
+                                                                           "height": view.height
+                                                                       })
+                                            obj.closed.connect(function() {
+                                                view.interactive = true
+                                                obj.destroy()
+                                            })
+                                        }
+                                    }
         }
     }
     PageIndicator {

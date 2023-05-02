@@ -9,15 +9,6 @@ Pane {
 
     padding: 0
 
-    function showGameData(tag, index) {
-        gameDataLoader.setSource("../GameInfoView/GameSwipeView.qml",
-                                 {"currentGameTag": tag,
-                                  "currentGameIndex" : index})
-    }
-    function showNewGameData() {
-        gameDataLoader.setSource("../GameInfoView/NewGameView.qml")
-    }
-
     function diplayListView() {
         gameStackView.replace(gameListViewCpt)
     }
@@ -26,11 +17,21 @@ Pane {
         gameStackView.replace(gameGridViewCpt)
     }
 
+    signal showGameRequired(int idx)
+    signal showNewGameRequired
+
     StackView {
         id: gameStackView
 
         anchors.fill: parent
         initialItem: gameListViewCpt
+
+        Connections {
+            target: gameStackView.currentItem
+            function onShowGameRequired(idx) {
+                root.showGameRequired(idx)
+            }
+        }
     }
 
     Component {
@@ -47,6 +48,7 @@ Pane {
         id: addGameBtn
         maxWidth : root.width
         maxHeight: root.height
+        onClicked: root.showNewGameRequired()
     }
 
     ConfigDrawer {
@@ -61,17 +63,5 @@ Pane {
         height: parent.height/10
         onListViewRequired: diplayListView()
         onGridViewRequired: diplayGridView()
-    }
-
-    Loader {
-        id: gameDataLoader
-        anchors.fill: parent
-        Connections {
-            target: gameDataLoader.item
-            function onClosed() {
-                gameDataLoader.sourceComponent
-                        = undefined
-            }
-        }
     }
 }

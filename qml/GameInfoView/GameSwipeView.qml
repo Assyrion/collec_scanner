@@ -5,7 +5,6 @@ import QtQuick.Controls 6.2
 Item {
     id: root
 
-    property string currentTag: ""
     property bool editMode: false
     property alias currentIndex:
         swipeView.currentIndex
@@ -21,8 +20,14 @@ Item {
         orientation: Qt.Vertical
         currentIndex: 0
 
+        Component.onCompleted: {
+            contentItem.highlightMoveDuration = 0
+        }
+
         function saveGame() {
+            var savedIndex = currentIndex
             currentItem.item.saveGame()
+            currentIndex = savedIndex
         }
 
         function removeGame() {
@@ -40,7 +45,6 @@ Item {
                         || SwipeView.isNextItem
                         || SwipeView.isPreviousItem
                 sourceComponent: GameSwipeDelegate {
-                    currentTag: root.currentTag
                     editMode: root.editMode
                     index: swipeView.currentIndex
                     height: root.height
@@ -78,8 +82,8 @@ Item {
                            : qsTr("edit")
             onClicked: {
                 if(editMode) {
+                    editMode = false
                     swipeView.saveGame()
-                    closed() // important to do it (maybe make a new feature just to avoid it)
                 } else {
                     editMode = true
                 }
@@ -89,7 +93,6 @@ Item {
         }
         Button {
             text: qsTr("delete")
-//            visible: currentGameIndex >= 0
             onClicked: {
 //                showConfirmDelete()
             }

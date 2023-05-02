@@ -16,6 +16,8 @@ PinchArea {
         }
     }
 
+    signal showGameRequired(int idx)
+
     GridView {
         id: gridView
         property real scaleSize: 1.0
@@ -39,9 +41,7 @@ PinchArea {
         }
         delegate: GameGridDelegate {
             width: gridView.cellWidth - 10
-            onClicked: function() {
-                showGameData(tag, index)
-            }
+            onClicked: showGameRequired(index)
         }
     }
 }
