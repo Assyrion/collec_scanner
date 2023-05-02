@@ -29,10 +29,11 @@ SwipeView {
             active: SwipeView.isCurrentItem
                     || SwipeView.isNextItem
                     || SwipeView.isPreviousItem
+                    || (index === root.currentIndex - 2)
             sourceComponent: GameSwipeDelegate {
                 currentTag: root.currentTag
                 editMode: root.editMode
-                index: currentIndex
+                index: root.currentIndex
                 height: root.height
                 width: root.width
             }
