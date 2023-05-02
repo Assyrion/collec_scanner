@@ -1,11 +1,17 @@
 import QtQuick 6.2
-import QtQuick.Controls 6.2
 import QtQuick.Layouts 6.2
+import QtQuick.Controls 6.2
 
 import GameData 1.0
 
-Item {
+Pane {
     id: root
+
+    // Pane has a default padding non null
+    leftPadding: 0
+    rightPadding: 0
+    topPadding: 0
+    bottomPadding: 0
 
     property int index: -1
     property bool editMode: false
@@ -29,7 +35,7 @@ Item {
     }
 
     function readGame() {
-        if(currentTag === "") {
+        if(tag === "") {
             var rand = Math.random().toFixed(6)
             currentTag = Qt.binding(function() {
                 var _in  = "notag_" + titleInfo.entry
