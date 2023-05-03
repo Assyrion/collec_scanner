@@ -62,7 +62,7 @@ Window {
     }
 
     function showNewGame(tag = "") {
-        view.setCurrentIndex(view.defaultIndex)
+        view.setCurrentIndex(0)
         var obj = cpt.createObject(mainWindow, {"tag": tag})
     }
 
@@ -71,7 +71,15 @@ Window {
         NewGameView {
             width: mainWindow.width
             height: mainWindow.height
-            onClosed: destroy()
+            onClosed: {
+                view.setCurrentIndex(view.defaultIndex)
+                destroy()
+            }
+            onSaved: (tag) => {
+                         var idx = sqlTableModel.getIndex(tag)
+                         showGame(idx)
+                         destroy()
+                     }
         }
     }
 

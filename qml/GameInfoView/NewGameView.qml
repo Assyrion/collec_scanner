@@ -6,6 +6,7 @@ Item {
     id: root
 
     signal closed
+    signal saved(string tag)
 
     property string tag: ""
 
@@ -48,7 +49,7 @@ Item {
             onClicked: {
                 if(newGameContent.editMode) {
                     newGameContent.saveGame()
-                    closed() // important to do it (maybe make a new feature just to avoid it)
+                    saved(newGameContent.currentTag)
                 } else {
                     newGameContent.editMode = true
                 }
