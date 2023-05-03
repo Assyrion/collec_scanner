@@ -15,6 +15,9 @@ PinchArea {
                     = Math.min(listView.scaleHeight+0.03, 1.0)
         }
     }
+
+    signal showGameRequired(int idx)
+
     ListView {
         id: listView
         property real scaleHeight: 1.0
@@ -36,9 +39,7 @@ PinchArea {
         delegate: GameListDelegate {
             width:  listView.width - 10
             height: listView.scaleHeight * 46.2
-            onClicked: function() {
-                showGameData(tag, index)
-            }
+            onClicked: showGameRequired(index)
         }
     }
 }

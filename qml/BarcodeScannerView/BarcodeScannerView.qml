@@ -11,6 +11,9 @@ Item {
 
     property alias barcodeScanner: barcodeScanner
 
+    signal showGameRequired(int idx)
+    signal showNewGameRequired(string tag)
+
     TagUnknownPopup {
         id: tagUnknownPopup
         width : parent.width
@@ -19,7 +22,7 @@ Item {
             barcodeScanner.startScanning()
         }
         onAccepted: (tag) => {
-            loader.showGameData(-1, tag, true)
+            showNewGameRequired(tag)
         }
     }
 
@@ -30,7 +33,7 @@ Item {
             barcodeScanner.stopScanning()
             var idx = sqlTableModel.getIndex(barcode)
             if(idx >= 0) {
-                loader.showGameData(idx, barcode, false)
+                showGameRequired(idx)
             } else {
                 tagUnknownPopup.show(barcode)
             }
@@ -41,7 +44,7 @@ Item {
         id: loader
         anchors.fill: parent
         function showGameData(idx, tag, editMode) {
-            loader.setSource("../GameInfoView/GameInfoView.qml",
+            loader.setSource("../GameInfoView/GameSwipeView.qml",
                              {"currentGameIndex": idx,
                               "currentGameTag" : tag,
                               "editMode": editMode})

@@ -5,6 +5,7 @@ import QtQuick.Layouts 6.2
 
 import "qml"
 import "qml/utils"
+import "qml/GameInfoView"
 import "qml/CollectionView"
 import "qml/BarcodeScannerView"
 
@@ -20,6 +21,7 @@ Window {
         id: view
         anchors.fill: parent
 
+        readonly property int defaultIndex: 1
         // Need to check when the item is fully loaded on the view
         property int viewX : contentItem.contentX
         onViewXChanged: {
@@ -32,13 +34,55 @@ Window {
             }
         }
 
+        currentIndex: defaultIndex
+
+        GameSwipeView {
+            id: gsv
+
+            onClosed: view.setCurrentIndex(view.defaultIndex)
+            onEditModeChanged: view.interactive = !editMode
+        }
         CollectionView {
-            id: cl
+            id: cv
+
+            onShowGameRequired : (idx) => showGame(idx)
+            onShowNewGameRequired : showNewGame()
         }
         BarcodeScannerView {
             id: bsv
+
+            onShowGameRequired : (idx) => showGame(idx)
+            onShowNewGameRequired : (tag) => showNewGame(tag)
         }
     }
+
+    function showGame(idx) {
+        view.setCurrentIndex(0)
+        gsv.currentIndex = idx
+    }
+
+    function showNewGame(tag = "") {
+        view.setCurrentIndex(0)
+        var obj = cpt.createObject(mainWindow, {"tag": tag})
+    }
+
+    Component {
+        id: cpt
+        NewGameView {
+            width: mainWindow.width
+            height: mainWindow.height
+            onClosed: {
+                view.setCurrentIndex(view.defaultIndex)
+                destroy()
+            }
+            onSaved: (tag) => {
+                         var idx = sqlTableModel.getIndex(tag)
+                         showGame(idx)
+                         destroy()
+                     }
+        }
+    }
+
     PageIndicator {
         id: indicator
 
