@@ -109,7 +109,10 @@ Item {
         }
         Button {
             text: qsTr("delete")
-            onClicked: showConfirmDelete()
+            onClicked: {
+                editMode = false
+                showConfirmDelete()
+            }
             Layout.preferredWidth: 110
             Layout.alignment: Qt.AlignCenter
         }
