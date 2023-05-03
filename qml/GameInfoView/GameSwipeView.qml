@@ -11,6 +11,21 @@ Item {
 
     signal closed
 
+    function showConfirmDelete() {
+        var cpt = Qt.createComponent("../utils/CSActionPopup.qml")
+        if (cpt.status === Component.Ready) {
+            var obj = cpt.createObject(root, {"contentText" : qsTr("Are you sure ?"),
+                                 "width" : 2*root.width/3,
+                                 "height": root.height/4,
+                                 "x"     : root.width/6,
+                                 "y"     : root.height/4+20})
+            obj.accepted.connect(function() {
+                swipeView.removeGame()
+                closed()
+            })
+        }
+    }
+
     SwipeView {
         id: swipeView
 
@@ -93,12 +108,9 @@ Item {
         }
         Button {
             text: qsTr("delete")
-            onClicked: {
-//                showConfirmDelete()
-            }
+            onClicked: showConfirmDelete()
             Layout.preferredWidth: 110
             Layout.alignment: Qt.AlignCenter
         }
     }
-
 }

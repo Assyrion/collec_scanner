@@ -35,7 +35,7 @@ Pane {
     }
 
     function readGame() {
-        if(tag === "") {
+        if(index < 0 && currentTag === "") { // new game creation
             var rand = Math.random().toFixed(6)
             currentTag = Qt.binding(function() {
                 var _in  = "notag_" + titleInfo.entry
@@ -43,7 +43,7 @@ Pane {
                 _in = _in.replace(/\W/g,'')
                 return _in
             })
-        } else {
+        } else if(index >= 0){
             currentTag = tag
         }
         reloadCovers()

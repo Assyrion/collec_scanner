@@ -39,55 +39,42 @@ Window {
         GameSwipeView {
             id: gsv
 
-            onClosed: view.currentIndex = view.defaultIndex
+            onClosed: view.setCurrentIndex(view.defaultIndex)
             onEditModeChanged: view.interactive = !editMode
         }
         CollectionView {
             id: cv
 
-            onShowGameRequired : (idx) => {
-                                     view.currentIndex = 0
-                                     gsv.currentIndex = idx
-                                 }
-            onShowNewGameRequired :  () => {
-                                         view.interactive = false
-                                         var cpt = Qt.createComponent("qml/GameInfoView/NewGameView.qml")
-                                         if (cpt.status === Component.Ready) {
-                                             var obj = cpt.createObject(cv, {
-                                                                            "width": view.width,
-                                                                            "height": view.height
-                                                                        })
-                                             obj.closed.connect(function() {
-                                                 view.interactive = true
-                                                 obj.destroy()
-                                             })
-                                         }
-                                     }
+            onShowGameRequired : (idx) => showGame(idx)
+            onShowNewGameRequired : showNewGame()
         }
         BarcodeScannerView {
             id: bsv
 
-            onShowGameRequired : (idx) => {
-                                     view.currentIndex = 0
-                                     gsv.currentIndex = idx
-                                 }
-            onShowNewGameRequired : (tag) => {
-                                        view.interactive = false
-                                        var cpt = Qt.createComponent("qml/GameInfoView/NewGameView.qml")
-                                        if (cpt.status === Component.Ready) {
-                                            var obj = cpt.createObject(bsv, {
-                                                                           "tag": tag,
-                                                                           "width": view.width,
-                                                                           "height": view.height
-                                                                       })
-                                            obj.closed.connect(function() {
-                                                view.interactive = true
-                                                obj.destroy()
-                                            })
-                                        }
-                                    }
+            onShowGameRequired : (idx) => showGame(idx)
+            onShowNewGameRequired : (tag) => showNewGame(tag)
         }
     }
+
+    function showGame(idx) {
+        view.setCurrentIndex(0)
+        gsv.currentIndex = idx
+    }
+
+    function showNewGame(tag = "") {
+        view.setCurrentIndex(view.defaultIndex)
+        var obj = cpt.createObject(mainWindow, {"tag": tag})
+    }
+
+    Component {
+        id: cpt
+        NewGameView {
+            width: mainWindow.width
+            height: mainWindow.height
+            onClosed: destroy()
+        }
+    }
+
     PageIndicator {
         id: indicator
 
