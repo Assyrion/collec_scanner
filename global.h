@@ -7,7 +7,7 @@
 const QString DBNAME  = "games.db";
 const QString PICPATH = "pic/"; // pic
 
-const QString REMOTE_PATH = "http://192.168.0.23/";
+const QString REMOTE_PATH = "http://77.140.81.117/";
 const QString REMOTE_PIC_PATH = REMOTE_PATH + PICPATH;
 const QString REMOTE_UPLOAD_PIC_SCRIPT = REMOTE_PATH + "upload_cover.php";
 const QString REMOTE_UPLOAD_DB_SCRIPT = REMOTE_PATH + "upload_db.php";
