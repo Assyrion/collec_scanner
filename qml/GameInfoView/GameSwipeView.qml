@@ -61,8 +61,9 @@ Item {
                         || SwipeView.isNextItem
                         || SwipeView.isPreviousItem
                 sourceComponent: GameSwipeDelegate {
-                    editMode: root.editMode
                     index: swipeView.currentIndex
+                    count: swipeView.count
+                    editMode: root.editMode
                     height: root.height
                     width: root.width
                 }

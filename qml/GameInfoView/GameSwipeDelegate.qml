@@ -14,6 +14,7 @@ Pane {
     bottomPadding: 0
 
     property int index: -1
+    property int count: 0
     property bool editMode: false
     property string currentTag: ""
     property GameData currentGame:
@@ -103,9 +104,7 @@ Pane {
             shiftFactor
         z: 1
 
-        onEditCoverRequired:(img) => {
-                                showSnapshotPopup(img)
-                            }
+        onEditCoverRequired:(img) => showSnapshotPopup(img)
 
         editMode: root.editMode
         mouseArea: globalMa
@@ -129,7 +128,10 @@ Pane {
         }
         GameInfoListDelegate {
             id: indexInfo
-            name: qsTr("Index"); entry: index; editable: false
+            name: qsTr("Index");
+            entry: (index < 0) ? ""
+                               : (index+1) + "/" + count
+            editable: false
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: 50
         }

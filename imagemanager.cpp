@@ -26,8 +26,7 @@ QUrl ImageManager::getPic(const QString& fileName) const
             + sep + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
 #else
     QString path = PICPATH_ABS
-            + QDir::separator()
-            + fileName;
+            + sep + fileName;
 #endif
     if(QFile::exists(path)) {
         return QUrl(QString("file:///%1").arg(path));

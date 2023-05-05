@@ -9,12 +9,6 @@ Item {
 
     signal clicked
 
-    // because connect function does not work anymore with Qt 6.5 ?
-    Connections {
-        target: mouseArea
-        function onClicked() { clicked() }
-    }
-
     height: mainImg.height + 10
 
     Image {
@@ -30,6 +24,7 @@ Item {
         MouseArea {
             id: mouseArea
             anchors.fill: parent
+            onClicked: root.clicked()
         }
     }
 }

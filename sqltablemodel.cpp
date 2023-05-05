@@ -122,15 +122,6 @@ int SqlTableModel::getIndex(const QString& tag)
 
 }
 
-int SqlTableModel::rowCount()
-{
-    while(canFetchMore()) {
-        QSqlQueryModel::fetchMore();
-    }
-
-    return QSqlTableModel::rowCount();
-}
-
 void SqlTableModel::filterByTitle(const QString &title)
 {
     if(title.isEmpty()) {
