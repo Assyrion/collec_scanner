@@ -1,7 +1,6 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
 
-import ".."
 import "../utils"
 
 Pane {
@@ -49,12 +48,6 @@ Pane {
         maxWidth : root.width
         maxHeight: root.height
         onClicked: root.showNewGameRequired()
-    }
-
-    ConfigDrawer {
-        id: drawer
-        width: parent.width * 0.7
-        height: parent.height
     }
 
     ViewSelectorDrawer {

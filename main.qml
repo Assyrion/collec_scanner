@@ -83,6 +83,13 @@ Window {
         }
     }
 
+    ConfigDrawer {
+        id: drawer
+        width: parent.width * 0.7
+        height: parent.height
+        interactive: view.currentItem == cv
+    }
+
     PageIndicator {
         id: indicator
 
