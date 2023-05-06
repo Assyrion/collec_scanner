@@ -106,20 +106,28 @@ void SqlTableModel::update(int row, GameData* game)
     setFilter(savedFilter);
 }
 
-int SqlTableModel::getIndex(const QString& tag)
+int SqlTableModel::getIndexFiltered(const QString& tag)
 {
     int col = fieldIndex("tag");
-    for(int row=0; row<rowCount(); ++row)
-    {
+    for(int row=0; row<rowCount(); ++row) {
         QVariant d = data(index(row,col), 0);
-        if(d.toString() == tag)
-        {
+        if(d.toString() == tag) {
             return row;
         }
     }
 
     return -1;
 
+}
+
+int SqlTableModel::getIndexNotFiltered(const QString &tag)
+{
+    auto savedFilter = filter();
+    setFilter("");
+    int idx = getIndexFiltered(tag);
+    setFilter(savedFilter);
+
+    return idx;
 }
 
 void SqlTableModel::filterByTitle(const QString &title)

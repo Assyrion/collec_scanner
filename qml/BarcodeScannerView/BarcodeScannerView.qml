@@ -4,57 +4,58 @@ import QtMultimedia
 import QtQuick.Controls 6.2
 import Qt.labs.platform 1.0
 
-import "../utils"
-
 Item {
     id: root
-
+    
     property alias barcodeScanner: barcodeScanner
-
+    
     signal showGameRequired(int idx)
     signal showNewGameRequired(string tag)
-
-    TagUnknownPopup {
-        id: tagUnknownPopup
-        width : parent.width
-        height: parent.height
-        onRefused: () => {
-            barcodeScanner.startScanning()
-        }
-        onAccepted: (tag) => {
-            showNewGameRequired(tag)
-        }
-    }
-
+    
+    
     BarcodeScanner {
         id: barcodeScanner
         anchors.fill: parent
         onBarcodeFound: (barcode) => {
-            barcodeScanner.stopScanning()
-            var idx = sqlTableModel.getIndex(barcode)
-            if(idx >= 0) {
-                showGameRequired(idx)
-            } else {
-                tagUnknownPopup.show(barcode)
-            }
-        }
+                            barcodeScanner.stopScanning()
+                            var idx = sqlTableModel.getIndexFiltered(barcode)
+                            if(idx >= 0) {
+                                showGameRequired(idx)
+                            } else {
+                                idx = sqlTableModel.getIndexNotFiltered(barcode)
+                                if(idx >= 0) {
+                                    loader.showFilteredGame(barcode, idx)
+                                } else {
+                                    loader.showUnknownGame(barcode)
+                                }
+                            }
+                        }
     }
-
+    
     Loader {
         id: loader
-        anchors.fill: parent
-        function showGameData(idx, tag, editMode) {
-            loader.setSource("../GameInfoView/GameSwipeView.qml",
-                             {"currentGameIndex": idx,
-                              "currentGameTag" : tag,
-                              "editMode": editMode})
+        
+        function showUnknownGame(tag) {
+            loader.setSource("../utils/CSActionPopup.qml",
+                             { "contentText" : qsTr("Game with tag = %1 is new.<br><br>Add it ?").arg(tag),
+                                 "width" : root.width,
+                                 "height": root.height})
+            
+            loader.item.refused.connect(  function() { barcodeScanner.startScanning() })
+            loader.item.accepted.connect( function() { showNewGameRequired(tag) })
         }
-        Connections {
-            target: loader.item
-            function onClosed() {
-                loader.sourceComponent = undefined
-                barcodeScanner.startScanning()
-            }
+        
+        function showFilteredGame(tag, idx) {
+            loader.setSource("../utils/CSActionPopup.qml",
+                             { "contentText" : qsTr("Game with tag = %1 exists but has been filtered.<br><br>Remove filter and show it ?").arg(tag),
+                                 "width" : root.width,
+                                 "height": root.height})
+            
+            loader.item.refused.connect(  function() { barcodeScanner.startScanning() })
+            loader.item.accepted.connect( function() {
+                sqlTableModel.filterByTitle("") // remove filter
+                showGameRequired(idx)
+            })
         }
     }
 }

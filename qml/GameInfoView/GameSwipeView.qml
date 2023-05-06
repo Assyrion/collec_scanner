@@ -42,7 +42,7 @@ Item {
         function saveGame() {
             var savedTag = currentItem.item.currentTag // index may have changed after edition
             currentItem.item.saveGame()
-            var idx = sqlTableModel.getIndex(savedTag) // get the new index
+            var idx = sqlTableModel.getIndexFiltered(savedTag) // get the new index
             currentIndex = idx
         }
 

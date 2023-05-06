@@ -21,7 +21,8 @@ public:
 
     Q_INVOKABLE void remove(int row, const QString &tag);
     Q_INVOKABLE void update(int row, GameData* game);
-    Q_INVOKABLE int getIndex(const QString &tag);
+    Q_INVOKABLE int getIndexFiltered(const QString &tag);
+    Q_INVOKABLE int getIndexNotFiltered(const QString &tag);
     Q_INVOKABLE void filterByTitle(const QString& title);
     Q_INVOKABLE void orderBy(int column, int order);
     Q_INVOKABLE void saveDBToFile(FileManager* fileManager);

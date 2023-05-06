@@ -36,7 +36,6 @@ PinchArea {
             GridView.StrictlyEnforceRange
         ScrollBar.vertical: ScrollBar {
             policy: ScrollBar.AlwaysOn
-            interactive: false
             width: 10
         }
         delegate: GameGridDelegate {

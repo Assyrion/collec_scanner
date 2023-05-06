@@ -4,7 +4,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>qml/BarcodeScannerView/BarcodeScannerView.qml</file>
         <file>qml/BarcodeScannerView/BarcodeScanner.qml</file>
-        <file>qml/BarcodeScannerView/TagUnknownPopup.qml</file>
         <file>qml/CollectionView/CollectionView.qml</file>
         <file>qml/CollectionView/ViewSelectorDrawer.qml</file>
         <file>qml/CollectionView/GameListView.qml</file>

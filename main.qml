@@ -14,8 +14,8 @@ Window {
     visible: true
     visibility: Window.AutomaticVisibility
 
-    width : Screen.desktopAvailableWidth /*/ 8*/
-    height: Screen.desktopAvailableHeight /*/ 2*/
+    width : Screen.desktopAvailableWidth/* / 8*/
+    height: Screen.desktopAvailableHeight/* / 2 + 40*/
 
     SwipeView {
         id: view
@@ -76,7 +76,7 @@ Window {
                 destroy()
             }
             onSaved: (tag) => {
-                         var idx = sqlTableModel.getIndex(tag)
+                         var idx = sqlTableModel.getIndexFiltered(tag)
                          showGame(idx)
                          destroy()
                      }
