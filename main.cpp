@@ -52,11 +52,11 @@ int main(int argc, char *argv[])
     }
 
     // Détermine la locale actuelle
-    QLocale locale = QLocale::system();
+    QString locale = QLocale::system().name();
 
     // Crée un objet traducteur pour cette locale
     QTranslator translator;
-    bool ret = translator.load(QString(":/translations/%1").arg(locale.name()));
+    bool ret = translator.load(QString(":/translations/%1").arg(locale));
     if(ret) {
         // Installe le traducteur dans l'application
         QCoreApplication::installTranslator(&translator);

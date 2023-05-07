@@ -76,7 +76,7 @@ Item {
         height: 50
         width: parent.width
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 15
+        anchors.bottomMargin: 20
         anchors.horizontalCenter:
             parent.horizontalCenter
         spacing: 15
@@ -91,8 +91,10 @@ Item {
                     closed()
                 }
             }
-            Layout.preferredWidth: 110
             Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
+                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+                }, 100)
         }
         Button {
             text: editMode ? qsTr("save")
@@ -105,8 +107,10 @@ Item {
                     editMode = true
                 }
             }
-            Layout.preferredWidth: 110
             Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
+                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+                }, 100)
         }
         Button {
             text: qsTr("delete")
@@ -114,8 +118,10 @@ Item {
                 editMode = false
                 showConfirmDelete()
             }
-            Layout.preferredWidth: 110
             Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
+                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+                }, 100)
         }
     }
 }

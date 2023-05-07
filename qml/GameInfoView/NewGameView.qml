@@ -39,8 +39,10 @@ Item {
                     closed()
                 }
             }
-            Layout.preferredWidth: 110
             Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
+                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+                }, 100)
         }
         Button {
             text: newGameContent.editMode
@@ -54,8 +56,10 @@ Item {
                     newGameContent.editMode = true
                 }
             }
-            Layout.preferredWidth: 110
             Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
+                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+                }, 100)
         }
     }
 }
