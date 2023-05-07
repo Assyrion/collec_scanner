@@ -36,9 +36,10 @@ Popup {
         anchors.horizontalCenter:
             parent.horizontalCenter
         text : progressBar.value > 0 ?
-                   "Processing " + progressBar.value
-                   + "/" + progressBar.to
-                 : "Processing covers..."
+                   qsTr("Processing %1/%2")
+                   .arg(progressBar.value)
+                   .arg(progressBar.to)
+                 : qsTr("Processing covers...")
         color: "white"
         font.family: "Roboto"
         font.pointSize: 11
@@ -49,7 +50,7 @@ Popup {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         value: 0
-        indeterminate : value === 0
+        indeterminate : value <= 0
         width: parent.width - 20
     }
 }

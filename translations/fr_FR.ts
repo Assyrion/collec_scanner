@@ -46,6 +46,19 @@
     </message>
 </context>
 <context>
+    <name>CoverProcessingPopup</name>
+    <message>
+        <location filename="../qml/CoverProcessingPopup.qml" line="39"/>
+        <source>Processing %1/%2</source>
+        <translation>En cours %1/%2</translation>
+    </message>
+    <message>
+        <location filename="../qml/CoverProcessingPopup.qml" line="42"/>
+        <source>Processing covers...</source>
+        <translation>Gestion des jaquettes en cours...</translation>
+    </message>
+</context>
+<context>
     <name>GameSwipeDelegate</name>
     <message>
         <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="125"/>
