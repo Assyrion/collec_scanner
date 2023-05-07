@@ -21,12 +21,11 @@ Item {
     RowLayout {
         id: btnRow
         height: 50
-        width: parent.width
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 15
+        anchors.bottomMargin: 20
         anchors.horizontalCenter:
             parent.horizontalCenter
-        spacing: 15
+        spacing: 20
         Button {
             text: newGameContent.editMode
                   ? qsTr("cancel")
@@ -39,10 +38,11 @@ Item {
                     closed()
                 }
             }
+            font.pointSize: 12
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
                     return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-                }, 100)
+                }, 80)
         }
         Button {
             text: newGameContent.editMode
@@ -56,10 +56,11 @@ Item {
                     newGameContent.editMode = true
                 }
             }
+            font.pointSize: 12
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
                     return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-                }, 100)
+                }, 80)
         }
     }
 }
