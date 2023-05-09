@@ -4,8 +4,9 @@
 #include <QSurfaceFormat>
 #include <QQuickWindow>
 #include <QSqlDatabase>
-#include <QSqlError>
 #include <QQmlContext>
+#include <QTranslator>
+#include <QSqlError>
 #include <QSaveFile>
 #include <QZXing.h>
 #include <QDebug>
@@ -48,6 +49,17 @@ int main(int argc, char *argv[])
     if (!db.open()) {
         qDebug() << "Error: connection with database fail" << db.lastError();
         return -1;
+    }
+
+    // Détermine la locale actuelle
+    QString locale = QLocale::system().name();
+
+    // Crée un objet traducteur pour cette locale
+    QTranslator translator;
+    bool ret = translator.load(QString(":/translations/%1").arg(locale));
+    if(ret) {
+        // Installe le traducteur dans l'application
+        QCoreApplication::installTranslator(&translator);
     }
 
     QQmlApplicationEngine engine;

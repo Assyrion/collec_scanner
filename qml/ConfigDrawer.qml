@@ -16,7 +16,7 @@ Drawer {
         anchors.topMargin: 10
         anchors.horizontalCenter:
             parent.horizontalCenter
-        text: "Filter"
+        text: qsTr("Filter")
         font.family: "Roboto"
         font.underline: true
         font.pixelSize: 20
@@ -31,7 +31,7 @@ Drawer {
         anchors.leftMargin: 5
         anchors.right: parent.right
         anchors.rightMargin: 5
-        placeholderText: "Search by name"
+        placeholderText: qsTr("Search by name")
     }
     Button {
         id: applyFilterBtn
@@ -39,7 +39,7 @@ Drawer {
         anchors.topMargin: 5
         anchors.horizontalCenter:
             filterName.horizontalCenter
-        text: filterName.text === "" ? "X" : "OK"
+        text: filterName.text === "" ? "X" : qsTr("OK")
         onClicked: {
             sqlTableModel.filterByTitle(filterName.text)
             close()
@@ -57,7 +57,7 @@ Drawer {
             id: sortingText
             Layout.alignment : Qt.AlignVCenter
 
-            text: "Sort by"
+            text: qsTr("Sort by")
             font.family: "Roboto"
             font.pixelSize: 14
             color: "white"
@@ -93,7 +93,7 @@ Drawer {
             anchors.horizontalCenter:
                 parent.horizontalCenter
 
-            text: " file DB "
+            text: qsTr(" file DB ")
             onClicked: {
                 loader.loadConfirmSaveDB()
             }
@@ -103,7 +103,7 @@ Drawer {
             anchors.horizontalCenter:
                 parent.horizontalCenter
 
-            text: "upload DB"
+            text: qsTr("upload DB")
             onClicked: {
                 loader.loadConfirmUploadDB()
             }
@@ -113,7 +113,7 @@ Drawer {
             anchors.horizontalCenter:
                 parent.horizontalCenter
 
-            text: "upload Covers"
+            text: qsTr("upload Covers")
             onClicked: {
                 loader.loadConfirmUploadCovers()
             }

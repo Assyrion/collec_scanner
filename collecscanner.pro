@@ -31,7 +31,8 @@ SOURCES += main.cpp \
 
 RESOURCES += \
     qml.qrc \
-    media.qrc
+    media.qrc \
+    translations.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -53,6 +54,9 @@ HEADERS += \
     imagemanager.h \
     global.h \
     sqltablemodel.h
+
+TRANSLATIONS += translations/fr_FR.ts \
+                translations/en_EN.ts
 
 contains(ANDROID_TARGET_ARCH,arm64-v8a) {
     ANDROID_PACKAGE_SOURCE_DIR = \

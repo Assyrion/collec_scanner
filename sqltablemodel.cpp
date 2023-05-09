@@ -45,11 +45,11 @@ QVariant SqlTableModel::data(const QModelIndex &index, int role) const
 
     if (index.isValid()) {
         if (role < Qt::UserRole) {
-            value = QSqlQueryModel::data(index, role);
+            value = QSqlTableModel::data(index, role);
         } else {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);
-            value = QSqlQueryModel::data(modelIndex, Qt::DisplayRole);
+            value = QSqlTableModel::data(modelIndex, Qt::DisplayRole);
         }
     }
     return value;
