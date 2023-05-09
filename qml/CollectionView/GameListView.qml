@@ -4,6 +4,8 @@ import QtQuick.Controls 6.2
 import "../utils"
 
 PinchArea {
+    id: root
+
     onPinchUpdated: {
         var diff = pinch.scale
                 - pinch.previousScale
@@ -17,6 +19,7 @@ PinchArea {
     }
 
     signal showGameRequired(int idx)
+    signal movingChanged(bool moving)
 
     ListView {
         id: listView
@@ -39,7 +42,8 @@ PinchArea {
         delegate: GameListDelegate {
             width:  listView.width - 10
             height: listView.scaleHeight * 46.2
-            onClicked: showGameRequired(index)
+            onClicked: root.showGameRequired(index)
         }
+        onMovingChanged: root.movingChanged(moving)
     }
 }

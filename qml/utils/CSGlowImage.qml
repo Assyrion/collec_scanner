@@ -49,8 +49,6 @@ Item {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        onClicked: (mouse) => {
-            root.clicked()
-        }
+        onClicked: root.clicked()
     }
 }

@@ -4,6 +4,8 @@ import QtQuick.Controls 6.2
 import "../utils"
 
 PinchArea {
+    id: root
+
     onPinchUpdated: {
         var diff = pinch.scale
                 - pinch.previousScale
@@ -17,6 +19,7 @@ PinchArea {
     }
 
     signal showGameRequired(int idx)
+    signal movingChanged(bool moving)
 
     GridView {
         id: gridView
@@ -40,7 +43,8 @@ PinchArea {
         }
         delegate: GameGridDelegate {
             width: gridView.cellWidth - 10
-            onClicked: showGameRequired(index)
+            onClicked: root.showGameRequired(index)
         }
+        onMovingChanged: root.movingChanged(moving)
     }
 }

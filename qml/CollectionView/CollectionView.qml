@@ -30,6 +30,9 @@ Pane {
             function onShowGameRequired(idx) {
                 root.showGameRequired(idx)
             }
+            function onMovingChanged(moving) {
+                addGameBtn.opacity = !moving
+            }
         }
     }
 
@@ -48,6 +51,10 @@ Pane {
         maxWidth : root.width
         maxHeight: root.height
         onClicked: root.showNewGameRequired()
+
+        Behavior on opacity {
+            NumberAnimation { duration : 200 }
+        }
     }
 
     ViewSelectorDrawer {
