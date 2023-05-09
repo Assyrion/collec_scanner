@@ -21,35 +21,10 @@
 
 int main(int argc, char *argv[])
 {
-    GameDataMaker::registerQMLTypes();
-    QZXing::registerQMLTypes();
 
     QGuiApplication app(argc, argv);
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-
-#ifdef Q_OS_ANDROID
-
-    // copy database file from assets folder to app folder
-    QFile dfile("assets:/" + DBNAME);
-    //    QFile::remove(DB_PATH_ABS_NAME); // uncomment if needed
-    if (dfile.exists()) {
-        if(!QFile::exists(DB_PATH_ABS_NAME)) {
-            dfile.copy(DB_PATH_ABS_NAME);
-            QFile::setPermissions(DB_PATH_ABS_NAME, QFile::WriteOwner | QFile::ReadOwner);
-        }
-    } else {
-        return -1;
-    }
-
-#endif
-
-    db.close();
-    db.setDatabaseName(DB_PATH_ABS_NAME);
-    if (!db.open()) {
-        qDebug() << "Error: connection with database fail" << db.lastError();
-        return -1;
-    }
+    /************************* Translator ***************************/
 
     // Détermine la locale actuelle
     QString locale = QLocale::system().name();
@@ -61,6 +36,11 @@ int main(int argc, char *argv[])
         // Installe le traducteur dans l'application
         QCoreApplication::installTranslator(&translator);
     }
+
+    /*************************** QML *******************************/
+
+    GameDataMaker::registerQMLTypes();
+    QZXing::registerQMLTypes();
 
     QQmlApplicationEngine engine;
 
@@ -93,6 +73,25 @@ int main(int argc, char *argv[])
 
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
     comManager.setProgressDialog(dialog);
+
+    /************************* Database *****************************/
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+
+    //    QFile::remove(DB_PATH_ABS_NAME); // uncomment if needed for tests
+
+    if(!QFile::exists(DB_PATH_ABS_NAME)) {
+        comManager.downloadDB();
+    }
+
+//        db.close();
+    db.setDatabaseName(DB_PATH_ABS_NAME);
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail" << db.lastError();
+        return -1;
+    }
+
+
     comManager.downloadCovers();
 
     return app.exec();

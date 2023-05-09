@@ -5,10 +5,6 @@ DEFINES += APPNAME='\\"$${TARGET}\\"'
 
 android {
     QT += core-private
-
-    assets.files += $$getenv(LOCALAPPDATA)/$${TARGET}/games.db
-    assets.path = /assets
-    INSTALLS += assets
 }
 
 # The following define makes your compiler emit warnings if you use
