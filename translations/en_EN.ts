@@ -30,6 +30,41 @@
 <context>
     <name>ConfigDrawer</name>
     <message>
+        <location filename="../qml/ConfigDrawer.qml" line="19"/>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="34"/>
+        <source>Search by name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="42"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="60"/>
+        <source>Sort by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="96"/>
+        <source> file DB </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="106"/>
+        <source>upload DB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="116"/>
+        <source>upload Covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qml/ConfigDrawer.qml" line="126"/>
         <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
         <translation type="unfinished"></translation>
@@ -109,27 +144,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="84"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="83"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="85"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="84"/>
         <source>close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="98"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="100"/>
         <source>save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="99"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="101"/>
         <source>edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="112"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="117"/>
         <source>delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -137,22 +172,22 @@
 <context>
     <name>NewGameView</name>
     <message>
-        <location filename="../qml/GameInfoView/NewGameView.qml" line="32"/>
+        <location filename="../qml/GameInfoView/NewGameView.qml" line="31"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/NewGameView.qml" line="33"/>
+        <location filename="../qml/GameInfoView/NewGameView.qml" line="32"/>
         <source>close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/NewGameView.qml" line="47"/>
+        <location filename="../qml/GameInfoView/NewGameView.qml" line="49"/>
         <source>save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/NewGameView.qml" line="48"/>
+        <location filename="../qml/GameInfoView/NewGameView.qml" line="50"/>
         <source>edit</source>
         <translation type="unfinished"></translation>
     </message>
