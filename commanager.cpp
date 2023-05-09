@@ -204,8 +204,6 @@ bool ComManager::uploadToServer(const QString& fileName, const QString& scriptPa
 
 void ComManager::downloadDB()
 {
-    QMetaObject::invokeMethod(m_progressDialog, "show");
-
     QUrl url(REMOTE_DB_PATH + DBNAME);
     QNetworkAccessManager manager;
     QNetworkRequest request(url);
@@ -229,8 +227,6 @@ void ComManager::downloadDB()
     });
 
     loop.exec();
-
-    QMetaObject::invokeMethod(m_progressDialog, "hide");
 }
 
 void ComManager::uploadDB()

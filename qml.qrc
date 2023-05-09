@@ -23,5 +23,6 @@
         <file>qml/ConfigDrawer.qml</file>
         <file>qml/CoverProcessingPopup.qml</file>
         <file>qml/GameInfoView/NewGameView.qml</file>
+        <file>download_db_view.qml</file>
     </qresource>
 </RCC>
