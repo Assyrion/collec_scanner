@@ -107,8 +107,8 @@ Pane {
         onEditCoverRequired:(img) => showSnapshotPopup(img)
 
         editMode: root.editMode
-        mouseArea: globalMa
     }
+
 
     ColumnLayout {
         id: dataColumn
@@ -171,12 +171,6 @@ Pane {
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: 50
         }
-    }
-
-    MouseArea {
-        id: globalMa
-        anchors.fill: parent
-        enabled : false
     }
 }
 
