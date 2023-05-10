@@ -6,6 +6,7 @@
 #include <QSqlDatabase>
 #include <QQmlContext>
 #include <QTranslator>
+#include <QQuickView>
 #include <QSqlError>
 #include <QSaveFile>
 #include <QZXing.h>
@@ -21,35 +22,20 @@
 
 int main(int argc, char *argv[])
 {
-    GameDataMaker::registerQMLTypes();
-    QZXing::registerQMLTypes();
 
     QGuiApplication app(argc, argv);
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    QScreen *screen;
 
 #ifdef Q_OS_ANDROID
-
-    // copy database file from assets folder to app folder
-    QFile dfile("assets:/" + DBNAME);
-    //    QFile::remove(DB_PATH_ABS_NAME); // uncomment if needed
-    if (dfile.exists()) {
-        if(!QFile::exists(DB_PATH_ABS_NAME)) {
-            dfile.copy(DB_PATH_ABS_NAME);
-            QFile::setPermissions(DB_PATH_ABS_NAME, QFile::WriteOwner | QFile::ReadOwner);
-        }
-    } else {
-        return -1;
-    }
-
+    screen = QGuiApplication::primaryScreen();
+#else
+    screen = app.screens().at(1);
+    QSize size(screen->size().width() / 5,
+               screen->size().height() / 2 + 40);
 #endif
 
-    db.close();
-    db.setDatabaseName(DB_PATH_ABS_NAME);
-    if (!db.open()) {
-        qDebug() << "Error: connection with database fail" << db.lastError();
-        return -1;
-    }
+    /************************* Translator ***************************/
 
     // Détermine la locale actuelle
     QString locale = QLocale::system().name();
@@ -62,20 +48,65 @@ int main(int argc, char *argv[])
         QCoreApplication::installTranslator(&translator);
     }
 
-    QQmlApplicationEngine engine;
+    /************************* Database *****************************/
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(DB_PATH_ABS_NAME);
+
+    //    QFile::remove(DB_PATH_ABS_NAME); // uncomment if needed for tests
+
+    ComManager comManager;
+
+    // checking if needed to download DB
+    if(!QFile::exists(DB_PATH_ABS_NAME)) {
+
+        QQuickView *view = new QQuickView;
+        view->setSource(QUrl(QStringLiteral("qrc:/download_db_view.qml")));
+
+#ifdef Q_OS_ANDROID
+        view->setGeometry(screen->availableGeometry());
+#else
+        view->resize(size);
+#endif
+
+        view->setResizeMode(QQuickView::SizeRootObjectToView);
+        view->show();
+
+        comManager.downloadDB();
+
+        // remove view used for downloading DB once engine is loaded
+        view->hide();
+        view->deleteLater();
+    }
+
+
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail" << db.lastError();
+        return -1;
+    } else if(!db.tables().contains("games")) { // wrong database
+        qDebug() << "Error: database corrupted";
+        db.close();
+        QFile::remove(DB_PATH_ABS_NAME);
+        return -1;
+    }
+
+    /*************************** QML *******************************/
 
     SqlTableModel sqlTableModel;
     ImageManager  imageManager;
-    ComManager    comManager;
     FileManager   fileManager;
 
     fileManager.registerQMLTypes();
+    GameDataMaker::registerQMLTypes();
+    QZXing::registerQMLTypes();
 
+    QQmlApplicationEngine engine;
     auto context = engine.rootContext();
-    context->setContextProperty("sqlTableModel", &sqlTableModel);
+
     context->setContextProperty("imageManager",  &imageManager);
     context->setContextProperty("comManager",    &comManager);
     context->setContextProperty("fileManager",   &fileManager);
+    context->setContextProperty("sqlTableModel", &sqlTableModel);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty()) {
@@ -90,6 +121,12 @@ int main(int argc, char *argv[])
         format.setSamples(8);
         window->setFormat(format);
     }
+
+#ifdef Q_OS_ANDROID
+    window->setGeometry(screen->availableGeometry());
+#else
+    window->resize(size);
+#endif
 
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
     comManager.setProgressDialog(dialog);

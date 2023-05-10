@@ -107,6 +107,43 @@ void ComManager::downloadCovers()
     QMetaObject::invokeMethod(m_progressDialog, "hide");
 }
 
+void ComManager::uploadCovers()
+{
+    QMetaObject::invokeMethod(m_progressDialog, "show");
+
+    m_coversToUploadFile.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    QTextStream ts(&m_coversToUploadFile);
+    ts.seek(0);
+
+    QString all(ts.readAll());
+    QStringList sl(all.split('\n'));
+
+    QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, sl.count()));
+    int count = 0;
+
+    foreach (auto s, sl) {
+        if(!s.isEmpty() && uploadToServer(PICPATH_ABS + s, REMOTE_UPLOAD_PIC_SCRIPT)) {
+
+            QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
+
+            sl.removeOne(s);
+        }
+    }
+
+    m_coversToUploadFile.close();
+
+    m_coversToUploadFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+
+    foreach (auto s, sl) {
+        if(!s.isEmpty())
+            ts << s << '\n';
+    }
+
+    m_coversToUploadFile.close();
+
+    QMetaObject::invokeMethod(m_progressDialog, "hide");
+}
 
 bool ComManager::uploadToServer(const QString& fileName, const QString& scriptPath)
 {
@@ -165,42 +202,31 @@ bool ComManager::uploadToServer(const QString& fileName, const QString& scriptPa
     return ret;
 }
 
-void ComManager::uploadCovers()
+void ComManager::downloadDB()
 {
-    QMetaObject::invokeMethod(m_progressDialog, "show");
+    QUrl url(REMOTE_DB_PATH + DBNAME);
+    QNetworkAccessManager manager;
+    QNetworkRequest request(url);
+    QNetworkReply *reply = manager.get(request);
 
-    m_coversToUploadFile.open(QIODevice::ReadOnly | QIODevice::Text);
+    QEventLoop loop;
 
-    QTextStream ts(&m_coversToUploadFile);
-    ts.seek(0);
-
-    QString all(ts.readAll());
-    QStringList sl(all.split('\n'));
-
-    QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, sl.count()));
-    int count = 0;
-
-    foreach (auto s, sl) {
-        if(!s.isEmpty() && uploadToServer(PICPATH_ABS + s, REMOTE_UPLOAD_PIC_SCRIPT)) {
-
-            QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
-
-            sl.removeOne(s);
+    QObject::connect(reply, &QNetworkReply::finished, [&]() {
+        if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << "Error:" << reply->errorString();
+        } else {
+            QFile localDB(DB_PATH_ABS_NAME);
+            if (localDB.open(QIODevice::WriteOnly)) {
+                localDB.setPermissions(QFile::WriteOwner | QFile::ReadOwner);
+                localDB.write(reply->readAll());
+                localDB.close();
+            }
         }
-    }
+        reply->deleteLater();
+        loop.quit();
+    });
 
-    m_coversToUploadFile.close();
-
-    m_coversToUploadFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
-
-    foreach (auto s, sl) {
-        if(!s.isEmpty())
-            ts << s << '\n';
-    }
-
-    m_coversToUploadFile.close();
-
-    QMetaObject::invokeMethod(m_progressDialog, "hide");
+    loop.exec();
 }
 
 void ComManager::uploadDB()

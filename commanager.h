@@ -12,9 +12,10 @@ public:
     explicit ComManager(QObject *parent = nullptr);
     ~ComManager();
 
-    Q_INVOKABLE void downloadCovers();
+    void downloadCovers();
     Q_INVOKABLE void uploadCovers();
 
+    void downloadDB();
     Q_INVOKABLE void uploadDB();
 
     Q_INVOKABLE void handleFrontCover(const QString &tag);
