@@ -5,7 +5,6 @@
         <file>qml/BarcodeScannerView/BarcodeScannerView.qml</file>
         <file>qml/BarcodeScannerView/BarcodeScanner.qml</file>
         <file>qml/CollectionView/CollectionView.qml</file>
-        <file>qml/CollectionView/ViewSelectorDrawer.qml</file>
         <file>qml/CollectionView/GameListView.qml</file>
         <file>qml/CollectionView/GameListDelegate.qml</file>
         <file>qml/CollectionView/GameGridView.qml</file>
@@ -24,5 +23,6 @@
         <file>qml/CoverProcessingPopup.qml</file>
         <file>qml/GameInfoView/NewGameView.qml</file>
         <file>download_db_view.qml</file>
+        <file>qml/CollectionView/ConfigMenuBar.qml</file>
     </qresource>
 </RCC>

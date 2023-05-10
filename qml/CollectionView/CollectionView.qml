@@ -1,5 +1,6 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
+import QtQuick.Layouts 6.2
 
 import "../utils"
 
@@ -9,11 +10,14 @@ Pane {
     padding: 0
 
     function diplayListView() {
-        gameStackView.replace(gameListViewCpt)
+        if(gameStackView.currentItem != gameListViewCpt) {
+            gameStackView.replace(gameListViewCpt)
+        }
     }
 
     function diplayGridView() {
-        gameStackView.replace(gameGridViewCpt)
+        if(gameStackView.currentItem != gameGridViewCpt)
+            gameStackView.replace(gameGridViewCpt)
     }
 
     signal showGameRequired(int idx)
@@ -34,17 +38,29 @@ Pane {
                 addGameBtn.opacity = !moving
             }
         }
+
+        replaceEnter: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 0; to: 1
+                duration: 200
+                easing.type: Easing.InOutQuad
+            }
+        }
+
+        replaceExit: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 1; to: 0
+                duration: 200
+                easing.type: Easing.InOutQuad
+            }
+        }
+
+        GameListView { id: gameListViewCpt }
+        GameGridView { id: gameGridViewCpt }
     }
 
-    Component {
-        id: gameListViewCpt
-        GameListView {}
-    }
-
-    Component {
-        id: gameGridViewCpt
-        GameGridView {}
-    }
 
     AddGameButton {
         id: addGameBtn
@@ -57,10 +73,9 @@ Pane {
         }
     }
 
-    ViewSelectorDrawer {
-        id: viewSelectorDrawer
-        width: parent.width
-        height: parent.height/10
+    ConfigMenuBar {
+        id: configMenuBar
+        anchors.centerIn: parent
         onListViewRequired: diplayListView()
         onGridViewRequired: diplayGridView()
     }
