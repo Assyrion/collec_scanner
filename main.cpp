@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
     /************************* Database *****************************/
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(DB_PATH_ABS_NAME);
 
     //    QFile::remove(DB_PATH_ABS_NAME); // uncomment if needed for tests
 
@@ -78,9 +79,14 @@ int main(int argc, char *argv[])
         view->deleteLater();
     }
 
-    db.setDatabaseName(DB_PATH_ABS_NAME);
+
     if (!db.open()) {
         qDebug() << "Error: connection with database fail" << db.lastError();
+        return -1;
+    } else if(!db.tables().contains("games")) { // wrong database
+        qDebug() << "Error: database corrupted";
+        db.close();
+        QFile::remove(DB_PATH_ABS_NAME);
         return -1;
     }
 
