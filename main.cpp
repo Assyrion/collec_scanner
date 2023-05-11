@@ -35,19 +35,6 @@ int main(int argc, char *argv[])
                screen->size().height() / 2 + 40);
 #endif
 
-    /************************* Translator ***************************/
-
-    // Détermine la locale actuelle
-    QString locale = QLocale::system().name();
-
-    // Crée un objet traducteur pour cette locale
-    QTranslator translator;
-    bool ret = translator.load(QString(":/translations/%1").arg(locale));
-    if(ret) {
-        // Installe le traducteur dans l'application
-        QCoreApplication::installTranslator(&translator);
-    }
-
     /************************* Database *****************************/
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
