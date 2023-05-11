@@ -19,7 +19,7 @@ Item {
         verticalAlignment:
             Label.AlignVCenter
         font.family: "Roboto"
-        font.pixelSize: 20
+        font.pointSize: 17
         font.bold: true
         color: "white"
     }
@@ -27,6 +27,7 @@ Item {
         id: textField
         height: implicitBackgroundHeight
         topInset: 5; bottomInset: 5
+        font.pointSize: 13
         anchors.right: parent.right
         anchors.left: labelName.right
         anchors.verticalCenter:

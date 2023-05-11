@@ -78,7 +78,7 @@ Item {
         anchors.bottomMargin: 20
         anchors.horizontalCenter:
             parent.horizontalCenter
-        spacing: 10
+        spacing: 12
         Button {
             text: editMode ? qsTr("cancel")
                            : qsTr("close")
@@ -90,7 +90,10 @@ Item {
                     closed()
                 }
             }
-            font.pointSize: 12
+            leftPadding: 12
+            rightPadding: 12
+
+            font.pointSize: 11
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
                     return curr.implicitWidth > prev ? curr.implicitWidth : prev;
@@ -107,7 +110,10 @@ Item {
                     editMode = true
                 }
             }
-            font.pointSize: 12
+            leftPadding: 12
+            rightPadding: 12
+
+            font.pointSize: 11
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
                     return curr.implicitWidth > prev ? curr.implicitWidth : prev;
@@ -119,7 +125,10 @@ Item {
                 editMode = false
                 showConfirmDelete()
             }
-            font.pointSize: 12
+            leftPadding: 12
+            rightPadding: 12
+
+            font.pointSize: 11
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
                     return curr.implicitWidth > prev ? curr.implicitWidth : prev;

@@ -109,16 +109,16 @@ Pane {
         editMode: root.editMode
     }
 
-
     ColumnLayout {
         id: dataColumn
         width: parent.width - 20
         anchors.horizontalCenter:
             parent.horizontalCenter
         anchors.top: gameCoverRow.bottom
-        anchors.topMargin: 15
+        anchors.topMargin: 12
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 75
         enabled: root.editMode
-        spacing: 7
 
         GameInfoListDelegate {
             id: tagInfo
