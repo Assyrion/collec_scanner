@@ -60,7 +60,7 @@ Window {
 
     function showNewGame(tag = "") {
         view.setCurrentIndex(0)
-        var obj = cpt.createObject(mainWindow, {"tag": tag})
+        var obj = cpt.createObject(gsv, {"tag": tag})
     }
 
     Component {

@@ -9,7 +9,6 @@
         <file>qml/CollectionView/GameListDelegate.qml</file>
         <file>qml/CollectionView/GameGridView.qml</file>
         <file>qml/CollectionView/GameGridDelegate.qml</file>
-        <file>qml/CollectionView/AddGameButton.qml</file>
         <file>qml/GameInfoView/GameInfoCoverRow.qml</file>
         <file>qml/GameInfoView/GameSwipeView.qml</file>
         <file>qml/GameInfoView/GameSwipeDelegate.qml</file>

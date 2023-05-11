@@ -35,7 +35,7 @@ Pane {
                 root.showGameRequired(idx)
             }
             function onMovingChanged(moving) {
-                addGameBtn.opacity = !moving
+                configMenuBar.opacity = !moving
             }
         }
 
@@ -61,22 +61,18 @@ Pane {
         GameGridView { id: gameGridViewCpt }
     }
 
-
-    AddGameButton {
-        id: addGameBtn
-        maxWidth : root.width
-        maxHeight: root.height
-        onClicked: root.showNewGameRequired()
+    ConfigMenuBar {
+        id: configMenuBar
+        anchors.top: parent.top
+        anchors.topMargin: 5
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        onNewGameRequired:  root.showNewGameRequired()
+        onListViewRequired: root.diplayListView()
+        onGridViewRequired: root.diplayGridView()
 
         Behavior on opacity {
             NumberAnimation { duration : 200 }
         }
-    }
-
-    ConfigMenuBar {
-        id: configMenuBar
-        anchors.centerIn: parent
-        onListViewRequired: diplayListView()
-        onGridViewRequired: diplayGridView()
     }
 }
