@@ -10,14 +10,11 @@ Pane {
     padding: 0
 
     function diplayListView() {
-        if(gameStackView.currentItem != gameListViewCpt) {
-            gameStackView.replace(gameListViewCpt)
-        }
+        gameStackView.replace(gameListViewCpt)
     }
 
     function diplayGridView() {
-        if(gameStackView.currentItem != gameGridViewCpt)
-            gameStackView.replace(gameGridViewCpt)
+        gameStackView.replace(gameGridViewCpt)
     }
 
     signal showGameRequired(int idx)
@@ -43,7 +40,7 @@ Pane {
             PropertyAnimation {
                 property: "opacity"
                 from: 0; to: 1
-                duration: 200
+                duration: 400
                 easing.type: Easing.InOutQuad
             }
         }
@@ -52,13 +49,20 @@ Pane {
             PropertyAnimation {
                 property: "opacity"
                 from: 1; to: 0
-                duration: 200
+                duration: 400
                 easing.type: Easing.InOutQuad
             }
         }
+    }
 
-        GameListView { id: gameListViewCpt }
-        GameGridView { id: gameGridViewCpt }
+    Component {
+        id: gameListViewCpt
+        GameListView {}
+    }
+
+    Component {
+        id: gameGridViewCpt
+        GameGridView {}
     }
 
     ConfigMenuBar {
