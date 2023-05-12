@@ -1,5 +1,6 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
+import QtQuick.Layouts 6.2
 import Qt5Compat.GraphicalEffects
 
 Popup {
@@ -36,15 +37,17 @@ Popup {
             width: parent.width
             anchors.horizontalCenter:
                 parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.topMargin: 10
+            anchors.verticalCenter:
+                parent.verticalCenter
+            anchors.verticalCenterOffset: -30
             horizontalAlignment: Text.AlignHCenter
             wrapMode: Text.WordWrap
             font.pointSize: 15
             font.family: "Roboto"
             color: "white"
         }
-        Row {
+        RowLayout {
+            id: btnRow
             anchors.horizontalCenter:
                 parent.horizontalCenter
             anchors.bottom: parent.bottom
@@ -56,6 +59,14 @@ Popup {
                     accepted()
                     popup.close()
                 }
+                leftPadding: 12
+                rightPadding: 12
+
+                font.pointSize: 11
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
+                        return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+                    }, 80)
             }
             Button {
                 text: qsTr("cancel")
@@ -63,6 +74,14 @@ Popup {
                     refused()
                     popup.close()
                 }
+                leftPadding: 12
+                rightPadding: 12
+
+                font.pointSize: 11
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
+                        return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+                    }, 80)
             }
         }
     }
