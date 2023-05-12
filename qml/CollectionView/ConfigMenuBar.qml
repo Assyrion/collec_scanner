@@ -5,9 +5,10 @@ import QtQuick.Controls 6.2
 MenuBar {
     id: root
 
-    signal newGameRequired
     signal gridViewRequired
     signal listViewRequired
+    signal newGameRequired
+    signal configRequired
 
     background: Rectangle {
         color: "#222222"
@@ -24,6 +25,10 @@ MenuBar {
             color: "black"
             opacity: 0.8
             radius: 5
+        }
+        MenuItem {
+            icon.source: "qrc:/filter"
+            onTriggered: root.configRequired()
         }
         MenuItem {
             icon.source: "qrc:/add_notag"

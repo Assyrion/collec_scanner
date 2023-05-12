@@ -19,6 +19,7 @@ Pane {
 
     signal showGameRequired(int idx)
     signal showNewGameRequired
+    signal showConfig
 
     StackView {
         id: gameStackView
@@ -71,9 +72,10 @@ Pane {
         anchors.topMargin: 5
         anchors.right: parent.right
         anchors.rightMargin: 10
-        onNewGameRequired:  root.showNewGameRequired()
         onListViewRequired: root.diplayListView()
         onGridViewRequired: root.diplayGridView()
+        onNewGameRequired:  root.showNewGameRequired()
+        onConfigRequired:   root.showConfig()
 
         Behavior on opacity {
             NumberAnimation { duration : 200 }

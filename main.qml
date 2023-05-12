@@ -44,6 +44,7 @@ Window {
 
             onShowGameRequired : (idx) => showGame(idx)
             onShowNewGameRequired : showNewGame()
+            onShowConfig : drawer.open()
         }
         BarcodeScannerView {
             id: bsv
