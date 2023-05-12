@@ -10,41 +10,43 @@ MenuBar {
     signal newGameRequired
     signal configRequired
 
-    background: Rectangle {
+    property Component backgroundRec : Rectangle {
         color: "#222222"
         radius: 10
-        opacity: 0.7
+        opacity: 0.8
         border.color: "white"
     }
 
-    font.pointSize: 12
+    background: backgroundRec.createObject(root)
+    font.pointSize: 16
     Menu {
         title: "\u{1F527}"
-        width: root.width + 40
-        background: Rectangle {
-            color: "black"
-            opacity: 0.8
-            radius: 5
-        }
+        width: root.width*3
+        background: backgroundRec.createObject(root)
         MenuItem {
+            text: qsTr("Filter")
             icon.source: "qrc:/filter"
             onTriggered: root.configRequired()
+            highlighted: false
         }
         MenuItem {
+            text: qsTr("New")
             icon.source: "qrc:/add_notag"
             onTriggered: root.newGameRequired()
+            highlighted: false
         }
         Menu {
             title: qsTr("View")
-            width: root.width
-            font.pointSize: 18
-
+            width: root.width*3
+            background: backgroundRec.createObject(root)
             MenuItem {
-                text: "\u{2630}"
+                text: qsTr("List")
+                icon.source: "qrc:/list_view"
                 onTriggered: root.listViewRequired()
             }
             MenuItem {
-                text: "\u{2637}"
+                text: qsTr("Grid")
+                icon.source: "qrc:/grid_view"
                 onTriggered: root.gridViewRequired()
             }
         }
