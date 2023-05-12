@@ -4,5 +4,6 @@
         <file alias="add_notag">img/add_notag.png</file>
         <file alias="grid_view">img/gridview.png</file>
         <file alias="list_view">img/listview.png</file>
+        <file alias="filter">img/filter.png</file>
     </qresource>
 </RCC>

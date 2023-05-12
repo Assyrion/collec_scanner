@@ -1,5 +1,6 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
+import QtQuick.Layouts 6.2
 
 import "../utils"
 
@@ -18,6 +19,7 @@ Pane {
 
     signal showGameRequired(int idx)
     signal showNewGameRequired
+    signal showConfig
 
     StackView {
         id: gameStackView
@@ -31,7 +33,25 @@ Pane {
                 root.showGameRequired(idx)
             }
             function onMovingChanged(moving) {
-                addGameBtn.opacity = !moving
+                configMenuBar.opacity = !moving
+            }
+        }
+
+        replaceEnter: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 0; to: 1
+                duration: 400
+                easing.type: Easing.InOutQuad
+            }
+        }
+
+        replaceExit: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 1; to: 0
+                duration: 400
+                easing.type: Easing.InOutQuad
             }
         }
     }
@@ -46,22 +66,19 @@ Pane {
         GameGridView {}
     }
 
-    AddGameButton {
-        id: addGameBtn
-        maxWidth : root.width
-        maxHeight: root.height
-        onClicked: root.showNewGameRequired()
+    ConfigMenuBar {
+        id: configMenuBar
+        anchors.top: parent.top
+        anchors.topMargin: 5
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        onListViewRequired: root.diplayListView()
+        onGridViewRequired: root.diplayGridView()
+        onNewGameRequired:  root.showNewGameRequired()
+        onConfigRequired:   root.showConfig()
 
         Behavior on opacity {
             NumberAnimation { duration : 200 }
         }
-    }
-
-    ViewSelectorDrawer {
-        id: viewSelectorDrawer
-        width: parent.width
-        height: parent.height/10
-        onListViewRequired: diplayListView()
-        onGridViewRequired: diplayGridView()
     }
 }

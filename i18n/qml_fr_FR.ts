@@ -30,54 +30,82 @@
 <context>
     <name>ConfigDrawer</name>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="19"/>
+        <location filename="../qml/ConfigDrawer.qml" line="20"/>
         <source>Filter</source>
         <translation>Filtre</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="34"/>
+        <location filename="../qml/ConfigDrawer.qml" line="35"/>
         <source>Search by name</source>
         <translation>Chercher par titre</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="42"/>
+        <location filename="../qml/ConfigDrawer.qml" line="43"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="60"/>
+        <location filename="../qml/ConfigDrawer.qml" line="61"/>
         <source>Sort by</source>
         <translation>Trier par</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="96"/>
+        <location filename="../qml/ConfigDrawer.qml" line="97"/>
         <source> file DB </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="106"/>
+        <location filename="../qml/ConfigDrawer.qml" line="107"/>
         <source>upload DB</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="116"/>
+        <location filename="../qml/ConfigDrawer.qml" line="117"/>
         <source>upload Covers</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="126"/>
+        <location filename="../qml/ConfigDrawer.qml" line="127"/>
         <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
         <translation>Le contenu de la BDD sera enregistré dans &lt;Téléchargements&gt;/game_list.csv</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="137"/>
+        <location filename="../qml/ConfigDrawer.qml" line="138"/>
         <source>DB will be uploaded to server</source>
         <translation>La BDD sera copiée sur le serveur</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="148"/>
+        <location filename="../qml/ConfigDrawer.qml" line="149"/>
         <source>New covers will be uploaded to server</source>
         <translation>Les nouvelles jaquettes seront copiées sur le serveur</translation>
+    </message>
+</context>
+<context>
+    <name>ConfigMenuBar</name>
+    <message>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="27"/>
+        <source>Filter</source>
+        <translation>Filtre</translation>
+    </message>
+    <message>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="33"/>
+        <source>New</source>
+        <translation>Nouveau</translation>
+    </message>
+    <message>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="39"/>
+        <source>View</source>
+        <translation>Vue</translation>
+    </message>
+    <message>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="43"/>
+        <source>List</source>
+        <translation>Liste</translation>
+    </message>
+    <message>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="48"/>
+        <source>Grid</source>
+        <translation>Grille</translation>
     </message>
 </context>
 <context>
