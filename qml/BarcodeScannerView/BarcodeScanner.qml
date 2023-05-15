@@ -33,11 +33,9 @@ Rectangle {
                 QZXingFilter {
                     id: zxingFilter
                     captureRect: {
-                        cameraOutput.videoOutput.sourceRect;
-                        return Qt.rect(cameraOutput.videoOutput.sourceRect.width * 0.25,
-                                       cameraOutput.videoOutput.sourceRect.height * 0.25,
-                                       cameraOutput.videoOutput.sourceRect.width * 0.5,
-                                       cameraOutput.videoOutput.sourceRect.height * 0.5)
+                        var rec = cameraOutput.videoOutput.sourceRect
+                        return Qt.rect(rec.width * 0.125, rec.height * 0.25,
+                                       rec.width * 0.75,  rec.height * 0.5)
 
                     }
 
@@ -46,11 +44,18 @@ Rectangle {
 
                     decoder {
                         enabledDecoders: QZXing.DecoderFormat_EAN_13
-                        onTagFound: (tag) => {
-                            barcodeFound(tag)
-                        }
+                        onTagFound: (tag) => barcodeFound(tag)
                         tryHarder: false
                     }
+                }
+                Rectangle {
+                    color: "transparent"
+                    border.color: "yellow"
+                    border.width: 1
+                    width: root.width * 0.75
+                    height: root.height * 0.5
+                    x: root.width/2 - width/2
+                    y: root.height/2 - height/2
                 }
             }
         }
