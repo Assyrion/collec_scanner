@@ -68,7 +68,7 @@ Drawer {
             Layout.alignment : Qt.AlignVCenter
             Layout.preferredWidth: parent.width * 0.4
 
-            model: sqlTableModel ? sqlTableModel.roleNamesList : null
+            model: sqlTableModel.roleNamesList
             onModelChanged: currentIndex = 1
             onActivated: sqlTableModel.orderBy(currentIndex,
                                                ascDescBox.currentIndex)
@@ -83,7 +83,9 @@ Drawer {
                                                currentIndex)
         }
     }
-    Column {
+    ColumnLayout {
+        id: btnColumn
+
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 5
         width: parent.width
@@ -91,33 +93,34 @@ Drawer {
 
         Button {
             id: saveDBBtn
-            anchors.horizontalCenter:
-                parent.horizontalCenter
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
+                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+                }, 80)
 
             text: qsTr(" file DB ")
-            onClicked: {
-                loader.loadConfirmSaveDB()
-            }
+            onClicked: loader.loadConfirmSaveDB()
         }
         Button {
             id: exportDBBtn
-            anchors.horizontalCenter:
-                parent.horizontalCenter
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
+                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+                }, 80)
 
             text: qsTr("upload DB")
-            onClicked: {
-                loader.loadConfirmUploadDB()
-            }
+            onClicked: loader.loadConfirmUploadDB()
         }
         Button {
             id: uploadCoversBtn
-            anchors.horizontalCenter:
-                parent.horizontalCenter
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
+                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+                }, 80)
 
             text: qsTr("upload Covers")
-            onClicked: {
-                loader.loadConfirmUploadCovers()
-            }
+            onClicked: loader.loadConfirmUploadCovers()
+
         }
     }
     Loader {

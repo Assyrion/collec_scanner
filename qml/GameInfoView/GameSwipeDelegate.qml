@@ -111,6 +111,7 @@ Pane {
 
     ColumnLayout {
         id: dataColumn
+
         width: parent.width - 20
         anchors.horizontalCenter:
             parent.horizontalCenter

@@ -6,6 +6,7 @@ import "../utils"
 
 Item {
     id: root
+
     signal clicked
 
     Item {
@@ -18,8 +19,7 @@ Item {
                 -implicitHeight/2 + 30
             anchors.horizontalCenter:
                 parent.horizontalCenter
-            source: imageManager ? imageManager.getFrontPic(tag)
-                                 : "qrc:/no_pic"
+            source: imageManager.getFrontPic(tag)
             fillMode: Image.Stretch
             antialiasing: true
             cache: false

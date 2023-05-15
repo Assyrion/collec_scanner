@@ -22,7 +22,6 @@
 
 int main(int argc, char *argv[])
 {
-
     QGuiApplication app(argc, argv);
 
     QScreen *screen;
@@ -79,21 +78,26 @@ int main(int argc, char *argv[])
 
     /*************************** QML *******************************/
 
-    SqlTableModel sqlTableModel;
-    ImageManager  imageManager;
-    FileManager   fileManager;
-
-    fileManager.registerQMLTypes();
     GameDataMaker::registerQMLTypes();
     QZXing::registerQMLTypes();
 
     QQmlApplicationEngine engine;
-    auto context = engine.rootContext();
 
-    context->setContextProperty("imageManager",  &imageManager);
-    context->setContextProperty("comManager",    &comManager);
-    context->setContextProperty("fileManager",   &fileManager);
-    context->setContextProperty("sqlTableModel", &sqlTableModel);
+    SqlTableModel sqlTableModel;
+    ImageManager  imageManager;
+    FileManager   fileManager;
+
+    qmlRegisterType<ComManager>("ComManager", 1, 0, "ComManager");
+    qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");
+    qmlRegisterType<ImageManager>("ImageManager", 1, 0, "ImageManager");
+    qmlRegisterType<SqlTableModel>("SQLTableModel", 1, 0, "SQLTableModel");
+
+    engine.setInitialProperties({
+        {"comManager", QVariant::fromValue(&comManager)},
+        {"fileManager", QVariant::fromValue(&fileManager)},
+        {"imageManager", QVariant::fromValue(&imageManager)},
+        {"sqlTableModel", QVariant::fromValue(&sqlTableModel)}
+    });
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty()) {

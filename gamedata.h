@@ -57,7 +57,6 @@ public:
     QString tag;
     QString info;
     QString title;
-    QString full_title;
     QString platform;
     QString publisher;
     QString developer;

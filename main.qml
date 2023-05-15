@@ -9,13 +9,25 @@ import "qml/GameInfoView"
 import "qml/CollectionView"
 import "qml/BarcodeScannerView"
 
+import ComManager 1.0
+import FileManager 1.0
+import ImageManager 1.0
+import SQLTableModel 1.0
+
 Window {
     id: mainWindow
+
     visible: true
     visibility: Window.AutomaticVisibility
 
+    required property ComManager comManager
+    required property FileManager fileManager
+    required property ImageManager imageManager
+    required property SQLTableModel sqlTableModel
+
     SwipeView {
         id: view
+
         anchors.fill: parent
 
         readonly property int defaultIndex: 1
@@ -42,15 +54,15 @@ Window {
         CollectionView {
             id: cv
 
-            onShowGameRequired : (idx) => showGame(idx)
-            onShowNewGameRequired : showNewGame()
-            onShowConfig : drawer.open()
+            onShowGameRequired: (idx) => showGame(idx)
+            onShowNewGameRequired: showNewGame()
+            onShowConfigRequired: showConfig()
         }
         BarcodeScannerView {
             id: bsv
 
-            onShowGameRequired : (idx) => showGame(idx)
-            onShowNewGameRequired : (tag) => showNewGame(tag)
+            onShowGameRequired: (idx) => showGame(idx)
+            onShowNewGameRequired: (tag) => showNewGame(tag)
         }
     }
 
@@ -62,6 +74,10 @@ Window {
     function showNewGame(tag = "") {
         view.setCurrentIndex(0)
         var obj = cpt.createObject(gsv, {"tag": tag})
+    }
+
+    function showConfig() {
+        drawer.open()
     }
 
     Component {

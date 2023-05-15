@@ -14,10 +14,6 @@ public:
     explicit FileManager(QObject *parent = nullptr);
     ~FileManager();
 
-    static void registerQMLTypes() {
-        qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");
-    }
-
     Q_INVOKABLE bool checkEntry(QString id);
     Q_INVOKABLE void addEntry(GameData *game);
     Q_INVOKABLE QString getEntry(QString id);
