@@ -10,6 +10,7 @@
 #include <QSqlError>
 #include <QSaveFile>
 #include <QZXing.h>
+#include <QThread>
 #include <QDebug>
 #include <QDir>
 
@@ -121,7 +122,16 @@ int main(int argc, char *argv[])
 
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
     comManager.setProgressDialog(dialog);
-    comManager.downloadCovers();
+
+    QThread thread;
+    QObject::connect(&thread, &QThread::started, &comManager, &ComManager::downloadCovers);
+    QObject::connect(&app, &QGuiApplication::aboutToQuit, [&thread](){
+        thread.quit();
+        thread.wait();
+    });
+    comManager.moveToThread(&thread);
+
+    thread.start();
 
     return app.exec();
 }

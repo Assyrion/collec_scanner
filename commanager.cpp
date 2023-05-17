@@ -11,7 +11,7 @@
 #include "commanager.h"
 #include "global.h"
 
-const QRegularExpression re("href=\"([^\"]+\\.png)\">.*?(\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2})");
+static const QRegularExpression re("href=\"([^\"]+\\.png)\">.*?(\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2})");
 
 ComManager::ComManager(QObject *parent)
     : QObject{parent}
@@ -36,8 +36,8 @@ void ComManager::downloadCovers()
     int count = 0;
 
     QUrl url(REMOTE_PIC_PATH);
-    QNetworkAccessManager manager;
     QNetworkRequest request(url);
+    QNetworkAccessManager manager;
     QNetworkReply *reply = manager.get(request);
 
     QEventLoop loop;
@@ -60,11 +60,11 @@ void ComManager::downloadCovers()
                     QString remoteFileName(match.captured(1));
                     QDateTime remoteCreationDate(QDateTime::fromString(match.captured(2), Qt::ISODate));
 
-                    QString localPath = toDir.absolutePath()
-                                     + QDir::separator()
-                                     + remoteFileName;
-
                     QDateTime localModifiedDate(remoteCreationDate);
+
+                    QString localPath = toDir.absolutePath()
+                                        + QDir::separator()
+                                        + remoteFileName;
 
                     if(QFile::exists(localPath)) {
                         QFileInfo localFileInfo(localPath);
@@ -72,28 +72,10 @@ void ComManager::downloadCovers()
                     }
 
                     if(!QFile::exists(localPath) || (remoteCreationDate > localModifiedDate)) {
-                        QUrl fileUrl(url.toString() + remoteFileName);
-                        QNetworkRequest fileRequest(fileUrl);
-                        QNetworkReply *fileReply = manager.get(fileRequest);
-                        while (!fileReply->isFinished()) {
-                            qApp->processEvents();
-                        }
-                        // Vérification du code de réponse
-                        if (fileReply->error() == QNetworkReply::NoError) {
-                            // Enregistrement du fichier sur le disque
-                            QFile file(localPath);
-                            if (file.open(QIODevice::WriteOnly)) {
-                                file.setPermissions(QFile::WriteOwner | QFile::ReadOwner);
-                                file.write(fileReply->readAll());
-                                file.close();
-
-                                QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
-                            }
-                        } else {
-                            // Traitement de l'erreur
-                            qDebug() << "Erreur lors du téléchargement du fichier" << remoteFileName << ":" << fileReply->errorString();
-                        }
-                        fileReply->deleteLater();
+                        downloadFile(REMOTE_PIC_PATH + remoteFileName, localPath);
+                        QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
+                    } else {
+                        QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, --remote_count));
                     }
                 }
             }
@@ -123,7 +105,7 @@ void ComManager::uploadCovers()
     int count = 0;
 
     foreach (auto s, sl) {
-        if(!s.isEmpty() && uploadToServer(PICPATH_ABS + s, REMOTE_UPLOAD_PIC_SCRIPT)) {
+        if(!s.isEmpty() && uploadFile(PICPATH_ABS + s, REMOTE_UPLOAD_PIC_SCRIPT)) {
 
             QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
 
@@ -145,7 +127,7 @@ void ComManager::uploadCovers()
     QMetaObject::invokeMethod(m_progressDialog, "hide");
 }
 
-bool ComManager::uploadToServer(const QString& fileName, const QString& scriptPath)
+bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
 {
     // Ouvrir le fichier PNG
     QFile file(fileName);
@@ -171,7 +153,6 @@ bool ComManager::uploadToServer(const QString& fileName, const QString& scriptPa
     QHttpMultiPart multiPart(QHttpMultiPart::FormDataType);
     multiPart.append(filePart);
 
-    // Envoyer la requête HTTP POST
     QNetworkAccessManager manager;
     QNetworkReply * reply = manager.post(request, &multiPart);
 
@@ -204,9 +185,14 @@ bool ComManager::uploadToServer(const QString& fileName, const QString& scriptPa
 
 void ComManager::downloadDB()
 {
-    QUrl url(REMOTE_DB_PATH + DBNAME);
-    QNetworkAccessManager manager;
+    downloadFile(REMOTE_DB_PATH + DBNAME, DB_PATH_ABS_NAME);
+}
+
+void ComManager::downloadFile(const QString& remotePath, const QString& localPath)
+{
+    QUrl url(remotePath);
     QNetworkRequest request(url);
+    QNetworkAccessManager manager;
     QNetworkReply *reply = manager.get(request);
 
     QEventLoop loop;
@@ -215,11 +201,11 @@ void ComManager::downloadDB()
         if (reply->error() != QNetworkReply::NoError) {
             qDebug() << "Error:" << reply->errorString();
         } else {
-            QFile localDB(DB_PATH_ABS_NAME);
-            if (localDB.open(QIODevice::WriteOnly)) {
-                localDB.setPermissions(QFile::WriteOwner | QFile::ReadOwner);
-                localDB.write(reply->readAll());
-                localDB.close();
+            QFile localFile(localPath);
+            if (localFile.open(QIODevice::WriteOnly)) {
+                localFile.setPermissions(QFile::WriteOwner | QFile::ReadOwner);
+                localFile.write(reply->readAll());
+                localFile.close();
             }
         }
         reply->deleteLater();
@@ -233,7 +219,7 @@ void ComManager::uploadDB()
 {
     QMetaObject::invokeMethod(m_progressDialog, "show");
 
-    uploadToServer(DB_PATH_ABS_NAME, REMOTE_UPLOAD_DB_SCRIPT);
+    uploadFile(DB_PATH_ABS_NAME, REMOTE_UPLOAD_DB_SCRIPT);
 
     QMetaObject::invokeMethod(m_progressDialog, "hide");
 }

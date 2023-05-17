@@ -1,7 +1,7 @@
 #ifndef COMMANAGER_H
 #define COMMANAGER_H
 
-
+#include <QNetworkAccessManager>
 #include <QObject>
 #include <QFile>
 
@@ -25,12 +25,12 @@ public:
 
 private:
     QFile m_coversToUploadFile;
-    int m_coversToUploadCount{0};
+    QNetworkAccessManager m_manager;
+    QObject* m_progressDialog{nullptr};
 
     void appendToList(const QString& fileName);
-    bool uploadToServer(const QString &fileName, const QString &scriptPath);
-
-    QObject* m_progressDialog{nullptr};
+    void downloadFile(const QString& remotePath, const QString& localPath);
+    bool uploadFile(const QString &fileName, const QString &scriptPath);
 
 signals:
 
