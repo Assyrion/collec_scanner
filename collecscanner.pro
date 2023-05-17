@@ -54,6 +54,8 @@ HEADERS += \
 TRANSLATIONS += i18n/qml_fr_FR.ts \
                 i18n/qml_en_EN.ts
 
+RC_ICONS = $${PWD}/img/$${TARGET}.ico
+
 contains(ANDROID_TARGET_ARCH,arm64-v8a) {
     ANDROID_PACKAGE_SOURCE_DIR = \
         $$PWD/android
