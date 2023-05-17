@@ -25,15 +25,19 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
-    QScreen *screen;
+    /*************************** Init *****************************/
 
+    QScreen *screen;
 #ifdef Q_OS_ANDROID
     screen = QGuiApplication::primaryScreen();
 #else
-    screen = app.screens().at(1);
+    screen = app.screens().last();
     QSize size(screen->size().width() / 5,
                screen->size().height() / 2 + 40);
 #endif
+
+    QDir dataDir(DATAPATH);
+    if(!dataDir.exists()) dataDir.mkpath(".");
 
     /************************* Database *****************************/
 

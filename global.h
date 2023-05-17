@@ -20,13 +20,10 @@ const QString PICPATH_ABS = DATAPATH + QDir::separator()
 const QString DB_PATH_ABS_NAME = DATAPATH + QDir::separator()
         + DBNAME;
 #else
-const QString DATAPATH = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
-const QString PICPATH_ABS = DATAPATH + QDir::separator()
-        + QString(APPNAME) + QDir::separator()
-        + PICPATH;
-const QString DB_PATH_ABS_NAME = DATAPATH + QDir::separator()
-        + QString(APPNAME) + QDir::separator()
-        + DBNAME;
+const QString DATAPATH = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
+        + QDir::separator() + QString(APPNAME);
+const QString PICPATH_ABS = DATAPATH + QDir::separator() + PICPATH;
+const QString DB_PATH_ABS_NAME = DATAPATH + QDir::separator() + DBNAME;
 #endif
 
 #endif // GLOBAL_H
