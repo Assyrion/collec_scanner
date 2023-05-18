@@ -12,7 +12,7 @@ Drawer {
     }
 
     Text {
-        id: title
+        id: titleText
         anchors.top: parent.top
         anchors.topMargin: 10
         anchors.horizontalCenter:
@@ -26,13 +26,14 @@ Drawer {
     }
     TextField {
         id: filterName
-        anchors.top: title.bottom
+        anchors.top: titleText.bottom
         anchors.topMargin: 10
         anchors.left: parent.left
         anchors.leftMargin: 5
         anchors.right: parent.right
         anchors.rightMargin: 5
         placeholderText: qsTr("Search by name")
+        text: sqlTableModel.filter
     }
     Button {
         id: applyFilterBtn
@@ -70,8 +71,11 @@ Drawer {
 
             model: sqlTableModel.roleNamesList
             onModelChanged: currentIndex = 1
-            onActivated: sqlTableModel.orderBy(currentIndex,
+            onActivated: sqlTableModel.setOrderBy(currentIndex,
                                                ascDescBox.currentIndex)
+            Component.onCompleted: {
+                currentIndex = sqlTableModel.orderBy
+            }
         }
         ComboBox {
             id: ascDescBox
@@ -79,8 +83,11 @@ Drawer {
             Layout.preferredWidth: parent.width * 0.35
 
             model: ["ASC", "DESC"]
-            onActivated: sqlTableModel.orderBy(sortingComboBox.currentIndex,
+            onActivated: sqlTableModel.setOrderBy(sortingComboBox.currentIndex,
                                                currentIndex)
+            Component.onCompleted: {
+                currentIndex = sqlTableModel.sortOrder
+            }
         }
     }
     ColumnLayout {

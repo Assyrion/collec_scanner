@@ -142,7 +142,14 @@ int main(int argc, char *argv[])
 
     QThread thread;
     QObject::connect(&thread, &QThread::started, &comManager, &ComManager::downloadCovers);
-    QObject::connect(&app, &QGuiApplication::aboutToQuit, [&thread](){
+    QObject::connect(&app, &QGuiApplication::aboutToQuit, [&](){
+
+        settings.beginGroup("sqlTableModel");
+        settings.setValue("orderBy", sqlTableModel.orderBy());
+        settings.setValue("sortOrder", sqlTableModel.sortOrder());
+        settings.setValue("filter", sqlTableModel.filter());
+        settings.endGroup();
+
         thread.quit();
         thread.wait();
     });

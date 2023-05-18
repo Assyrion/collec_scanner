@@ -13,14 +13,13 @@ SqlTableModel::SqlTableModel(int orderBy, int sortOrder, const QString& filter, 
 {
     setTable("games");
     setEditStrategy(OnFieldChange);
-    setSort(orderBy, Qt::SortOrder(sortOrder));
+    this->setOrderBy(orderBy, sortOrder);
     filterByTitle(filter);
 
     auto rec = record();
     for(int i = 0; i < rec.count(); i++) {
         m_roles.insert(Qt::UserRole + i + 1, rec.fieldName(i).toUtf8());
     }
-    select();
 }
 
 SqlTableModel::~SqlTableModel()
@@ -133,6 +132,8 @@ int SqlTableModel::getIndexNotFiltered(const QString &tag)
 
 void SqlTableModel::filterByTitle(const QString &title)
 {
+    m_filter = title;
+
     if(title.isEmpty()) {
         setFilter("");
         return;
@@ -141,8 +142,11 @@ void SqlTableModel::filterByTitle(const QString &title)
     setFilter("title LIKE \'%" + title + "%\'");
 }
 
-void SqlTableModel::orderBy(int column, int order)
+void SqlTableModel::setOrderBy(int column, int order)
 {
+    m_orderBy = column;
+    m_sortOrder = order;
+
     // Sort the model by the specified role and order
     if (column >= 0) {
         sort(column, Qt::SortOrder(order));
@@ -162,4 +166,19 @@ void SqlTableModel::saveDBToFile(FileManager* fileManager)
         auto game = GameDataMaker::get()->createComplete(list);
         fileManager->addEntry(game);
     }
+}
+
+QString SqlTableModel::filter() const
+{
+    return m_filter;
+}
+
+int SqlTableModel::sortOrder() const
+{
+    return m_sortOrder;
+}
+
+int SqlTableModel::orderBy() const
+{
+    return m_orderBy;
 }
