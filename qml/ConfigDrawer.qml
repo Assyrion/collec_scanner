@@ -5,6 +5,7 @@ import QtQuick.Layouts 6.2
 Drawer {
     id: root
 
+    z: 1
     closePolicy: Popup.CloseOnPressOutside
     edge: Qt.LeftEdge
     onClosed: {
