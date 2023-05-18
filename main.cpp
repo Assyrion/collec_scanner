@@ -137,19 +137,31 @@ int main(int argc, char *argv[])
     window->resize(size);
 #endif
 
+    auto saveSettings = [&settings, &sqlTableModel]() {
+        settings.beginGroup("sqlTableModel");
+        settings.setValue("orderBy", sqlTableModel.orderBy());
+        settings.setValue("sortOrder", sqlTableModel.sortOrder());
+        settings.setValue("filter", sqlTableModel.filter());
+        settings.endGroup();
+    };
+
+#ifdef Q_OS_ANDROID
+    // Because there is now way to catch aboutToClose signal with gesture navigation on Android
+    QObject::connect(&app, &QGuiApplication::applicationStateChanged,
+                     [&](Qt::ApplicationState state){
+                         if(state == Qt::ApplicationSuspended) {
+                             saveSettings();
+                         }
+                     });
+#endif
+
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
     comManager.setProgressDialog(dialog);
 
     QThread thread;
     QObject::connect(&thread, &QThread::started, &comManager, &ComManager::downloadCovers);
     QObject::connect(&app, &QGuiApplication::aboutToQuit, [&](){
-
-        settings.beginGroup("sqlTableModel");
-        settings.setValue("orderBy", sqlTableModel.orderBy());
-        settings.setValue("sortOrder", sqlTableModel.sortOrder());
-        settings.setValue("filter", sqlTableModel.filter());
-        settings.endGroup();
-
+        saveSettings();
         thread.quit();
         thread.wait();
     });
