@@ -27,13 +27,11 @@ int main(int argc, char *argv[])
 
     /*************************** Init *****************************/
 
-    QScreen *screen;
 #ifdef Q_OS_ANDROID
+    QScreen *screen;
     screen = QGuiApplication::primaryScreen();
 #else
-    screen = app.screens().last();
-    QSize size(screen->size().width() / 5,
-               screen->size().height() / 2 + 40);
+    QSize size(512, 773);
 #endif
 
     QDir dataDir(DATAPATH);

@@ -94,6 +94,8 @@ Window {
                          showGame(idx)
                          destroy()
                      }
+            Component.onCompleted:   view.interactive = false
+            Component.onDestruction: view.interactive = true
         }
     }
 

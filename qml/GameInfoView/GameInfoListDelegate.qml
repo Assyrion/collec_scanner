@@ -19,7 +19,7 @@ Item {
         verticalAlignment:
             Label.AlignVCenter
         font.family: "Roboto"
-        font.pointSize: 17
+        font.pointSize: 14
         font.bold: true
         color: "white"
     }
