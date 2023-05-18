@@ -25,6 +25,21 @@ Window {
     required property ImageManager imageManager
     required property SQLTableModel sqlTableModel
 
+    ConfigDrawer {
+        id: drawer
+        width: parent.width * 0.7
+        height: parent.height
+        interactive: view.currentItem == cv
+    }
+
+    CoverProcessingPopup {
+        id: coverProcessingPopup
+        objectName: "coverProcessingPopup"
+        width: 2*parent.width/3
+        height: parent.height/5
+        anchors.centerIn: parent
+    }
+
     SwipeView {
         id: view
 
@@ -73,7 +88,7 @@ Window {
 
     function showNewGame(tag = "") {
         view.setCurrentIndex(0)
-        var obj = cpt.createObject(gsv, {"tag": tag})
+        var obj = newGameCpt.createObject(gsv, {"tag": tag})
     }
 
     function showConfig() {
@@ -81,7 +96,7 @@ Window {
     }
 
     Component {
-        id: cpt
+        id: newGameCpt
         NewGameView {
             width: mainWindow.width
             height: mainWindow.height
@@ -99,13 +114,6 @@ Window {
         }
     }
 
-    ConfigDrawer {
-        id: drawer
-        width: parent.width * 0.7
-        height: parent.height
-        interactive: view.currentItem == cv
-    }
-
     PageIndicator {
         id: indicator
 
@@ -115,13 +123,5 @@ Window {
         anchors.bottom: view.bottom
         anchors.horizontalCenter:
             parent.horizontalCenter
-    }
-
-    CoverProcessingPopup {
-        id: coverProcessingPopup
-        objectName: "coverProcessingPopup"
-        width: 2*parent.width/3
-        height: parent.height/5
-        anchors.centerIn: parent
     }
 }

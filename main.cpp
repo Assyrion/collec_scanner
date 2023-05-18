@@ -9,6 +9,7 @@
 #include <QQuickView>
 #include <QSqlError>
 #include <QSaveFile>
+#include <QSettings>
 #include <QZXing.h>
 #include <QThread>
 #include <QDebug>
@@ -36,6 +37,20 @@ int main(int argc, char *argv[])
 
     QDir dataDir(DATAPATH);
     if(!dataDir.exists()) dataDir.mkpath(".");
+
+    QSettings settings(DATAPATH + QDir::separator() + QString(APPNAME) + ".ini", QSettings::IniFormat);
+
+    if(settings.allKeys().isEmpty()) {
+        settings.setValue("sqlTableModel/orderBy", 1);
+        settings.setValue("sqlTableModel/sortOrder", 0);
+        settings.setValue("sqlTableModel/filter", "");
+    }
+
+    settings.beginGroup("sqlTableModel");
+    auto orderBy = settings.value("orderBy").toInt();
+    auto sortOrder = settings.value("sortOrder").toInt();
+    auto filter = settings.value("filter").toString();
+    settings.endGroup();
 
     /************************* Database *****************************/
 
@@ -68,7 +83,6 @@ int main(int argc, char *argv[])
         view->deleteLater();
     }
 
-
     if (!db.open()) {
         qDebug() << "Error: connection with database fail" << db.lastError();
         return -1;
@@ -86,7 +100,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    SqlTableModel sqlTableModel;
+    SqlTableModel sqlTableModel(orderBy, sortOrder, filter);
     ImageManager  imageManager;
     FileManager   fileManager;
 
@@ -122,12 +136,31 @@ int main(int argc, char *argv[])
     window->resize(size);
 #endif
 
+    auto saveSettings = [&settings, &sqlTableModel]() {
+        settings.beginGroup("sqlTableModel");
+        settings.setValue("orderBy", sqlTableModel.getOrderBy());
+        settings.setValue("sortOrder", sqlTableModel.getSortOrder());
+        settings.setValue("filter", sqlTableModel.getFilter());
+        settings.endGroup();
+    };
+
+#ifdef Q_OS_ANDROID
+    // Because there is now way to catch aboutToClose signal with gesture navigation on Android
+    QObject::connect(&app, &QGuiApplication::applicationStateChanged,
+                     [&](Qt::ApplicationState state){
+                         if(state != Qt::ApplicationActive) {
+                             saveSettings();
+                         }
+                     });
+#endif
+
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
     comManager.setProgressDialog(dialog);
 
     QThread thread;
     QObject::connect(&thread, &QThread::started, &comManager, &ComManager::downloadCovers);
-    QObject::connect(&app, &QGuiApplication::aboutToQuit, [&thread](){
+    QObject::connect(&app, &QGuiApplication::aboutToQuit, [&](){
+        saveSettings();
         thread.quit();
         thread.wait();
     });
