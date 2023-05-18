@@ -41,10 +41,16 @@ int main(int argc, char *argv[])
     QSettings settings(DATAPATH + QDir::separator() + QString(APPNAME) + ".ini", QSettings::IniFormat);
 
     if(settings.allKeys().isEmpty()) {
-        settings.setValue("sqlTableModel/orderBy", "title");
+        settings.setValue("sqlTableModel/orderBy", 1);
         settings.setValue("sqlTableModel/sortOrder", 0);
         settings.setValue("sqlTableModel/filter", "");
     }
+
+    settings.beginGroup("sqlTableModel");
+    auto orderBy = settings.value("orderBy").toInt();
+    auto sortOrder = settings.value("sortOrder").toInt();
+    auto filter = settings.value("filter").toString();
+    settings.endGroup();
 
     /************************* Database *****************************/
 
@@ -95,7 +101,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    SqlTableModel sqlTableModel;
+    SqlTableModel sqlTableModel(orderBy, sortOrder, filter);
     ImageManager  imageManager;
     FileManager   fileManager;
 

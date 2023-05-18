@@ -8,12 +8,13 @@
 
 #include <QDebug>
 
-SqlTableModel::SqlTableModel(QObject* parent)
+SqlTableModel::SqlTableModel(int orderBy, int sortOrder, const QString& filter, QObject* parent)
     : QSqlTableModel(parent)
 {
     setTable("games");
     setEditStrategy(OnFieldChange);
-    setSort(1, Qt::AscendingOrder); // sort by title
+    setSort(orderBy, Qt::SortOrder(sortOrder));
+    filterByTitle(filter);
 
     auto rec = record();
     for(int i = 0; i < rec.count(); i++) {

@@ -12,7 +12,7 @@ class SqlTableModel : public QSqlTableModel
     Q_PROPERTY(QStringList roleNamesList READ roleNamesList NOTIFY roleNamesListChanged)
 
 public:
-    SqlTableModel(QObject* parent = nullptr);
+    SqlTableModel(int orderBy, int sortOrder, const QString &filter, QObject* parent = nullptr);
     ~SqlTableModel() Q_DECL_OVERRIDE;
 
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
