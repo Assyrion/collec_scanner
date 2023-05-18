@@ -8,9 +8,6 @@ Drawer {
     z: 1
     closePolicy: Popup.CloseOnPressOutside
     edge: Qt.LeftEdge
-    onClosed: {
-        filterName.clear()
-    }
 
     Text {
         id: titleText
@@ -34,7 +31,9 @@ Drawer {
         anchors.right: parent.right
         anchors.rightMargin: 5
         placeholderText: qsTr("Search by name")
-        text: sqlTableModel.filter
+        Component.onCompleted: {
+            text = sqlTableModel.filter
+        }
     }
     Button {
         id: applyFilterBtn
@@ -42,7 +41,7 @@ Drawer {
         anchors.topMargin: 5
         anchors.horizontalCenter:
             filterName.horizontalCenter
-        text: filterName.text === "" ? "X" : qsTr("OK")
+        text: qsTr("OK")
         onClicked: {
             sqlTableModel.filterByTitle(filterName.text)
             close()
