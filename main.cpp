@@ -83,7 +83,6 @@ int main(int argc, char *argv[])
         view->deleteLater();
     }
 
-
     if (!db.open()) {
         qDebug() << "Error: connection with database fail" << db.lastError();
         return -1;
@@ -139,9 +138,9 @@ int main(int argc, char *argv[])
 
     auto saveSettings = [&settings, &sqlTableModel]() {
         settings.beginGroup("sqlTableModel");
-        settings.setValue("orderBy", sqlTableModel.orderBy());
-        settings.setValue("sortOrder", sqlTableModel.sortOrder());
-        settings.setValue("filter", sqlTableModel.filter());
+        settings.setValue("orderBy", sqlTableModel.getOrderBy());
+        settings.setValue("sortOrder", sqlTableModel.getSortOrder());
+        settings.setValue("filter", sqlTableModel.getFilter());
         settings.endGroup();
     };
 
@@ -149,7 +148,7 @@ int main(int argc, char *argv[])
     // Because there is now way to catch aboutToClose signal with gesture navigation on Android
     QObject::connect(&app, &QGuiApplication::applicationStateChanged,
                      [&](Qt::ApplicationState state){
-                         if(state == Qt::ApplicationSuspended) {
+                         if(state != Qt::ApplicationActive) {
                              saveSettings();
                          }
                      });

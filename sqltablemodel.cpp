@@ -168,17 +168,17 @@ void SqlTableModel::saveDBToFile(FileManager* fileManager)
     }
 }
 
-QString SqlTableModel::filter() const
+QString SqlTableModel::getFilter() const
 {
     return m_filter;
 }
 
-int SqlTableModel::sortOrder() const
+int SqlTableModel::getSortOrder() const
 {
     return m_sortOrder;
 }
 
-int SqlTableModel::orderBy() const
+int SqlTableModel::getOrderBy() const
 {
     return m_orderBy;
 }

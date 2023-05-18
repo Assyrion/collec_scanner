@@ -30,9 +30,9 @@ public:
     Q_INVOKABLE void setOrderBy(int column, int order);
     Q_INVOKABLE void saveDBToFile(FileManager* fileManager);
 
-    QString filter() const;
-    int sortOrder() const;
-    int orderBy() const;
+    QString getFilter() const;
+    int getSortOrder() const;
+    int getOrderBy() const;
 
 private:
     QHash<int, QByteArray> m_roles;
