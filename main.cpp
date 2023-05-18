@@ -9,6 +9,7 @@
 #include <QQuickView>
 #include <QSqlError>
 #include <QSaveFile>
+#include <QSettings>
 #include <QZXing.h>
 #include <QThread>
 #include <QDebug>
@@ -36,6 +37,14 @@ int main(int argc, char *argv[])
 
     QDir dataDir(DATAPATH);
     if(!dataDir.exists()) dataDir.mkpath(".");
+
+    QSettings settings(DATAPATH + QDir::separator() + QString(APPNAME) + ".ini", QSettings::IniFormat);
+
+    if(settings.allKeys().isEmpty()) {
+        settings.setValue("sqlTableModel/orderBy", "title");
+        settings.setValue("sqlTableModel/sortOrder", 0);
+        settings.setValue("sqlTableModel/filter", "");
+    }
 
     /************************* Database *****************************/
 
