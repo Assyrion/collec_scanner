@@ -26,14 +26,9 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
-    /*************************** Init *****************************/
+    auto screen = app.primaryScreen();
 
-#ifdef Q_OS_ANDROID
-    QScreen *screen;
-    screen = QGuiApplication::primaryScreen();
-#else
-    QSize size(512, 773);
-#endif
+    /*************************** Init *****************************/
 
     QDir dataDir(DATAPATH);
     if(!dataDir.exists()) dataDir.mkpath(".");
@@ -45,6 +40,10 @@ int main(int argc, char *argv[])
         settings.setValue("sqlTableModel/sortOrder", 0);
         settings.setValue("sqlTableModel/filter", "");
         settings.setValue("mainView/view", 0);
+        settings.setValue("window/x", screen->geometry().width()/4);
+        settings.setValue("window/y", screen->geometry().height()/4);
+        settings.setValue("window/w", 512);
+        settings.setValue("window/h", 773);
     }
 
     settings.beginGroup("sqlTableModel");
@@ -56,6 +55,17 @@ int main(int argc, char *argv[])
     settings.beginGroup("mainView");
     auto collectionView = settings.value("view").toInt();
     settings.endGroup();
+
+    settings.beginGroup("window");
+    auto windowX = settings.value("x").toInt();
+    auto windowY = settings.value("y").toInt();
+    auto windowW = settings.value("w").toInt();
+    auto windowH = settings.value("h").toInt();
+    settings.endGroup();
+
+#ifndef Q_OS_ANDROID
+    QRect rect(windowX, windowY, windowW, windowH);
+#endif
 
     /************************* Database *****************************/
 
@@ -75,7 +85,7 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_ANDROID
         view->setGeometry(screen->availableGeometry());
 #else
-        db_view->resize(size);
+        db_view->setGeometry(rect);
 #endif
 
         db_view->setResizeMode(QQuickView::SizeRootObjectToView);
@@ -139,7 +149,7 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_ANDROID
     window->setGeometry(screen->availableGeometry());
 #else
-    window->resize(size);
+    window->setGeometry(rect);
 #endif
 
     auto saveSettings = [&]() {
@@ -151,6 +161,13 @@ int main(int argc, char *argv[])
 
         settings.beginGroup("mainView");
         settings.setValue("view", rootObject->property("collectionView"));
+        settings.endGroup();
+
+        settings.beginGroup("window");
+        settings.setValue("x", window->x());
+        settings.setValue("y", window->y());
+        settings.setValue("w", window->width());
+        settings.setValue("h", window->height());
         settings.endGroup();
     };
 
