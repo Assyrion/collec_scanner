@@ -11,10 +11,12 @@ Pane {
 
     function diplayListView() {
         gameStackView.replace(gameListViewCpt)
+        collectionView = 0
     }
 
     function diplayGridView() {
         gameStackView.replace(gameGridViewCpt)
+        collectionView = 1
     }
 
     signal showGameRequired(int idx)
@@ -25,7 +27,12 @@ Pane {
         id: gameStackView
 
         anchors.fill: parent
-        initialItem: gameListViewCpt
+        initialItem: {
+            switch(collectionView) {
+            case 1 : return gameGridViewCpt
+            default: return gameListViewCpt
+            }
+        }
 
         Connections {
             target: gameStackView.currentItem

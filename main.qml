@@ -25,6 +25,8 @@ Window {
     required property ImageManager imageManager
     required property SQLTableModel sqlTableModel
 
+    required property int collectionView
+
     ConfigDrawer {
         id: drawer
         width: parent.width * 0.7

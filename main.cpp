@@ -44,12 +44,17 @@ int main(int argc, char *argv[])
         settings.setValue("sqlTableModel/orderBy", 1);
         settings.setValue("sqlTableModel/sortOrder", 0);
         settings.setValue("sqlTableModel/filter", "");
+        settings.setValue("mainView/view", 0);
     }
 
     settings.beginGroup("sqlTableModel");
     auto orderBy = settings.value("orderBy").toInt();
     auto sortOrder = settings.value("sortOrder").toInt();
     auto filter = settings.value("filter").toString();
+    settings.endGroup();
+
+    settings.beginGroup("mainView");
+    auto collectionView = settings.value("view").toInt();
     settings.endGroup();
 
     /************************* Database *****************************/
@@ -64,23 +69,23 @@ int main(int argc, char *argv[])
     // checking if needed to download DB
     if(!QFile::exists(DB_PATH_ABS_NAME)) {
 
-        QQuickView *view = new QQuickView;
-        view->setSource(QUrl(QStringLiteral("qrc:/download_db_view.qml")));
+        QQuickView *db_view = new QQuickView;
+        db_view->setSource(QUrl(QStringLiteral("qrc:/download_db_view.qml")));
 
 #ifdef Q_OS_ANDROID
         view->setGeometry(screen->availableGeometry());
 #else
-        view->resize(size);
+        db_view->resize(size);
 #endif
 
-        view->setResizeMode(QQuickView::SizeRootObjectToView);
-        view->show();
+        db_view->setResizeMode(QQuickView::SizeRootObjectToView);
+        db_view->show();
 
         comManager.downloadDB();
 
         // remove view used for downloading DB once engine is loaded
-        view->hide();
-        view->deleteLater();
+        db_view->hide();
+        db_view->deleteLater();
     }
 
     if (!db.open()) {
@@ -113,7 +118,8 @@ int main(int argc, char *argv[])
         {"comManager", QVariant::fromValue(&comManager)},
         {"fileManager", QVariant::fromValue(&fileManager)},
         {"imageManager", QVariant::fromValue(&imageManager)},
-        {"sqlTableModel", QVariant::fromValue(&sqlTableModel)}
+        {"sqlTableModel", QVariant::fromValue(&sqlTableModel)},
+        {"collectionView", QVariant::fromValue(collectionView)}
     });
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
@@ -136,11 +142,15 @@ int main(int argc, char *argv[])
     window->resize(size);
 #endif
 
-    auto saveSettings = [&settings, &sqlTableModel]() {
+    auto saveSettings = [&]() {
         settings.beginGroup("sqlTableModel");
         settings.setValue("orderBy", sqlTableModel.getOrderBy());
         settings.setValue("sortOrder", sqlTableModel.getSortOrder());
         settings.setValue("filter", sqlTableModel.getFilter());
+        settings.endGroup();
+
+        settings.beginGroup("mainView");
+        settings.setValue("view", rootObject->property("collectionView"));
         settings.endGroup();
     };
 
