@@ -2,7 +2,7 @@ import QtQuick 6.2
 import QtQuick.Controls 6.2
 
 Popup {
-    id: progressDialog
+    id: root
 
     function show() {
         visible = true
@@ -52,5 +52,21 @@ Popup {
         value: 0
         indeterminate : value <= 0
         width: parent.width - 20
+    }
+
+    Button {
+        text: qsTr("cancel")
+        anchors.horizontalCenter:
+            parent.horizontalCenter
+        anchors.bottom: parent.bottom
+
+        leftPadding: 12
+        rightPadding: 12
+
+        font.pointSize: 11
+
+        onClicked: {
+            root.close()
+        }
     }
 }

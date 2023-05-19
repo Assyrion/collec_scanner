@@ -158,11 +158,11 @@ int main(int argc, char *argv[])
     comManager.setProgressDialog(dialog);
 
     QThread thread;
+    QObject::connect(dialog, SIGNAL(aboutToHide()), &thread, SLOT(quit()));
     QObject::connect(&thread, &QThread::started, &comManager, &ComManager::downloadCovers);
     QObject::connect(&app, &QGuiApplication::aboutToQuit, [&](){
         saveSettings();
         thread.quit();
-        thread.wait();
     });
     comManager.moveToThread(&thread);
 
