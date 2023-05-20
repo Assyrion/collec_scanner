@@ -124,7 +124,7 @@ Pane {
         GameInfoListDelegate {
             id: tagInfo
             name: qsTr("Tag"); entry: currentTag; editable: false
-            Layout.preferredWidth: parent.width
+            Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
@@ -133,31 +133,31 @@ Pane {
             entry: (index < 0) ? ""
                                : (index+1) + "/" + count
             editable: false
-            Layout.preferredWidth: parent.width
+            Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: codeInfo
             name: qsTr("Code"); entry: code; editable: editMode
-            Layout.preferredWidth: parent.width
+            Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: titleInfo
             name: qsTr("Title"); entry: title; editable: editMode
-            Layout.preferredWidth: parent.width
+            Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: platformInfo
             name: qsTr("Platform"); entry: platform; editable: editMode
-            Layout.preferredWidth: parent.width
+            Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: infoInfo
             name: qsTr("info"); entry: info; editable: editMode
-            Layout.preferredWidth: parent.width
+            Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {

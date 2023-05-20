@@ -69,7 +69,7 @@ Popup {
                     }, 80)
             }
             Button {
-                text: qsTr("cancel")
+                text: qsTr("Cancel")
                 onClicked: {
                     refused()
                     popup.close()

@@ -17,65 +17,78 @@
 <context>
     <name>CSActionPopup</name>
     <message>
-        <location filename="../qml/utils/CSActionPopup.qml" line="54"/>
+        <location filename="../qml/utils/CSActionPopup.qml" line="57"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../qml/utils/CSActionPopup.qml" line="61"/>
+        <location filename="../qml/utils/CSActionPopup.qml" line="72"/>
+        <source>Cancel</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
         <source>cancel</source>
-        <translation>annuler</translation>
+        <translation type="vanished">annuler</translation>
     </message>
 </context>
 <context>
     <name>ConfigDrawer</name>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="20"/>
+        <location filename="../qml/ConfigDrawer.qml" line="18"/>
         <source>Filter</source>
         <translation>Filtre</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="35"/>
+        <location filename="../qml/ConfigDrawer.qml" line="33"/>
         <source>Search by name</source>
         <translation>Chercher par titre</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="43"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="vanished">OK</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="61"/>
+        <location filename="../qml/ConfigDrawer.qml" line="48"/>
+        <source>Apply</source>
+        <translation>Appliquer</translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="58"/>
+        <source>Remove</source>
+        <translation>Supprimer</translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="81"/>
         <source>Sort by</source>
         <translation>Trier par</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="97"/>
+        <location filename="../qml/ConfigDrawer.qml" line="127"/>
         <source> file DB </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="107"/>
+        <location filename="../qml/ConfigDrawer.qml" line="137"/>
         <source>upload DB</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="117"/>
+        <location filename="../qml/ConfigDrawer.qml" line="147"/>
         <source>upload Covers</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="127"/>
+        <location filename="../qml/ConfigDrawer.qml" line="156"/>
         <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
         <translation>Le contenu de la BDD sera enregistré dans &lt;Téléchargements&gt;/game_list.csv</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="138"/>
+        <location filename="../qml/ConfigDrawer.qml" line="167"/>
         <source>DB will be uploaded to server</source>
         <translation>La BDD sera copiée sur le serveur</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="149"/>
+        <location filename="../qml/ConfigDrawer.qml" line="178"/>
         <source>New covers will be uploaded to server</source>
         <translation>Les nouvelles jaquettes seront copiées sur le serveur</translation>
     </message>
@@ -120,46 +133,51 @@
         <source>Processing covers...</source>
         <translation>Gestion des jaquettes en cours...</translation>
     </message>
+    <message>
+        <location filename="../qml/CoverProcessingPopup.qml" line="58"/>
+        <source>cancel</source>
+        <translation>Annuler</translation>
+    </message>
 </context>
 <context>
     <name>GameSwipeDelegate</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="125"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="126"/>
         <source>Tag</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="131"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="132"/>
         <source>Index</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="140"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="141"/>
         <source>Code</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="146"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="147"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="152"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="153"/>
         <source>Platform</source>
         <translation>Plateforme</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="158"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="159"/>
         <source>info</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="164"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="165"/>
         <source>Publisher</source>
         <translation>Editeur</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="170"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="171"/>
         <source>Developer</source>
         <translation>Developpeur</translation>
     </message>

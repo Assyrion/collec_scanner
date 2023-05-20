@@ -9,51 +9,82 @@ Drawer {
     closePolicy: Popup.CloseOnPressOutside
     edge: Qt.LeftEdge
 
-    Text {
-        id: titleText
+    GroupBox {
+        id: filterGroupBox
+
+        title: qsTr("Filter")
         anchors.top: parent.top
         anchors.topMargin: 10
-        anchors.horizontalCenter:
-            parent.horizontalCenter
-        text: qsTr("Filter")
-        font.family: "Roboto"
-        font.underline: true
-        font.pixelSize: 20
-        font.bold: true
-        color: "white"
-    }
-    TextField {
-        id: filterName
-        anchors.top: titleText.bottom
-        anchors.topMargin: 10
         anchors.left: parent.left
-        anchors.leftMargin: 5
+        anchors.leftMargin: 10
         anchors.right: parent.right
-        anchors.rightMargin: 5
-        placeholderText: qsTr("Search by name")
-        Component.onCompleted: {
-            text = sqlTableModel.filter
-        }
-    }
-    Button {
-        id: applyFilterBtn
-        anchors.top: filterName.bottom
-        anchors.topMargin: 5
-        anchors.horizontalCenter:
-            filterName.horizontalCenter
-        text: qsTr("OK")
-        onClicked: {
-            sqlTableModel.filterByTitle(filterName.text)
-            close()
+        anchors.rightMargin: 10
+        font.family: "Roboto"
+
+        ColumnLayout {
+            id: filterColumn
+
+            anchors.fill: parent
+            spacing: 10
+
+            TextField {
+                id: filterName
+
+                Layout.preferredWidth: parent.width
+
+                placeholderText: qsTr("Search by name")
+                Component.onCompleted: {
+                    text = sqlTableModel.filter
+                }
+            }
+            RowLayout {
+                id: filterBtnRow
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter
+                spacing: 10
+
+                Button {
+                    text: qsTr("Apply")
+
+                    leftPadding: 12
+                    rightPadding: 12
+
+                    onClicked: {
+                        sqlTableModel.filterByTitle(filterName.text)
+                        close()
+                    }
+                    Layout.fillWidth: true
+                    Layout.maximumWidth: filterBtnRow.children.reduce(function(prev, curr) {
+                        return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+                    }, 80)
+                }
+                Button {
+                    text: qsTr("Remove")
+
+                    leftPadding: 12
+                    rightPadding: 12
+
+                    onClicked: {
+                        filterName.clear()
+                        sqlTableModel.filterByTitle("")
+                        close()
+                    }
+                    Layout.fillWidth: true
+                    Layout.maximumWidth: filterBtnRow.children.reduce(function(prev, curr) {
+                        return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+                    }, 80)
+                }
+            }
         }
     }
     RowLayout {
         id: sortingRow
 
-        anchors.top: applyFilterBtn.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: 5
+        anchors.top: filterGroupBox.bottom
+        anchors.topMargin: 10
+        anchors.horizontalCenter: filterGroupBox.horizontalCenter
+        width: filterGroupBox.width
 
         Text {
             id: sortingText
@@ -72,7 +103,7 @@ Drawer {
             model: sqlTableModel.roleNamesList
             onModelChanged: currentIndex = 1
             onActivated: sqlTableModel.setOrderBy(currentIndex,
-                                               ascDescBox.currentIndex)
+                                                  ascDescBox.currentIndex)
             Component.onCompleted: {
                 currentIndex = sqlTableModel.orderBy
             }
@@ -84,7 +115,7 @@ Drawer {
 
             model: ["ASC", "DESC"]
             onActivated: sqlTableModel.setOrderBy(sortingComboBox.currentIndex,
-                                               currentIndex)
+                                                  currentIndex)
             Component.onCompleted: {
                 currentIndex = sqlTableModel.sortOrder
             }
@@ -102,8 +133,8 @@ Drawer {
             id: saveDBBtn
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-                }, 80)
+                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+            }, 80)
 
             text: qsTr(" file DB ")
             onClicked: loader.loadConfirmSaveDB()
@@ -112,8 +143,8 @@ Drawer {
             id: exportDBBtn
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-                }, 80)
+                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+            }, 80)
 
             text: qsTr("upload DB")
             onClicked: loader.loadConfirmUploadDB()
@@ -122,8 +153,8 @@ Drawer {
             id: uploadCoversBtn
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-                }, 80)
+                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+            }, 80)
 
             text: qsTr("upload Covers")
             onClicked: loader.loadConfirmUploadCovers()

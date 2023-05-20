@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
         db_view->setSource(QUrl(QStringLiteral("qrc:/download_db_view.qml")));
 
 #ifdef Q_OS_ANDROID
-        view->setGeometry(screen->availableGeometry());
+        db_view->setGeometry(screen->availableGeometry());
 #else
         db_view->setGeometry(rect);
 #endif
