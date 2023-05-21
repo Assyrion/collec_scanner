@@ -69,12 +69,17 @@ Pane {
                    infoInfo.entry]
 
         currentGame = GameDataMaker.createComplete(arr)
-        sqlTableModel.update(index, currentGame)
+        if(index < 0) {
+            sqlTableModel.insert(currentGame)
+        }
+        else {
+            sqlTableModel.update(index, currentGame)
+        }
     }
 
     function removeGame() {
         imageManager.removePics(currentTag)
-        sqlTableModel.remove(index, currentTag)
+        sqlTableModel.remove(index)
     }
 
     function cancelGame() {

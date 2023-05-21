@@ -22,13 +22,15 @@ public:
     QHash<int, QByteArray> roleNames() const Q_DECL_OVERRIDE;
     QStringList roleNamesList() const;
 
-    Q_INVOKABLE void remove(int row, const QString &tag);
+    Q_INVOKABLE void insert(GameData* game);
+    Q_INVOKABLE void remove(int row);
     Q_INVOKABLE void update(int row, GameData* game);
     Q_INVOKABLE int getIndexFiltered(const QString &tag);
     Q_INVOKABLE int getIndexNotFiltered(const QString &tag);
     Q_INVOKABLE void filterByTitle(const QString& title);
     Q_INVOKABLE void setOrderBy(int column, int order);
     Q_INVOKABLE void saveDBToFile(FileManager* fileManager);
+    Q_INVOKABLE void clearDB();
 
     QString getFilter() const;
     int getSortOrder() const;

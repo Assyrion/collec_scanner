@@ -130,13 +130,23 @@ Drawer {
         spacing: 5
 
         Button {
+            id: clearDBBtn
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
+                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+            }, 80)
+
+            text: qsTr("clear DB")
+            onClicked: loader.loadConfirmClearDB()
+        }
+        Button {
             id: saveDBBtn
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
                 return curr.implicitWidth > prev ? curr.implicitWidth : prev;
             }, 80)
 
-            text: qsTr(" file DB ")
+            text: qsTr("file DB")
             onClicked: loader.loadConfirmSaveDB()
         }
         Button {
@@ -163,6 +173,18 @@ Drawer {
     }
     Loader {
         id: loader
+
+        function loadConfirmClearDB() {
+            loader.setSource("utils/CSActionPopup.qml",
+                             {   "contentText" : qsTr("DB will be entirely cleared"),
+                                 "width" : 2*mainWindow.width/3,
+                                 "height": mainWindow.height/4,
+                                 "x"     : mainWindow.width/6,
+                                 "y"     : mainWindow.height/4+50})
+
+            loader.item.accepted.connect( function() { sqlTableModel.clearDB() } )
+        }
+
         function loadConfirmSaveDB() {
             loader.setSource("utils/CSActionPopup.qml",
                              {   "contentText" : qsTr("DB content will be written in <DownloadPath>/game_list.csv"),

@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(DB_PATH_ABS_NAME);
 
-    //    QFile::remove(DB_PATH_ABS_NAME); // uncomment if needed for tests
+//    QFile::remove(DB_PATH_ABS_NAME); // uncomment if needed for tests
 
     ComManager comManager;
 

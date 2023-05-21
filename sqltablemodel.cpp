@@ -55,16 +55,33 @@ QVariant SqlTableModel::data(const QModelIndex &index, int role) const
     return value;
 }
 
-void SqlTableModel::remove(int row, const QString& tag)
+void SqlTableModel::remove(int row)
 {
-    if(row < 0 || row >= rowCount()) {
-        return;
-    }
+    beginRemoveRows(QModelIndex(), row, row);
     removeRow(row);
+    endRemoveRows();
+}
+
+void SqlTableModel::insert(GameData* game)
+{
+    if(!game)
+        return;
+
+    QSqlRecord rec = record();
+    rec.setValue("tag", game->tag);
+    rec.setValue("title", game->title);
+    rec.setValue("platform", game->platform);
+    rec.setValue("publisher", game->publisher);
+    rec.setValue("developer", game->developer);
+    rec.setValue("code", game->code);
+    rec.setValue("info", game->info);
+
+    insertRecord(-1, rec);
+    qDebug() << getIndexFiltered(game->tag);
 
     // not clean but no other solution found to make it quick
     auto savedFilter = filter();
-    setFilter("tag = \'" + tag + "\'");
+    setFilter("tag = \'" + game->tag + "\'");
     select();
     setFilter(savedFilter);
 }
@@ -74,30 +91,13 @@ void SqlTableModel::update(int row, GameData* game)
     if(!game || row >= rowCount())
         return;
 
-    if(row < 0) {
-        auto list = match(this->index(0, 0), Qt::UserRole + 1, game->tag);
-        if(list.count() > 1) {
-            return;
-        }
-        if(list.count() == 1) {
-            row = list[0].row();
-        }
-    }
-
-    QSqlRecord rec = record();
-    rec.setValue("tag",          game->tag);
-    rec.setValue("title",        game->title);
-    rec.setValue("platform",     game->platform);
-    rec.setValue("publisher",    game->publisher);
-    rec.setValue("developer",    game->developer);
-    rec.setValue("code",         game->code);
-    rec.setValue("info",         game->info);
-
-    if(row < 0) {
-        insertRecord(row, rec);
-    } else {
-        setRecord(row, rec);
-    }
+    setData(index(row, 0), game->tag);
+    setData(index(row, 1), game->title);
+    setData(index(row, 2), game->platform);
+    setData(index(row, 3), game->publisher);
+    setData(index(row, 4), game->developer);
+    setData(index(row, 5), game->code);
+    setData(index(row, 6), game->info);
 
     // not clean but no other solution found to make it quick
     auto savedFilter = filter();
@@ -108,16 +108,12 @@ void SqlTableModel::update(int row, GameData* game)
 
 int SqlTableModel::getIndexFiltered(const QString& tag)
 {
-    int col = fieldIndex("tag");
-    for(int row=0; row<rowCount(); ++row) {
-        QVariant d = data(index(row,col), 0);
-        if(d.toString() == tag) {
-            return row;
-        }
+    auto list = match(index(0, 0), Qt::UserRole + 1, tag);
+    if(!list.isEmpty()) {
+        return list.first().row();
     }
 
     return -1;
-
 }
 
 int SqlTableModel::getIndexNotFiltered(const QString &tag)
@@ -166,6 +162,13 @@ void SqlTableModel::saveDBToFile(FileManager* fileManager)
         auto game = GameDataMaker::get()->createComplete(list);
         fileManager->addEntry(game);
     }
+}
+
+void SqlTableModel::clearDB()
+{
+    QSqlQuery query;
+    query.exec(QString("DELETE FROM %1").arg(tableName()));
+    select();
 }
 
 QString SqlTableModel::getFilter() const
