@@ -8,6 +8,14 @@ Item {
 
     implicitHeight: mainImg.height + 10
 
+    Connections {
+        target: coverProcessingPopup
+        function onAboutToHide() {
+            mainImg.source =
+                    imageManager.getFrontPic(tag)
+        }
+    }
+
     Image {
         id: mainImg
         width: parent.width

@@ -1,6 +1,7 @@
 #include <QCoreApplication>
 #include <QDir>
 
+#include "global.h"
 #include "imagemanager.h"
 
 ImageManager::ImageManager(QObject *parent)

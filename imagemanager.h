@@ -5,8 +5,6 @@
 #include <QImage>
 #include <QUrl>
 
-#include "global.h"
-
 class ImageManager : public QObject
 {
     Q_OBJECT

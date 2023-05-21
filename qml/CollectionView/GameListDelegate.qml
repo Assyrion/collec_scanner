@@ -9,10 +9,21 @@ Item {
 
     signal clicked
 
+    Connections {
+        target: coverProcessingPopup
+        function onAboutToHide() {
+            frontPic.frontSource =
+                    imageManager.getFrontPic(tag)
+        }
+    }
+
     Item {
-        id: frontPicImg
+        id: frontPic
         anchors.fill: parent
+
+        property alias frontSource : frontPicImg.source
         Image {
+            id: frontPicImg
             width: parent.width + 5 // not sourceSize !
             anchors.top: parent.top
             anchors.topMargin:
@@ -29,8 +40,8 @@ Item {
         layer.enabled: true
         layer.effect: OpacityMask {
             maskSource: Rectangle {
-                width : frontPicImg.width
-                height: frontPicImg.height
+                width : frontPic.width
+                height: frontPic.height
                 radius: 10
             }
         }
