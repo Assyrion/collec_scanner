@@ -136,6 +136,9 @@ Drawer {
                 return curr.implicitWidth > prev ? curr.implicitWidth : prev;
             }, 80)
 
+            leftPadding: 12
+            rightPadding: 12
+
             text: qsTr("clear DB")
             onClicked: loader.loadConfirmClearDB()
         }
@@ -145,6 +148,9 @@ Drawer {
             Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
                 return curr.implicitWidth > prev ? curr.implicitWidth : prev;
             }, 80)
+
+            leftPadding: 12
+            rightPadding: 12
 
             text: qsTr("file DB")
             onClicked: loader.loadConfirmSaveDB()
@@ -156,6 +162,9 @@ Drawer {
                 return curr.implicitWidth > prev ? curr.implicitWidth : prev;
             }, 80)
 
+            leftPadding: 12
+            rightPadding: 12
+
             text: qsTr("upload DB")
             onClicked: loader.loadConfirmUploadDB()
         }
@@ -165,6 +174,9 @@ Drawer {
             Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
                 return curr.implicitWidth > prev ? curr.implicitWidth : prev;
             }, 80)
+
+            leftPadding: 12
+            rightPadding: 12
 
             text: qsTr("upload Covers")
             onClicked: loader.loadConfirmUploadCovers()
@@ -176,7 +188,7 @@ Drawer {
 
         function loadConfirmClearDB() {
             loader.setSource("utils/CSActionPopup.qml",
-                             {   "contentText" : qsTr("DB will be entirely cleared"),
+                             {   "contentText" : qsTr("DB will be entirely cleared.\nThis action is irreversible."),
                                  "width" : 2*mainWindow.width/3,
                                  "height": mainWindow.height/4,
                                  "x"     : mainWindow.width/6,
@@ -198,7 +210,7 @@ Drawer {
 
         function loadConfirmUploadDB() {
             loader.setSource("utils/CSActionPopup.qml",
-                             {   "contentText" : qsTr("DB will be uploaded to server"),
+                             {   "contentText" : qsTr("DB will be uploaded to server."),
                                  "width" : 2*mainWindow.width/3,
                                  "height": mainWindow.height/4,
                                  "x"     : mainWindow.width/6,
@@ -209,7 +221,7 @@ Drawer {
 
         function loadConfirmUploadCovers() {
             loader.setSource("utils/CSActionPopup.qml",
-                             {   "contentText" : qsTr("New covers will be uploaded to server"),
+                             {   "contentText" : qsTr("New covers will be uploaded to server."),
                                  "width" : 2*mainWindow.width/3,
                                  "height": mainWindow.height/4,
                                  "x"     : mainWindow.width/6,

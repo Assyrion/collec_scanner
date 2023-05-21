@@ -34,12 +34,12 @@
 <context>
     <name>ConfigDrawer</name>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="18"/>
+        <location filename="../qml/ConfigDrawer.qml" line="15"/>
         <source>Filter</source>
         <translation>Filtre</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="33"/>
+        <location filename="../qml/ConfigDrawer.qml" line="35"/>
         <source>Search by name</source>
         <translation>Chercher par titre</translation>
     </message>
@@ -53,44 +53,64 @@
         <translation>Appliquer</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="58"/>
+        <location filename="../qml/ConfigDrawer.qml" line="63"/>
         <source>Remove</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="81"/>
+        <location filename="../qml/ConfigDrawer.qml" line="93"/>
         <source>Sort by</source>
         <translation>Trier par</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="127"/>
-        <source> file DB </source>
-        <translation></translation>
+        <location filename="../qml/ConfigDrawer.qml" line="139"/>
+        <source>clear DB</source>
+        <translation>Effacer BDD</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="137"/>
+        <location filename="../qml/ConfigDrawer.qml" line="149"/>
+        <source>file DB</source>
+        <translation>Exporter BDD</translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="201"/>
+        <source>DB will be uploaded to server.</source>
+        <translation>La BDD sera copiée sur le serveur.</translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="212"/>
+        <source>New covers will be uploaded to server.</source>
+        <translation>Les nouvelles jaquettes seront copiées sur le serveur.</translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="159"/>
         <source>upload DB</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="147"/>
+        <location filename="../qml/ConfigDrawer.qml" line="169"/>
         <source>upload Covers</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="156"/>
+        <location filename="../qml/ConfigDrawer.qml" line="179"/>
+        <source>DB will be entirely cleared.
+This action is irreversible.</source>
+        <translation>Le contenu de la BDD sera entièrement effacé.
+Cette action est irreversible.</translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="190"/>
         <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
         <translation>Le contenu de la BDD sera enregistré dans &lt;Téléchargements&gt;/game_list.csv</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="167"/>
         <source>DB will be uploaded to server</source>
-        <translation>La BDD sera copiée sur le serveur</translation>
+        <translation type="vanished">La BDD sera copiée sur le serveur</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="178"/>
         <source>New covers will be uploaded to server</source>
-        <translation>Les nouvelles jaquettes seront copiées sur le serveur</translation>
+        <translation type="vanished">Les nouvelles jaquettes seront copiées sur le serveur</translation>
     </message>
 </context>
 <context>
@@ -142,42 +162,42 @@
 <context>
     <name>GameSwipeDelegate</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="126"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="131"/>
         <source>Tag</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="132"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="137"/>
         <source>Index</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="141"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="146"/>
         <source>Code</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="147"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="152"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="153"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="158"/>
         <source>Platform</source>
         <translation>Plateforme</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="159"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="164"/>
         <source>info</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="165"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="170"/>
         <source>Publisher</source>
         <translation>Editeur</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="171"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="176"/>
         <source>Developer</source>
         <translation>Developpeur</translation>
     </message>
@@ -243,7 +263,7 @@
     <message>
         <location filename="../download_db_view.qml" line="15"/>
         <source>Downloading DB</source>
-        <translation type="unfinished"></translation>
+        <translation>Téléchargement de la BDD</translation>
     </message>
 </context>
 </TS>
