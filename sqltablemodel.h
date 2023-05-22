@@ -18,7 +18,8 @@ public:
     SqlTableModel(int orderBy, int sortOrder, const QString &filter, QObject* parent = nullptr);
     ~SqlTableModel() Q_DECL_OVERRIDE;
 
-    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
     QHash<int, QByteArray> roleNames() const Q_DECL_OVERRIDE;
     QStringList roleNamesList() const;
 

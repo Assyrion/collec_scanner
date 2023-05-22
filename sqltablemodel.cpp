@@ -41,18 +41,28 @@ QStringList SqlTableModel::roleNamesList() const
 
 QVariant SqlTableModel::data(const QModelIndex &index, int role) const
 {
-    QVariant value;
-
     if (index.isValid()) {
-        if (role < Qt::UserRole) {
-            value = QSqlTableModel::data(index, role);
-        } else {
+        if (role >= Qt::UserRole) {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);
-            value = QSqlTableModel::data(modelIndex, Qt::DisplayRole);
+            return QSqlTableModel::data(modelIndex, Qt::DisplayRole);
         }
     }
-    return value;
+
+    return QSqlTableModel::data(index, role);
+}
+
+bool SqlTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (index.isValid()) {
+        if (role >= Qt::UserRole) {
+            int columnIdx = role - Qt::UserRole - 1;
+            QModelIndex modelIndex = this->index(index.row(), columnIdx);
+            return QSqlTableModel::setData(modelIndex, value, Qt::EditRole);
+        }
+    }
+
+    return QSqlTableModel::setData(index, value, role);
 }
 
 void SqlTableModel::remove(int row)
@@ -78,7 +88,6 @@ void SqlTableModel::insert(GameData* game)
     rec.setValue("owned", game->owned ? 1 : 0);
 
     insertRecord(-1, rec);
-    qDebug() << getIndexFiltered(game->tag);
 
     // not clean but no other solution found to make it quick
     auto savedFilter = filter();
@@ -100,12 +109,6 @@ void SqlTableModel::update(int row, GameData* game)
     setData(index(row, 5), game->code);
     setData(index(row, 6), game->info);
     setData(index(row, 7), game->owned);
-
-    // not clean but no other solution found to make it quick
-    auto savedFilter = filter();
-    setFilter("tag = \'" + game->tag + "\'");
-    select();
-    setFilter(savedFilter);
 }
 
 int SqlTableModel::getIndexFiltered(const QString& tag)

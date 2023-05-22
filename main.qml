@@ -78,7 +78,10 @@ Window {
         BarcodeScannerView {
             id: bsv
 
-            onShowGameRequired: (idx) => showGame(idx)
+            onShowGameRequired: (idx) => {
+                                    showGame(idx)
+                                    checkOwnedGame(idx)
+                                }
             onShowNewGameRequired: (tag) => showNewGame(tag)
         }
     }
@@ -95,6 +98,27 @@ Window {
 
     function showConfig() {
         drawer.open()
+    }
+
+    function checkOwnedGame(idx) {
+        var modelIdx = sqlTableModel.index(idx, 7) // 7 is owned !
+        if(sqlTableModel.data(modelIdx) === 0) {
+            var cpt = Qt.createComponent("qml/utils/CSActionPopup.qml")
+            if (cpt.status === Component.Ready) {
+                var obj = cpt.createObject(gsv, {"contentText" : qsTr("You don't own this game, would you want to add it to your collection ?"),
+                                     "width" : 2*gsv.width/3,
+                                     "height": gsv.height/4,
+                                     "x"     : gsv.width/6,
+                                     "y"     : gsv.height/4+20})
+                obj.accepted.connect(function() {
+                    sqlTableModel.setData(modelIdx, 1)
+                    gsv.currentIndex = idx
+                })
+                obj.refused.connect(function() {
+                    view.setCurrentIndex(2)
+                })
+            }
+        }
     }
 
     Component {

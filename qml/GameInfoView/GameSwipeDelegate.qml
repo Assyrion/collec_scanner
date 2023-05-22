@@ -97,6 +97,11 @@ Pane {
         gameCoverRow.backCoverData  = null
     }
 
+    function setGameAsOwned()
+    {
+        ownedCheckBox.checked = true
+    }
+
 
     GameInfoCoverRow {
         id: gameCoverRow
@@ -124,38 +129,8 @@ Pane {
         anchors.top: gameCoverRow.bottom
         anchors.topMargin: 20
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 90
-        enabled: root.editMode
+        anchors.bottomMargin: 75
 
-        Item {
-            id: ownedInfo
-            Layout.fillWidth: true
-            Layout.preferredHeight: 20
-
-            property alias entry: ownedCheckBox.checked
-            function reset() {}
-
-            Label {
-                id: labelName
-                width: parent.width/3
-                height: parent.height
-                verticalAlignment:
-                    Label.AlignVCenter
-                font.family: "Roboto"
-                font.pointSize: 14
-                font.bold: true
-                color: "white"
-                text: qsTr("In my collection")
-            }
-            CheckBox {
-                id: ownedCheckBox
-                anchors.right: parent.right
-                anchors.left: labelName.right
-                anchors.verticalCenter:
-                    labelName.verticalCenter
-                checked: owned
-            }
-        }
         GameInfoListDelegate {
             id: tagInfo
             name: qsTr("Tag"); entry: currentTag; editable: false
@@ -206,6 +181,36 @@ Pane {
             name: qsTr("Developer"); entry: developer; editable: editMode
             Layout.fillWidth: true
             Layout.preferredHeight: 40
+        }        
+        Item {
+            id: ownedInfo
+            Layout.fillWidth: true
+            Layout.preferredHeight: 30
+
+            property alias entry: ownedCheckBox.checked
+            function reset() {}
+
+            Label {
+                id: labelName
+                width: parent.width/3
+                height: parent.height
+                verticalAlignment:
+                    Label.AlignVCenter
+                font.family: "Roboto"
+                font.pointSize: 14
+                font.bold: true
+                color: "white"
+                text: qsTr("In my collection")
+            }
+            CheckBox {
+                id: ownedCheckBox
+                anchors.right: parent.right
+                anchors.left: labelName.right
+                anchors.verticalCenter:
+                    labelName.verticalCenter
+                checked: owned
+                onClicked: owned = checked ? 1 : 0
+            }
         }
     }
 }
