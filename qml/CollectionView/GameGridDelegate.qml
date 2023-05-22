@@ -1,5 +1,6 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
+import Qt5Compat.GraphicalEffects
 
 Item {
     id: root
@@ -24,6 +25,15 @@ Item {
         cache: false
         mipmap: true
         smooth: true
+
+        Colorize {
+            visible: owned
+            anchors.fill: parent
+            source: parent
+            saturation: 0
+            lightness: 0.6
+            hue: 0
+        }
 
         MouseArea {
             id: mouseArea
