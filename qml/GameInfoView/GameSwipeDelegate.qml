@@ -13,8 +13,9 @@ Pane {
     topPadding: 0
     bottomPadding: 0
 
-    property int index: -1
     property int count: 0
+    property int index: -1
+    property bool isOwned : (index < 0) || owned
     property bool editMode: false
     property string currentTag: ""
     property GameData currentGame:
@@ -118,7 +119,7 @@ Pane {
         onEditCoverRequired:(img) => showSnapshotPopup(img)
 
         editMode: root.editMode
-        enabled: owned
+        enabled: root.isOwned
     }
 
     ColumnLayout {

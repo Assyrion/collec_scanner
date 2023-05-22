@@ -8,6 +8,8 @@ Item {
     property bool editMode: false
     property alias currentIndex:
         swipeView.currentIndex
+    property var currentItem:
+        swipeView.currentItem.item
 
     signal closed
 
@@ -26,6 +28,23 @@ Item {
         }
     }
 
+    function saveGame() {
+        root.editMode = false
+        var savedTag = root.currentItem.currentTag // index may have changed after edition
+        root.currentItem.saveGame()
+        var idx = sqlTableModel.getIndexFiltered(savedTag) // get the new index
+        currentIndex = idx
+    }
+
+    function removeGame() {
+        root.currentItem.removeGame()
+    }
+
+    function cancelGame() {
+        root.editMode = false
+        root.currentItem.cancelGame()
+    }
+
     SwipeView {
         id: swipeView
 
@@ -37,21 +56,6 @@ Item {
 
         Component.onCompleted: {
             contentItem.highlightMoveDuration = 0
-        }
-
-        function saveGame() {
-            var savedTag = currentItem.item.currentTag // index may have changed after edition
-            currentItem.item.saveGame()
-            var idx = sqlTableModel.getIndexFiltered(savedTag) // get the new index
-            currentIndex = idx
-        }
-
-        function removeGame() {
-            currentItem.item.removeGame()
-        }
-
-        function cancelGame() {
-            currentItem.item.cancelGame()
         }
 
         Repeater {
@@ -66,6 +70,11 @@ Item {
                     editMode: root.editMode
                     height: root.height
                     width: root.width
+                    onIsOwnedChanged: {
+                        if(!isOwned) {
+                            root.cancelGame()
+                        }
+                    }
                 }
             }
         }
@@ -84,8 +93,7 @@ Item {
                            : qsTr("close")
             onClicked: {
                 if(editMode) {
-                    editMode = false
-                    swipeView.cancelGame()
+                    root.cancelGame()
                 } else {
                     closed()
                 }
@@ -104,8 +112,7 @@ Item {
                            : qsTr("edit")
             onClicked: {
                 if(editMode) {
-                    editMode = false
-                    swipeView.saveGame()
+                    root.saveGame()
                 } else {
                     editMode = true
                 }
@@ -118,6 +125,7 @@ Item {
             Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
                     return curr.implicitWidth > prev ? curr.implicitWidth : prev;
                 }, 80)
+            visible: root.currentItem.isOwned
         }
         Button {
             text: qsTr("delete")
@@ -133,6 +141,7 @@ Item {
             Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
                     return curr.implicitWidth > prev ? curr.implicitWidth : prev;
                 }, 80)
+            visible: root.currentItem.isOwned
         }
     }
 }
