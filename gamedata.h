@@ -16,7 +16,7 @@ class GameDataMaker : public QObject
 public:
     Q_INVOKABLE GameData* createEmpty();
     Q_INVOKABLE GameData* createNew(const QString& tag);
-    Q_INVOKABLE GameData* createComplete(const QStringList &il);
+    Q_INVOKABLE GameData* createComplete(const QVariantList &il);
     static GameDataMaker* get();
 
     static void registerQMLTypes() {
@@ -43,14 +43,15 @@ class GameData : public QObject
     Q_PROPERTY(QString developer    MEMBER developer)
     Q_PROPERTY(QString code         MEMBER code)
     Q_PROPERTY(QString info         MEMBER info)
+    Q_PROPERTY(bool    owned        MEMBER owned)
 
     friend class GameDataMaker;
     GameData();
     GameData(QString tag);
-    GameData(const QStringList& il);
+    GameData(const QVariantList &il);
     GameData(QString tag, QString title, QString platform = "ps3",
              QString publisher = "", QString developer = "",
-             QString code = "", QString info = "");
+             QString code = "", QString info = "", bool owned = false);
     ~GameData();
 
 public:
@@ -61,12 +62,13 @@ public:
     QString publisher;
     QString developer;
     QString code;
+    bool    owned;
 
     friend QTextStream& operator<<(QTextStream& out, const GameData& game)
     {
         out << game.tag << ';' << game.title << ';' <<game.platform << ';'
             << game.publisher << ';' << game.developer << ';'
-            << game.code << ';' <<game.info;
+            << game.code << ';' << game.info << ';' << game.owned;
         return out;
     }
 };

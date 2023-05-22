@@ -66,7 +66,8 @@ Pane {
                    publisherInfo.entry,
                    developerInfo.entry,
                    codeInfo.entry,
-                   infoInfo.entry]
+                   infoInfo.entry,
+                   ownedInfo.entry]
 
         currentGame = GameDataMaker.createComplete(arr)
         if(index < 0) {
@@ -121,16 +122,45 @@ Pane {
         anchors.horizontalCenter:
             parent.horizontalCenter
         anchors.top: gameCoverRow.bottom
-        anchors.topMargin: 12
+        anchors.topMargin: 20
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 75
+        anchors.bottomMargin: 90
         enabled: root.editMode
 
+        Item {
+            id: ownedInfo
+            Layout.fillWidth: true
+            Layout.preferredHeight: 20
+
+            property alias entry: ownedCheckBox.checked
+            function reset() {}
+
+            Label {
+                id: labelName
+                width: parent.width/3
+                height: parent.height
+                verticalAlignment:
+                    Label.AlignVCenter
+                font.family: "Roboto"
+                font.pointSize: 14
+                font.bold: true
+                color: "white"
+                text: qsTr("In my collection")
+            }
+            CheckBox {
+                id: ownedCheckBox
+                anchors.right: parent.right
+                anchors.left: labelName.right
+                anchors.verticalCenter:
+                    labelName.verticalCenter
+                checked: owned
+            }
+        }
         GameInfoListDelegate {
             id: tagInfo
             name: qsTr("Tag"); entry: currentTag; editable: false
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: indexInfo
@@ -139,13 +169,13 @@ Pane {
                                : (index+1) + "/" + count
             editable: false
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: codeInfo
             name: qsTr("Code"); entry: code; editable: editMode
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: titleInfo
@@ -157,7 +187,7 @@ Pane {
             id: platformInfo
             name: qsTr("Platform"); entry: platform; editable: editMode
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: infoInfo
@@ -168,14 +198,14 @@ Pane {
         GameInfoListDelegate {
             id: publisherInfo
             name: qsTr("Publisher"); entry: publisher; editable: editMode
-            Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 50
+            Layout.fillWidth: true
+            Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: developerInfo
             name: qsTr("Developer"); entry: developer; editable: editMode
-            Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 50
+            Layout.fillWidth: true
+            Layout.preferredHeight: 40
         }
     }
 }

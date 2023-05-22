@@ -75,6 +75,7 @@ void SqlTableModel::insert(GameData* game)
     rec.setValue("developer", game->developer);
     rec.setValue("code", game->code);
     rec.setValue("info", game->info);
+    rec.setValue("owned", game->owned ? 1 : 0);
 
     insertRecord(-1, rec);
     qDebug() << getIndexFiltered(game->tag);
@@ -98,6 +99,7 @@ void SqlTableModel::update(int row, GameData* game)
     setData(index(row, 4), game->developer);
     setData(index(row, 5), game->code);
     setData(index(row, 6), game->info);
+    setData(index(row, 7), game->owned);
 
     // not clean but no other solution found to make it quick
     auto savedFilter = filter();
@@ -155,9 +157,9 @@ void SqlTableModel::saveDBToFile(FileManager* fileManager)
         return;
     }
     for(int r = 0; r < rowCount(); r++) {
-        QStringList list;
+        QVariantList list;
         for(int c = 0; c < columnCount(); c++) {
-            list.append(data(index(r, c), 0).toString());
+            list.append(data(index(r, c), 0));
         }
         auto game = GameDataMaker::get()->createComplete(list);
         fileManager->addEntry(game);
