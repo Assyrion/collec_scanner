@@ -140,7 +140,7 @@ Pane {
         GameInfoListDelegate {
             id: tagInfo
             name: qsTr("Tag"); entry: currentTag; editable: false
-            opacity: owned ? 1 : 0.4
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
         }
@@ -150,49 +150,49 @@ Pane {
             entry: (index < 0) ? ""
                                : (index+1) + "/" + count
             editable: false
-            opacity: owned ? 1 : 0.4
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: codeInfo
             name: qsTr("Code"); entry: code; editable: editMode
-            opacity: owned ? 1 : 0.4
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: titleInfo
             name: qsTr("Title"); entry: title; editable: editMode
-            opacity: owned ? 1 : 0.4
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: platformInfo
             name: qsTr("Platform"); entry: platform; editable: editMode
-            opacity: owned ? 1 : 0.4
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: infoInfo
             name: qsTr("info"); entry: info; editable: editMode
-            opacity: owned ? 1 : 0.4
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: publisherInfo
             name: qsTr("Publisher"); entry: publisher; editable: editMode
-            opacity: owned ? 1 : 0.4
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: developerInfo
             name: qsTr("Developer"); entry: developer; editable: editMode
-            opacity: owned ? 1 : 0.4
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
         }        
@@ -201,10 +201,10 @@ Pane {
             Layout.fillWidth: true
             Layout.preferredHeight: 30
 
-            visible: index >= 0
-
             property alias entry: ownedCheckBox.checked
             function reset() {}
+
+            enabled: (index >= 0)
 
             Label {
                 id: labelName
@@ -224,7 +224,7 @@ Pane {
                 anchors.left: labelName.right
                 anchors.verticalCenter:
                     labelName.verticalCenter
-                checked: owned
+                checked: root.isOwned
                 onClicked: owned = checked ? 1 : 0
             }
         }

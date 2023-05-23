@@ -15,6 +15,7 @@ Item {
         anchors.fill: parent
         currentTag: tag
         editMode: true
+        isOwned: true
         index: -1
     }
 
@@ -46,6 +47,7 @@ Item {
             Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
                     return curr.implicitWidth > prev ? curr.implicitWidth : prev;
                 }, 80)
+            Behavior on Layout.preferredWidth { NumberAnimation { duration: 150 } }
         }
         Button {
             text: newGameContent.editMode
@@ -67,6 +69,7 @@ Item {
             Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
                     return curr.implicitWidth > prev ? curr.implicitWidth : prev;
                 }, 80)
+            Behavior on Layout.preferredWidth { NumberAnimation { duration: 150 } }
         }
     }
 }
