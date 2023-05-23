@@ -9,7 +9,7 @@ Item {
     property alias currentIndex:
         swipeView.currentIndex
     property var currentItem:
-        swipeView.currentItem.item
+        swipeView.contentItem.currentItem.item
 
     signal closed
 
@@ -22,7 +22,7 @@ Item {
                                  "x"     : root.width/6,
                                  "y"     : root.height/4+20})
             obj.accepted.connect(function() {
-                swipeView.removeGame()
+                root.removeGame()
                 closed()
             })
         }
@@ -33,7 +33,7 @@ Item {
         var savedTag = root.currentItem.currentTag // index may have changed after edition
         root.currentItem.saveGame()
         var idx = sqlTableModel.getIndexFiltered(savedTag) // get the new index
-        currentIndex = idx
+        root.currentIndex = idx
     }
 
     function removeGame() {
@@ -59,6 +59,8 @@ Item {
         }
 
         Repeater {
+            id: swipeViewInternal
+
             model: sqlTableModel
             Loader {
                 active: SwipeView.isCurrentItem
@@ -82,6 +84,7 @@ Item {
 
     RowLayout {
         id: btnRow
+
         height: 50
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
@@ -108,13 +111,13 @@ Item {
                 }, 80)
         }
         Button {
-            text: editMode ? qsTr("save")
+            text: root.editMode ? qsTr("save")
                            : qsTr("edit")
             onClicked: {
-                if(editMode) {
+                if(root.editMode) {
                     root.saveGame()
                 } else {
-                    editMode = true
+                    root.editMode = true
                 }
             }
             leftPadding: 12
@@ -122,26 +125,30 @@ Item {
 
             font.pointSize: 11
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
-                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-                }, 80)
-            visible: root.currentItem.isOwned
+            Layout.preferredWidth: root.currentItem.isOwned ? btnRow.children.reduce(function(prev, curr) {
+                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+            }, 80) : 0
+            Behavior on Layout.preferredWidth { NumberAnimation { duration: 150 } }
+
+            visible: Layout.preferredWidth > 0
         }
         Button {
             text: qsTr("delete")
             onClicked: {
-                editMode = false
-                showConfirmDelete()
+                root.editMode = false
+                root.showConfirmDelete()
             }
             leftPadding: 12
             rightPadding: 12
 
             font.pointSize: 11
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
+            Layout.preferredWidth: root.currentItem.isOwned ? btnRow.children.reduce(function(prev, curr) {
                     return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-                }, 80)
-            visible: root.currentItem.isOwned
+            }, 80) : 0
+            Behavior on Layout.preferredWidth { NumberAnimation { duration: 150 } }
+
+            visible: Layout.preferredWidth > 0
         }
     }
 }

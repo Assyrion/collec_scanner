@@ -15,13 +15,17 @@ Pane {
 
     property int count: 0
     property int index: -1
-    property bool isOwned : (index < 0) || owned
+    property bool isOwned : false
     property bool editMode: false
     property string currentTag: ""
     property GameData currentGame:
         GameDataMaker.createEmpty()
 
     Component.onCompleted:  {
+        root.isOwned = Qt.binding(function() {
+            return ((index < 0) || owned)
+        })
+
         readGame()
     }
 
