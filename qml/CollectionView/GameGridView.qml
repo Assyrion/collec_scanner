@@ -3,48 +3,29 @@ import QtQuick.Controls 6.2
 
 import "../utils"
 
-PinchArea {
+GridView {
     id: root
-
-    onPinchUpdated: {
-        var diff = pinch.scale
-                - pinch.previousScale
-        if(diff < 0) {
-            gridView.scaleSize
-                    = Math.max(gridView.scaleSize-0.03, 0.4)
-        } else if(diff > 0){
-            gridView.scaleSize
-                    = Math.min(gridView.scaleSize+0.03, 1.0)
-        }
-    }
 
     signal showGameRequired(int idx)
     signal movingChanged(bool moving)
 
-    GridView {
-        id: gridView
-        property real scaleSize: 1.0
-
-        cellWidth: width/4 * gridView.scaleSize
-        cellHeight: currentItem.height * gridView.scaleSize
-
-        model: sqlTableModel
-        width : parent.width-5
-        height: parent.height-10
-        anchors.left: parent.left
-        anchors.leftMargin: 5
-        anchors.top: parent.top
-        anchors.topMargin: 5
-        highlightRangeMode:
-            GridView.StrictlyEnforceRange
-        ScrollBar.vertical: ScrollBar {
-            policy: ScrollBar.AlwaysOn
-            width: 10
-        }
-        delegate: GameGridDelegate {
-            width: gridView.cellWidth - 10
-            onClicked: root.showGameRequired(index)
-        }
-        onMovingChanged: root.movingChanged(moving)
+    Component.onCompleted: {
+        highlightMoveDuration = 0
     }
+
+    cellWidth: Math.min((width-5)/4, 170)
+    cellHeight: currentItem.height
+
+    model: sqlTableModel
+
+    ScrollBar.vertical: ScrollBar {
+        policy: ScrollBar.AlwaysOn
+        width: 10
+    }
+    delegate: GameGridDelegate {
+        width: root.cellWidth - 5
+        onClicked: root.showGameRequired(index)
+    }
+    onMovingChanged: root.movingChanged(moving)
 }
+

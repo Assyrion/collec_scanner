@@ -67,7 +67,10 @@ Window {
         GameSwipeView {
             id: gsv
 
-            onClosed: view.setCurrentIndex(view.defaultIndex)
+            onClosed: {
+                cv.setCurrentIndex(gsv.currentIndex)
+                view.setCurrentIndex(view.defaultIndex)
+            }
             onEditModeChanged: view.interactive = !editMode
         }
         CollectionView {

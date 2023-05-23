@@ -7,7 +7,7 @@ Item {
 
     signal clicked
 
-    implicitHeight: mainImg.height + 10
+    implicitHeight: mainImg.height + 5
 
     Connections {
         target: coverProcessingPopup
@@ -26,19 +26,19 @@ Item {
         mipmap: true
         smooth: true
 
-        Colorize {
-            visible: owned
-            anchors.fill: parent
-            source: parent
-            saturation: 0
-            lightness: 0.6
-            hue: 0
-        }
-
         MouseArea {
             id: mouseArea
             anchors.fill: parent
             onClicked: root.clicked()
         }
+    }
+
+    Colorize {
+        visible: !owned
+        anchors.fill: mainImg
+        source: mainImg
+        saturation: 0
+        lightness: 0.6
+        hue: 0
     }
 }

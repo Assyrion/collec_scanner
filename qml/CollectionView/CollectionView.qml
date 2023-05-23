@@ -19,6 +19,10 @@ Pane {
         collectionView = 1
     }
 
+    function setCurrentIndex(idx) {
+        gameStackView.currentItem.currentIndex = idx
+    }
+
     signal showGameRequired(int idx)
     signal showNewGameRequired
     signal showConfigRequired
@@ -26,7 +30,13 @@ Pane {
     StackView {
         id: gameStackView
 
-        anchors.fill: parent
+        width : parent.width-5
+        height: parent.height-10
+        anchors.left: parent.left
+        anchors.leftMargin: 5
+        anchors.top: parent.top
+        anchors.topMargin: 5
+
         initialItem: {
             switch(collectionView) {
             case 1 : return gameGridViewCpt

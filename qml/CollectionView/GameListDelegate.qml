@@ -33,7 +33,7 @@ Item {
             anchors.horizontalCenter:
                 parent.horizontalCenter
             source: imageManager.getFrontPic(tag)
-            fillMode: Image.Stretch
+            fillMode: Image.PreserveAspectCrop
             antialiasing: true
             cache: false
             mipmap: true
@@ -41,6 +41,7 @@ Item {
         }
     }
     OpacityMask {
+        id: opacityMask
         anchors.fill: frontPic
         source: frontPic
         maskSource: Rectangle {
@@ -48,15 +49,17 @@ Item {
             height: frontPic.height
             radius: 10
         }
-        Colorize {
-            visible: !owned
-            anchors.fill: parent
-            source: parent
-            saturation: 0
-            lightness: 0.6
-            hue: 0
-        }
     }
+
+    Colorize {
+        visible: !owned
+        anchors.fill: opacityMask
+        source: opacityMask
+        saturation: 0
+        lightness: 0.6
+        hue: 0
+    }
+
     CSGlowText {
         id: titleText
         anchors.left: parent.left
