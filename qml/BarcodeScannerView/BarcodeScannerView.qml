@@ -53,7 +53,7 @@ Item {
             
             loader.item.refused.connect(  function() { barcodeScanner.startScanning() })
             loader.item.accepted.connect( function() {
-                sqlTableModel.filterByTitle("") // remove filter
+                sqlTableModel.removeFilter()
                 showGameRequired(idx)
             })
         }

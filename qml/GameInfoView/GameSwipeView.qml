@@ -32,8 +32,12 @@ Item {
         root.editMode = false
         var savedTag = root.currentItem.currentTag // index may have changed after edition
         root.currentItem.saveGame()
+
         var idx = sqlTableModel.getIndexFiltered(savedTag) // get the new index
-        root.currentIndex = idx
+        if(idx >= 0)
+            root.currentIndex = idx
+        else
+            closed()
     }
 
     function removeGame() {
@@ -59,8 +63,6 @@ Item {
         }
 
         Repeater {
-            id: swipeViewInternal
-
             model: sqlTableModel
             Loader {
                 active: SwipeView.isCurrentItem

@@ -153,6 +153,14 @@ void SqlTableModel::filterByOwned(bool owned, bool notOwned)
     applyFilter();
 }
 
+void SqlTableModel::removeFilter()
+{
+    m_titleFilter = "";
+    m_ownedFilter = 2;
+
+    applyFilter();
+}
+
 void SqlTableModel::setOrderBy(int column, int order)
 {
     m_orderBy = column;

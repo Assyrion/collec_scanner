@@ -31,6 +31,7 @@ public:
     Q_INVOKABLE int getIndexNotFiltered(const QString &tag);
     Q_INVOKABLE void filterByTitle(const QString& title);
     Q_INVOKABLE void filterByOwned(bool owned, bool notOwned);
+    Q_INVOKABLE void removeFilter();
     Q_INVOKABLE void setOrderBy(int column, int order);
     Q_INVOKABLE void saveDBToFile(FileManager* fileManager);
     Q_INVOKABLE void clearDB();

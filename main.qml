@@ -111,8 +111,7 @@ Window {
                                      "x"     : mainWindow.width/6,
                                      "y"     : mainWindow.height/4+20})
                 obj.accepted.connect(function() {
-                    sqlTableModel.setData(modelIdx, 1)
-                    gsv.currentIndex = idx
+                    sqlTableModel.setData(modelIdx, 1) // force owned to 1
                 })
                 obj.refused.connect(function() {
                     view.setCurrentIndex(2)
