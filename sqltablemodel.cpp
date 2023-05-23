@@ -8,18 +8,19 @@
 
 #include <QDebug>
 
-SqlTableModel::SqlTableModel(int orderBy, int sortOrder, const QString& filter, QObject* parent)
-    : QSqlTableModel(parent)
+SqlTableModel::SqlTableModel(int orderBy, int sortOrder, const QString& titleFilter, int ownedFilter, QObject* parent)
+    : QSqlTableModel(parent), m_titleFilter(titleFilter), m_ownedFilter(ownedFilter)
 {
     setTable("games");
     setEditStrategy(OnFieldChange);
     this->setOrderBy(orderBy, sortOrder);
-    filterByTitle(filter);
 
     auto rec = record();
     for(int i = 0; i < rec.count(); i++) {
         m_roles.insert(Qt::UserRole + i + 1, rec.fieldName(i).toUtf8());
     }
+
+    applyFilter();
 }
 
 SqlTableModel::~SqlTableModel()
@@ -41,18 +42,28 @@ QStringList SqlTableModel::roleNamesList() const
 
 QVariant SqlTableModel::data(const QModelIndex &index, int role) const
 {
-    QVariant value;
-
     if (index.isValid()) {
-        if (role < Qt::UserRole) {
-            value = QSqlTableModel::data(index, role);
-        } else {
+        if (role >= Qt::UserRole) {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);
-            value = QSqlTableModel::data(modelIndex, Qt::DisplayRole);
+            return QSqlTableModel::data(modelIndex, Qt::DisplayRole);
         }
     }
-    return value;
+
+    return QSqlTableModel::data(index, role);
+}
+
+bool SqlTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (index.isValid()) {
+        if (role >= Qt::UserRole) {
+            int columnIdx = role - Qt::UserRole - 1;
+            QModelIndex modelIndex = this->index(index.row(), columnIdx);
+            return QSqlTableModel::setData(modelIndex, value, Qt::EditRole);
+        }
+    }
+
+    return QSqlTableModel::setData(index, value, role);
 }
 
 void SqlTableModel::remove(int row)
@@ -75,9 +86,9 @@ void SqlTableModel::insert(GameData* game)
     rec.setValue("developer", game->developer);
     rec.setValue("code", game->code);
     rec.setValue("info", game->info);
+    rec.setValue("owned", game->owned ? 1 : 0);
 
     insertRecord(-1, rec);
-    qDebug() << getIndexFiltered(game->tag);
 
     // not clean but no other solution found to make it quick
     auto savedFilter = filter();
@@ -98,6 +109,7 @@ void SqlTableModel::update(int row, GameData* game)
     setData(index(row, 4), game->developer);
     setData(index(row, 5), game->code);
     setData(index(row, 6), game->info);
+    setData(index(row, 7), game->owned);
 
     // not clean but no other solution found to make it quick
     auto savedFilter = filter();
@@ -128,14 +140,25 @@ int SqlTableModel::getIndexNotFiltered(const QString &tag)
 
 void SqlTableModel::filterByTitle(const QString &title)
 {
-    m_filter = title;
+    m_titleFilter = title;
 
-    if(title.isEmpty()) {
-        setFilter("");
-        return;
-    }
+    applyFilter();
+}
 
-    setFilter("title LIKE \'%" + title + "%\'");
+void SqlTableModel::filterByOwned(bool owned, bool notOwned)
+{
+    m_ownedFilter = ((owned ? 0b10 : 0)
+                | (notOwned ? 0b01 : 0)) - 1;
+
+    applyFilter();
+}
+
+void SqlTableModel::removeFilter()
+{
+    m_titleFilter = "";
+    m_ownedFilter = 2;
+
+    applyFilter();
 }
 
 void SqlTableModel::setOrderBy(int column, int order)
@@ -155,9 +178,9 @@ void SqlTableModel::saveDBToFile(FileManager* fileManager)
         return;
     }
     for(int r = 0; r < rowCount(); r++) {
-        QStringList list;
+        QVariantList list;
         for(int c = 0; c < columnCount(); c++) {
-            list.append(data(index(r, c), 0).toString());
+            list.append(data(index(r, c), 0));
         }
         auto game = GameDataMaker::get()->createComplete(list);
         fileManager->addEntry(game);
@@ -171,9 +194,14 @@ void SqlTableModel::clearDB()
     select();
 }
 
-QString SqlTableModel::getFilter() const
+QString SqlTableModel::getTitleFilter() const
 {
-    return m_filter;
+    return m_titleFilter;
+}
+
+int SqlTableModel::getOwnedFilter() const
+{
+    return m_ownedFilter;
 }
 
 int SqlTableModel::getSortOrder() const
@@ -184,4 +212,13 @@ int SqlTableModel::getSortOrder() const
 int SqlTableModel::getOrderBy() const
 {
     return m_orderBy;
+}
+
+void SqlTableModel::applyFilter()
+{
+    QString cmd = QString("title LIKE \'%%1%\'").arg(m_titleFilter);
+    if(m_ownedFilter < 2) {
+        cmd += QString(" AND owned = %1").arg(m_ownedFilter);
+    }
+    setFilter(cmd);
 }

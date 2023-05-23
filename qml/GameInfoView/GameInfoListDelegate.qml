@@ -25,8 +25,8 @@ Item {
     }
     TextField {
         id: textField
-        height: implicitBackgroundHeight
-        topInset: 5; bottomInset: 5
+        height: parent.height
+        topPadding: 3; bottomPadding: 3
         font.pointSize: 13
         anchors.right: parent.right
         anchors.left: labelName.right

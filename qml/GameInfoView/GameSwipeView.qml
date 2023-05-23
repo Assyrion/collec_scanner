@@ -8,6 +8,8 @@ Item {
     property bool editMode: false
     property alias currentIndex:
         swipeView.currentIndex
+    property var currentItem:
+        swipeView.contentItem.currentItem.item
 
     signal closed
 
@@ -20,10 +22,31 @@ Item {
                                  "x"     : root.width/6,
                                  "y"     : root.height/4+20})
             obj.accepted.connect(function() {
-                swipeView.removeGame()
+                root.removeGame()
                 closed()
             })
         }
+    }
+
+    function saveGame() {
+        root.editMode = false
+        var savedTag = root.currentItem.currentTag // index may have changed after edition
+        root.currentItem.saveGame()
+
+        var idx = sqlTableModel.getIndexFiltered(savedTag) // get the new index
+        if(idx >= 0)
+            root.currentIndex = idx
+        else
+            closed()
+    }
+
+    function removeGame() {
+        root.currentItem.removeGame()
+    }
+
+    function cancelGame() {
+        root.editMode = false
+        root.currentItem.cancelGame()
     }
 
     SwipeView {
@@ -39,21 +62,6 @@ Item {
             contentItem.highlightMoveDuration = 0
         }
 
-        function saveGame() {
-            var savedTag = currentItem.item.currentTag // index may have changed after edition
-            currentItem.item.saveGame()
-            var idx = sqlTableModel.getIndexFiltered(savedTag) // get the new index
-            currentIndex = idx
-        }
-
-        function removeGame() {
-            currentItem.item.removeGame()
-        }
-
-        function cancelGame() {
-            currentItem.item.cancelGame()
-        }
-
         Repeater {
             model: sqlTableModel
             Loader {
@@ -66,6 +74,11 @@ Item {
                     editMode: root.editMode
                     height: root.height
                     width: root.width
+                    onIsOwnedChanged: {
+                        if(!isOwned) {
+                            root.cancelGame()
+                        }
+                    }
                 }
             }
         }
@@ -73,6 +86,7 @@ Item {
 
     RowLayout {
         id: btnRow
+
         height: 50
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
@@ -80,12 +94,11 @@ Item {
             parent.horizontalCenter
         spacing: 12
         Button {
-            text: editMode ? qsTr("cancel")
+            text: root.editMode ? qsTr("cancel")
                            : qsTr("close")
             onClicked: {
-                if(editMode) {
-                    editMode = false
-                    swipeView.cancelGame()
+                if(root.editMode) {
+                    root.cancelGame()
                 } else {
                     closed()
                 }
@@ -100,14 +113,13 @@ Item {
                 }, 80)
         }
         Button {
-            text: editMode ? qsTr("save")
+            text: root.editMode ? qsTr("save")
                            : qsTr("edit")
             onClicked: {
-                if(editMode) {
-                    editMode = false
-                    swipeView.saveGame()
+                if(root.editMode) {
+                    root.saveGame()
                 } else {
-                    editMode = true
+                    root.editMode = true
                 }
             }
             leftPadding: 12
@@ -115,24 +127,30 @@ Item {
 
             font.pointSize: 11
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
-                    return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-                }, 80)
+            Layout.preferredWidth: root.currentItem.isOwned ? btnRow.children.reduce(function(prev, curr) {
+                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+            }, 80) : 0
+            Behavior on Layout.preferredWidth { NumberAnimation { duration: 150 } }
+
+            visible: Layout.preferredWidth > 0
         }
         Button {
             text: qsTr("delete")
             onClicked: {
-                editMode = false
-                showConfirmDelete()
+                root.editMode = false
+                root.showConfirmDelete()
             }
             leftPadding: 12
             rightPadding: 12
 
             font.pointSize: 11
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: btnRow.children.reduce(function(prev, curr) {
+            Layout.preferredWidth: root.currentItem.isOwned ? btnRow.children.reduce(function(prev, curr) {
                     return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-                }, 80)
+            }, 80) : 0
+            Behavior on Layout.preferredWidth { NumberAnimation { duration: 150 } }
+
+            visible: Layout.preferredWidth > 0
         }
     }
 }

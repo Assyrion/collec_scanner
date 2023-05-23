@@ -63,44 +63,44 @@
         <translation>Trier par</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="139"/>
+        <location filename="../qml/ConfigDrawer.qml" line="142"/>
         <source>clear DB</source>
         <translation>Effacer BDD</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="149"/>
+        <location filename="../qml/ConfigDrawer.qml" line="155"/>
         <source>file DB</source>
         <translation>Exporter BDD</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="201"/>
+        <location filename="../qml/ConfigDrawer.qml" line="213"/>
         <source>DB will be uploaded to server.</source>
         <translation>La BDD sera copiée sur le serveur.</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="212"/>
+        <location filename="../qml/ConfigDrawer.qml" line="224"/>
         <source>New covers will be uploaded to server.</source>
         <translation>Les nouvelles jaquettes seront copiées sur le serveur.</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="159"/>
+        <location filename="../qml/ConfigDrawer.qml" line="168"/>
         <source>upload DB</source>
-        <translation></translation>
+        <translation>envoyer BDD</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="169"/>
+        <location filename="../qml/ConfigDrawer.qml" line="181"/>
         <source>upload Covers</source>
-        <translation></translation>
+        <translation>Envoyer jaquettes</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="179"/>
+        <location filename="../qml/ConfigDrawer.qml" line="191"/>
         <source>DB will be entirely cleared.
 This action is irreversible.</source>
         <translation>Le contenu de la BDD sera entièrement effacé.
 Cette action est irreversible.</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="190"/>
+        <location filename="../qml/ConfigDrawer.qml" line="202"/>
         <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
         <translation>Le contenu de la BDD sera enregistré dans &lt;Téléchargements&gt;/game_list.csv</translation>
     </message>
@@ -162,75 +162,80 @@ Cette action est irreversible.</translation>
 <context>
     <name>GameSwipeDelegate</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="131"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="142"/>
         <source>Tag</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="137"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="149"/>
         <source>Index</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="146"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="159"/>
         <source>Code</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="152"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="166"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="158"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="173"/>
         <source>Platform</source>
         <translation>Plateforme</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="164"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="180"/>
         <source>info</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="170"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="187"/>
         <source>Publisher</source>
         <translation>Editeur</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="176"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="194"/>
         <source>Developer</source>
         <translation>Developpeur</translation>
+    </message>
+    <message>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="219"/>
+        <source>In my collection</source>
+        <translation>Dans ma collection</translation>
     </message>
 </context>
 <context>
     <name>GameSwipeView</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="17"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="19"/>
         <source>Are you sure ?</source>
         <translation>Etes-vous sûr ?</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="83"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="95"/>
         <source>cancel</source>
         <translation>annuler</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="84"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="96"/>
         <source>close</source>
         <translation>fermer</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="103"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="114"/>
         <source>save</source>
         <translation>enregistrer</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="104"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="115"/>
         <source>edit</source>
         <translation>modifier</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="123"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="136"/>
         <source>delete</source>
         <translation>supprimer</translation>
     </message>
@@ -264,6 +269,18 @@ Cette action est irreversible.</translation>
         <location filename="../download_db_view.qml" line="15"/>
         <source>Downloading DB</source>
         <translation>Téléchargement de la BDD</translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <source>You don&apos;t own this game, would you want to add it to your collection ?</source>
+        <translation type="vanished">Vous ne possédez pas ce jeu, voulez-vous l&apos;ajouter à votre collection ?</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="108"/>
+        <source>You don&apos;t own this game. Would you want to add it to your collection ?</source>
+        <translation>Vous ne possédez pas ce jeu. Voulez-vous l&apos;ajouter à votre collection ?</translation>
     </message>
 </context>
 </TS>

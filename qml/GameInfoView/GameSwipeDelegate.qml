@@ -13,14 +13,19 @@ Pane {
     topPadding: 0
     bottomPadding: 0
 
-    property int index: -1
     property int count: 0
+    property int index: -1
+    property bool isOwned : false
     property bool editMode: false
     property string currentTag: ""
     property GameData currentGame:
         GameDataMaker.createEmpty()
 
     Component.onCompleted:  {
+        root.isOwned = Qt.binding(function() {
+            return ((index < 0) || owned)
+        })
+
         readGame()
     }
 
@@ -66,7 +71,8 @@ Pane {
                    publisherInfo.entry,
                    developerInfo.entry,
                    codeInfo.entry,
-                   infoInfo.entry]
+                   infoInfo.entry,
+                   ownedInfo.entry]
 
         currentGame = GameDataMaker.createComplete(arr)
         if(index < 0) {
@@ -96,6 +102,11 @@ Pane {
         gameCoverRow.backCoverData  = null
     }
 
+    function setGameAsOwned()
+    {
+        ownedCheckBox.checked = true
+    }
+
 
     GameInfoCoverRow {
         id: gameCoverRow
@@ -112,6 +123,7 @@ Pane {
         onEditCoverRequired:(img) => showSnapshotPopup(img)
 
         editMode: root.editMode
+        enabled: root.isOwned
     }
 
     ColumnLayout {
@@ -121,16 +133,16 @@ Pane {
         anchors.horizontalCenter:
             parent.horizontalCenter
         anchors.top: gameCoverRow.bottom
-        anchors.topMargin: 12
+        anchors.topMargin: 20
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 75
-        enabled: root.editMode
 
         GameInfoListDelegate {
             id: tagInfo
             name: qsTr("Tag"); entry: currentTag; editable: false
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: indexInfo
@@ -138,44 +150,83 @@ Pane {
             entry: (index < 0) ? ""
                                : (index+1) + "/" + count
             editable: false
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: codeInfo
             name: qsTr("Code"); entry: code; editable: editMode
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: titleInfo
             name: qsTr("Title"); entry: title; editable: editMode
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: platformInfo
             name: qsTr("Platform"); entry: platform; editable: editMode
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: infoInfo
             name: qsTr("info"); entry: info; editable: editMode
+            opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: publisherInfo
             name: qsTr("Publisher"); entry: publisher; editable: editMode
-            Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 50
+            opacity: root.isOwned ? 1 : 0.4
+            Layout.fillWidth: true
+            Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: developerInfo
             name: qsTr("Developer"); entry: developer; editable: editMode
-            Layout.preferredWidth: parent.width
-            Layout.preferredHeight: 50
+            opacity: root.isOwned ? 1 : 0.4
+            Layout.fillWidth: true
+            Layout.preferredHeight: 40
+        }        
+        Item {
+            id: ownedInfo
+            Layout.fillWidth: true
+            Layout.preferredHeight: 30
+
+            property alias entry: ownedCheckBox.checked
+            function reset() {}
+
+            enabled: (index >= 0)
+
+            Label {
+                id: labelName
+                width: parent.width/3
+                height: parent.height
+                verticalAlignment:
+                    Label.AlignVCenter
+                font.family: "Roboto"
+                font.pointSize: 14
+                font.bold: true
+                color: "white"
+                text: qsTr("In my collection")
+            }
+            CheckBox {
+                id: ownedCheckBox
+                anchors.right: parent.right
+                anchors.left: labelName.right
+                anchors.verticalCenter:
+                    labelName.verticalCenter
+                checked: root.isOwned
+                onClicked: owned = checked ? 1 : 0
+            }
         }
     }
 }

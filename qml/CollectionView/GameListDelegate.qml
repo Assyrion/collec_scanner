@@ -19,9 +19,11 @@ Item {
 
     Item {
         id: frontPic
-        anchors.fill: parent
 
         property alias frontSource : frontPicImg.source
+
+        anchors.fill: parent
+        visible: false
         Image {
             id: frontPicImg
             width: parent.width + 5 // not sourceSize !
@@ -37,13 +39,22 @@ Item {
             mipmap: true
             smooth: true
         }
-        layer.enabled: true
-        layer.effect: OpacityMask {
-            maskSource: Rectangle {
-                width : frontPic.width
-                height: frontPic.height
-                radius: 10
-            }
+    }
+    OpacityMask {
+        anchors.fill: frontPic
+        source: frontPic
+        maskSource: Rectangle {
+            width : frontPic.width
+            height: frontPic.height
+            radius: 10
+        }
+        Colorize {
+            visible: !owned
+            anchors.fill: parent
+            source: parent
+            saturation: 0
+            lightness: 0.6
+            hue: 0
         }
     }
     CSGlowText {
@@ -54,6 +65,7 @@ Item {
             parent.verticalCenter
         anchors.right: platformText.left
         anchors.rightMargin: 10
+        opacity: owned ? 1 : 0.4
         font.pointSize:
             Math.min(17, parent.width/3 + 1)
         font.family: "Roboto"
@@ -65,6 +77,7 @@ Item {
         anchors.rightMargin: 10
         anchors.verticalCenter:
             parent.verticalCenter
+        opacity: owned ? 1 : 0.4
         font.pointSize:
             Math.min(17, parent.width/3 + 1)
         font.family: "Roboto"

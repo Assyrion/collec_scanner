@@ -46,6 +46,15 @@ Item {
         maskSource: maskRec
     }
 
+    Colorize {
+        visible: !enabled
+        anchors.fill: opacityMask
+        source: opacityMask
+        saturation: 0
+        lightness: 0.6
+        hue: 0
+    }
+
     MouseArea {
         id: mouseArea
         anchors.fill: parent
