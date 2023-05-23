@@ -2,19 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>BarcodeScannerView</name>
-    <message>
-        <location filename="../qml/BarcodeScannerView/BarcodeScannerView.qml" line="40"/>
-        <source>Game with tag = %1 is new.&lt;br&gt;&lt;br&gt;Add it ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/BarcodeScannerView/BarcodeScannerView.qml" line="50"/>
-        <source>Game with tag = %1 exists but has been filtered.&lt;br&gt;&lt;br&gt;Remove filter and show it ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CSActionPopup</name>
     <message>
         <location filename="../qml/utils/CSActionPopup.qml" line="57"/>
@@ -30,69 +17,58 @@
 <context>
     <name>ConfigDrawer</name>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="15"/>
+        <location filename="../qml/ConfigDrawer.qml" line="45"/>
         <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="35"/>
+        <location filename="../qml/ConfigDrawer.qml" line="65"/>
         <source>Search by name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="48"/>
+        <location filename="../qml/ConfigDrawer.qml" line="78"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="63"/>
+        <location filename="../qml/ConfigDrawer.qml" line="93"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="93"/>
+        <location filename="../qml/ConfigDrawer.qml" line="123"/>
         <source>Sort by</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="142"/>
+        <location filename="../qml/ConfigDrawer.qml" line="175"/>
+        <source>Games owned</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="194"/>
+        <source>Games not owned</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="225"/>
         <source>clear DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="155"/>
+        <location filename="../qml/ConfigDrawer.qml" line="238"/>
         <source>file DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="213"/>
-        <source>DB will be uploaded to server.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/ConfigDrawer.qml" line="224"/>
-        <source>New covers will be uploaded to server.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/ConfigDrawer.qml" line="168"/>
+        <location filename="../qml/ConfigDrawer.qml" line="251"/>
         <source>upload DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="181"/>
+        <location filename="../qml/ConfigDrawer.qml" line="264"/>
         <source>upload Covers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/ConfigDrawer.qml" line="191"/>
-        <source>DB will be entirely cleared.
-This action is irreversible.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/ConfigDrawer.qml" line="202"/>
-        <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -193,32 +169,27 @@ This action is irreversible.</source>
 <context>
     <name>GameSwipeView</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="19"/>
-        <source>Are you sure ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="95"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="92"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="96"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="93"/>
         <source>close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="114"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="111"/>
         <source>save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="115"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="112"/>
         <source>edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="136"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="133"/>
         <source>delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -226,23 +197,67 @@ This action is irreversible.</source>
 <context>
     <name>NewGameView</name>
     <message>
-        <location filename="../qml/GameInfoView/NewGameView.qml" line="31"/>
+        <location filename="../qml/GameInfoView/NewGameView.qml" line="32"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/NewGameView.qml" line="32"/>
+        <location filename="../qml/GameInfoView/NewGameView.qml" line="33"/>
         <source>close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/NewGameView.qml" line="52"/>
+        <location filename="../qml/GameInfoView/NewGameView.qml" line="54"/>
         <source>save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/NewGameView.qml" line="53"/>
+        <location filename="../qml/GameInfoView/NewGameView.qml" line="55"/>
         <source>edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PopupMaker</name>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="4"/>
+        <source>Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="16"/>
+        <source>You don&apos;t own this game. Would you want to add it to your collection ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="28"/>
+        <source>DB will be entirely cleared.
+This action is irreversible.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="41"/>
+        <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="54"/>
+        <source>DB will be uploaded to server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="67"/>
+        <source>New covers will be uploaded to server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="80"/>
+        <source>Game with tag = %1 is new.&lt;br&gt;&lt;br&gt;Add it ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="90"/>
+        <source>Game with tag = %1 exists but has been filtered.&lt;br&gt;&lt;br&gt;Remove filter and show it ?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -251,14 +266,6 @@ This action is irreversible.</source>
     <message>
         <location filename="../download_db_view.qml" line="15"/>
         <source>Downloading DB</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>main</name>
-    <message>
-        <location filename="../main.qml" line="108"/>
-        <source>You don&apos;t own this game. Would you want to add it to your collection ?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -4,6 +4,8 @@ import QtMultimedia
 import QtQuick.Controls 6.2
 import Qt.labs.platform 1.0
 
+import "../utils/PopupMaker.js" as PopupMaker
+
 Item {
     id: root
     
@@ -12,6 +14,28 @@ Item {
     signal showGameRequired(int idx)
     signal showNewGameRequired(string tag)
     
+    function showUnknownGame(tag) {
+        var obj = PopupMaker.showUnknownGame(root, tag)
+
+        obj.refused.connect(function() {
+            barcodeScanner.startScanning()
+        })
+        obj.accepted.connect(function() {
+            showNewGameRequired(tag)
+        })
+    }
+
+    function showFilteredGame(tag, idx) {
+        var obj = PopupMaker.showFilteredGame(root, tag)
+
+        obj.refused.connect(function() {
+            barcodeScanner.startScanning()
+        })
+        obj.accepted.connect(function() {
+            sqlTableModel.removeFilter()
+            showGameRequired(idx)
+        })
+    }
     
     BarcodeScanner {
         id: barcodeScanner
@@ -24,38 +48,12 @@ Item {
                             } else {
                                 idx = sqlTableModel.getIndexNotFiltered(barcode)
                                 if(idx >= 0) {
-                                    loader.showFilteredGame(barcode, idx)
+                                    showFilteredGame(barcode, idx)
                                 } else {
-                                    loader.showUnknownGame(barcode)
+                                    showUnknownGame(barcode)
                                 }
                             }
                         }
     }
-    
-    Loader {
-        id: loader
-        
-        function showUnknownGame(tag) {
-            loader.setSource("../utils/CSActionPopup.qml",
-                             { "contentText" : qsTr("Game with tag = %1 is new.<br><br>Add it ?").arg(tag),
-                                 "width" : root.width,
-                                 "height": root.height})
-            
-            loader.item.refused.connect(  function() { barcodeScanner.startScanning() })
-            loader.item.accepted.connect( function() { showNewGameRequired(tag) })
-        }
-        
-        function showFilteredGame(tag, idx) {
-            loader.setSource("../utils/CSActionPopup.qml",
-                             { "contentText" : qsTr("Game with tag = %1 exists but has been filtered.<br><br>Remove filter and show it ?").arg(tag),
-                                 "width" : root.width,
-                                 "height": root.height})
-            
-            loader.item.refused.connect(  function() { barcodeScanner.startScanning() })
-            loader.item.accepted.connect( function() {
-                sqlTableModel.removeFilter()
-                showGameRequired(idx)
-            })
-        }
-    }
 }
+

@@ -23,5 +23,6 @@
         <file>qml/GameInfoView/NewGameView.qml</file>
         <file>download_db_view.qml</file>
         <file>qml/CollectionView/ConfigMenuBar.qml</file>
+        <file>qml/utils/PopupMaker.js</file>
     </qresource>
 </RCC>

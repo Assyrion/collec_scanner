@@ -2,6 +2,8 @@ import QtQuick 6.2
 import QtQuick.Layouts 6.2
 import QtQuick.Controls 6.2
 
+import "../utils/PopupMaker.js" as PopupMaker
+
 Item {
     id: root
 
@@ -14,18 +16,11 @@ Item {
     signal closed
 
     function showConfirmDelete() {
-        var cpt = Qt.createComponent("../utils/CSActionPopup.qml")
-        if (cpt.status === Component.Ready) {
-            var obj = cpt.createObject(root, {"contentText" : qsTr("Are you sure ?"),
-                                 "width" : 2*root.width/3,
-                                 "height": root.height/4,
-                                 "x"     : root.width/6,
-                                 "y"     : root.height/4+20})
-            obj.accepted.connect(function() {
-                root.removeGame()
-                closed()
-            })
-        }
+        var obj = PopupMaker.showConfirmDelete(root)
+        obj.accepted.connect(function() {
+            root.removeGame()
+            closed()
+        })
     }
 
     function saveGame() {

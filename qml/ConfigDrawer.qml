@@ -2,12 +2,42 @@ import QtQuick 6.2
 import QtQuick.Controls 6.2
 import QtQuick.Layouts 6.2
 
+import "utils/PopupMaker.js" as PopupMaker
+
 Drawer {
     id: root
 
     z: 1
     closePolicy: Popup.CloseOnPressOutside
     edge: Qt.LeftEdge
+
+    function showConfirmClearDB() {
+        var obj = PopupMaker.showConfirmClearDB(mainWindow)
+        obj.accepted.connect(function() {
+            sqlTableModel.clearDB()
+        })
+    }
+
+    function showConfirmSaveDB() {
+        var obj = PopupMaker.showConfirmSaveDB(mainWindow)
+        obj.accepted.connect(function() {
+            sqlTableModel.saveDBToFile(fileManager)
+        })
+    }
+
+    function showConfirmUploadDB() {
+        var obj = PopupMaker.showConfirmUploadDB(mainWindow)
+        obj.accepted.connect(function() {
+            comManager.uploadDB()
+        })
+    }
+
+    function showConfirmUploadCovers() {
+        var obj = PopupMaker.showConfirmUploadCovers(mainWindow)
+        obj.accepted.connect(function() {
+            comManager.uploadCovers()
+        })
+    }
 
     GroupBox {
         id: filterGroupBox
@@ -142,7 +172,7 @@ Drawer {
             font.family: "Roboto"
             font.pixelSize: 14
             color: "white"
-            text: qsTr("Jeux possédés")
+            text: qsTr("Games owned")
         }
         CheckBox {
             id: ownedCheckBox
@@ -153,134 +183,90 @@ Drawer {
             Component.onCompleted: {
                 checked = (sqlTableModel.ownedFilter >= 1)
             }
-    }
-    Label {
-        id: labelNotOwned
-        verticalAlignment:
-            Label.AlignVCenter
-        font.family: "Roboto"
-        font.pixelSize: 14
-        color: "white"
-        text: qsTr("Jeux non possédés")
-    }
-    CheckBox {
-        id: notOwnedCheckBox
-
-        onClicked: {
-            sqlTableModel.filterByOwned(ownedCheckBox.checked, checked)
         }
-        Component.onCompleted: {
-            checked = !(sqlTableModel.ownedFilter % 2)
+        Label {
+            id: labelNotOwned
+            verticalAlignment:
+                Label.AlignVCenter
+            font.family: "Roboto"
+            font.pixelSize: 14
+            color: "white"
+            text: qsTr("Games not owned")
+        }
+        CheckBox {
+            id: notOwnedCheckBox
+
+            onClicked: {
+                sqlTableModel.filterByOwned(ownedCheckBox.checked, checked)
+            }
+            Component.onCompleted: {
+                checked = !(sqlTableModel.ownedFilter % 2)
+            }
+        }
+    }
+    ColumnLayout {
+        id: btnColumn
+
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 5
+        width: parent.width
+        spacing: 5
+
+        Button {
+            id: clearDBBtn
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
+                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+            }, 80)
+
+            leftPadding: 12
+            rightPadding: 12
+
+            text: qsTr("clear DB")
+            onClicked: showConfirmClearDB()
+        }
+        Button {
+            id: saveDBBtn
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
+                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+            }, 80)
+
+            leftPadding: 12
+            rightPadding: 12
+
+            text: qsTr("file DB")
+            onClicked: showConfirmSaveDB()
+        }
+        Button {
+            id: exportDBBtn
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
+                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+            }, 80)
+
+            leftPadding: 12
+            rightPadding: 12
+
+            text: qsTr("upload DB")
+            onClicked: showConfirmUploadDB()
+        }
+        Button {
+            id: uploadCoversBtn
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
+                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+            }, 80)
+
+            leftPadding: 12
+            rightPadding: 12
+
+            text: qsTr("upload Covers")
+            onClicked: showConfirmUploadCovers()
+
         }
     }
 }
-ColumnLayout {
-    id: btnColumn
 
-    anchors.bottom: parent.bottom
-    anchors.bottomMargin: 5
-    width: parent.width
-    spacing: 5
 
-    Button {
-        id: clearDBBtn
-        Layout.alignment: Qt.AlignCenter
-        Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-            return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-        }, 80)
 
-        leftPadding: 12
-        rightPadding: 12
-
-        text: qsTr("clear DB")
-        onClicked: loader.loadConfirmClearDB()
-    }
-    Button {
-        id: saveDBBtn
-        Layout.alignment: Qt.AlignCenter
-        Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-            return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-        }, 80)
-
-        leftPadding: 12
-        rightPadding: 12
-
-        text: qsTr("file DB")
-        onClicked: loader.loadConfirmSaveDB()
-    }
-    Button {
-        id: exportDBBtn
-        Layout.alignment: Qt.AlignCenter
-        Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-            return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-        }, 80)
-
-        leftPadding: 12
-        rightPadding: 12
-
-        text: qsTr("upload DB")
-        onClicked: loader.loadConfirmUploadDB()
-    }
-    Button {
-        id: uploadCoversBtn
-        Layout.alignment: Qt.AlignCenter
-        Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-            return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-        }, 80)
-
-        leftPadding: 12
-        rightPadding: 12
-
-        text: qsTr("upload Covers")
-        onClicked: loader.loadConfirmUploadCovers()
-
-    }
-}
-Loader {
-    id: loader
-
-    function loadConfirmClearDB() {
-        loader.setSource("utils/CSActionPopup.qml",
-                         {   "contentText" : qsTr("DB will be entirely cleared.\nThis action is irreversible."),
-                             "width" : 2*mainWindow.width/3,
-                             "height": mainWindow.height/4,
-                             "x"     : mainWindow.width/6,
-                             "y"     : mainWindow.height/4+50})
-
-        loader.item.accepted.connect( function() { sqlTableModel.clearDB() } )
-    }
-
-    function loadConfirmSaveDB() {
-        loader.setSource("utils/CSActionPopup.qml",
-                         {   "contentText" : qsTr("DB content will be written in <DownloadPath>/game_list.csv"),
-                             "width" : 2*mainWindow.width/3,
-                             "height": mainWindow.height/4,
-                             "x"     : mainWindow.width/6,
-                             "y"     : mainWindow.height/4+50})
-
-        loader.item.accepted.connect( function() { sqlTableModel.saveDBToFile(fileManager) } )
-    }
-
-    function loadConfirmUploadDB() {
-        loader.setSource("utils/CSActionPopup.qml",
-                         {   "contentText" : qsTr("DB will be uploaded to server."),
-                             "width" : 2*mainWindow.width/3,
-                             "height": mainWindow.height/4,
-                             "x"     : mainWindow.width/6,
-                             "y"     : mainWindow.height/4+50})
-
-        loader.item.accepted.connect( function() { comManager.uploadDB() } )
-    }
-
-    function loadConfirmUploadCovers() {
-        loader.setSource("utils/CSActionPopup.qml",
-                         {   "contentText" : qsTr("New covers will be uploaded to server."),
-                             "width" : 2*mainWindow.width/3,
-                             "height": mainWindow.height/4,
-                             "x"     : mainWindow.width/6,
-                             "y"     : mainWindow.height/4+50})
-
-        loader.item.accepted.connect( function() { comManager.uploadCovers() } )
-    }
-}
-}
