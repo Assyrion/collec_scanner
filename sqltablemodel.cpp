@@ -68,9 +68,8 @@ bool SqlTableModel::setData(const QModelIndex &index, const QVariant &value, int
 
 void SqlTableModel::remove(int row)
 {
-    beginRemoveRows(QModelIndex(), row, row);
     removeRow(row);
-    endRemoveRows();
+    select();
 }
 
 void SqlTableModel::insert(GameData* game)
