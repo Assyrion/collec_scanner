@@ -8,18 +8,19 @@
 
 #include <QDebug>
 
-SqlTableModel::SqlTableModel(int orderBy, int sortOrder, const QString& filter, QObject* parent)
-    : QSqlTableModel(parent)
+SqlTableModel::SqlTableModel(int orderBy, int sortOrder, const QString& titleFilter, int ownedFilter, QObject* parent)
+    : QSqlTableModel(parent), m_titleFilter(titleFilter), m_ownedFilter(ownedFilter)
 {
     setTable("games");
     setEditStrategy(OnFieldChange);
     this->setOrderBy(orderBy, sortOrder);
-    filterByTitle(filter);
 
     auto rec = record();
     for(int i = 0; i < rec.count(); i++) {
         m_roles.insert(Qt::UserRole + i + 1, rec.fieldName(i).toUtf8());
     }
+
+    applyFilter();
 }
 
 SqlTableModel::~SqlTableModel()
@@ -109,6 +110,12 @@ void SqlTableModel::update(int row, GameData* game)
     setData(index(row, 5), game->code);
     setData(index(row, 6), game->info);
     setData(index(row, 7), game->owned);
+
+    // not clean but no other solution found to make it quick
+    auto savedFilter = filter();
+    setFilter("tag = \'" + game->tag + "\'");
+    select();
+    setFilter(savedFilter);
 }
 
 int SqlTableModel::getIndexFiltered(const QString& tag)
@@ -133,14 +140,17 @@ int SqlTableModel::getIndexNotFiltered(const QString &tag)
 
 void SqlTableModel::filterByTitle(const QString &title)
 {
-    m_filter = title;
+    m_titleFilter = title;
 
-    if(title.isEmpty()) {
-        setFilter("");
-        return;
-    }
+    applyFilter();
+}
 
-    setFilter("title LIKE \'%" + title + "%\'");
+void SqlTableModel::filterByOwned(bool owned, bool notOwned)
+{
+    m_ownedFilter = ((owned ? 0b10 : 0)
+                | (notOwned ? 0b01 : 0)) - 1;
+
+    applyFilter();
 }
 
 void SqlTableModel::setOrderBy(int column, int order)
@@ -176,9 +186,14 @@ void SqlTableModel::clearDB()
     select();
 }
 
-QString SqlTableModel::getFilter() const
+QString SqlTableModel::getTitleFilter() const
 {
-    return m_filter;
+    return m_titleFilter;
+}
+
+int SqlTableModel::getOwnedFilter() const
+{
+    return m_ownedFilter;
 }
 
 int SqlTableModel::getSortOrder() const
@@ -189,4 +204,13 @@ int SqlTableModel::getSortOrder() const
 int SqlTableModel::getOrderBy() const
 {
     return m_orderBy;
+}
+
+void SqlTableModel::applyFilter()
+{
+    QString cmd = QString("title LIKE \'%%1%\'").arg(m_titleFilter);
+    if(m_ownedFilter < 2) {
+        cmd += QString(" AND owned = %1").arg(m_ownedFilter);
+    }
+    setFilter(cmd);
 }

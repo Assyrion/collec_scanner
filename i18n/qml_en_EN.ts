@@ -145,47 +145,47 @@ This action is irreversible.</source>
 <context>
     <name>GameSwipeDelegate</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="132"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="142"/>
         <source>Tag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="138"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="149"/>
         <source>Index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="147"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="159"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="153"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="166"/>
         <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="159"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="173"/>
         <source>Platform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="165"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="180"/>
         <source>info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="171"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="187"/>
         <source>Publisher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="177"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="194"/>
         <source>Developer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="199"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="219"/>
         <source>In my collection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -193,32 +193,32 @@ This action is irreversible.</source>
 <context>
     <name>GameSwipeView</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="17"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="19"/>
         <source>Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="83"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="95"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="84"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="96"/>
         <source>close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="103"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="114"/>
         <source>save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="104"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="115"/>
         <source>edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="123"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="136"/>
         <source>delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -251,6 +251,14 @@ This action is irreversible.</source>
     <message>
         <location filename="../download_db_view.qml" line="15"/>
         <source>Downloading DB</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="../main.qml" line="108"/>
+        <source>You don&apos;t own this game. Would you want to add it to your collection ?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -92,10 +92,10 @@ Item {
             parent.horizontalCenter
         spacing: 12
         Button {
-            text: editMode ? qsTr("cancel")
+            text: root.editMode ? qsTr("cancel")
                            : qsTr("close")
             onClicked: {
-                if(editMode) {
+                if(root.editMode) {
                     root.cancelGame()
                 } else {
                     closed()

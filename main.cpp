@@ -38,7 +38,8 @@ int main(int argc, char *argv[])
     if(settings.allKeys().isEmpty()) {
         settings.setValue("sqlTableModel/orderBy", 1);
         settings.setValue("sqlTableModel/sortOrder", 0);
-        settings.setValue("sqlTableModel/filter", "");
+        settings.setValue("sqlTableModel/titleFilter", "");
+        settings.setValue("sqlTableModel/ownedFilter", 2);
         settings.setValue("mainView/view", 0);
         settings.setValue("window/x", screen->geometry().width()/4);
         settings.setValue("window/y", screen->geometry().height()/4);
@@ -49,7 +50,8 @@ int main(int argc, char *argv[])
     settings.beginGroup("sqlTableModel");
     auto orderBy = settings.value("orderBy").toInt();
     auto sortOrder = settings.value("sortOrder").toInt();
-    auto filter = settings.value("filter").toString();
+    auto titleFilter = settings.value("titleFilter").toString();
+    auto ownedFilter = settings.value("ownedFilter", 2).toInt();
     settings.endGroup();
 
     settings.beginGroup("mainView");
@@ -115,7 +117,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    SqlTableModel sqlTableModel(orderBy, sortOrder, filter);
+    SqlTableModel sqlTableModel(orderBy, sortOrder, titleFilter, ownedFilter);
     ImageManager  imageManager;
     FileManager   fileManager;
 
@@ -156,7 +158,8 @@ int main(int argc, char *argv[])
         settings.beginGroup("sqlTableModel");
         settings.setValue("orderBy", sqlTableModel.getOrderBy());
         settings.setValue("sortOrder", sqlTableModel.getSortOrder());
-        settings.setValue("filter", sqlTableModel.getFilter());
+        settings.setValue("titleFilter", sqlTableModel.getTitleFilter());
+        settings.setValue("ownedFilter", sqlTableModel.getOwnedFilter());
         settings.endGroup();
 
         settings.beginGroup("mainView");
