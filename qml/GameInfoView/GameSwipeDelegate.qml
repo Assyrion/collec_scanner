@@ -58,11 +58,13 @@ Pane {
     function saveGame() {
         // handle cover before modifying DB !
         if(gameCoverRow.frontCoverData) {
-            imageManager.saveFrontPic(currentTag, gameCoverRow.frontCoverData)
+            imageManager.saveFrontPic(currentTag,
+                                      gameCoverRow.frontCoverData)
             comManager.handleFrontCover(currentTag)
         }
         if(gameCoverRow.backCoverData) {
-            imageManager.saveBackPic(currentTag, gameCoverRow.backCoverData)
+            imageManager.saveBackPic(currentTag,
+                                     gameCoverRow.backCoverData)
             comManager.handleBackCover(currentTag)
         }
         var arr = [currentTag,
@@ -96,9 +98,11 @@ Pane {
     }
 
     function reloadCovers() {
-        gameCoverRow.frontCoverUrl  = imageManager.getFrontPic(currentTag)
+        gameCoverRow.frontCoverUrl
+                = imageManager.getFrontPic(currentTag)
         gameCoverRow.frontCoverData = null
-        gameCoverRow.backCoverUrl   = imageManager.getBackPic(currentTag)
+        gameCoverRow.backCoverUrl
+                = imageManager.getBackPic(currentTag)
         gameCoverRow.backCoverData  = null
     }
 
@@ -156,42 +160,42 @@ Pane {
         }
         GameInfoListDelegate {
             id: codeInfo
-            name: qsTr("Code"); entry: code; editable: editMode
+            name: qsTr("Code"); entry: model?.code ?? ""; editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: titleInfo
-            name: qsTr("Title"); entry: title; editable: editMode
+            name: qsTr("Title"); entry: model?.title ?? ""; editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: platformInfo
-            name: qsTr("Platform"); entry: platform; editable: editMode
+            name: qsTr("Platform"); entry: model?.platform ?? "ps3"; editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: infoInfo
-            name: qsTr("info"); entry: info; editable: editMode
+            name: qsTr("info"); entry: model?.info ?? ""; editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: publisherInfo
-            name: qsTr("Publisher"); entry: publisher; editable: editMode
+            name: qsTr("Publisher"); entry: model?.publisher ?? ""; editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: developerInfo
-            name: qsTr("Developer"); entry: developer; editable: editMode
+            name: qsTr("Developer"); entry: model?.developer ?? ""; editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
@@ -225,7 +229,7 @@ Pane {
                 anchors.verticalCenter:
                     labelName.verticalCenter
                 checked: root.isOwned
-                onClicked: owned = checked ? 1 : 0
+                onClicked: model.owned = checked ? 1 : 0
             }
         }
     }

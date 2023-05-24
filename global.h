@@ -4,7 +4,7 @@
 #include <QStandardPaths>
 #include <QDir>
 
-const QString DBNAME  = "games.db";
+const QString DBNAME  = "games_with_owned.db";
 const QString PICPATH = "pic/"; // pic
 
 const QString REMOTE_PATH = "http://77.140.81.117/";

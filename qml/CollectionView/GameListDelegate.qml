@@ -32,7 +32,7 @@ Item {
                 -implicitHeight/2 + 30
             anchors.horizontalCenter:
                 parent.horizontalCenter
-            source: imageManager.getFrontPic(tag)
+            source: imageManager?.getFrontPic(tag) ?? "qrc:/no_pic"
             fillMode: Image.PreserveAspectCrop
             antialiasing: true
             cache: false

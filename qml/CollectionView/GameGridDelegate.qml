@@ -21,7 +21,7 @@ Item {
         id: mainImg
         width: parent.width
         fillMode: Image.PreserveAspectFit
-        source: imageManager.getFrontPic(tag)
+        source: imageManager?.getFrontPic(tag) ?? "qrc:/no_pic"
         cache: false
         mipmap: true
         smooth: true
