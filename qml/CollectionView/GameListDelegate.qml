@@ -68,11 +68,11 @@ Item {
             parent.verticalCenter
         anchors.right: platformText.left
         anchors.rightMargin: 10
-        opacity: owned ? 1 : 0.4
+        opacity: model?.owned ? 1 : 0.4
         font.pointSize:
             Math.min(17, parent.width/3 + 1)
         font.family: "Roboto"
-        text: title
+        text: model?.title ?? ""
     }
     CSGlowText {
         id: platformText
@@ -80,11 +80,11 @@ Item {
         anchors.rightMargin: 10
         anchors.verticalCenter:
             parent.verticalCenter
-        opacity: owned ? 1 : 0.4
+        opacity: model?.owned ? 1 : 0.4
         font.pointSize:
             Math.min(17, parent.width/3 + 1)
         font.family: "Roboto"
-        text: platform
+        text: model?.platform ?? "ps3"
     }
     MouseArea {
         id: mouseArea

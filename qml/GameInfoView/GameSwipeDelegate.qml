@@ -23,7 +23,7 @@ Pane {
 
     Component.onCompleted:  {
         root.isOwned = Qt.binding(function() {
-            return ((index < 0) || owned)
+            return ((index < 0) || model?.owned)
         })
 
         readGame()

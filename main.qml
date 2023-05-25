@@ -129,8 +129,13 @@ Window {
             }
             onSaved: (tag) => {
                          var idx = sqlTableModel.getIndexFiltered(tag)
-                         showGame(idx)
-                         destroy()
+                         if(idx >= 0) {
+                             showGame(idx)
+                             destroy()
+                         }
+                         else {
+                             closed()
+                         }
                      }
             Component.onCompleted:   view.interactive = false
             Component.onDestruction: view.interactive = true

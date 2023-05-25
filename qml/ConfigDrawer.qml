@@ -28,6 +28,8 @@ Drawer {
     function showConfirmUploadDB() {
         var obj = PopupMaker.showConfirmUploadDB(mainWindow)
         obj.accepted.connect(function() {
+            obj.close()
+            root.close()
             comManager.uploadDB()
         })
     }
@@ -35,6 +37,8 @@ Drawer {
     function showConfirmUploadCovers() {
         var obj = PopupMaker.showConfirmUploadCovers(mainWindow)
         obj.accepted.connect(function() {
+            obj.close()
+            root.close()
             comManager.uploadCovers()
         })
     }
