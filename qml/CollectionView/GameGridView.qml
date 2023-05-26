@@ -13,8 +13,8 @@ GridView {
         highlightMoveDuration = 0
     }
 
-    cellWidth: Math.min((width-5)/4, 170)
-    cellHeight: currentItem.height
+    cellWidth: Math.min((width-5)/4, 169)
+    cellHeight: cellWidth * 1.23
 
     model: sqlTableModel
 
@@ -24,6 +24,7 @@ GridView {
     }
     delegate: GameGridDelegate {
         width: root.cellWidth - 5
+        height: root.cellHeight - 5
         onClicked: root.showGameRequired(index)
     }
     onMovingChanged: root.movingChanged(moving)
