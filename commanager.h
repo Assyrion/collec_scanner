@@ -25,7 +25,6 @@ public:
 
 private:
     QFile m_coversToUploadFile;
-    QNetworkAccessManager m_manager;
     QObject* m_progressDialog{nullptr};
 
     void appendToList(const QString& fileName);

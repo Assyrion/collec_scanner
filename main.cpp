@@ -27,6 +27,8 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     auto screen = app.primaryScreen();
+    const int sceentW = screen->geometry().width();
+    const int sceentH = screen->geometry().height();
 
     /*************************** Init *****************************/
 
@@ -41,8 +43,8 @@ int main(int argc, char *argv[])
         settings.setValue("sqlTableModel/titleFilter", "");
         settings.setValue("sqlTableModel/ownedFilter", 2);
         settings.setValue("mainView/view", 0);
-        settings.setValue("window/x", screen->geometry().width()/4);
-        settings.setValue("window/y", screen->geometry().height()/4);
+        settings.setValue("window/x", sceentW/4);
+        settings.setValue("window/y", sceentH/4);
         settings.setValue("window/w", 512);
         settings.setValue("window/h", 773);
     }
@@ -58,6 +60,7 @@ int main(int argc, char *argv[])
     auto collectionView = settings.value("view").toInt();
     settings.endGroup();
 
+#ifndef Q_OS_ANDROID
     settings.beginGroup("window");
     auto windowX = settings.value("x").toInt();
     auto windowY = settings.value("y").toInt();
@@ -65,7 +68,9 @@ int main(int argc, char *argv[])
     auto windowH = settings.value("h").toInt();
     settings.endGroup();
 
-#ifndef Q_OS_ANDROID
+    windowX = qMin(windowX, sceentW - windowW);
+    windowY = qMin(windowY, sceentH - windowH);
+
     QRect rect(windowX, windowY, windowW, windowH);
 #endif
 
