@@ -26,10 +26,6 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
-    auto screen = app.primaryScreen();
-    const int sceentW = screen->geometry().width();
-    const int sceentH = screen->geometry().height();
-
     /*************************** Init *****************************/
 
     QDir dataDir(DATAPATH);
@@ -42,9 +38,13 @@ int main(int argc, char *argv[])
         settings.setValue("sqlTableModel/sortOrder", 0);
         settings.setValue("sqlTableModel/titleFilter", "");
         settings.setValue("sqlTableModel/ownedFilter", 2);
+        settings.setValue("sqlTableModel/essentialsFilter", true);
+        settings.setValue("sqlTableModel/essentialsOnly", false);
+        settings.setValue("sqlTableModel/platinumFilter", true);
+        settings.setValue("sqlTableModel/platinumOnly", false);
         settings.setValue("mainView/view", 0);
-        settings.setValue("window/x", sceentW/4);
-        settings.setValue("window/y", sceentH/4);
+        settings.setValue("window/x", 50);
+        settings.setValue("window/y", 50);
         settings.setValue("window/w", 512);
         settings.setValue("window/h", 773);
     }
@@ -54,13 +54,32 @@ int main(int argc, char *argv[])
     auto sortOrder = settings.value("sortOrder").toInt();
     auto titleFilter = settings.value("titleFilter").toString();
     auto ownedFilter = settings.value("ownedFilter", 2).toInt();
+    auto essentialsFilter = settings.value("essentialsFilter", true).toBool();
+    auto essentialsOnly = settings.value("essentialsOnly", false).toBool();
+    auto platinumFilter = settings.value("platinumFilter", true).toBool();
+    auto platinumOnly = settings.value("platinumOnly", false).toBool();
     settings.endGroup();
 
     settings.beginGroup("mainView");
     auto collectionView = settings.value("view").toInt();
     settings.endGroup();
 
-#ifndef Q_OS_ANDROID
+
+#ifdef Q_OS_ANDROID
+
+    auto screen = app.primaryScreen();
+
+#else
+
+    auto screens = QGuiApplication::screens();
+    int totalWidth = 0, totalHeight = 0;
+
+    for(auto screen : screens) {
+        QRect screenGeometry = screen->geometry();
+        totalWidth  += screenGeometry.width();
+        totalHeight += screenGeometry.height();
+    }
+
     settings.beginGroup("window");
     auto windowX = settings.value("x").toInt();
     auto windowY = settings.value("y").toInt();
@@ -68,10 +87,11 @@ int main(int argc, char *argv[])
     auto windowH = settings.value("h").toInt();
     settings.endGroup();
 
-    windowX = qMin(windowX, sceentW - windowW);
-    windowY = qMin(windowY, sceentH - windowH);
+    windowX = qMin(windowX, totalWidth  - windowW);
+    windowY = qMin(windowY, totalHeight - windowH);
 
     QRect rect(windowX, windowY, windowW, windowH);
+
 #endif
 
     /************************* Database *****************************/
@@ -122,7 +142,9 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    SqlTableModel sqlTableModel(orderBy, sortOrder, titleFilter, ownedFilter);
+    SqlTableModel sqlTableModel(orderBy, sortOrder, titleFilter, ownedFilter,
+                                essentialsFilter, platinumFilter,
+                                essentialsOnly, platinumOnly);
     ImageManager  imageManager;
     FileManager   fileManager;
 
@@ -165,6 +187,10 @@ int main(int argc, char *argv[])
         settings.setValue("sortOrder", sqlTableModel.getSortOrder());
         settings.setValue("titleFilter", sqlTableModel.getTitleFilter());
         settings.setValue("ownedFilter", sqlTableModel.getOwnedFilter());
+        settings.setValue("essentialsFilter", sqlTableModel.getEssentialsFilter());
+        settings.setValue("essentialsOnly", sqlTableModel.getEssentialsOnly());
+        settings.setValue("platinumFilter", sqlTableModel.getPlatinumFilter());
+        settings.setValue("platinumOnly", sqlTableModel.getPlatinumOnly());
         settings.endGroup();
 
         settings.beginGroup("mainView");

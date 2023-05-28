@@ -8,8 +8,19 @@
 
 #include <QDebug>
 
-SqlTableModel::SqlTableModel(int orderBy, int sortOrder, const QString& titleFilter, int ownedFilter, QObject* parent)
-    : QSqlTableModel(parent), m_titleFilter(titleFilter), m_ownedFilter(ownedFilter)
+const QString platinum_code_marker = "/P";
+const QString essentials_code_marker = "/E";
+
+SqlTableModel::SqlTableModel(int orderBy, int sortOrder, const QString& titleFilter,
+                             int ownedFilter, bool essentialsFilter, bool platinumFilter,
+                             bool essentialsOnly, bool platinumOnly, QObject* parent)
+    : QSqlTableModel(parent),
+    m_essentialsFilter(essentialsFilter),
+    m_essentialsOnly(essentialsOnly),
+    m_platinumFilter(platinumFilter),
+    m_platinumOnly(platinumOnly),
+    m_titleFilter(titleFilter),
+    m_ownedFilter(ownedFilter)
 {
     setTable("games");
     setEditStrategy(OnFieldChange);
@@ -137,6 +148,34 @@ int SqlTableModel::getIndexNotFiltered(const QString &tag)
     return idx;
 }
 
+void SqlTableModel::filterEssentials(bool filter)
+{
+    m_essentialsFilter = filter;
+
+    applyFilter();
+}
+
+void SqlTableModel::filterOnlyEssentials(bool filter)
+{
+    m_essentialsOnly = filter;
+
+    applyFilter();
+}
+
+void SqlTableModel::filterPlatinum(bool filter)
+{
+    m_platinumFilter = filter;
+
+    applyFilter();
+}
+
+void SqlTableModel::filterOnlyPlatinum(bool filter)
+{
+    m_platinumOnly = filter;
+
+    applyFilter();
+}
+
 void SqlTableModel::filterByTitle(const QString &title)
 {
     m_titleFilter = title;
@@ -147,7 +186,7 @@ void SqlTableModel::filterByTitle(const QString &title)
 void SqlTableModel::filterByOwned(bool owned, bool notOwned)
 {
     m_ownedFilter = ((owned ? 0b10 : 0)
-                | (notOwned ? 0b01 : 0)) - 1;
+                     | (notOwned ? 0b01 : 0)) - 1;
 
     applyFilter();
 }
@@ -193,6 +232,26 @@ void SqlTableModel::clearDB()
     select();
 }
 
+bool SqlTableModel::getEssentialsFilter() const
+{
+    return m_essentialsFilter;
+}
+
+bool SqlTableModel::getEssentialsOnly() const
+{
+    return m_essentialsOnly;
+}
+
+bool SqlTableModel::getPlatinumFilter() const
+{
+    return m_platinumFilter;
+}
+
+bool SqlTableModel::getPlatinumOnly() const
+{
+    return m_platinumOnly;
+}
+
 QString SqlTableModel::getTitleFilter() const
 {
     return m_titleFilter;
@@ -216,8 +275,26 @@ int SqlTableModel::getOrderBy() const
 void SqlTableModel::applyFilter()
 {
     QString cmd = QString("title LIKE \'%%1%\'").arg(m_titleFilter);
-    if(m_ownedFilter < 2) {
+
+    if(m_ownedFilter < 2)
         cmd += QString(" AND owned = %1").arg(m_ownedFilter);
-    }
+
+    if(!m_essentialsFilter)
+        cmd += QString(" AND code NOT LIKE \'%%2%\'").arg(essentials_code_marker);
+
+    if(!m_platinumFilter)
+        cmd += QString(" AND code NOT LIKE \'%%2%\'").arg(platinum_code_marker);
+
+    if(m_essentialsOnly) {
+        cmd += QString(" AND code LIKE \'%%1%\'").arg(essentials_code_marker);
+
+        if(m_platinumOnly)
+            cmd += QString(" OR code LIKE \'%%1%\'").arg(platinum_code_marker);
+
+    } else if(m_platinumOnly)
+        cmd += QString(" AND code LIKE \'%%1%\'").arg(platinum_code_marker);
+
     setFilter(cmd);
 }
+
+

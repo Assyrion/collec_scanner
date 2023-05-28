@@ -17,57 +17,73 @@
 <context>
     <name>ConfigDrawer</name>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="45"/>
+        <location filename="../qml/ConfigDrawer.qml" line="49"/>
         <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="65"/>
+        <location filename="../qml/ConfigDrawer.qml" line="69"/>
         <source>Search by name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="78"/>
+        <location filename="../qml/ConfigDrawer.qml" line="82"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="93"/>
+        <location filename="../qml/ConfigDrawer.qml" line="97"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="123"/>
+        <location filename="../qml/ConfigDrawer.qml" line="127"/>
         <source>Sort by</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="175"/>
+        <location filename="../qml/ConfigDrawer.qml" line="179"/>
         <source>Games owned</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="194"/>
+        <location filename="../qml/ConfigDrawer.qml" line="231"/>
+        <source>Essentials games</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="198"/>
         <source>Games not owned</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="225"/>
+        <location filename="../qml/ConfigDrawer.qml" line="253"/>
+        <location filename="../qml/ConfigDrawer.qml" line="295"/>
+        <source>only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="272"/>
+        <source>Platinum games</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="326"/>
         <source>clear DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="238"/>
+        <location filename="../qml/ConfigDrawer.qml" line="339"/>
         <source>file DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="251"/>
+        <location filename="../qml/ConfigDrawer.qml" line="352"/>
         <source>upload DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="264"/>
+        <location filename="../qml/ConfigDrawer.qml" line="365"/>
         <source>upload Covers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -121,47 +137,47 @@
 <context>
     <name>GameSwipeDelegate</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="142"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="146"/>
         <source>Tag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="149"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="153"/>
         <source>Index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="159"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="163"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="166"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="170"/>
         <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="173"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="177"/>
         <source>Platform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="180"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="184"/>
         <source>info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="187"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="191"/>
         <source>Publisher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="194"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="198"/>
         <source>Developer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="219"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="223"/>
         <source>In my collection</source>
         <translation type="unfinished"></translation>
     </message>

@@ -166,7 +166,7 @@ Drawer {
         rows: 2
         columns: 2
 
-        columnSpacing: 30
+        columnSpacing: 10
         rowSpacing: -5
 
         Label {
@@ -208,6 +208,143 @@ Drawer {
             }
         }
     }
+    ColumnLayout {
+        id: essentialsColumn
+
+        anchors.top: ownedGrid.bottom
+        anchors.topMargin: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        width: parent.width * 0.4
+
+        RowLayout {
+            id: essentialsRow
+
+            Layout.preferredHeight: essentialsCheckBox.checked ? 30 : 0
+            Layout.alignment: Qt.AlignLeft
+            spacing: 5
+            Label {
+                id: labelEssentials
+                verticalAlignment:
+                    Label.AlignVCenter
+                font.family: "Roboto"
+                font.pixelSize: 14
+                color: "white"
+                text: qsTr("Essentials")
+            }
+            CheckBox {
+                id: essentialsCheckBox
+
+                onClicked: {
+                    if(!checked)
+                        sqlTableModel.essentialsOnly = false
+                    sqlTableModel.filterEssentials(checked)
+                }
+                Component.onCompleted: {
+                    checked = sqlTableModel.essentialsFilter
+                }
+            }
+            Behavior on Layout.preferredHeight { NumberAnimation { duration : 100 } }
+        }
+        RowLayout {
+            id: essentialsOnlyRow
+
+            opacity : essentialsRow.Layout.preferredHeight > 0 ? 1 : 0
+            Layout.preferredHeight: 30
+            Layout.alignment: Qt.AlignRight
+            spacing: 5
+
+            enabled : essentialsCheckBox.checked
+
+            Label {
+                id: labelOnlyEssentials
+                verticalAlignment:
+                    Label.AlignVCenter
+                font.family: "Roboto"
+                font.pixelSize: 14
+                color: "white"
+                text: qsTr("only")
+            }
+            CheckBox {
+                id: essentialsOnlyCheckBox
+
+                onClicked: {
+                    sqlTableModel.filterOnlyEssentials(checked)
+                }
+                checked: sqlTableModel?.essentialsOnly
+                         && sqlTableModel?.essentialsFilter
+            }
+        }
+    }
+    ColumnLayout {
+        id: platinumColumn
+
+        anchors.top: essentialsColumn.top
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        width: parent.width * 0.4
+
+        RowLayout {
+            id: platinumRow
+
+            Layout.preferredHeight: platinumCheckBox.checked ? 30 : 0
+            Layout.alignment: Qt.AlignLeft
+            spacing: 5
+            Label {
+                id: labelPlatinum
+                verticalAlignment:
+                    Label.AlignVCenter
+                font.family: "Roboto"
+                font.pixelSize: 14
+                color: "white"
+                text: qsTr("Platinum")
+            }
+            CheckBox {
+                id: platinumCheckBox
+
+                onClicked: {
+                    if(!checked)
+                        sqlTableModel.platinumOnly = false
+                    sqlTableModel.filterPlatinum(checked)
+                }
+                Component.onCompleted: {
+                    checked = sqlTableModel.platinumFilter
+                }
+            }
+            Behavior on Layout.preferredHeight { NumberAnimation { duration : 100 } }
+        }
+        RowLayout {
+            id: platinumOnlyRow
+
+            opacity : platinumRow.Layout.preferredHeight > 0 ? 1 : 0
+            Layout.preferredHeight: 30
+            Layout.alignment: Qt.AlignRight
+            spacing: 5
+
+            enabled : platinumCheckBox.checked
+
+            Label {
+                id: labelOnlyPlatinum
+
+                verticalAlignment:
+                    Label.AlignVCenter
+                font.family: "Roboto"
+                font.pixelSize: 14
+                color: "white"
+                text: qsTr("only")
+            }
+            CheckBox {
+                id: platinumOnlyCheckBox
+
+                onClicked: {
+                    sqlTableModel.filterOnlyPlatinum(checked)
+                }
+                checked: sqlTableModel?.platinumOnly
+                         && sqlTableModel?.platinumFilter
+            }
+        }
+    }
+
     ColumnLayout {
         id: btnColumn
 
