@@ -15,6 +15,7 @@
 #include <QDebug>
 #include <QDir>
 
+#include "sortfilterproxymodel.h"
 #include "sqltablemodel.h"
 #include "imagemanager.h"
 #include "filemanager.h"
@@ -142,9 +143,12 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+    SortFilterProxyModel sortFilterProxyModel;
     SqlTableModel sqlTableModel(orderBy, sortOrder, titleFilter, ownedFilter,
                                 essentialsFilter, platinumFilter,
                                 essentialsOnly, platinumOnly);
+    sortFilterProxyModel.setSourceModel(&sqlTableModel);
+
     ImageManager  imageManager;
     FileManager   fileManager;
 
@@ -160,6 +164,8 @@ int main(int argc, char *argv[])
         {"sqlTableModel", QVariant::fromValue(&sqlTableModel)},
         {"collectionView", QVariant::fromValue(collectionView)}
     });
+
+    engine.rootContext()->setContextProperty("sortFilterProxyModel", &sortFilterProxyModel);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty()) {

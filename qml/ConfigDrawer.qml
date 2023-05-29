@@ -85,7 +85,7 @@ Drawer {
                     rightPadding: 12
 
                     onClicked: {
-                        sqlTableModel.filterByTitle(filterName.text)
+                        sortFilterProxyModel.filterByTitle(filterName.text)
                         close()
                     }
                     Layout.fillWidth: true
@@ -101,7 +101,7 @@ Drawer {
 
                     onClicked: {
                         filterName.clear()
-                        sqlTableModel.filterByTitle("")
+                        sortFilterProxyModel.filterByTitle("")
                         close()
                     }
                     Layout.fillWidth: true
@@ -135,8 +135,8 @@ Drawer {
             Layout.preferredWidth: parent.width * 0.4
 
             onModelChanged: currentIndex = 1
-            onActivated: sqlTableModel.setOrderBy(currentIndex,
-                                                  ascDescBox.currentIndex)
+            onActivated: sortFilterProxyModel.sort(currentIndex,
+                                                  ascDescBox.currentValue)
             Component.onCompleted: {
                 model = sqlTableModel.roleNamesList
                 currentIndex = sqlTableModel.orderBy
@@ -147,9 +147,15 @@ Drawer {
             Layout.alignment : Qt.AlignVCenter
             Layout.preferredWidth: parent.width * 0.35
 
-            model: ["ASC", "DESC"]
-            onActivated: sqlTableModel.setOrderBy(sortingComboBox.currentIndex,
-                                                  currentIndex)
+            textRole : "text"
+            valueRole: "value"
+            model: [{text: qsTr("ASC"),  value: Qt.AscendingOrder},
+                    {text: qsTr("DESC"), value: Qt.DescendingOrder}]
+
+            onActivated: {
+                sortFilterProxyModel.sort(sortingComboBox.currentIndex,
+                                                  currentValue)
+            }
             Component.onCompleted: {
                 currentIndex = sqlTableModel.sortOrder
             }
@@ -182,7 +188,7 @@ Drawer {
             id: ownedCheckBox
 
             onClicked: {
-                sqlTableModel.filterByOwned(checked, notOwnedCheckBox.checked)
+                sortFilterProxyModel.filterByOwned(checked, notOwnedCheckBox.checked)
             }
             Component.onCompleted: {
                 checked = (sqlTableModel.ownedFilter >= 1)
@@ -201,7 +207,7 @@ Drawer {
             id: notOwnedCheckBox
 
             onClicked: {
-                sqlTableModel.filterByOwned(ownedCheckBox.checked, checked)
+                sortFilterProxyModel.filterByOwned(ownedCheckBox.checked, checked)
             }
             Component.onCompleted: {
                 checked = !(sqlTableModel.ownedFilter % 2)
@@ -238,7 +244,7 @@ Drawer {
                 onClicked: {
                     if(!checked)
                         sqlTableModel.essentialsOnly = false
-                    sqlTableModel.filterEssentials(checked)
+                    sortFilterProxyModel.filterEssentials(checked)
                 }
                 Component.onCompleted: {
                     checked = sqlTableModel.essentialsFilter
@@ -269,7 +275,7 @@ Drawer {
                 id: essentialsOnlyCheckBox
 
                 onClicked: {
-                    sqlTableModel.filterOnlyEssentials(checked)
+                    sortFilterProxyModel.filterOnlyEssentials(checked)
                 }
                 checked: sqlTableModel?.essentialsOnly
                          && sqlTableModel?.essentialsFilter
@@ -305,7 +311,7 @@ Drawer {
                 onClicked: {
                     if(!checked)
                         sqlTableModel.platinumOnly = false
-                    sqlTableModel.filterPlatinum(checked)
+                    sortFilterProxyModel.filterPlatinum(checked)
                 }
                 Component.onCompleted: {
                     checked = sqlTableModel.platinumFilter
@@ -337,7 +343,7 @@ Drawer {
                 id: platinumOnlyCheckBox
 
                 onClicked: {
-                    sqlTableModel.filterOnlyPlatinum(checked)
+                    sortFilterProxyModel.filterOnlyPlatinum(checked)
                 }
                 checked: sqlTableModel?.platinumOnly
                          && sqlTableModel?.platinumFilter

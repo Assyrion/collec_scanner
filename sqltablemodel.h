@@ -6,7 +6,7 @@
 
 class GameData;
 class FileManager;
-class SqlTableModel : public QSqlTableModel
+class SqlTableModel : public QSqlQueryModel
 {
     Q_OBJECT
 

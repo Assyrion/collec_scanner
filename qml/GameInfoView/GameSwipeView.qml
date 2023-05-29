@@ -58,7 +58,7 @@ Item {
         }
 
         Repeater {
-            model: sqlTableModel
+            model: sqlTableModel/*sortFilterProxyModel*/
             Loader {
                 active: SwipeView.isCurrentItem
                         || SwipeView.isNextItem

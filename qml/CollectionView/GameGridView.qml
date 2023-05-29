@@ -16,7 +16,7 @@ GridView {
     cellWidth: Math.min((width-5)/4, 169)
     cellHeight: cellWidth * 1.23
 
-    model: sqlTableModel
+    model: sortFilterProxyModel
 
     ScrollBar.vertical: ScrollBar {
         policy: ScrollBar.AlwaysOn

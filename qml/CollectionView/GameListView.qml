@@ -13,7 +13,7 @@ ListView {
         highlightMoveDuration = 0
     }
 
-    model: sqlTableModel
+    model: sortFilterProxyModel
     spacing: 5
 
     ScrollBar.vertical: ScrollBar {

@@ -14,7 +14,7 @@ const QString essentials_code_marker = "/E";
 SqlTableModel::SqlTableModel(int orderBy, int sortOrder, const QString& titleFilter,
                              int ownedFilter, bool essentialsFilter, bool platinumFilter,
                              bool essentialsOnly, bool platinumOnly, QObject* parent)
-    : QSqlTableModel(parent),
+    : QSqlQueryModel(parent),
     m_essentialsFilter(essentialsFilter),
     m_essentialsOnly(essentialsOnly),
     m_platinumFilter(platinumFilter),
@@ -22,9 +22,7 @@ SqlTableModel::SqlTableModel(int orderBy, int sortOrder, const QString& titleFil
     m_titleFilter(titleFilter),
     m_ownedFilter(ownedFilter)
 {
-    setTable("games");
-    setEditStrategy(OnFieldChange);
-    this->setOrderBy(orderBy, sortOrder);
+    setQuery("SELECT * FROM games");
 
     auto rec = record();
     for(int i = 0; i < rec.count(); i++) {
@@ -57,11 +55,11 @@ QVariant SqlTableModel::data(const QModelIndex &index, int role) const
         if (role >= Qt::UserRole) {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);
-            return QSqlTableModel::data(modelIndex, Qt::DisplayRole);
+            return QSqlQueryModel::data(modelIndex, Qt::DisplayRole);
         }
     }
 
-    return QSqlTableModel::data(index, role);
+    return QSqlQueryModel::data(index, role);
 }
 
 bool SqlTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -70,17 +68,17 @@ bool SqlTableModel::setData(const QModelIndex &index, const QVariant &value, int
         if (role >= Qt::UserRole) {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);
-            return QSqlTableModel::setData(modelIndex, value, Qt::EditRole);
+            return QSqlQueryModel::setData(modelIndex, value, Qt::EditRole);
         }
     }
 
-    return QSqlTableModel::setData(index, value, role);
+    return QSqlQueryModel::setData(index, value, role);
 }
 
 void SqlTableModel::remove(int row)
 {
     removeRow(row);
-    select();
+//    select();
 }
 
 void SqlTableModel::insert(GameData* game)
@@ -98,13 +96,13 @@ void SqlTableModel::insert(GameData* game)
     rec.setValue("info", game->info);
     rec.setValue("owned", game->owned ? 1 : 0);
 
-    insertRecord(-1, rec);
+//    insertRecord(-1, rec);
 
     // not clean but no other solution found to make it quick
-    auto savedFilter = filter();
-    setFilter("tag = \'" + game->tag + "\'");
-    select();
-    setFilter(savedFilter);
+//    auto savedFilter = filter();
+//    setFilter("tag = \'" + game->tag + "\'");
+//    select();
+//    setFilter(savedFilter);
 }
 
 void SqlTableModel::update(int row, GameData* game)
@@ -122,10 +120,10 @@ void SqlTableModel::update(int row, GameData* game)
     setData(index(row, 7), game->owned);
 
     // not clean but no other solution found to make it quick
-    auto savedFilter = filter();
-    setFilter("tag = \'" + game->tag + "\'");
-    select();
-    setFilter(savedFilter);
+//    auto savedFilter = filter();
+//    setFilter("tag = \'" + game->tag + "\'");
+//    select();
+//    setFilter(savedFilter);
 }
 
 int SqlTableModel::getIndexFiltered(const QString& tag)
@@ -140,12 +138,12 @@ int SqlTableModel::getIndexFiltered(const QString& tag)
 
 int SqlTableModel::getIndexNotFiltered(const QString &tag)
 {
-    auto savedFilter = filter();
-    setFilter("");
-    int idx = getIndexFiltered(tag);
-    setFilter(savedFilter);
+//    auto savedFilter = filter();
+//    setFilter("");
+//    int idx = getIndexFiltered(tag);
+//    setFilter(savedFilter);
 
-    return idx;
+    return 0;
 }
 
 void SqlTableModel::filterEssentials(bool filter)
@@ -227,9 +225,9 @@ void SqlTableModel::saveDBToFile(FileManager* fileManager)
 
 void SqlTableModel::clearDB()
 {
-    QSqlQuery query;
-    query.exec(QString("DELETE FROM %1").arg(tableName()));
-    select();
+//    QSqlQuery query;
+//    query.exec(QString("DELETE FROM %1").arg(tableName()));
+//    select();
 }
 
 bool SqlTableModel::getEssentialsFilter() const
@@ -294,7 +292,33 @@ void SqlTableModel::applyFilter()
     } else if(m_platinumOnly)
         cmd += QString(" AND code LIKE \'%%1%\'").arg(platinum_code_marker);
 
-    setFilter(cmd);
+//    setFilter(cmd);
+////    QString cmd = QString("title LIKE \'%%1%\'").arg(m_titleFilter);
+
+//    m_filterModel->setFilterKeyColumn(1);
+//    m_filterModel->setFilterFixedString(m_titleFilter);
+
+////    if(m_ownedFilter < 2)
+////        cmd += QString(" AND owned = %1").arg(m_ownedFilter);
+
+//    if(!m_essentialsFilter) {
+//        m_filterModel->setFilterKeyColumn(5);
+//        m_filterModel->setFilterRegularExpression("^(?!.*\\/E).*");
+//    }
+
+//    if(!m_platinumFilter) {
+//        m_filterModel->setFilterKeyColumn(5);
+//        m_filterModel->setFilterRegularExpression("^(?!.*\\/P).*");
+//    }
+
+//    if(m_essentialsOnly && m_platinumOnly) {
+//        m_filterModel->setFilterRegularExpression(".*\\/[EP].*");
+//    } else if(m_essentialsOnly) {
+//        m_filterModel->setFilterRegularExpression(".*\\/E.*");
+//    } else if(m_platinumOnly)
+//        m_filterModel->setFilterRegularExpression(".*\\/P.*");
+
+////    setFilter(cmd);
 }
 
 
