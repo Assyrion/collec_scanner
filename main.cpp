@@ -143,10 +143,10 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    SortFilterProxyModel sortFilterProxyModel;
-    SqlTableModel sqlTableModel(orderBy, sortOrder, titleFilter, ownedFilter,
-                                essentialsFilter, platinumFilter,
-                                essentialsOnly, platinumOnly);
+    SortFilterProxyModel sortFilterProxyModel(orderBy, sortOrder, titleFilter, ownedFilter,
+                                              essentialsFilter, platinumFilter,
+                                              essentialsOnly, platinumOnly);
+    SqlTableModel sqlTableModel;
     sortFilterProxyModel.setSourceModel(&sqlTableModel);
 
     ImageManager  imageManager;
@@ -189,14 +189,14 @@ int main(int argc, char *argv[])
 
     auto saveSettings = [&]() {
         settings.beginGroup("sqlTableModel");
-        settings.setValue("orderBy", sqlTableModel.getOrderBy());
-        settings.setValue("sortOrder", sqlTableModel.getSortOrder());
-        settings.setValue("titleFilter", sqlTableModel.getTitleFilter());
-        settings.setValue("ownedFilter", sqlTableModel.getOwnedFilter());
-        settings.setValue("essentialsFilter", sqlTableModel.getEssentialsFilter());
-        settings.setValue("essentialsOnly", sqlTableModel.getEssentialsOnly());
-        settings.setValue("platinumFilter", sqlTableModel.getPlatinumFilter());
-        settings.setValue("platinumOnly", sqlTableModel.getPlatinumOnly());
+        settings.setValue("orderBy", sortFilterProxyModel.getOrderBy());
+        settings.setValue("sortOrder", sortFilterProxyModel.getSortOrder());
+        settings.setValue("titleFilter", sortFilterProxyModel.getTitleFilter());
+        settings.setValue("ownedFilter", sortFilterProxyModel.getOwnedFilter());
+        settings.setValue("essentialsFilter", sortFilterProxyModel.getEssentialsFilter());
+        settings.setValue("essentialsOnly", sortFilterProxyModel.getEssentialsOnly());
+        settings.setValue("platinumFilter", sortFilterProxyModel.getPlatinumFilter());
+        settings.setValue("platinumOnly", sortFilterProxyModel.getPlatinumOnly());
         settings.endGroup();
 
         settings.beginGroup("mainView");

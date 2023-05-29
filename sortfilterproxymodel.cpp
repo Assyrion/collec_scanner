@@ -1,89 +1,166 @@
 #include "sortfilterproxymodel.h"
 
-SortFilterProxyModel::SortFilterProxyModel(QObject *parent)
-    : QSortFilterProxyModel(parent)
+const QString platinum_code_marker = "/P";
+const QString essentials_code_marker = "/E";
+
+SortFilterProxyModel::SortFilterProxyModel(int orderBy, int sortOrder, const QString &titleFilter, int ownedFilter, bool essentialsFilter, bool platinumFilter, bool essentialsOnly, bool platinumOnly, QObject *parent)
+    : QSortFilterProxyModel(parent),
+    m_essentialsFilter(essentialsFilter),
+    m_essentialsOnly(essentialsOnly),
+    m_platinumFilter(platinumFilter),
+    m_platinumOnly(platinumOnly),
+    m_titleFilter(titleFilter),
+    m_ownedFilter(ownedFilter)
 {
+    setFilterKeyColumn(0);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     setSortCaseSensitivity(Qt::CaseInsensitive);
+
+    sort(orderBy, Qt::SortOrder(sortOrder));
+    invalidateFilter();
 }
 
-void SortFilterProxyModel::setOrderBy(int column, int order)
+void SortFilterProxyModel::sort(int column, Qt::SortOrder order)
 {
-    qDebug() << column << order;
-    if (column >= 0) {
-        sort(column, Qt::SortOrder(order));
-    }
-}
+    m_orderBy = column;
+    m_sortOrder = order;
 
+    QSortFilterProxyModel::sort(column, order);
+}
 
 void SortFilterProxyModel::filterEssentials(bool filter)
 {
-    setFilterKeyColumn(5);
+    m_essentialsFilter = filter;
 
-    if(!filter)
-        setFilterRegularExpression("^(?!.*\\/E).*");
-    else
-        setFilterRegularExpression("");
-
-//    m_essentialsFilter = filter;
-
-//    applyFilter();
+    invalidateFilter();
 }
 
 void SortFilterProxyModel::filterOnlyEssentials(bool filter)
 {
-//    m_essentialsOnly = filter;
+    m_essentialsOnly = filter;
 
-//    applyFilter();
+    invalidateFilter();
 }
 
 void SortFilterProxyModel::filterPlatinum(bool filter)
 {
-    setFilterKeyColumn(5);
+    m_platinumFilter = filter;
 
-    if(!filter)
-        setFilterRegularExpression("^(?!.*\\/P).*");
-    else
-        setFilterRegularExpression("");
-//    m_platinumFilter = filter;
-
-//    applyFilter();
+    invalidateFilter();
 }
 
 void SortFilterProxyModel::filterOnlyPlatinum(bool filter)
 {
-    setFilterKeyColumn(5);
+    m_platinumOnly = filter;
 
-//    m_platinumOnly = filter;
-
-//    applyFilter();
+    invalidateFilter();
 }
 
 void SortFilterProxyModel::filterByTitle(const QString &title)
 {
-    setFilterKeyColumn(1);
+    m_titleFilter = title;
 
-    setFilterFixedString(/*m_titleFilter*/title);
-//    m_titleFilter = title;
-
-//    applyFilter();
+    invalidateFilter();
 }
 
 void SortFilterProxyModel::filterByOwned(bool owned, bool notOwned)
 {
-    setFilterKeyColumn(7);
-
-    /*m_ownedFilter*/int i = ((owned ? 0b10 : 0)
+    m_ownedFilter = ((owned ? 0b10 : 0)
                      | (notOwned ? 0b01 : 0)) - 1;
 
-    if(i < 2)
-        setFilterRegularExpression(QString::number(i));
-    else
-        setFilterRegularExpression("");
-
-//    applyFilter();
+    invalidateFilter();
 }
 
+int SortFilterProxyModel::getIndexFiltered(const QString& tag)
+{
+    auto list = match(index(0, 0), Qt::UserRole + 1, tag);
+    if(!list.isEmpty()) {
+        return list.first().row();
+    }
+
+    return -1;
+}
+
+int SortFilterProxyModel::getIndexNotFiltered(const QString &tag)
+{
+    setFilterWildcard("*");
+    int idx = getIndexFiltered(tag);
+    invalidateFilter();
+
+    return idx;
+}
+
+bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+{
+    QModelIndex titleIndex= sourceModel()->index(sourceRow, 1, sourceParent);
+    QString title= sourceModel()->data(titleIndex).toString();
+    bool titleCheck = title.contains(m_titleFilter);
+
+    QModelIndex codeIndex= sourceModel()->index(sourceRow, 5, sourceParent);
+    QString code = sourceModel()->data(codeIndex).toString();
+    bool codeCheck = true;
+
+    if(m_essentialsFilter) {
+        if(m_essentialsOnly) {
+            codeCheck &= code.endsWith(essentials_code_marker);
+        }
+    } else {
+        codeCheck &= !code.endsWith(essentials_code_marker);
+    }
+    if(m_platinumFilter) {
+        if(m_platinumOnly) {
+            codeCheck &= code.endsWith(platinum_code_marker);
+        }
+    } else {
+        codeCheck &= !code.endsWith(platinum_code_marker);
+    }
+
+    QModelIndex ownedIndex= sourceModel()->index(sourceRow, 7, sourceParent);
+    int owned = sourceModel()->data(ownedIndex).toInt();
+    bool ownedCheck = (m_ownedFilter == owned) || (m_ownedFilter >= 2);
+
+    return titleCheck && codeCheck && ownedCheck;
+}
+
+bool SortFilterProxyModel::getEssentialsFilter() const
+{
+    return m_essentialsFilter;
+}
+
+bool SortFilterProxyModel::getEssentialsOnly() const
+{
+    return m_essentialsOnly;
+}
+
+bool SortFilterProxyModel::getPlatinumFilter() const
+{
+    return m_platinumFilter;
+}
+
+bool SortFilterProxyModel::getPlatinumOnly() const
+{
+    return m_platinumOnly;
+}
+
+QString SortFilterProxyModel::getTitleFilter() const
+{
+    return m_titleFilter;
+}
+
+int SortFilterProxyModel::getOwnedFilter() const
+{
+    return m_ownedFilter;
+}
+
+int SortFilterProxyModel::getSortOrder() const
+{
+    return m_sortOrder;
+}
+
+int SortFilterProxyModel::getOrderBy() const
+{
+    return m_orderBy;
+}
 //QVariant SortFilterProxyModel::headerData(int section, Qt::Orientation orientation, int role) const
 //{
 //    // FIXME: Implement me!

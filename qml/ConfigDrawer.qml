@@ -68,7 +68,7 @@ Drawer {
 
                 placeholderText: qsTr("Search by name")
                 Component.onCompleted: {
-                    text = sqlTableModel.titleFilter
+                    text = sortFilterProxyModel.titleFilter
                 }
             }
             RowLayout {
@@ -139,7 +139,7 @@ Drawer {
                                                   ascDescBox.currentValue)
             Component.onCompleted: {
                 model = sqlTableModel.roleNamesList
-                currentIndex = sqlTableModel.orderBy
+                currentIndex = sortFilterProxyModel.orderBy
             }
         }
         ComboBox {
@@ -157,7 +157,7 @@ Drawer {
                                                   currentValue)
             }
             Component.onCompleted: {
-                currentIndex = sqlTableModel.sortOrder
+                currentIndex = sortFilterProxyModel.sortOrder
             }
         }
     }
@@ -191,7 +191,7 @@ Drawer {
                 sortFilterProxyModel.filterByOwned(checked, notOwnedCheckBox.checked)
             }
             Component.onCompleted: {
-                checked = (sqlTableModel.ownedFilter >= 1)
+                checked = (sortFilterProxyModel.ownedFilter >= 1)
             }
         }
         Label {
@@ -210,7 +210,7 @@ Drawer {
                 sortFilterProxyModel.filterByOwned(ownedCheckBox.checked, checked)
             }
             Component.onCompleted: {
-                checked = !(sqlTableModel.ownedFilter % 2)
+                checked = !(sortFilterProxyModel.ownedFilter % 2)
             }
         }
     }
@@ -243,11 +243,11 @@ Drawer {
 
                 onClicked: {
                     if(!checked)
-                        sqlTableModel.essentialsOnly = false
+                        sortFilterProxyModel.filterOnlyEssentials(false)
                     sortFilterProxyModel.filterEssentials(checked)
                 }
                 Component.onCompleted: {
-                    checked = sqlTableModel.essentialsFilter
+                    checked = sortFilterProxyModel.essentialsFilter
                 }
             }
             Behavior on Layout.preferredHeight { NumberAnimation { duration : 100 } }
@@ -277,8 +277,8 @@ Drawer {
                 onClicked: {
                     sortFilterProxyModel.filterOnlyEssentials(checked)
                 }
-                checked: sqlTableModel?.essentialsOnly
-                         && sqlTableModel?.essentialsFilter
+                checked: sortFilterProxyModel?.essentialsOnly
+                         && sortFilterProxyModel?.essentialsFilter
             }
         }
     }
@@ -310,11 +310,11 @@ Drawer {
 
                 onClicked: {
                     if(!checked)
-                        sqlTableModel.platinumOnly = false
+                        sortFilterProxyModel.filterOnlyPlatinum(false)
                     sortFilterProxyModel.filterPlatinum(checked)
                 }
                 Component.onCompleted: {
-                    checked = sqlTableModel.platinumFilter
+                    checked = sortFilterProxyModel.platinumFilter
                 }
             }
             Behavior on Layout.preferredHeight { NumberAnimation { duration : 100 } }
@@ -345,8 +345,8 @@ Drawer {
                 onClicked: {
                     sortFilterProxyModel.filterOnlyPlatinum(checked)
                 }
-                checked: sqlTableModel?.platinumOnly
-                         && sqlTableModel?.platinumFilter
+                checked: sortFilterProxyModel?.platinumOnly
+                         && sortFilterProxyModel?.platinumFilter
             }
         }
     }

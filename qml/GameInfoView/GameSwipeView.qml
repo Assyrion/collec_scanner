@@ -28,7 +28,7 @@ Item {
         var savedTag = root.currentItem.currentTag // index may have changed after edition
         root.currentItem.saveGame()
 
-        var idx = sqlTableModel.getIndexFiltered(savedTag) // get the new index
+        var idx = sortFilterProxyModel.getIndexFiltered(savedTag) // get the new index
         if(idx >= 0)
             root.currentIndex = idx
         else
@@ -58,7 +58,7 @@ Item {
         }
 
         Repeater {
-            model: sqlTableModel/*sortFilterProxyModel*/
+            model: sortFilterProxyModel
             Loader {
                 active: SwipeView.isCurrentItem
                         || SwipeView.isNextItem

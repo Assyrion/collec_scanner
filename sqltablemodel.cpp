@@ -8,19 +8,8 @@
 
 #include <QDebug>
 
-const QString platinum_code_marker = "/P";
-const QString essentials_code_marker = "/E";
-
-SqlTableModel::SqlTableModel(int orderBy, int sortOrder, const QString& titleFilter,
-                             int ownedFilter, bool essentialsFilter, bool platinumFilter,
-                             bool essentialsOnly, bool platinumOnly, QObject* parent)
-    : QSqlQueryModel(parent),
-    m_essentialsFilter(essentialsFilter),
-    m_essentialsOnly(essentialsOnly),
-    m_platinumFilter(platinumFilter),
-    m_platinumOnly(platinumOnly),
-    m_titleFilter(titleFilter),
-    m_ownedFilter(ownedFilter)
+SqlTableModel::SqlTableModel(QObject* parent)
+    : QSqlQueryModel(parent)
 {
     setQuery("SELECT * FROM games");
 
@@ -29,7 +18,6 @@ SqlTableModel::SqlTableModel(int orderBy, int sortOrder, const QString& titleFil
         m_roles.insert(Qt::UserRole + i + 1, rec.fieldName(i).toUtf8());
     }
 
-    applyFilter();
 }
 
 SqlTableModel::~SqlTableModel()
@@ -81,49 +69,66 @@ void SqlTableModel::remove(int row)
 //    select();
 }
 
+void SqlTableModel::update(GameData* game)
+{
+    if(!game)
+        return;
+
+    QString queryString = "UPDATE games SET "
+                          "title = :title, "
+                          "platform = :platform, "
+                          "publisher = :publisher, "
+                          "developer = :developer, "
+                          "code = :code, "
+                          "info = :info, "
+                          "owned = :owned "
+                          "WHERE tag = :tag";
+
+    QSqlQuery query;
+    query.prepare(queryString);
+    query.bindValue(":title", game->title);
+    query.bindValue(":platform", game->platform);
+    query.bindValue(":publisher", game->publisher);
+    query.bindValue(":developer", game->developer);
+    query.bindValue(":code", game->code);
+    query.bindValue(":info", game->info);
+    query.bindValue(":owned", game->owned);
+    query.bindValue(":tag", game->tag);
+
+    query.exec();
+
+    setQuery("SELECT * FROM games");
+}
+
 void SqlTableModel::insert(GameData* game)
 {
     if(!game)
         return;
 
-    QSqlRecord rec = record();
-    rec.setValue("tag", game->tag);
-    rec.setValue("title", game->title);
-    rec.setValue("platform", game->platform);
-    rec.setValue("publisher", game->publisher);
-    rec.setValue("developer", game->developer);
-    rec.setValue("code", game->code);
-    rec.setValue("info", game->info);
-    rec.setValue("owned", game->owned ? 1 : 0);
+    QString queryString = "INSERT INTO games VALUES ("
+                          "tag = :tag, "
+                          "title = :title, "
+                          "platform = :platform, "
+                          "publisher = :publisher, "
+                          "developer = :developer, "
+                          "code = :code, "
+                          "info = :info, "
+                          "owned = :owned)";
 
-//    insertRecord(-1, rec);
+    QSqlQuery query;
+    query.prepare(queryString);
+    query.bindValue(":tag", game->tag);
+    query.bindValue(":title", game->title);
+    query.bindValue(":platform", game->platform);
+    query.bindValue(":publisher", game->publisher);
+    query.bindValue(":developer", game->developer);
+    query.bindValue(":code", game->code);
+    query.bindValue(":info", game->info);
+    query.bindValue(":owned", game->owned);
 
-    // not clean but no other solution found to make it quick
-//    auto savedFilter = filter();
-//    setFilter("tag = \'" + game->tag + "\'");
-//    select();
-//    setFilter(savedFilter);
-}
+    query.exec();
 
-void SqlTableModel::update(int row, GameData* game)
-{
-    if(!game || row >= rowCount())
-        return;
-
-    setData(index(row, 0), game->tag);
-    setData(index(row, 1), game->title);
-    setData(index(row, 2), game->platform);
-    setData(index(row, 3), game->publisher);
-    setData(index(row, 4), game->developer);
-    setData(index(row, 5), game->code);
-    setData(index(row, 6), game->info);
-    setData(index(row, 7), game->owned);
-
-    // not clean but no other solution found to make it quick
-//    auto savedFilter = filter();
-//    setFilter("tag = \'" + game->tag + "\'");
-//    select();
-//    setFilter(savedFilter);
+    setQuery("SELECT * FROM games");
 }
 
 int SqlTableModel::getIndexFiltered(const QString& tag)
@@ -146,67 +151,6 @@ int SqlTableModel::getIndexNotFiltered(const QString &tag)
     return 0;
 }
 
-void SqlTableModel::filterEssentials(bool filter)
-{
-    m_essentialsFilter = filter;
-
-    applyFilter();
-}
-
-void SqlTableModel::filterOnlyEssentials(bool filter)
-{
-    m_essentialsOnly = filter;
-
-    applyFilter();
-}
-
-void SqlTableModel::filterPlatinum(bool filter)
-{
-    m_platinumFilter = filter;
-
-    applyFilter();
-}
-
-void SqlTableModel::filterOnlyPlatinum(bool filter)
-{
-    m_platinumOnly = filter;
-
-    applyFilter();
-}
-
-void SqlTableModel::filterByTitle(const QString &title)
-{
-    m_titleFilter = title;
-
-    applyFilter();
-}
-
-void SqlTableModel::filterByOwned(bool owned, bool notOwned)
-{
-    m_ownedFilter = ((owned ? 0b10 : 0)
-                     | (notOwned ? 0b01 : 0)) - 1;
-
-    applyFilter();
-}
-
-void SqlTableModel::removeFilter()
-{
-    m_titleFilter = "";
-    m_ownedFilter = 2;
-
-    applyFilter();
-}
-
-void SqlTableModel::setOrderBy(int column, int order)
-{
-    m_orderBy = column;
-    m_sortOrder = order;
-
-    // Sort the model by the specified role and order
-    if (column >= 0) {
-        sort(column, Qt::SortOrder(order));
-    }
-}
 
 void SqlTableModel::saveDBToFile(FileManager* fileManager)
 {
@@ -230,95 +174,7 @@ void SqlTableModel::clearDB()
 //    select();
 }
 
-bool SqlTableModel::getEssentialsFilter() const
-{
-    return m_essentialsFilter;
-}
 
-bool SqlTableModel::getEssentialsOnly() const
-{
-    return m_essentialsOnly;
-}
 
-bool SqlTableModel::getPlatinumFilter() const
-{
-    return m_platinumFilter;
-}
-
-bool SqlTableModel::getPlatinumOnly() const
-{
-    return m_platinumOnly;
-}
-
-QString SqlTableModel::getTitleFilter() const
-{
-    return m_titleFilter;
-}
-
-int SqlTableModel::getOwnedFilter() const
-{
-    return m_ownedFilter;
-}
-
-int SqlTableModel::getSortOrder() const
-{
-    return m_sortOrder;
-}
-
-int SqlTableModel::getOrderBy() const
-{
-    return m_orderBy;
-}
-
-void SqlTableModel::applyFilter()
-{
-    QString cmd = QString("title LIKE \'%%1%\'").arg(m_titleFilter);
-
-    if(m_ownedFilter < 2)
-        cmd += QString(" AND owned = %1").arg(m_ownedFilter);
-
-    if(!m_essentialsFilter)
-        cmd += QString(" AND code NOT LIKE \'%%2%\'").arg(essentials_code_marker);
-
-    if(!m_platinumFilter)
-        cmd += QString(" AND code NOT LIKE \'%%2%\'").arg(platinum_code_marker);
-
-    if(m_essentialsOnly) {
-        cmd += QString(" AND code LIKE \'%%1%\'").arg(essentials_code_marker);
-
-        if(m_platinumOnly)
-            cmd += QString(" OR code LIKE \'%%1%\'").arg(platinum_code_marker);
-
-    } else if(m_platinumOnly)
-        cmd += QString(" AND code LIKE \'%%1%\'").arg(platinum_code_marker);
-
-//    setFilter(cmd);
-////    QString cmd = QString("title LIKE \'%%1%\'").arg(m_titleFilter);
-
-//    m_filterModel->setFilterKeyColumn(1);
-//    m_filterModel->setFilterFixedString(m_titleFilter);
-
-////    if(m_ownedFilter < 2)
-////        cmd += QString(" AND owned = %1").arg(m_ownedFilter);
-
-//    if(!m_essentialsFilter) {
-//        m_filterModel->setFilterKeyColumn(5);
-//        m_filterModel->setFilterRegularExpression("^(?!.*\\/E).*");
-//    }
-
-//    if(!m_platinumFilter) {
-//        m_filterModel->setFilterKeyColumn(5);
-//        m_filterModel->setFilterRegularExpression("^(?!.*\\/P).*");
-//    }
-
-//    if(m_essentialsOnly && m_platinumOnly) {
-//        m_filterModel->setFilterRegularExpression(".*\\/[EP].*");
-//    } else if(m_essentialsOnly) {
-//        m_filterModel->setFilterRegularExpression(".*\\/E.*");
-//    } else if(m_platinumOnly)
-//        m_filterModel->setFilterRegularExpression(".*\\/P.*");
-
-////    setFilter(cmd);
-}
 
 

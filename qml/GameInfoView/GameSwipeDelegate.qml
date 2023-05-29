@@ -22,6 +22,7 @@ Pane {
         GameDataMaker.createEmpty()
 
     Component.onCompleted:  {
+        console.log(index)
         root.isOwned = Qt.binding(function() {
             return ((index < 0) || model?.owned)
         })
@@ -81,7 +82,7 @@ Pane {
             sqlTableModel.insert(currentGame)
         }
         else {
-            sqlTableModel.update(index, currentGame)
+            sqlTableModel.update(currentGame)
         }
     }
 
