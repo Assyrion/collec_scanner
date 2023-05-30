@@ -138,28 +138,27 @@ int main(int argc, char *argv[])
 
     /*************************** QML *******************************/
 
-    GameDataMaker::registerQMLTypes();
     QZXing::registerQMLTypes();
-
-    QQmlApplicationEngine engine;
-
-    SortFilterProxyModel sortFilterProxyModel(orderBy, sortOrder, titleFilter, ownedFilter,
-                                              essentialsFilter, platinumFilter,
-                                              essentialsOnly, platinumOnly);
-
-    ImageManager  imageManager;
-    FileManager   fileManager;
-
-    engine.addImageProvider("coverProvider", &imageManager);
-
-    SqlTableModel sqlTableModel;
-    sortFilterProxyModel.setSourceModel(&sqlTableModel);
-
+    GameDataMaker::registerQMLTypes();
     qmlRegisterType<ComManager>("ComManager", 1, 0, "ComManager");
     qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");
     qmlRegisterType<ImageManager>("ImageManager", 1, 0, "ImageManager");
     qmlRegisterType<SqlTableModel>("SQLTableModel", 1, 0, "SQLTableModel");
 
+    QQmlApplicationEngine engine;
+
+    SqlTableModel sqlTableModel;
+    ImageManager  imageManager;
+    FileManager   fileManager;
+    CoverProvider coverProvider(&imageManager);
+    SortFilterProxyModel sortFilterProxyModel(orderBy, sortOrder, titleFilter, ownedFilter,
+                                              essentialsFilter, platinumFilter,
+                                              essentialsOnly, platinumOnly);
+    sortFilterProxyModel.setSourceModel(&sqlTableModel);
+
+    engine.rootContext()->setContextProperty("sortFilterProxyModel",
+                                             &sortFilterProxyModel);
+    engine.addImageProvider("coverProvider", &coverProvider);
     engine.setInitialProperties({
         {"comManager", QVariant::fromValue(&comManager)},
         {"fileManager", QVariant::fromValue(&fileManager)},
@@ -167,8 +166,6 @@ int main(int argc, char *argv[])
         {"sqlTableModel", QVariant::fromValue(&sqlTableModel)},
         {"collectionView", QVariant::fromValue(collectionView)}
     });
-
-    engine.rootContext()->setContextProperty("sortFilterProxyModel", &sortFilterProxyModel);
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty()) {

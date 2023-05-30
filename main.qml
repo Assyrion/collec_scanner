@@ -128,7 +128,7 @@ Window {
                 destroy()
             }
             onSaved: (tag) => {
-                         var idx = sqlTableModel.getIndexFiltered(tag)
+                         var idx = sortFilterProxyModel.getIndexFiltered(tag)
                          if(idx >= 0) {
                              showGame(idx)
                              destroy()

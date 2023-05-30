@@ -59,38 +59,45 @@ Pane {
                                      gameCoverRow.backCoverData)
             comManager.handleBackCover(currentTag)
         }
-        var arr = [currentTag,
-                   titleInfo.entry,
-                   platformInfo.entry,
-                   publisherInfo.entry,
-                   developerInfo.entry,
-                   codeInfo.entry,
-                   infoInfo.entry,
-                   ownedInfo.entry]
 
-        currentGame = GameDataMaker.createComplete(arr)
         if(index < 0) {
-            sqlTableModel.insert(currentGame)
+            sqlTableModel.insertRow(0)
+            sqlTableModel.setData(sqlTableModel.index(0, 0), currentTag)
+            sqlTableModel.setData(sqlTableModel.index(0, 1), titleInfo.entry)
+            sqlTableModel.setData(sqlTableModel.index(0, 2), platformInfo.entry)
+            sqlTableModel.setData(sqlTableModel.index(0, 3), publisherInfo.entry)
+            sqlTableModel.setData(sqlTableModel.index(0, 4), developerInfo.entry)
+            sqlTableModel.setData(sqlTableModel.index(0, 5), codeInfo.entry)
+            sqlTableModel.setData(sqlTableModel.index(0, 6), infoInfo.entry)
+            sqlTableModel.setData(sqlTableModel.index(0, 7), ownedInfo.entry)
+            sqlTableModel.submitAll()
         }
         else {
-            sqlTableModel.update(currentGame)
+            model.title = titleInfo.entry
+            model.platform = platformInfo.entry
+            model.publisher = publisherInfo.entry
+            model.developer = developerInfo.entry
+            model.code = codeInfo.entry
+            model.info = infoInfo.entry
         }
     }
 
     function removeGame() {
         imageManager.removePics(currentTag)
-        sqlTableModel.remove(index)
+        sortFilterProxyModel.removeRow(index)
     }
 
     function cancelGame() {
         for (var i = 0; i < dataColumn.children.length; i++) {
             dataColumn.children[i].reset()
         }
-        reloadCovers()
+        gameCoverRow.frontCoverUrl =
+            ("image://coverProvider/%1.front").arg(currentTag)
+        gameCoverRow.backCoverUrl =
+            ("image://coverProvider/%1.back").arg(currentTag)
     }
 
-    function setGameAsOwned()
-    {
+    function setGameAsOwned() {
         ownedCheckBox.checked = true
     }
 

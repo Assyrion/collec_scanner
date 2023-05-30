@@ -42,11 +42,11 @@ Item {
         anchors.fill: parent
         onBarcodeFound: (barcode) => {
                             barcodeScanner.stopScanning()
-                            var idx = sqlTableModel.getIndexFiltered(barcode)
+                            var idx = sortFilterProxyModel.getIndexFiltered(barcode)
                             if(idx >= 0) {
                                 showGameRequired(idx)
                             } else {
-                                idx = sqlTableModel.getIndexNotFiltered(barcode)
+                                idx = sortFilterProxyModel.getIndexNotFiltered(barcode)
                                 if(idx >= 0) {
                                     showFilteredGame(barcode, idx)
                                 } else {

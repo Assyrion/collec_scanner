@@ -4,11 +4,16 @@
 #include "global.h"
 #include "imagemanager.h"
 
-ImageManager::ImageManager()
-    : QQuickImageProvider(QQuickImageProvider::Image)
+ImageManager::ImageManager(QObject* parent)
+    : QObject(parent)
 {}
 
-QImage ImageManager::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
+CoverProvider::CoverProvider(ImageManager* manager)
+    : QQuickImageProvider(QQuickImageProvider::Image),
+    m_coverManager(manager)
+{}
+
+QImage CoverProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
     Q_UNUSED(size)
     Q_UNUSED(requestedSize)
@@ -17,11 +22,11 @@ QImage ImageManager::requestImage(const QString &id, QSize *size, const QSize &r
     QString right = id.split('.')[1];
 
     if(right == "front") {
-        return QImage(getFrontPic(left));
+        return QImage(m_coverManager->getFrontPic(left));
     }
 
     if(right == "back") {
-        return QImage(getBackPic(left));
+        return QImage(m_coverManager->getBackPic(left));
     }
 
     return QImage(":/no_pic");
@@ -52,15 +57,15 @@ QString ImageManager::getPic(const QString& fileName) const
     return ":/no_pic";
 }
 
-//void ImageManager::saveFrontPic(const QString& tag, const QImage& pic) const
-//{
-//    savePic(QString("%1_front.png").arg(tag), pic);
-//}
+void ImageManager::saveFrontPic(const QString& tag, const QImage& pic) const
+{
+    savePic(QString("%1_front.png").arg(tag), pic);
+}
 
-//void ImageManager::saveBackPic(const QString& tag, const QImage& pic) const
-//{
-//    savePic(QString("%1_back.png").arg(tag), pic);
-//}
+void ImageManager::saveBackPic(const QString& tag, const QImage& pic) const
+{
+    savePic(QString("%1_back.png").arg(tag), pic);
+}
 
 void ImageManager::savePic(const QString& fileName, const QImage& pic) const
 {
@@ -70,30 +75,28 @@ void ImageManager::savePic(const QString& fileName, const QImage& pic) const
             + sep + PICPATH
             + sep + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
 #else
-    QString path = PICPATH_ABS
-            + '/' + fileName;
+    QString path = PICPATH_ABS + fileName;
 #endif
     if(!pic.isNull()) {
         pic.save(path);
     }
 }
 
-//void ImageManager::removePics(const QString &tag) const
-//{
-//    removePic(QString("%1_front.png").arg(tag));
-//    removePic(QString("%1_back.png").arg(tag));
-//}
+void ImageManager::removePics(const QString &tag) const
+{
+    removePic(QString("%1_front.png").arg(tag));
+    removePic(QString("%1_back.png").arg(tag));
+}
 
 void ImageManager::removePic(const QString &fileName) const
 {
-    const auto sep = QDir::separator();
 #ifdef Q_OS_ANDROID
+    const auto sep = QDir::separator();
     QString path = QDir::currentPath()
             + sep + PICPATH
             + sep + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
 #else
-    QString path = PICPATH_ABS
-            + sep + fileName;
+    QString path = PICPATH_ABS + fileName;
 #endif
     QFile::remove(path);
 }

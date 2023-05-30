@@ -6,7 +6,7 @@
 
 class GameData;
 class FileManager;
-class SqlTableModel : public QSqlQueryModel
+class SqlTableModel : public QSqlTableModel
 {
     Q_OBJECT
 
@@ -31,9 +31,13 @@ public:
     Q_INVOKABLE void remove(int row);
     Q_INVOKABLE void clearDB();
 
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) Q_DECL_OVERRIDE;
+
 private:
 
     QHash<int, QByteArray> m_roles;
+
+    bool writeDataToDB(const QString& tag, int column, const QVariant &value);
 
 signals:
 

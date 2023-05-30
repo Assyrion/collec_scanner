@@ -9,15 +9,17 @@
 #include <QDebug>
 
 SqlTableModel::SqlTableModel(QObject* parent)
-    : QSqlQueryModel(parent)
+    : QSqlTableModel(parent)
 {
-    setQuery("SELECT * FROM games");
+    setEditStrategy(QSqlTableModel::OnFieldChange);
+    setTable("games");
 
     auto rec = record();
     for(int i = 0; i < rec.count(); i++) {
         m_roles.insert(Qt::UserRole + i + 1, rec.fieldName(i).toUtf8());
     }
 
+    select();
 }
 
 SqlTableModel::~SqlTableModel()
@@ -43,11 +45,11 @@ QVariant SqlTableModel::data(const QModelIndex &index, int role) const
         if (role >= Qt::UserRole) {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);
-            return QSqlQueryModel::data(modelIndex, Qt::DisplayRole);
+            return QSqlTableModel::data(modelIndex, Qt::DisplayRole);
         }
     }
 
-    return QSqlQueryModel::data(index, role);
+    return QSqlTableModel::data(index, role);
 }
 
 bool SqlTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -56,17 +58,16 @@ bool SqlTableModel::setData(const QModelIndex &index, const QVariant &value, int
         if (role >= Qt::UserRole) {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);
-            return QSqlQueryModel::setData(modelIndex, value, Qt::EditRole);
+            return QSqlTableModel::setData(modelIndex, value, Qt::EditRole);
         }
     }
 
-    return QSqlQueryModel::setData(index, value, role);
+    return QSqlTableModel::setData(index, value, role);
 }
 
 void SqlTableModel::remove(int row)
 {
     removeRow(row);
-//    select();
 }
 
 void SqlTableModel::update(GameData* game)
@@ -171,7 +172,28 @@ void SqlTableModel::clearDB()
 {
 //    QSqlQuery query;
 //    query.exec(QString("DELETE FROM %1").arg(tableName()));
-//    select();
+    //    select();
+}
+
+void SqlTableModel::sort(int column, Qt::SortOrder order)
+{
+    qDebug() << "sort";
+}
+
+bool SqlTableModel::writeDataToDB(const QString &tag, int column, const QVariant &value)
+{
+    auto colName = m_roles[column + Qt::UserRole + 1];
+    qDebug() << tag << colName;
+
+//    QSqlQuery query;
+//    query.prepare(QString("UPDATE games SET %1 = :valeur WHERE tag = :tag").arg(colName));
+//    query.bindValue(":valeur", value);
+//    query.bindValue(":tag", tag);
+//    if (!query.exec()) {
+//        qDebug() << "Erreur lors de l'exécution de la requête SQL:" << query.lastError().text();
+//        return false;
+//    }
+    return true;
 }
 
 
