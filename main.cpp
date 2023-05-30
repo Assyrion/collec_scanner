@@ -146,11 +146,14 @@ int main(int argc, char *argv[])
     SortFilterProxyModel sortFilterProxyModel(orderBy, sortOrder, titleFilter, ownedFilter,
                                               essentialsFilter, platinumFilter,
                                               essentialsOnly, platinumOnly);
-    SqlTableModel sqlTableModel;
-    sortFilterProxyModel.setSourceModel(&sqlTableModel);
 
     ImageManager  imageManager;
     FileManager   fileManager;
+
+    engine.addImageProvider("coverProvider", &imageManager);
+
+    SqlTableModel sqlTableModel;
+    sortFilterProxyModel.setSourceModel(&sqlTableModel);
 
     qmlRegisterType<ComManager>("ComManager", 1, 0, "ComManager");
     qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");

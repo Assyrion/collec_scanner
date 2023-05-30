@@ -25,6 +25,9 @@ void SortFilterProxyModel::sort(int column, Qt::SortOrder order)
     m_orderBy = column;
     m_sortOrder = order;
 
+    if(sourceModel())
+        sourceModel()->sort(column, order);
+
     QSortFilterProxyModel::sort(column, order);
 }
 
@@ -83,11 +86,16 @@ int SortFilterProxyModel::getIndexFiltered(const QString& tag)
 
 int SortFilterProxyModel::getIndexNotFiltered(const QString &tag)
 {
-    setFilterWildcard("*");
-    int idx = getIndexFiltered(tag);
-    invalidateFilter();
+//    setFilterWildcard("*");
+//    int idx = getIndexFiltered(tag);
+//    invalidateFilter();
 
-    return idx;
+    auto list = sourceModel()->match(index(0, 0), Qt::UserRole + 1, tag);
+    if(!list.isEmpty()) {
+        return list.first().row();
+    }
+
+    return -1;
 }
 
 bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
@@ -161,6 +169,15 @@ int SortFilterProxyModel::getOrderBy() const
 {
     return m_orderBy;
 }
+
+void SortFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
+{
+    QSortFilterProxyModel::setSourceModel(sourceModel);
+
+    sourceModel->sort(m_orderBy, Qt::SortOrder(m_sortOrder));
+}
+
+
 //QVariant SortFilterProxyModel::headerData(int section, Qt::Orientation orientation, int role) const
 //{
 //    // FIXME: Implement me!

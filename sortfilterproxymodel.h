@@ -75,6 +75,8 @@ public:
     int getSortOrder() const;
     int getOrderBy() const;
 
+    void setSourceModel(QAbstractItemModel *sourceModel) Q_DECL_OVERRIDE;
+
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE;
 

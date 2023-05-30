@@ -15,19 +15,25 @@ Pane {
 
     property int count: 0
     property int index: -1
-    property bool isOwned : false
+
+    property bool isOwned : (index < 0) || (model?.owned)
     property bool editMode: false
     property string currentTag: ""
     property GameData currentGame:
         GameDataMaker.createEmpty()
 
-    Component.onCompleted:  {
-        console.log(index)
-        root.isOwned = Qt.binding(function() {
-            return ((index < 0) || model?.owned)
-        })
-
-        readGame()
+    Component.onCompleted: {
+        if(index < 0 && currentTag === "") { // new game creation
+            var rand = Math.random().toFixed(6)
+            currentTag = Qt.binding(function() {
+                var _in  = "notag_" + titleInfo.entry
+                        + '_' + rand // very unlikely that 2 games have same tag
+                _in = _in.replace(/\W/g,'')
+                return _in
+            })
+        } else if(index >= 0){
+            currentTag = Qt.binding(() => { return model.tag })
+        }
     }
 
     function showSnapshotPopup(img) {
@@ -39,21 +45,6 @@ Pane {
                                  "x"     : root.width * 0.1,
                                  "y"     : root.height * 0.27})
         }
-    }
-
-    function readGame() {
-        if(index < 0 && currentTag === "") { // new game creation
-            var rand = Math.random().toFixed(6)
-            currentTag = Qt.binding(function() {
-                var _in  = "notag_" + titleInfo.entry
-                        + '_' + rand // very unlikely that 2 games have same tag
-                _in = _in.replace(/\W/g,'')
-                return _in
-            })
-        } else if(index >= 0){
-            currentTag = tag
-        }
-        reloadCovers()
     }
 
     function saveGame() {
@@ -98,20 +89,10 @@ Pane {
         reloadCovers()
     }
 
-    function reloadCovers() {
-        gameCoverRow.frontCoverUrl
-                = imageManager.getFrontPic(currentTag)
-        gameCoverRow.frontCoverData = null
-        gameCoverRow.backCoverUrl
-                = imageManager.getBackPic(currentTag)
-        gameCoverRow.backCoverData  = null
-    }
-
     function setGameAsOwned()
     {
         ownedCheckBox.checked = true
     }
-
 
     GameInfoCoverRow {
         id: gameCoverRow
@@ -124,6 +105,11 @@ Pane {
         anchors.horizontalCenterOffset:
             shiftFactor
         z: 1
+
+        frontCoverUrl:
+            ("image://coverProvider/%1.front").arg(currentTag)
+        backCoverUrl:
+            ("image://coverProvider/%1.back").arg(currentTag)
 
         onEditCoverRequired:(img) => showSnapshotPopup(img)
 
@@ -144,7 +130,9 @@ Pane {
 
         GameInfoListDelegate {
             id: tagInfo
-            name: qsTr("Tag"); entry: currentTag; editable: false
+            name: qsTr("Tag")
+            entry: root.currentTag
+            editable: false
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
@@ -161,42 +149,54 @@ Pane {
         }
         GameInfoListDelegate {
             id: codeInfo
-            name: qsTr("Code"); entry: model?.code ?? ""; editable: editMode
+            name: qsTr("Code")
+            entry: model?.code ?? "";
+            editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: titleInfo
-            name: qsTr("Title"); entry: model?.title ?? ""; editable: editMode
+            name: qsTr("Title")
+            entry: model?.title ?? "";
+            editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: platformInfo
-            name: qsTr("Platform"); entry: model?.platform ?? "ps3"; editable: editMode
+            name: qsTr("Platform")
+            entry: model?.platform ?? "ps3";
+            editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: infoInfo
-            name: qsTr("info"); entry: model?.info ?? ""; editable: editMode
+            name: qsTr("info")
+            entry: model?.info ?? ""
+            editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 50
         }
         GameInfoListDelegate {
             id: publisherInfo
-            name: qsTr("Publisher"); entry: model?.publisher ?? ""; editable: editMode
+            name: qsTr("Publisher")
+            entry: model?.publisher ?? ""
+            editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
         }
         GameInfoListDelegate {
             id: developerInfo
-            name: qsTr("Developer"); entry: model?.developer ?? ""; editable: editMode
+            name: qsTr("Developer")
+            entry: model?.developer ?? ""
+            editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
