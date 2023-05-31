@@ -10,13 +10,12 @@ GridView {
     signal movingChanged(bool moving)
 
     Component.onCompleted: {
+        model = sortFilterProxyModel
         highlightMoveDuration = 0
     }
 
     cellWidth: Math.min((width-5)/4, 169)
     cellHeight: cellWidth * 1.23
-
-    model: sortFilterProxyModel
 
     ScrollBar.vertical: ScrollBar {
         policy: ScrollBar.AlwaysOn

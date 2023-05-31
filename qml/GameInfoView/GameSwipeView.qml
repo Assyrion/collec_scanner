@@ -58,6 +58,7 @@ Item {
             highlightMoveDuration = 0
         }
         snapMode : ListView.SnapOneItem
+        highlightRangeMode: ListView.StrictlyEnforceRange
 
         delegate : GameSwipeDelegate {
             index: swipeView.currentIndex

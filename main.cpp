@@ -63,8 +63,7 @@ int main(int argc, char *argv[])
 
     settings.beginGroup("mainView");
     auto collectionView = settings.value("view").toInt();
-    settings.endGroup();
-
+    settings.endGroup();    
 
 #ifdef Q_OS_ANDROID
 
@@ -125,7 +124,6 @@ int main(int argc, char *argv[])
         db_view->hide();
         db_view->deleteLater();
     }
-
     if (!db.open()) {
         qDebug() << "Error: connection with database fail" << db.lastError();
         return -1;
@@ -164,7 +162,7 @@ int main(int argc, char *argv[])
         {"fileManager", QVariant::fromValue(&fileManager)},
         {"imageManager", QVariant::fromValue(&imageManager)},
         {"sqlTableModel", QVariant::fromValue(&sqlTableModel)},
-        {"collectionView", QVariant::fromValue(collectionView)}
+        {"collectionView", QVariant::fromValue(collectionView)},
     });
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

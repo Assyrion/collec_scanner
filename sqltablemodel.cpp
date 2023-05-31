@@ -20,6 +20,13 @@ SqlTableModel::SqlTableModel(QObject* parent)
     }
 
     select();
+
+    auto driver = database().driver();
+    if(!driver->hasFeature(QSqlDriver::QuerySize)) {
+        while(canFetchMore()) {
+            fetchMore();
+        }
+    }
 }
 
 SqlTableModel::~SqlTableModel()
@@ -65,63 +72,6 @@ bool SqlTableModel::setData(const QModelIndex &index, const QVariant &value, int
     return QSqlTableModel::setData(index, value, role);
 }
 
-void SqlTableModel::remove(int row)
-{
-    removeRow(row);
-}
-
-void SqlTableModel::insert(GameData* game)
-{
-    if(!game)
-        return;
-
-    QString queryString = "INSERT INTO games VALUES ("
-                          "tag = :tag, "
-                          "title = :title, "
-                          "platform = :platform, "
-                          "publisher = :publisher, "
-                          "developer = :developer, "
-                          "code = :code, "
-                          "info = :info, "
-                          "owned = :owned)";
-
-    QSqlQuery query;
-    query.prepare(queryString);
-    query.bindValue(":tag", game->tag);
-    query.bindValue(":title", game->title);
-    query.bindValue(":platform", game->platform);
-    query.bindValue(":publisher", game->publisher);
-    query.bindValue(":developer", game->developer);
-    query.bindValue(":code", game->code);
-    query.bindValue(":info", game->info);
-    query.bindValue(":owned", game->owned);
-
-    query.exec();
-
-    setQuery("SELECT * FROM games");
-}
-
-int SqlTableModel::getIndexFiltered(const QString& tag)
-{
-    auto list = match(index(0, 0), Qt::UserRole + 1, tag);
-    if(!list.isEmpty()) {
-        return list.first().row();
-    }
-
-    return -1;
-}
-
-int SqlTableModel::getIndexNotFiltered(const QString &tag)
-{
-//    auto savedFilter = filter();
-//    setFilter("");
-//    int idx = getIndexFiltered(tag);
-//    setFilter(savedFilter);
-
-    return 0;
-}
-
-
 void SqlTableModel::saveDBToFile(FileManager* fileManager)
 {
     if(!fileManager) {
@@ -143,13 +93,3 @@ void SqlTableModel::clearDB()
     query.exec(QString("DELETE FROM %1").arg(tableName()));
     select();
 }
-
-void SqlTableModel::sort(int column, Qt::SortOrder order)
-{
-}
-
-
-
-
-
-

@@ -21,15 +21,8 @@ public:
     QHash<int, QByteArray> roleNames() const Q_DECL_OVERRIDE;
     QStringList roleNamesList() const;
 
-    Q_INVOKABLE int getIndexNotFiltered(const QString &tag);
     Q_INVOKABLE void saveDBToFile(FileManager* fileManager);
-    Q_INVOKABLE int getIndexFiltered(const QString &tag);
-
-    Q_INVOKABLE void insert(GameData* game);
-    Q_INVOKABLE void remove(int row);
     Q_INVOKABLE void clearDB();
-
-    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) Q_DECL_OVERRIDE;
 
 private:
 

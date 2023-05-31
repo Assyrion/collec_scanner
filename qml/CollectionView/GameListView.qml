@@ -10,10 +10,10 @@ ListView {
     signal movingChanged(bool moving)
 
     Component.onCompleted: {
+        model = sortFilterProxyModel
         highlightMoveDuration = 0
     }
 
-    model: sortFilterProxyModel
     spacing: 5
 
     ScrollBar.vertical: ScrollBar {

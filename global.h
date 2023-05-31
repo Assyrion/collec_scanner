@@ -26,7 +26,7 @@ const QString DATAPATH = QStandardPaths::writableLocation(QStandardPaths::Generi
         + "/" + QString(APPNAME);
 const QString PICPATH_ABS = DATAPATH + "/"
                           + PICPATH  + "/";
-const QString DB_PATH_ABS_NAME = DATAPATH + QDir::separator() + DBNAME;
+const QString DB_PATH_ABS_NAME = DATAPATH + "/" + DBNAME;
 #endif
 
 #endif // GLOBAL_H
