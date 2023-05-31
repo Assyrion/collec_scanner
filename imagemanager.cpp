@@ -44,13 +44,8 @@ QString ImageManager::getBackPic(const QString& tag) const
 
 QString ImageManager::getPic(const QString& fileName) const
 {
-#ifdef Q_OS_ANDROID
-    const auto sep = QDir::separator();
-    QString path = QDir::currentPath()
-            + sep + PICPATH + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
-#else
     QString path = PICPATH_ABS + fileName;
-#endif
+
     if(QFile::exists(path)) {
         return path;
     }
@@ -69,14 +64,7 @@ void ImageManager::saveBackPic(const QString& tag, const QImage& pic) const
 
 void ImageManager::savePic(const QString& fileName, const QImage& pic) const
 {
-#ifdef Q_OS_ANDROID
-    const auto sep = QDir::separator();
-    QString path = QDir::currentPath()
-            + sep + PICPATH
-            + sep + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
-#else
     QString path = PICPATH_ABS + fileName;
-#endif
     if(!pic.isNull()) {
         pic.save(path);
     }
@@ -90,13 +78,6 @@ void ImageManager::removePics(const QString &tag) const
 
 void ImageManager::removePic(const QString &fileName) const
 {
-#ifdef Q_OS_ANDROID
-    const auto sep = QDir::separator();
-    QString path = QDir::currentPath()
-            + sep + PICPATH
-            + sep + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
-#else
     QString path = PICPATH_ABS + fileName;
-#endif
     QFile::remove(path);
 }

@@ -188,6 +188,7 @@ int main(int argc, char *argv[])
 #endif
 
     auto saveSettings = [&]() {
+
         settings.beginGroup("sqlTableModel");
         settings.setValue("orderBy", sortFilterProxyModel.getOrderBy());
         settings.setValue("sortOrder", sortFilterProxyModel.getSortOrder());
@@ -209,6 +210,8 @@ int main(int argc, char *argv[])
         settings.setValue("w", window->width());
         settings.setValue("h", window->height());
         settings.endGroup();
+
+        settings.sync();
     };
 
 #ifdef Q_OS_ANDROID

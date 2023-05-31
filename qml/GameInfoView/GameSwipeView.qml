@@ -54,10 +54,10 @@ Item {
         currentIndex: 0
 
         Component.onCompleted: {
+            model = sortFilterProxyModel
             highlightMoveDuration = 0
         }
         snapMode : ListView.SnapOneItem
-        model: sortFilterProxyModel
 
         delegate : GameSwipeDelegate {
             index: swipeView.currentIndex
@@ -70,26 +70,7 @@ Item {
                     root.cancelGame()
                 }
             }
-        }/*
-        Repeater {
-            Loader {
-                active: SwipeView.isCurrentItem
-                        || SwipeView.isNextItem
-                        || SwipeView.isPreviousItem
-                sourceComponent: GameSwipeDelegate {
-                    index: swipeView.currentIndex
-                    count: swipeView.count
-                    editMode: root.editMode
-                    height: root.height
-                    width: root.width
-                    onIsOwnedChanged: {
-                        if(!isOwned) {
-                            root.cancelGame()
-                        }
-                    }
-                }
-            }
-        }*/
+        }
     }
 
     RowLayout {

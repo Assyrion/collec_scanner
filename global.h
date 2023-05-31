@@ -17,9 +17,9 @@ const QString REMOTE_UPLOAD_DB_SCRIPT = REMOTE_PATH + "upload_db.php";
 
 #ifdef Q_OS_ANDROID
 const QString DATAPATH = ".";
-const QString PICPATH_ABS = DATAPATH + QDir::separator()
-        + PICPATH;
-const QString DB_PATH_ABS_NAME = DATAPATH + QDir::separator()
+const QString PICPATH_ABS = DATAPATH + "/"
+        + PICPATH + "/";
+const QString DB_PATH_ABS_NAME = DATAPATH + "/"
         + DBNAME;
 #else
 const QString DATAPATH = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)

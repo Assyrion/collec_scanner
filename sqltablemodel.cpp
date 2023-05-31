@@ -70,37 +70,6 @@ void SqlTableModel::remove(int row)
     removeRow(row);
 }
 
-void SqlTableModel::update(GameData* game)
-{
-    if(!game)
-        return;
-
-    QString queryString = "UPDATE games SET "
-                          "title = :title, "
-                          "platform = :platform, "
-                          "publisher = :publisher, "
-                          "developer = :developer, "
-                          "code = :code, "
-                          "info = :info, "
-                          "owned = :owned "
-                          "WHERE tag = :tag";
-
-    QSqlQuery query;
-    query.prepare(queryString);
-    query.bindValue(":title", game->title);
-    query.bindValue(":platform", game->platform);
-    query.bindValue(":publisher", game->publisher);
-    query.bindValue(":developer", game->developer);
-    query.bindValue(":code", game->code);
-    query.bindValue(":info", game->info);
-    query.bindValue(":owned", game->owned);
-    query.bindValue(":tag", game->tag);
-
-    query.exec();
-
-    setQuery("SELECT * FROM games");
-}
-
 void SqlTableModel::insert(GameData* game)
 {
     if(!game)
@@ -170,31 +139,15 @@ void SqlTableModel::saveDBToFile(FileManager* fileManager)
 
 void SqlTableModel::clearDB()
 {
-//    QSqlQuery query;
-//    query.exec(QString("DELETE FROM %1").arg(tableName()));
-    //    select();
+    QSqlQuery query;
+    query.exec(QString("DELETE FROM %1").arg(tableName()));
+    select();
 }
 
 void SqlTableModel::sort(int column, Qt::SortOrder order)
 {
-    qDebug() << "sort";
 }
 
-bool SqlTableModel::writeDataToDB(const QString &tag, int column, const QVariant &value)
-{
-    auto colName = m_roles[column + Qt::UserRole + 1];
-    qDebug() << tag << colName;
-
-//    QSqlQuery query;
-//    query.prepare(QString("UPDATE games SET %1 = :valeur WHERE tag = :tag").arg(colName));
-//    query.bindValue(":valeur", value);
-//    query.bindValue(":tag", tag);
-//    if (!query.exec()) {
-//        qDebug() << "Erreur lors de l'exécution de la requête SQL:" << query.lastError().text();
-//        return false;
-//    }
-    return true;
-}
 
 
 

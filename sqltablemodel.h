@@ -25,8 +25,6 @@ public:
     Q_INVOKABLE void saveDBToFile(FileManager* fileManager);
     Q_INVOKABLE int getIndexFiltered(const QString &tag);
 
-    Q_INVOKABLE void update(GameData* game);
-
     Q_INVOKABLE void insert(GameData* game);
     Q_INVOKABLE void remove(int row);
     Q_INVOKABLE void clearDB();
@@ -36,8 +34,6 @@ public:
 private:
 
     QHash<int, QByteArray> m_roles;
-
-    bool writeDataToDB(const QString& tag, int column, const QVariant &value);
 
 signals:
 
