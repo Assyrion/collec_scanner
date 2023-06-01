@@ -36,6 +36,25 @@ void SortFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     invalidateFilter();
 }
 
+void SortFilterProxyModel::resetFilter()
+{
+    m_essentialsFilter = true;
+    m_platinumFilter = true;
+    m_essentialsOnly = false;
+    m_platinumOnly = false;
+    m_titleFilter = "";
+    m_ownedFilter = 2;
+
+    emit essentialsFilterChanged();
+    emit essentialsOnlyChanged();
+    emit platinumFilterChanged();
+    emit platinumOnlyChanged();
+    emit titleFilterChanged();
+    emit ownedFilterChanged();
+
+    invalidateFilter();
+}
+
 void SortFilterProxyModel::filterEssentials(bool filter)
 {
     m_essentialsFilter = filter;
@@ -91,11 +110,7 @@ int SortFilterProxyModel::getIndexFiltered(const QString& tag)
 
 int SortFilterProxyModel::getIndexNotFiltered(const QString &tag)
 {
-//    setFilterWildcard("*");
-//    int idx = getIndexFiltered(tag);
-//    invalidateFilter();
-
-    auto list = sourceModel()->match(index(0, 0), Qt::UserRole + 1, tag);
+    auto list = sourceModel()->match(sourceModel()->index(0, 0), Qt::UserRole + 1, tag);
     if(!list.isEmpty()) {
         return list.first().row();
     }

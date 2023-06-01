@@ -66,10 +66,9 @@ Drawer {
 
                 Layout.preferredWidth: parent.width
 
-                placeholderText: qsTr("Search by name")
-                Component.onCompleted: {
-                    text = sortFilterProxyModel.titleFilter
-                }
+                placeholderText: qsTr("Search by name")                
+                text: sortFilterProxyModel?.titleFilter ?? ""
+
             }
             RowLayout {
                 id: filterBtnRow
@@ -190,9 +189,7 @@ Drawer {
             onClicked: {
                 sortFilterProxyModel.filterByOwned(checked, notOwnedCheckBox.checked)
             }
-            Component.onCompleted: {
-                checked = (sortFilterProxyModel.ownedFilter >= 1)
-            }
+            checked : sortFilterProxyModel?.ownedFilter >= 1
         }
         Label {
             id: labelNotOwned
@@ -209,9 +206,7 @@ Drawer {
             onClicked: {
                 sortFilterProxyModel.filterByOwned(ownedCheckBox.checked, checked)
             }
-            Component.onCompleted: {
-                checked = !(sortFilterProxyModel.ownedFilter % 2)
-            }
+            checked : !(sortFilterProxyModel?.ownedFilter % 2)
         }
     }
     ColumnLayout {
@@ -246,9 +241,7 @@ Drawer {
                         sortFilterProxyModel.filterOnlyEssentials(false)
                     sortFilterProxyModel.filterEssentials(checked)
                 }
-                Component.onCompleted: {
-                    checked = sortFilterProxyModel.essentialsFilter
-                }
+                checked : sortFilterProxyModel?.essentialsFilter
             }
             Behavior on Layout.preferredHeight { NumberAnimation { duration : 100 } }
         }
@@ -313,9 +306,7 @@ Drawer {
                         sortFilterProxyModel.filterOnlyPlatinum(false)
                     sortFilterProxyModel.filterPlatinum(checked)
                 }
-                Component.onCompleted: {
-                    checked = sortFilterProxyModel.platinumFilter
-                }
+                checked : sortFilterProxyModel.platinumFilter
             }
             Behavior on Layout.preferredHeight { NumberAnimation { duration : 100 } }
         }

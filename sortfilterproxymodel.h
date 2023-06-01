@@ -30,6 +30,7 @@ public:
     Q_INVOKABLE void filterOnlyPlatinum(bool filter);
     Q_INVOKABLE void filterEssentials(bool filter);
     Q_INVOKABLE void filterPlatinum(bool filter);
+    Q_INVOKABLE void resetFilter();
 
     QString getTitleFilter() const;
     bool getEssentialsFilter() const;

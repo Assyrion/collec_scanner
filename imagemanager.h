@@ -11,7 +11,7 @@ class ImageManager : public QObject
 public:
     explicit ImageManager(QObject *parent = nullptr);
 
-    QString getFrontPic(const QString& tag) const;
+    Q_INVOKABLE QString getFrontPic(const QString& tag) const;
     QString getBackPic( const QString& tag) const;
 
     Q_INVOKABLE void removePics(  const QString& tag) const;

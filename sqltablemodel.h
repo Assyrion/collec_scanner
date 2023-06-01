@@ -31,8 +31,6 @@ private:
 signals:
 
     void roleNamesListChanged();
-
-
 };
 
 #endif // SQLTABLEMODEL_H

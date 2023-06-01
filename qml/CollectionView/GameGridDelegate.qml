@@ -35,7 +35,9 @@ Item {
     }
 
     Text {
-        visible: mainImg.source === Qt.url("qrc:/no_pic")
+        Component.onCompleted: {
+            visible = !imageManager.getFrontPic(model.tag).includes(model.tag)
+        }
         width: mainImg.width - 10
         anchors.top : mainImg.top
         anchors.topMargin: 7
