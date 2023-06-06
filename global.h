@@ -7,7 +7,7 @@
 const QString DBNAME  = "games_ps3_complete.db";
 const QString PICPATH = "pic"; // pic
 
-const QString REMOTE_PATH = "http://77.140.81.117/";
+const QString REMOTE_PATH = "http://collecscanner.freeboxos.fr/";
 const QString REMOTE_PIC_PATH = REMOTE_PATH
                                 + PICPATH
                                 + "/";

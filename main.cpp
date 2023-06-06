@@ -212,27 +212,29 @@ int main(int argc, char *argv[])
         settings.sync();
     };
 
+    QThread thread;
+    auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
+    comManager.setProgressDialog(dialog);
+
+    QObject::connect(dialog, SIGNAL(aboutToHide()), &thread, SLOT(quit()));
+    QObject::connect(&thread, &QThread::started, &comManager, &ComManager::downloadCovers);
+
+    comManager.moveToThread(&thread);
+
 #ifdef Q_OS_ANDROID
-    // Because there is now way to catch aboutToClose signal with gesture navigation on Android
+        // Because there is now way to catch aboutToClose signal with gesture navigation on Android
     QObject::connect(&app, &QGuiApplication::applicationStateChanged,
                      [&](Qt::ApplicationState state){
                          if(state != Qt::ApplicationActive) {
                              saveSettings();
                          }
                      });
-#endif
-
-    auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
-    comManager.setProgressDialog(dialog);
-
-    QThread thread;
-    QObject::connect(dialog, SIGNAL(aboutToHide()), &thread, SLOT(quit()));
-    QObject::connect(&thread, &QThread::started, &comManager, &ComManager::downloadCovers);
+#else
     QObject::connect(&app, &QGuiApplication::aboutToQuit, [&](){
         saveSettings();
         thread.quit();
     });
-    comManager.moveToThread(&thread);
+#endif
 
     thread.start();
 

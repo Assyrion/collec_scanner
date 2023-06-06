@@ -306,7 +306,7 @@ Drawer {
                         sortFilterProxyModel.filterOnlyPlatinum(false)
                     sortFilterProxyModel.filterPlatinum(checked)
                 }
-                checked : sortFilterProxyModel.platinumFilter
+                checked : sortFilterProxyModel?.platinumFilter
             }
             Behavior on Layout.preferredHeight { NumberAnimation { duration : 100 } }
         }
