@@ -9,14 +9,6 @@ Item {
 
     signal clicked
 
-    Connections {
-        target: coverProcessingPopup
-        function onAboutToHide() {
-            frontPic.frontSource =
-                    imageManager.getFrontPic(tag)
-        }
-    }
-
     Item {
         id: frontPic
 
@@ -32,7 +24,7 @@ Item {
                 -implicitHeight/2 + 30
             anchors.horizontalCenter:
                 parent.horizontalCenter
-            source: imageManager?.getFrontPic(tag) ?? "qrc:/no_pic"
+            source: ("image://coverProvider/%1.front").arg(model.tag)
             fillMode: Image.PreserveAspectCrop
             antialiasing: true
             cache: false

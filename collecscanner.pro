@@ -23,6 +23,7 @@ SOURCES += main.cpp \
     filemanager.cpp \
     gamedata.cpp \
     imagemanager.cpp \
+    sortfilterproxymodel.cpp \
     sqltablemodel.cpp
 
 RESOURCES += \
@@ -49,6 +50,7 @@ HEADERS += \
     gamedata.h \
     imagemanager.h \
     global.h \
+    sortfilterproxymodel.h \
     sqltablemodel.h
 
 TRANSLATIONS += i18n/qml_fr_FR.ts \

@@ -4,35 +4,52 @@
 #include "global.h"
 #include "imagemanager.h"
 
-ImageManager::ImageManager(QObject *parent)
+ImageManager::ImageManager(QObject* parent)
     : QObject(parent)
 {}
 
-QUrl ImageManager::getFrontPic(const QString &tag) const
+CoverProvider::CoverProvider(ImageManager* manager)
+    : QQuickImageProvider(QQuickImageProvider::Image),
+    m_coverManager(manager)
+{}
+
+QImage CoverProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
+{
+    Q_UNUSED(size)
+    Q_UNUSED(requestedSize)
+
+    QString left  = id.split('.')[0];
+    QString right = id.split('.')[1];
+
+    if(right == "front") {
+        return QImage(m_coverManager->getFrontPic(left));
+    }
+
+    if(right == "back") {
+        return QImage(m_coverManager->getBackPic(left));
+    }
+
+    return QImage(":/no_pic");
+}
+
+QString ImageManager::getFrontPic(const QString &tag) const
 {
     return getPic(QString("%1_front.png").arg(tag));
 }
 
-QUrl ImageManager::getBackPic(const QString& tag) const
+QString ImageManager::getBackPic(const QString& tag) const
 {
     return getPic(QString("%1_back.png").arg(tag));
 }
 
-QUrl ImageManager::getPic(const QString& fileName) const
+QString ImageManager::getPic(const QString& fileName) const
 {
-    const auto sep = QDir::separator();
-#ifdef Q_OS_ANDROID
-    QString path = QDir::currentPath()
-            + sep + PICPATH
-            + sep + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
-#else
-    QString path = PICPATH_ABS
-            + sep + fileName;
-#endif
+    QString path = PICPATH_ABS + fileName;
+
     if(QFile::exists(path)) {
-        return QUrl(QString("file:///%1").arg(path));
+        return path;
     }
-    return QUrl("qrc:/no_pic");
+    return ":/no_pic";
 }
 
 void ImageManager::saveFrontPic(const QString& tag, const QImage& pic) const
@@ -47,15 +64,7 @@ void ImageManager::saveBackPic(const QString& tag, const QImage& pic) const
 
 void ImageManager::savePic(const QString& fileName, const QImage& pic) const
 {
-    const auto sep = QDir::separator();
-#ifdef Q_OS_ANDROID
-    QString path = QDir::currentPath()
-            + sep + PICPATH
-            + sep + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
-#else
-    QString path = PICPATH_ABS
-            + sep + fileName;
-#endif
+    QString path = PICPATH_ABS + fileName;
     if(!pic.isNull()) {
         pic.save(path);
     }
@@ -69,14 +78,6 @@ void ImageManager::removePics(const QString &tag) const
 
 void ImageManager::removePic(const QString &fileName) const
 {
-    const auto sep = QDir::separator();
-#ifdef Q_OS_ANDROID
-    QString path = QDir::currentPath()
-            + sep + PICPATH
-            + sep + fileName; // can't use PICPATH_ABS, seems file:///./ does not work
-#else
-    QString path = PICPATH_ABS
-            + sep + fileName;
-#endif
+    QString path = PICPATH_ABS + fileName;
     QFile::remove(path);
 }

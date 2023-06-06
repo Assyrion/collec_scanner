@@ -10,8 +10,8 @@ Item {
     property bool editMode: false
     property alias currentIndex:
         swipeView.currentIndex
-    property var currentItem:
-        swipeView.itemAt(currentIndex)?.item
+    property alias currentItem:
+        swipeView.currentItem
 
     signal closed
 
@@ -28,7 +28,7 @@ Item {
         var savedTag = root.currentItem.currentTag // index may have changed after edition
         root.currentItem.saveGame()
 
-        var idx = sqlTableModel.getIndexFiltered(savedTag) // get the new index
+        var idx = sortFilterProxyModel.getIndexFiltered(savedTag) // get the new index
         if(idx >= 0)
             root.currentIndex = idx
         else
@@ -44,7 +44,7 @@ Item {
         root.currentItem.cancelGame()
     }
 
-    SwipeView {
+    ListView {
         id: swipeView
 
         anchors.fill: parent
@@ -54,26 +54,21 @@ Item {
         currentIndex: 0
 
         Component.onCompleted: {
-            contentItem.highlightMoveDuration = 0
+            model = sortFilterProxyModel
+            highlightMoveDuration = 0
         }
+        snapMode : ListView.SnapOneItem
+        highlightRangeMode: ListView.StrictlyEnforceRange
 
-        Repeater {
-            model: sqlTableModel
-            Loader {
-                active: SwipeView.isCurrentItem
-                        || SwipeView.isNextItem
-                        || SwipeView.isPreviousItem
-                sourceComponent: GameSwipeDelegate {
-                    index: swipeView.currentIndex
-                    count: swipeView.count
-                    editMode: root.editMode
-                    height: root.height
-                    width: root.width
-                    onIsOwnedChanged: {
-                        if(!isOwned) {
-                            root.cancelGame()
-                        }
-                    }
+        delegate : GameSwipeDelegate {
+            index: swipeView.currentIndex
+            count: swipeView.count
+            editMode: root.editMode
+            height: root.height
+            width: root.width
+            onIsOwnedChanged: {
+                if(!isOwned) {
+                    root.cancelGame()
                 }
             }
         }

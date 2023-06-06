@@ -25,14 +25,15 @@ Item {
         })
     }
 
-    function showFilteredGame(tag, idx) {
+    function showFilteredGame(tag) {
         var obj = PopupMaker.showFilteredGame(root, tag)
 
         obj.refused.connect(function() {
             barcodeScanner.startScanning()
         })
         obj.accepted.connect(function() {
-            sqlTableModel.removeFilter()
+            sortFilterProxyModel.resetFilter()
+            var idx = sortFilterProxyModel.getIndexFiltered(tag)
             showGameRequired(idx)
         })
     }
@@ -42,13 +43,13 @@ Item {
         anchors.fill: parent
         onBarcodeFound: (barcode) => {
                             barcodeScanner.stopScanning()
-                            var idx = sqlTableModel.getIndexFiltered(barcode)
-                            if(idx >= 0) {
-                                showGameRequired(idx)
+                            var idx_f = sortFilterProxyModel.getIndexFiltered(barcode)
+                            if(idx_f >= 0) {
+                                showGameRequired(idx_f)
                             } else {
-                                idx = sqlTableModel.getIndexNotFiltered(barcode)
-                                if(idx >= 0) {
-                                    showFilteredGame(barcode, idx)
+                                var idx_nf = sortFilterProxyModel.getIndexNotFiltered(barcode)
+                                if(idx_nf >= 0) {
+                                    showFilteredGame(barcode)
                                 } else {
                                     showUnknownGame(barcode)
                                 }

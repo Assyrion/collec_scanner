@@ -15,6 +15,7 @@
 #include <QDebug>
 #include <QDir>
 
+#include "sortfilterproxymodel.h"
 #include "sqltablemodel.h"
 #include "imagemanager.h"
 #include "filemanager.h"
@@ -62,8 +63,7 @@ int main(int argc, char *argv[])
 
     settings.beginGroup("mainView");
     auto collectionView = settings.value("view").toInt();
-    settings.endGroup();
-
+    settings.endGroup();    
 
 #ifdef Q_OS_ANDROID
 
@@ -124,7 +124,6 @@ int main(int argc, char *argv[])
         db_view->hide();
         db_view->deleteLater();
     }
-
     if (!db.open()) {
         qDebug() << "Error: connection with database fail" << db.lastError();
         return -1;
@@ -137,28 +136,33 @@ int main(int argc, char *argv[])
 
     /*************************** QML *******************************/
 
-    GameDataMaker::registerQMLTypes();
     QZXing::registerQMLTypes();
-
-    QQmlApplicationEngine engine;
-
-    SqlTableModel sqlTableModel(orderBy, sortOrder, titleFilter, ownedFilter,
-                                essentialsFilter, platinumFilter,
-                                essentialsOnly, platinumOnly);
-    ImageManager  imageManager;
-    FileManager   fileManager;
-
+    GameDataMaker::registerQMLTypes();
     qmlRegisterType<ComManager>("ComManager", 1, 0, "ComManager");
     qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");
     qmlRegisterType<ImageManager>("ImageManager", 1, 0, "ImageManager");
     qmlRegisterType<SqlTableModel>("SQLTableModel", 1, 0, "SQLTableModel");
 
+    QQmlApplicationEngine engine;
+
+    SqlTableModel sqlTableModel;
+    ImageManager  imageManager;
+    FileManager   fileManager;
+    CoverProvider coverProvider(&imageManager);
+    SortFilterProxyModel sortFilterProxyModel(orderBy, sortOrder, titleFilter, ownedFilter,
+                                              essentialsFilter, platinumFilter,
+                                              essentialsOnly, platinumOnly);
+    sortFilterProxyModel.setSourceModel(&sqlTableModel);
+
+    engine.rootContext()->setContextProperty("sortFilterProxyModel",
+                                             &sortFilterProxyModel);
+    engine.addImageProvider("coverProvider", &coverProvider);
     engine.setInitialProperties({
         {"comManager", QVariant::fromValue(&comManager)},
         {"fileManager", QVariant::fromValue(&fileManager)},
         {"imageManager", QVariant::fromValue(&imageManager)},
         {"sqlTableModel", QVariant::fromValue(&sqlTableModel)},
-        {"collectionView", QVariant::fromValue(collectionView)}
+        {"collectionView", QVariant::fromValue(collectionView)},
     });
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
@@ -182,15 +186,16 @@ int main(int argc, char *argv[])
 #endif
 
     auto saveSettings = [&]() {
+
         settings.beginGroup("sqlTableModel");
-        settings.setValue("orderBy", sqlTableModel.getOrderBy());
-        settings.setValue("sortOrder", sqlTableModel.getSortOrder());
-        settings.setValue("titleFilter", sqlTableModel.getTitleFilter());
-        settings.setValue("ownedFilter", sqlTableModel.getOwnedFilter());
-        settings.setValue("essentialsFilter", sqlTableModel.getEssentialsFilter());
-        settings.setValue("essentialsOnly", sqlTableModel.getEssentialsOnly());
-        settings.setValue("platinumFilter", sqlTableModel.getPlatinumFilter());
-        settings.setValue("platinumOnly", sqlTableModel.getPlatinumOnly());
+        settings.setValue("orderBy", sortFilterProxyModel.getOrderBy());
+        settings.setValue("sortOrder", sortFilterProxyModel.getSortOrder());
+        settings.setValue("titleFilter", sortFilterProxyModel.getTitleFilter());
+        settings.setValue("ownedFilter", sortFilterProxyModel.getOwnedFilter());
+        settings.setValue("essentialsFilter", sortFilterProxyModel.getEssentialsFilter());
+        settings.setValue("essentialsOnly", sortFilterProxyModel.getEssentialsOnly());
+        settings.setValue("platinumFilter", sortFilterProxyModel.getPlatinumFilter());
+        settings.setValue("platinumOnly", sortFilterProxyModel.getPlatinumOnly());
         settings.endGroup();
 
         settings.beginGroup("mainView");
@@ -203,6 +208,8 @@ int main(int argc, char *argv[])
         settings.setValue("w", window->width());
         settings.setValue("h", window->height());
         settings.endGroup();
+
+        settings.sync();
     };
 
 #ifdef Q_OS_ANDROID
