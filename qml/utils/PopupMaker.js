@@ -17,7 +17,8 @@ function showGameNotOwned(parent) {
                                     "width" : 2*parent.width/3,
                                     "height": parent.height/4,
                                     "x"     : parent.width/6,
-                                    "y"     : parent.height/4+20})
+                                    "y"     : parent.height/4+20,
+                                    "z"     : 1})
     }
     return null
 }

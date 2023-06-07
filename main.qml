@@ -106,11 +106,12 @@ Window {
     }
 
     function checkOwnedGame(idx) {
-        var modelIdx = sqlTableModel.index(idx, 7) // 7 is owned !
-        if(sqlTableModel.data(modelIdx) === 0) {
+        var modelIdx = sortFilterProxyModel.index(idx, 7) // 7 is owned !
+        console.log(modelIdx)
+        if(sortFilterProxyModel.data(modelIdx) === 0) {
             var obj = PopupMaker.showGameNotOwned(mainWindow)
             obj.accepted.connect(function() {
-                sqlTableModel.setData(modelIdx, 1) // force owned to 1
+                sortFilterProxyModel.setData(modelIdx, 1) // force owned to 1
             })
             obj.refused.connect(function() {
                 view.setCurrentIndex(2)
