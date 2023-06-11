@@ -4,6 +4,8 @@ import QtQuick.Controls 6.2
 
 import GameData 1.0
 
+import "../utils/PlatformSelector.js" as Platforms
+
 Pane {
     id: root
 
@@ -37,9 +39,11 @@ Pane {
     }
 
     function showSnapshotPopup(img) {
+        var coverRatio = Platforms.list[platformName].coverRatio
         var cpt = Qt.createComponent("TakeSnapshotPopup.qml")
         if (cpt.status === Component.Ready) {
             cpt.createObject(root, { "boundImg": img,
+                                 "coverRatio" : coverRatio,
                                  "width" : root.width * 0.8,
                                  "height": root.height * 0.6,
                                  "x"     : root.width * 0.1,

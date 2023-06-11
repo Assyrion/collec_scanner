@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     settings.endGroup();
 
     settings.beginGroup("platform");
-    auto platformName = settings.value("name", "ps3").toInt();
+    auto platformName = settings.value("name", "ps3").toString();
     settings.endGroup();
 
 #ifdef Q_OS_ANDROID

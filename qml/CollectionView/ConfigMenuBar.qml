@@ -1,7 +1,7 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
 
-import "PlatformSelector.js" as Platforms
+import "../utils/PlatformSelector.js" as Platforms
 
 MenuBar {
     id: root
@@ -60,12 +60,7 @@ MenuBar {
 
                 MenuItem {
                     text: modelData
-                    onTriggered: {
-                        var platformData = Platforms.list[modelData]
-                        // Logique pour utiliser les données de la console
-                        console.log("Console sélectionnée:", modelData)
-                        console.log("Cover Ratio:", platformData.coverRatio)
-                    }
+                    onTriggered: platformName = modelData
                 }
             }
         }

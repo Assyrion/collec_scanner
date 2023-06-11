@@ -24,6 +24,6 @@
         <file>download_db_view.qml</file>
         <file>qml/CollectionView/ConfigMenuBar.qml</file>
         <file>qml/utils/PopupMaker.js</file>
-        <file>qml/CollectionView/PlatformSelector.js</file>
+        <file>qml/utils/PlatformSelector.js</file>
     </qresource>
 </RCC>
