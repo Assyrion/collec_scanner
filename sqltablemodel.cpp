@@ -8,8 +8,8 @@
 
 #include <QDebug>
 
-SqlTableModel::SqlTableModel(QObject* parent)
-    : QSqlTableModel(parent)
+SqlTableModel::SqlTableModel(QObject* parent, const QSqlDatabase &db)
+    : QSqlTableModel(parent, db)
 {
     setEditStrategy(QSqlTableModel::OnFieldChange);
     setTable("games");

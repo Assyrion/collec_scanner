@@ -2,6 +2,7 @@
 
 #include <QGuiApplication>
 #include <QSurfaceFormat>
+#include <QSignalMapper>
 #include <QQuickWindow>
 #include <QSqlDatabase>
 #include <QQmlContext>
@@ -22,6 +23,11 @@
 #include "commanager.h"
 #include "gamedata.h"
 #include "global.h"
+
+#include <QSqlTableModel>
+#include <QHash>
+
+QHash<QString, SqlTableModel*> modelHash;
 
 int main(int argc, char *argv[])
 {
@@ -101,18 +107,9 @@ int main(int argc, char *argv[])
 
     /************************* Database *****************************/
 
-    Global::setDBName(QString("games_%1_complete.db").arg(platformName));
-
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(Global::DB_PATH_ABS_NAME);
-
-//    QFile::remove(Global::DB_PATH_ABS_NAME); // uncomment if needed for tests
-
     ComManager comManager;
 
-    // checking if needed to download DB
-    if(!QFile::exists(Global::DB_PATH_ABS_NAME)) {
-
+    auto downloadDB = [&]() {
         QQuickView *db_view = new QQuickView;
         db_view->setSource(QUrl(QStringLiteral("qrc:/download_db_view.qml")));
 
@@ -130,16 +127,42 @@ int main(int argc, char *argv[])
         // remove view used for downloading DB once engine is loaded
         db_view->hide();
         db_view->deleteLater();
-    }
-    if (!db.open()) {
-        qDebug() << "Error: connection with database fail" << db.lastError();
+    };
+
+    SqlTableModel* sqlTableModel;
+
+    auto loadDB = [&](const QString& platform) -> int {
+        Global::setDBName(QString("games_%1_complete.db").arg(platform));
+
+        if (!modelHash.contains(platform)) {
+
+            auto db = QSqlDatabase::addDatabase("QSQLITE", platform);
+            db.setDatabaseName(Global::DB_PATH_ABS_NAME);
+
+            // checking if needed to download DB
+            if(!QFile::exists(Global::DB_PATH_ABS_NAME)) {
+                downloadDB();
+            }
+
+            if (!db.open()) {
+                qDebug() << "Error: connection with database fail" << db.lastError();
+                return -1;
+            } else if(!db.tables().contains("games")) { // wrong database
+                qDebug() << "Error: database corrupted";
+                db.close();
+                QFile::remove(Global::DB_PATH_ABS_NAME);
+                return -1;
+            }
+            modelHash.insert(platform, new SqlTableModel(nullptr, db));
+        }
+
+        sqlTableModel = modelHash.value(platform);
+
+        return 0;
+    };
+
+    if(loadDB(platformName) < 0)
         return -1;
-    } else if(!db.tables().contains("games")) { // wrong database
-        qDebug() << "Error: database corrupted";
-        db.close();
-        QFile::remove(Global::DB_PATH_ABS_NAME);
-        return -1;
-    }
 
     /*************************** QML *******************************/
 
@@ -148,28 +171,28 @@ int main(int argc, char *argv[])
     qmlRegisterType<ComManager>("ComManager", 1, 0, "ComManager");
     qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");
     qmlRegisterType<ImageManager>("ImageManager", 1, 0, "ImageManager");
-    qmlRegisterType<SqlTableModel>("SQLTableModel", 1, 0, "SQLTableModel");
 
     QQmlApplicationEngine engine;
 
-    SqlTableModel sqlTableModel;
     ImageManager  imageManager;
     FileManager   fileManager;
     CoverProvider coverProvider(&imageManager);
     SortFilterProxyModel sortFilterProxyModel(orderBy, sortOrder, titleFilter, ownedFilter,
                                               essentialsFilter, platinumFilter,
                                               essentialsOnly, platinumOnly);
-    sortFilterProxyModel.setSourceModel(&sqlTableModel);
+    sortFilterProxyModel.setSourceModel(sqlTableModel);
 
     engine.rootContext()->setContextProperty("sortFilterProxyModel",
                                              &sortFilterProxyModel);
+    engine.rootContext()->setContextProperty("sqlTableModel",
+                                             sqlTableModel);
+
     engine.addImageProvider("coverProvider", &coverProvider);
     engine.setInitialProperties({
         {"comManager", QVariant::fromValue(&comManager)},
         {"fileManager", QVariant::fromValue(&fileManager)},
         {"platformName", QVariant::fromValue(platformName)},
         {"imageManager", QVariant::fromValue(&imageManager)},
-        {"sqlTableModel", QVariant::fromValue(&sqlTableModel)},
         {"collectionView", QVariant::fromValue(collectionView)}
     });
 
@@ -223,6 +246,16 @@ int main(int argc, char *argv[])
 
         settings.sync();
     };
+
+    QSignalMapper sm;
+    QObject::connect(rootObject, SIGNAL(platformNameChanged()), &sm, SLOT(map()));
+    sm.setMapping(rootObject, rootObject); // dummy mapping
+    QObject::connect(&sm, &QSignalMapper::mappedObject, [&](QObject* obj){
+        auto platformName = obj->property("platformName").toString();
+        loadDB(platformName);
+        sortFilterProxyModel.setSourceModel(sqlTableModel);
+        sortFilterProxyModel.resetFilter();
+    });
 
     QThread thread;
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");

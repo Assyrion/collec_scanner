@@ -12,7 +12,6 @@ import "qml/BarcodeScannerView"
 import ComManager 1.0
 import FileManager 1.0
 import ImageManager 1.0
-import SQLTableModel 1.0
 
 import "qml/utils/PopupMaker.js" as PopupMaker
 
@@ -25,7 +24,6 @@ Window {
     required property ComManager comManager
     required property FileManager fileManager
     required property ImageManager imageManager
-    required property SQLTableModel sqlTableModel
 
     required property int collectionView
     required property string platformName

@@ -13,7 +13,7 @@ class SqlTableModel : public QSqlTableModel
     Q_PROPERTY(QStringList roleNamesList READ roleNamesList NOTIFY roleNamesListChanged)
 
 public:
-    SqlTableModel(QObject* parent = nullptr);
+    SqlTableModel(QObject* parent = nullptr, const QSqlDatabase &db = QSqlDatabase());
     ~SqlTableModel() Q_DECL_OVERRIDE;
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
