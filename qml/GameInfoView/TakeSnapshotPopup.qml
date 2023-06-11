@@ -41,8 +41,8 @@ Popup {
         Loader {
             id: loader
             active: false
-            width: 13.7*height/17
-            height: 6*parent.height/7-2
+            width: 13*height/15
+            height: 5*parent.height/6 - 10
             anchors.top: parent.top
             anchors.topMargin: -12
             anchors.horizontalCenter:
