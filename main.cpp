@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
         settings.setValue("window/y", 50);
         settings.setValue("window/w", 512);
         settings.setValue("window/h", 773);
+        settings.setValue("platform/name", "ps3");
     }
 
     settings.beginGroup("sqlTableModel");
@@ -63,7 +64,11 @@ int main(int argc, char *argv[])
 
     settings.beginGroup("mainView");
     auto collectionView = settings.value("view").toInt();
-    settings.endGroup();    
+    settings.endGroup();
+
+    settings.beginGroup("platform");
+    auto platformName = settings.value("name", "ps3").toInt();
+    settings.endGroup();
 
 #ifdef Q_OS_ANDROID
 
@@ -160,9 +165,10 @@ int main(int argc, char *argv[])
     engine.setInitialProperties({
         {"comManager", QVariant::fromValue(&comManager)},
         {"fileManager", QVariant::fromValue(&fileManager)},
+        {"platformName", QVariant::fromValue(platformName)},
         {"imageManager", QVariant::fromValue(&imageManager)},
         {"sqlTableModel", QVariant::fromValue(&sqlTableModel)},
-        {"collectionView", QVariant::fromValue(collectionView)},
+        {"collectionView", QVariant::fromValue(collectionView)}
     });
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
@@ -207,6 +213,10 @@ int main(int argc, char *argv[])
         settings.setValue("y", window->y());
         settings.setValue("w", window->width());
         settings.setValue("h", window->height());
+        settings.endGroup();
+
+        settings.beginGroup("platform");
+        settings.setValue("name", rootObject->property("platformName"));
         settings.endGroup();
 
         settings.sync();

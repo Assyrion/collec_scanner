@@ -50,5 +50,18 @@ MenuBar {
                 onTriggered: root.gridViewRequired()
             }
         }
+        Menu {
+            title: qsTr("Platform")
+            width: root.width*3
+            background: backgroundRec.createObject(root)
+            MenuItem {
+                text: qsTr("ps2")
+                onTriggered: platformName = text
+            }
+            MenuItem {
+                text: qsTr("ps3")
+                onTriggered: platformName = text
+            }
+        }
     }
 }

@@ -28,6 +28,7 @@ Window {
     required property SQLTableModel sqlTableModel
 
     required property int collectionView
+    required property string platformName
 
     ConfigDrawer {
         id: drawer
