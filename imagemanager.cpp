@@ -44,7 +44,7 @@ QString ImageManager::getBackPic(const QString& tag) const
 
 QString ImageManager::getPic(const QString& fileName) const
 {
-    QString path = PICPATH_ABS + fileName;
+    QString path = Global::PICPATH_ABS + fileName;
 
     if(QFile::exists(path)) {
         return path;
@@ -64,7 +64,7 @@ void ImageManager::saveBackPic(const QString& tag, const QImage& pic) const
 
 void ImageManager::savePic(const QString& fileName, const QImage& pic) const
 {
-    QString path = PICPATH_ABS + fileName;
+    QString path = Global::PICPATH_ABS + fileName;
     if(!pic.isNull()) {
         pic.save(path);
     }
@@ -78,6 +78,6 @@ void ImageManager::removePics(const QString &tag) const
 
 void ImageManager::removePic(const QString &fileName) const
 {
-    QString path = PICPATH_ABS + fileName;
+    QString path = Global::PICPATH_ABS + fileName;
     QFile::remove(path);
 }

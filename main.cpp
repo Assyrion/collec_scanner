@@ -29,10 +29,10 @@ int main(int argc, char *argv[])
 
     /*************************** Init *****************************/
 
-    QDir dataDir(DATAPATH);
+    QDir dataDir(Global::DATAPATH);
     if(!dataDir.exists()) dataDir.mkpath(".");
 
-    QSettings settings(DATAPATH + QDir::separator() + QString(APPNAME) + ".ini", QSettings::IniFormat);
+    QSettings settings(Global::DATAPATH + QDir::separator() + QString(APPNAME) + ".ini", QSettings::IniFormat);
 
     if(settings.allKeys().isEmpty()) {
         settings.setValue("sqlTableModel/orderBy", 1);
@@ -101,15 +101,17 @@ int main(int argc, char *argv[])
 
     /************************* Database *****************************/
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(DB_PATH_ABS_NAME);
+    Global::setDBName(QString("games_%1_complete.db").arg(platformName));
 
-//    QFile::remove(DB_PATH_ABS_NAME); // uncomment if needed for tests
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(Global::DB_PATH_ABS_NAME);
+
+//    QFile::remove(Global::DB_PATH_ABS_NAME); // uncomment if needed for tests
 
     ComManager comManager;
 
     // checking if needed to download DB
-    if(!QFile::exists(DB_PATH_ABS_NAME)) {
+    if(!QFile::exists(Global::DB_PATH_ABS_NAME)) {
 
         QQuickView *db_view = new QQuickView;
         db_view->setSource(QUrl(QStringLiteral("qrc:/download_db_view.qml")));
@@ -135,7 +137,7 @@ int main(int argc, char *argv[])
     } else if(!db.tables().contains("games")) { // wrong database
         qDebug() << "Error: database corrupted";
         db.close();
-        QFile::remove(DB_PATH_ABS_NAME);
+        QFile::remove(Global::DB_PATH_ABS_NAME);
         return -1;
     }
 

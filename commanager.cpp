@@ -16,7 +16,7 @@ static const QRegularExpression re("href=\"([^\"]+\\.png)\">.*?(\\d{4}-\\d{2}-\\
 ComManager::ComManager(QObject *parent)
     : QObject{parent}
 {
-    m_coversToUploadFile.setFileName(PICPATH_ABS + "covers_to_upload.txt");
+    m_coversToUploadFile.setFileName(Global::PICPATH_ABS + "covers_to_upload.txt");
 }
 
 ComManager::~ComManager()
@@ -29,13 +29,13 @@ void ComManager::downloadCovers()
 {
     QMetaObject::invokeMethod(m_progressDialog, "show");
 
-    QDir toDir(PICPATH_ABS);
+    QDir toDir(Global::PICPATH_ABS);
     if(!toDir.exists()) toDir.mkpath(".");
     toDir.setFilter(QDir::Files | QDir::NoSymLinks);
     toDir.setNameFilters(QStringList() << "*.png");
     int count = 0;
 
-    QUrl url(REMOTE_PIC_PATH);
+    QUrl url(Global::REMOTE_PIC_PATH);
     QNetworkRequest request(url);
     QNetworkAccessManager manager;
     QNetworkReply *reply = manager.get(request);
@@ -72,7 +72,7 @@ void ComManager::downloadCovers()
                     }
 
                     if(!QFile::exists(localPath) || (remoteCreationDate > localModifiedDate)) {
-                        downloadFile(REMOTE_PIC_PATH + remoteFileName, localPath);
+                        downloadFile(Global::REMOTE_PIC_PATH + remoteFileName, localPath);
                         QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
                     } else {
                         QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, --remote_count));
@@ -105,7 +105,7 @@ void ComManager::uploadCovers()
     int count = 0;
 
     foreach (auto s, sl) {
-        if(!s.isEmpty() && uploadFile(PICPATH_ABS + s, REMOTE_UPLOAD_PIC_SCRIPT)) {
+        if(!s.isEmpty() && uploadFile(Global::PICPATH_ABS + s, Global::REMOTE_UPLOAD_PIC_SCRIPT)) {
 
             QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
 
@@ -185,7 +185,7 @@ bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
 
 void ComManager::downloadDB()
 {
-    downloadFile(REMOTE_DB_PATH + DBNAME, DB_PATH_ABS_NAME);
+    downloadFile(Global::REMOTE_DB_PATH + Global::DBNAME, Global::DB_PATH_ABS_NAME);
 }
 
 void ComManager::downloadFile(const QString& remotePath, const QString& localPath)
@@ -219,7 +219,7 @@ void ComManager::uploadDB()
 {
     QMetaObject::invokeMethod(m_progressDialog, "show");
 
-    uploadFile(DB_PATH_ABS_NAME, REMOTE_UPLOAD_DB_SCRIPT);
+    uploadFile(Global::DB_PATH_ABS_NAME, Global::REMOTE_UPLOAD_DB_SCRIPT);
 
     QMetaObject::invokeMethod(m_progressDialog, "hide");
 }
