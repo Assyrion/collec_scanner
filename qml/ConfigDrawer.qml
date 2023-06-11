@@ -14,14 +14,14 @@ Drawer {
     function showConfirmClearDB() {
         var obj = PopupMaker.showConfirmClearDB(mainWindow)
         obj.accepted.connect(function() {
-            sqlTableModel.clearDB()
+            dbManager.currentSQLModel.clearDB()
         })
     }
 
     function showConfirmSaveDB() {
         var obj = PopupMaker.showConfirmSaveDB(mainWindow)
         obj.accepted.connect(function() {
-            sqlTableModel.saveDBToFile(fileManager)
+            dbManager.currentSQLModel.saveDBToFile(fileManager)
         })
     }
 
@@ -137,7 +137,7 @@ Drawer {
             onActivated: sortFilterProxyModel.sort(currentIndex,
                                                   ascDescBox.currentValue)
             Component.onCompleted: {
-                model = sqlTableModel.roleNamesList
+                model = dbManager.currentSQLModel.roleNamesList
                 currentIndex = sortFilterProxyModel.orderBy
             }
         }

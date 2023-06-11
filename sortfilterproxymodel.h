@@ -54,7 +54,6 @@ private:
     int m_sortOrder;
     int m_orderBy;
 
-
 signals:
     void essentialsFilterChanged();
     void essentialsOnlyChanged();

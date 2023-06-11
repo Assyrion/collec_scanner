@@ -17,6 +17,7 @@
 #include <QDir>
 
 #include "sortfilterproxymodel.h"
+#include "databasemanager.h"
 #include "sqltablemodel.h"
 #include "imagemanager.h"
 #include "filemanager.h"
@@ -129,39 +130,10 @@ int main(int argc, char *argv[])
         db_view->deleteLater();
     };
 
-    SqlTableModel* sqlTableModel;
+    DatabaseManager dbManager;
+    QObject::connect(&dbManager, &DatabaseManager::unknownDatabase, downloadDB);
 
-    auto loadDB = [&](const QString& platform) -> int {
-        Global::setDBName(QString("games_%1_complete.db").arg(platform));
-
-        if (!modelHash.contains(platform)) {
-
-            auto db = QSqlDatabase::addDatabase("QSQLITE", platform);
-            db.setDatabaseName(Global::DB_PATH_ABS_NAME);
-
-            // checking if needed to download DB
-            if(!QFile::exists(Global::DB_PATH_ABS_NAME)) {
-                downloadDB();
-            }
-
-            if (!db.open()) {
-                qDebug() << "Error: connection with database fail" << db.lastError();
-                return -1;
-            } else if(!db.tables().contains("games")) { // wrong database
-                qDebug() << "Error: database corrupted";
-                db.close();
-                QFile::remove(Global::DB_PATH_ABS_NAME);
-                return -1;
-            }
-            modelHash.insert(platform, new SqlTableModel(nullptr, db));
-        }
-
-        sqlTableModel = modelHash.value(platform);
-
-        return 0;
-    };
-
-    if(loadDB(platformName) < 0)
+    if(dbManager.loadDB(platformName) < 0)
         return -1;
 
     /*************************** QML *******************************/
@@ -177,15 +149,16 @@ int main(int argc, char *argv[])
     ImageManager  imageManager;
     FileManager   fileManager;
     CoverProvider coverProvider(&imageManager);
-    SortFilterProxyModel sortFilterProxyModel(orderBy, sortOrder, titleFilter, ownedFilter,
-                                              essentialsFilter, platinumFilter,
-                                              essentialsOnly, platinumOnly);
-    sortFilterProxyModel.setSourceModel(sqlTableModel);
 
+    SortFilterProxyModel* sortFilterProxyModel = new SortFilterProxyModel(orderBy, sortOrder,
+                                                                          titleFilter, ownedFilter,
+                                                                          essentialsFilter, platinumFilter,
+                                                                          essentialsOnly, platinumOnly);
+    sortFilterProxyModel->setSourceModel(dbManager.currentSQLModel());
     engine.rootContext()->setContextProperty("sortFilterProxyModel",
-                                             &sortFilterProxyModel);
-    engine.rootContext()->setContextProperty("sqlTableModel",
-                                             sqlTableModel);
+                                             sortFilterProxyModel);
+    engine.rootContext()->setContextProperty("dbManager",
+                                             &dbManager);
 
     engine.addImageProvider("coverProvider", &coverProvider);
     engine.setInitialProperties({
@@ -219,14 +192,14 @@ int main(int argc, char *argv[])
     auto saveSettings = [&]() {
 
         settings.beginGroup("sqlTableModel");
-        settings.setValue("orderBy", sortFilterProxyModel.getOrderBy());
-        settings.setValue("sortOrder", sortFilterProxyModel.getSortOrder());
-        settings.setValue("titleFilter", sortFilterProxyModel.getTitleFilter());
-        settings.setValue("ownedFilter", sortFilterProxyModel.getOwnedFilter());
-        settings.setValue("essentialsFilter", sortFilterProxyModel.getEssentialsFilter());
-        settings.setValue("essentialsOnly", sortFilterProxyModel.getEssentialsOnly());
-        settings.setValue("platinumFilter", sortFilterProxyModel.getPlatinumFilter());
-        settings.setValue("platinumOnly", sortFilterProxyModel.getPlatinumOnly());
+        settings.setValue("orderBy", sortFilterProxyModel->getOrderBy());
+        settings.setValue("sortOrder", sortFilterProxyModel->getSortOrder());
+        settings.setValue("titleFilter", sortFilterProxyModel->getTitleFilter());
+        settings.setValue("ownedFilter", sortFilterProxyModel->getOwnedFilter());
+        settings.setValue("essentialsFilter", sortFilterProxyModel->getEssentialsFilter());
+        settings.setValue("essentialsOnly", sortFilterProxyModel->getEssentialsOnly());
+        settings.setValue("platinumFilter", sortFilterProxyModel->getPlatinumFilter());
+        settings.setValue("platinumOnly", sortFilterProxyModel->getPlatinumOnly());
         settings.endGroup();
 
         settings.beginGroup("mainView");
@@ -252,9 +225,9 @@ int main(int argc, char *argv[])
     sm.setMapping(rootObject, rootObject); // dummy mapping
     QObject::connect(&sm, &QSignalMapper::mappedObject, [&](QObject* obj){
         auto platformName = obj->property("platformName").toString();
-        loadDB(platformName);
-        sortFilterProxyModel.setSourceModel(sqlTableModel);
-        sortFilterProxyModel.resetFilter();
+        dbManager.loadDB(platformName);
+        sortFilterProxyModel->setSourceModel(dbManager.currentSQLModel());
+        sortFilterProxyModel->resetFilter();
     });
 
     QThread thread;

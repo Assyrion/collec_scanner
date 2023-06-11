@@ -65,16 +65,18 @@ Pane {
         }
 
         if(index < 0) {
-            sqlTableModel.insertRow(0)
-            sqlTableModel.setData(sqlTableModel.index(0, 0), currentTag)
-            sqlTableModel.setData(sqlTableModel.index(0, 1), titleInfo.entry)
-            sqlTableModel.setData(sqlTableModel.index(0, 2), platformInfo.entry)
-            sqlTableModel.setData(sqlTableModel.index(0, 3), publisherInfo.entry)
-            sqlTableModel.setData(sqlTableModel.index(0, 4), developerInfo.entry)
-            sqlTableModel.setData(sqlTableModel.index(0, 5), codeInfo.entry)
-            sqlTableModel.setData(sqlTableModel.index(0, 6), infoInfo.entry)
-            sqlTableModel.setData(sqlTableModel.index(0, 7), ownedInfo.entry)
-            sqlTableModel.submitAll()
+            var sqlModel = dbManager.currentSQLModel
+
+            sqlModel.insertRow(0)
+            sqlModel.setData(sqlModel.index(0, 0), currentTag)
+            sqlModel.setData(sqlModel.index(0, 1), titleInfo.entry)
+            sqlModel.setData(sqlModel.index(0, 2), platformInfo.entry)
+            sqlModel.setData(sqlModel.index(0, 3), publisherInfo.entry)
+            sqlModel.setData(sqlModel.index(0, 4), developerInfo.entry)
+            sqlModel.setData(sqlModel.index(0, 5), codeInfo.entry)
+            sqlModel.setData(sqlModel.index(0, 6), infoInfo.entry)
+            sqlModel.setData(sqlModel.index(0, 7), ownedInfo.entry)
+            sqlModel.submitAll()
         }
         else {
             model.title = titleInfo.entry
@@ -179,7 +181,7 @@ Pane {
         GameInfoListDelegate {
             id: platformInfo
             name: qsTr("Platform")
-            entry: model?.platform ?? "ps3";
+            entry: model?.platform ?? platformName;
             editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
