@@ -29,10 +29,24 @@ void ComManager::downloadCovers(const QString& subfolder)
 {
     QMetaObject::invokeMethod(m_progressDialog, "show");
 
+    QDir picDir(Global::PICPATH_ABS);
+    if(!picDir.exists()) picDir.mkpath(".");
+    picDir.setFilter(QDir::Files | QDir::NoSymLinks);
+    picDir.setNameFilters(QStringList() << "*.png");
+
     QDir toDir(Global::PICPATH_ABS + '/' + subfolder);
     if(!toDir.exists()) toDir.mkpath(".");
     toDir.setFilter(QDir::Files | QDir::NoSymLinks);
     toDir.setNameFilters(QStringList() << "*.png");
+
+    // Before downloading, we check if a previsous version of the app already has cover in pic folder
+    QStringList fileList = picDir.entryList();
+    foreach (const QString &fileName, fileList) {
+        QString sourceFilePath = picDir.absoluteFilePath(fileName);
+        QString destinationFilePath = toDir.absoluteFilePath(fileName);
+        QFile::rename(sourceFilePath, destinationFilePath);
+    }
+
     int count = 0;
 
     QString remotePicSubfolder = Global::REMOTE_PIC_PATH + subfolder;
