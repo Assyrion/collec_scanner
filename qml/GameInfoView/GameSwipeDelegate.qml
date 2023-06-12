@@ -52,16 +52,19 @@ Pane {
     }
 
     function saveGame() {
+
         // handle cover before modifying DB !
+        var coverSubfolder = platformName + "/" + currentTag
+
         if(gameCoverRow.frontCoverData) {
-            imageManager.saveFrontPic(currentTag,
+            imageManager.saveFrontPic(coverSubfolder,
                                       gameCoverRow.frontCoverData)
-            comManager.handleFrontCover(currentTag)
+            comManager.handleFrontCover(coverSubfolder)
         }
         if(gameCoverRow.backCoverData) {
-            imageManager.saveBackPic(currentTag,
+            imageManager.saveBackPic(coverSubfolder,
                                      gameCoverRow.backCoverData)
-            comManager.handleBackCover(currentTag)
+            comManager.handleBackCover(coverSubfolder)
         }
 
         if(index < 0) {
@@ -98,9 +101,9 @@ Pane {
             dataColumn.children[i].reset()
         }
         gameCoverRow.frontCoverUrl =
-            ("image://coverProvider/%1.front").arg(currentTag)
+            ("image://coverProvider/%1.front").arg(platformName + "/" + currentTag)
         gameCoverRow.backCoverUrl =
-            ("image://coverProvider/%1.back").arg(currentTag)
+            ("image://coverProvider/%1.back").arg(platformName + "/" + currentTag)
     }
 
     function setGameAsOwned() {
@@ -120,9 +123,9 @@ Pane {
         z: 1
 
         frontCoverUrl:
-            ("image://coverProvider/%1.front").arg(currentTag)
+            ("image://coverProvider/%1.front").arg(platformName + "/" + currentTag)
         backCoverUrl:
-            ("image://coverProvider/%1.back").arg(currentTag)
+            ("image://coverProvider/%1.back").arg(platformName + "/" + currentTag)
 
         onEditCoverRequired:(img) => showSnapshotPopup(img)
 

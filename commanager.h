@@ -12,7 +12,7 @@ public:
     explicit ComManager(QObject *parent = nullptr);
     ~ComManager();
 
-    void downloadCovers();
+    void downloadCovers(const QString &subfolder);
     Q_INVOKABLE void uploadCovers();
 
     void downloadDB();

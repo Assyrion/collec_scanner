@@ -13,7 +13,7 @@ Item {
         anchors.verticalCenter:
             parent.verticalCenter
         fillMode: Image.PreserveAspectFit
-        source: ("image://coverProvider/%1.front").arg(model.tag)
+        source: ("image://coverProvider/%1.front").arg(platformName + "/" + model.tag)
         cache: false
         mipmap: true
         smooth: true
@@ -36,7 +36,7 @@ Item {
 
     Text {
         Component.onCompleted: {
-            visible = !imageManager.getFrontPic(model.tag).includes(model.tag)
+            visible = !imageManager.getFrontPic(platformName + "/" + model.tag).includes(model.tag)
         }
         width: mainImg.width - 10
         anchors.top : mainImg.top

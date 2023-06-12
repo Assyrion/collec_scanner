@@ -11,7 +11,7 @@ struct Global {
     inline static const QString REMOTE_PATH = "http://collecscanner.freeboxos.fr/";
     inline static const QString REMOTE_PIC_PATH = REMOTE_PATH + PICPATH + "/";
     inline static const QString REMOTE_DB_PATH = REMOTE_PATH + "db/";
-    inline static const QString REMOTE_UPLOAD_PIC_SCRIPT = REMOTE_PATH + "upload_cover.php";
+    inline static const QString REMOTE_UPLOAD_PIC_SCRIPT = REMOTE_PATH + "upload_cover_platform.php";
     inline static const QString REMOTE_UPLOAD_DB_SCRIPT = REMOTE_PATH + "upload_db.php";
 
 #ifdef Q_OS_ANDROID

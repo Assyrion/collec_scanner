@@ -24,7 +24,7 @@ Item {
                 -implicitHeight/2 + 30
             anchors.horizontalCenter:
                 parent.horizontalCenter
-            source: ("image://coverProvider/%1.front").arg(model.tag)
+            source: ("image://coverProvider/%1.front").arg(platformName + "/" + model.tag)
             fillMode: Image.PreserveAspectCrop
             antialiasing: true
             cache: false

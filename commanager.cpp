@@ -25,18 +25,18 @@ ComManager::~ComManager()
         m_coversToUploadFile.close();
 }
 
-void ComManager::downloadCovers()
+void ComManager::downloadCovers(const QString& subfolder)
 {
     QMetaObject::invokeMethod(m_progressDialog, "show");
 
-    QDir toDir(Global::PICPATH_ABS);
+    QDir toDir(Global::PICPATH_ABS + '/' + subfolder);
     if(!toDir.exists()) toDir.mkpath(".");
     toDir.setFilter(QDir::Files | QDir::NoSymLinks);
     toDir.setNameFilters(QStringList() << "*.png");
     int count = 0;
 
-    QUrl url(Global::REMOTE_PIC_PATH);
-    QNetworkRequest request(url);
+    QString remotePicSubfolder = Global::REMOTE_PIC_PATH + subfolder;
+    QNetworkRequest request(remotePicSubfolder);
     QNetworkAccessManager manager;
     QNetworkReply *reply = manager.get(request);
 
@@ -72,7 +72,7 @@ void ComManager::downloadCovers()
                     }
 
                     if(!QFile::exists(localPath) || (remoteCreationDate > localModifiedDate)) {
-                        downloadFile(Global::REMOTE_PIC_PATH + remoteFileName, localPath);
+                        downloadFile(remotePicSubfolder + '/' + remoteFileName, localPath);
                         QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
                     } else {
                         QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, --remote_count));
@@ -144,9 +144,14 @@ bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
     QMimeDatabase mimeDatabase;
     QMimeType mimeType(mimeDatabase.mimeTypeForFile(QFileInfo(file)));
 
+    QString subfolder = fileName.section('/', -2, -2); // Obtient le nom du sous-dossier
+    QString subFile = fileName.section('/', -1); // Obtient le nom de fichier avec l'extension
+
+    QString fileBuild = subfolder + ":" + subFile;
+
     QHttpPart filePart;
     filePart.setHeader(QNetworkRequest::ContentTypeHeader, mimeType.name());
-    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\"; filename=\"" + fileName + "\""));
+    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\"; filename=\"" + fileBuild + "\""));
     filePart.setHeader(QNetworkRequest::ContentLengthHeader, file.size());
     filePart.setBodyDevice(&file);
 

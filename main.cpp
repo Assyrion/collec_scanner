@@ -220,22 +220,28 @@ int main(int argc, char *argv[])
         settings.sync();
     };
 
+
     QSignalMapper sm;
-    QObject::connect(rootObject, SIGNAL(platformNameChanged()), &sm, SLOT(map()));
     sm.setMapping(rootObject, rootObject); // dummy mapping
+
+    QThread thread;
+
+    auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
+    comManager.setProgressDialog(dialog);
+
+    QObject::connect(dialog, SIGNAL(aboutToHide()), &thread, SLOT(quit()));
+    QObject::connect(&thread, &QThread::started, &comManager, [&]() {
+        auto platformName = rootObject->property("platformName").toString();
+        comManager.downloadCovers(platformName);
+    });
+    QObject::connect(rootObject, SIGNAL(platformNameChanged()), &sm, SLOT(map()));
     QObject::connect(&sm, &QSignalMapper::mappedObject, [&](QObject* obj){
         auto platformName = obj->property("platformName").toString();
         dbManager.loadDB(platformName);
         sortFilterProxyModel->setSourceModel(dbManager.currentSQLModel());
         sortFilterProxyModel->resetFilter();
+        thread.start();
     });
-
-    QThread thread;
-    auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
-    comManager.setProgressDialog(dialog);
-
-    QObject::connect(dialog, SIGNAL(aboutToHide()), &thread, SLOT(quit()));
-    QObject::connect(&thread, &QThread::started, &comManager, &ComManager::downloadCovers);
 
     comManager.moveToThread(&thread);
 
