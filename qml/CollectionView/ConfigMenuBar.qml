@@ -21,6 +21,7 @@ MenuBar {
     background: backgroundRec.createObject(root)
     font.pointSize: 16
     Menu {
+        id: rootMenu
         title: "\u{1F527}"
         width: root.width*3
         background: backgroundRec.createObject(root)
@@ -37,30 +38,52 @@ MenuBar {
             highlighted: false
         }
         Menu {
+            id: viewMenu
             title: qsTr("View")
             width: root.width*3
             background: backgroundRec.createObject(root)
-            MenuItem {
-                text: qsTr("List")
-                icon.source: "qrc:/list_view"
-                onTriggered: root.listViewRequired()
-            }
-            MenuItem {
-                text: qsTr("Grid")
-                icon.source: "qrc:/grid_view"
-                onTriggered: root.gridViewRequired()
+            ListView {
+                height: contentHeight
+                model: ListModel {
+                    ListElement {
+                        titleRole: qsTr("List")
+                        iconRole: "qrc:/list_view"
+                        triggerRole: () => root.listViewRequired()
+                    }
+                    ListElement {
+                        titleRole: qsTr("Grid")
+                        iconRole: "qrc:/grid_view"
+                        triggerRole: () => root.gridViewRequired()
+                    }
+                }
+                delegate : MenuItem {
+                    text: titleRole
+                    icon.source: iconRole
+                    highlighted: index === collectionView
+                    onTriggered: {
+                        triggerRole()
+                        viewMenu.close()
+                        rootMenu.close()
+                    }
+                }
             }
         }
         Menu {
+            id: platformMenu
             title: qsTr("Platform")
-            width: root.width*3
+            width: root.width*2
             background: backgroundRec.createObject(root)
-            Repeater {
+            ListView {
+                height: contentHeight
                 model: Object.keys(Platforms.list)
-
-                MenuItem {
+                delegate: MenuItem {
                     text: modelData
-                    onTriggered: platformName = modelData
+                    highlighted: modelData === platformName
+                    onTriggered: {
+                        platformName = modelData
+                        platformMenu.close()
+                        rootMenu.close()
+                    }
                 }
             }
         }
