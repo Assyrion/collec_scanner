@@ -1,12 +1,16 @@
 #include "databasemanager.h"
 #include "global.h"
-#include "qqml.h"
 #include "qsqlerror.h"
 
-DatabaseManager::DatabaseManager(QObject *parent)
-    : QObject{parent}
+DatabaseManager::DatabaseManager(const QHash<QString, QVariantHash>& paramHash, QObject *parent)
+    : QObject{parent}, m_paramHash(paramHash)
 {
-    qmlRegisterType<SqlTableModel>("SqlTableModel", 1, 0, "SqlTableModel");
+    //    qmlRegisterType<SqlTableModel>("SqlTableModel", 1, 0, "SqlTableModel");
+}
+
+DatabaseManager::~DatabaseManager()
+{
+    m_modelHash.clear();
 }
 
 int DatabaseManager::loadDB(const QString &platform)
@@ -32,16 +36,24 @@ int DatabaseManager::loadDB(const QString &platform)
             QFile::remove(Global::DB_PATH_ABS_NAME);
             return -1;
         }
-        m_modelHash.insert(platform, new SqlTableModel(nullptr, db));
+        auto proxyModel = new SortFilterProxyModel(m_paramHash[platform]);
+        proxyModel->setSourceModel(new SqlTableModel(nullptr, db));
+        m_modelHash.insert(platform, proxyModel);
     }
 
-    m_currentSQLModel = m_modelHash.value(platform);
-    emit currentSQLModelChanged();
+    m_currentProxyModel = m_modelHash.value(platform);
+
+    emit currentSqlModelChanged();
 
     return 0;
 }
 
-SqlTableModel *DatabaseManager::currentSQLModel() const
+SortFilterProxyModel* DatabaseManager::currentProxyModel() const
 {
-    return m_currentSQLModel;
+    return m_currentProxyModel;
+}
+
+SqlTableModel *DatabaseManager::currentSqlModel() const
+{
+    return static_cast<SqlTableModel*>(m_currentProxyModel->sourceModel());
 }

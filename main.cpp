@@ -42,14 +42,14 @@ int main(int argc, char *argv[])
     QSettings settings(Global::DATAPATH + QDir::separator() + QString(APPNAME) + ".ini", QSettings::IniFormat);
 
     if(settings.allKeys().isEmpty()) {
-        settings.setValue("sqlTableModel/orderBy", 1);
-        settings.setValue("sqlTableModel/sortOrder", 0);
-        settings.setValue("sqlTableModel/titleFilter", "");
-        settings.setValue("sqlTableModel/ownedFilter", 2);
-        settings.setValue("sqlTableModel/essentialsFilter", true);
-        settings.setValue("sqlTableModel/essentialsOnly", false);
-        settings.setValue("sqlTableModel/platinumFilter", true);
-        settings.setValue("sqlTableModel/platinumOnly", false);
+//        settings.setValue("sqlTableModel/orderBy", 1);
+//        settings.setValue("sqlTableModel/sortOrder", 0);
+//        settings.setValue("sqlTableModel/titleFilter", "");
+//        settings.setValue("sqlTableModel/ownedFilter", 2);
+//        settings.setValue("sqlTableModel/essentialsFilter", true);
+//        settings.setValue("sqlTableModel/essentialsOnly", false);
+//        settings.setValue("sqlTableModel/platinumFilter", true);
+//        settings.setValue("sqlTableModel/platinumOnly", false);
         settings.setValue("mainView/view", 0);
         settings.setValue("window/x", 50);
         settings.setValue("window/y", 50);
@@ -58,16 +58,16 @@ int main(int argc, char *argv[])
         settings.setValue("platform/name", "ps3");
     }
 
-    settings.beginGroup("sqlTableModel");
-    auto orderBy = settings.value("orderBy").toInt();
-    auto sortOrder = settings.value("sortOrder").toInt();
-    auto titleFilter = settings.value("titleFilter").toString();
-    auto ownedFilter = settings.value("ownedFilter", 2).toInt();
-    auto essentialsFilter = settings.value("essentialsFilter", true).toBool();
-    auto essentialsOnly = settings.value("essentialsOnly", false).toBool();
-    auto platinumFilter = settings.value("platinumFilter", true).toBool();
-    auto platinumOnly = settings.value("platinumOnly", false).toBool();
-    settings.endGroup();
+//    settings.beginGroup("sqlTableModel");
+//    auto orderBy = settings.value("orderBy").toInt();
+//    auto sortOrder = settings.value("sortOrder").toInt();
+//    auto titleFilter = settings.value("titleFilter").toString();
+//    auto ownedFilter = settings.value("ownedFilter", 2).toInt();
+//    auto essentialsFilter = settings.value("essentialsFilter", true).toBool();
+//    auto essentialsOnly = settings.value("essentialsOnly", false).toBool();
+//    auto platinumFilter = settings.value("platinumFilter", true).toBool();
+//    auto platinumOnly = settings.value("platinumOnly", false).toBool();
+//    settings.endGroup();
 
     settings.beginGroup("mainView");
     auto collectionView = settings.value("view").toInt();
@@ -76,6 +76,22 @@ int main(int argc, char *argv[])
     settings.beginGroup("platform");
     auto platformName = settings.value("name", "ps3").toString();
     settings.endGroup();
+
+    settings.beginGroup("params");
+    QHash<QString, QVariantHash> paramHash;
+    for(const QString &group : settings.childGroups()) {
+        QVariantHash params;
+        settings.beginGroup(group);
+        for(const QString &key : settings.childKeys()) {
+            params.insert(key, settings.value(key));
+        }
+        paramHash.insert(group, params);
+        settings.endGroup();
+    }
+    settings.endGroup();
+
+    qDebug() << paramHash;
+
 
 #ifdef Q_OS_ANDROID
 
@@ -130,7 +146,7 @@ int main(int argc, char *argv[])
         db_view->deleteLater();
     };
 
-    DatabaseManager dbManager;
+    DatabaseManager dbManager(paramHash);
     QObject::connect(&dbManager, &DatabaseManager::unknownDatabase, downloadDB);
 
     if(dbManager.loadDB(platformName) < 0)
@@ -150,13 +166,6 @@ int main(int argc, char *argv[])
     FileManager   fileManager;
     CoverProvider coverProvider(&imageManager);
 
-    SortFilterProxyModel* sortFilterProxyModel = new SortFilterProxyModel(orderBy, sortOrder,
-                                                                          titleFilter, ownedFilter,
-                                                                          essentialsFilter, platinumFilter,
-                                                                          essentialsOnly, platinumOnly);
-    sortFilterProxyModel->setSourceModel(dbManager.currentSQLModel());
-    engine.rootContext()->setContextProperty("sortFilterProxyModel",
-                                             sortFilterProxyModel);
     engine.rootContext()->setContextProperty("dbManager",
                                              &dbManager);
 
@@ -191,16 +200,16 @@ int main(int argc, char *argv[])
 
     auto saveSettings = [&]() {
 
-        settings.beginGroup("sqlTableModel");
-        settings.setValue("orderBy", sortFilterProxyModel->getOrderBy());
-        settings.setValue("sortOrder", sortFilterProxyModel->getSortOrder());
-        settings.setValue("titleFilter", sortFilterProxyModel->getTitleFilter());
-        settings.setValue("ownedFilter", sortFilterProxyModel->getOwnedFilter());
-        settings.setValue("essentialsFilter", sortFilterProxyModel->getEssentialsFilter());
-        settings.setValue("essentialsOnly", sortFilterProxyModel->getEssentialsOnly());
-        settings.setValue("platinumFilter", sortFilterProxyModel->getPlatinumFilter());
-        settings.setValue("platinumOnly", sortFilterProxyModel->getPlatinumOnly());
-        settings.endGroup();
+//        settings.beginGroup("sqlTableModel");
+//        settings.setValue("orderBy", sortFilterProxyModel->getOrderBy());
+//        settings.setValue("sortOrder", sortFilterProxyModel->getSortOrder());
+//        settings.setValue("titleFilter", sortFilterProxyModel->getTitleFilter());
+//        settings.setValue("ownedFilter", sortFilterProxyModel->getOwnedFilter());
+//        settings.setValue("essentialsFilter", sortFilterProxyModel->getEssentialsFilter());
+//        settings.setValue("essentialsOnly", sortFilterProxyModel->getEssentialsOnly());
+//        settings.setValue("platinumFilter", sortFilterProxyModel->getPlatinumFilter());
+//        settings.setValue("platinumOnly", sortFilterProxyModel->getPlatinumOnly());
+//        settings.endGroup();
 
         settings.beginGroup("mainView");
         settings.setValue("view", rootObject->property("collectionView"));
@@ -217,6 +226,17 @@ int main(int argc, char *argv[])
         settings.setValue("name", rootObject->property("platformName"));
         settings.endGroup();
 
+        settings.beginGroup("params");
+        auto keys = paramHash.keys();
+        for(const QString &key : keys) {
+            settings.beginGroup(key);
+            for(const QString& paramKey : paramHash[key].keys()) {
+                settings.setValue(paramKey, paramHash[key][paramKey]);
+            }
+            settings.endGroup();
+        }
+        settings.endGroup();
+
         settings.sync();
     };
 
@@ -229,7 +249,7 @@ int main(int argc, char *argv[])
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
     comManager.setProgressDialog(dialog);
 
-    QObject::connect(dialog, SIGNAL(aboutToHide()), sortFilterProxyModel, SLOT(invalidate()));
+    QObject::connect(dialog, SIGNAL(aboutToHide()), dbManager.currentProxyModel(), SLOT(invalidate()));
     QObject::connect(dialog, SIGNAL(aboutToHide()), &thread, SLOT(quit()));
     QObject::connect(&thread, &QThread::started, &comManager, [&]() {
         auto platformName = rootObject->property("platformName").toString();
@@ -239,8 +259,6 @@ int main(int argc, char *argv[])
     QObject::connect(&sm, &QSignalMapper::mappedObject, [&](QObject* obj){
         auto platformName = obj->property("platformName").toString();
         dbManager.loadDB(platformName);
-        sortFilterProxyModel->setSourceModel(dbManager.currentSQLModel());
-        sortFilterProxyModel->resetFilter();
         thread.start();
     });
 

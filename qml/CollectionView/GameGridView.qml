@@ -11,7 +11,7 @@ GridView {
     signal movingChanged(bool moving)
 
     Component.onCompleted: {
-        model = sortFilterProxyModel
+        model = dbManager.currentProxyModel
         highlightMoveDuration = 0
     }
 

@@ -28,7 +28,7 @@ Item {
         var savedTag = root.currentItem.currentTag // index may have changed after edition
         root.currentItem.saveGame()
 
-        var idx = sortFilterProxyModel.getIndexFiltered(savedTag) // get the new index
+        var idx = dbManager.currentProxyModel.getIndexFiltered(savedTag) // get the new index
         if(idx >= 0)
             root.currentIndex = idx
         else
@@ -54,7 +54,7 @@ Item {
         currentIndex: 0
 
         Component.onCompleted: {
-            model = sortFilterProxyModel
+            model = dbManager.currentProxyModel
             highlightMoveDuration = 0
         }
         snapMode : ListView.SnapOneItem

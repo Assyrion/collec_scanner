@@ -66,7 +66,7 @@ Pane {
         }
 
         if(index < 0) {
-            var sqlModel = dbManager.currentSQLModel
+            var sqlModel = dbManager.currentSqlModel
 
             sqlModel.insertRow(0)
             sqlModel.setData(sqlModel.index(0, 0), currentTag)
@@ -86,14 +86,14 @@ Pane {
             model.developer = developerInfo.entry
             model.code = codeInfo.entry
             model.info = infoInfo.entry
-            sortFilterProxyModel.invalidate() // force to update model to reload covers
+            dbManager.currentProxyModel.invalidate() // force to update model to reload covers
         }
     }
 
     function removeGame() {
         imageManager.removePics(currentTag)
-        sortFilterProxyModel.removeRow(index)
-        dbManager.currentSQLModel.select() // reload DB content to avoid displaying a blank item
+        dbManager.currentProxyModel.removeRow(index)
+        dbManager.currentSqlModel.select() // reload DB content to avoid displaying a blank item
     }
 
     function cancelGame() {

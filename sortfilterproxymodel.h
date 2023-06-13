@@ -17,7 +17,9 @@ class SortFilterProxyModel : public QSortFilterProxyModel
     Q_PROPERTY(int orderBy MEMBER m_orderBy NOTIFY orderByChanged)
 
 public:
-    explicit SortFilterProxyModel(int orderBy, int sortOrder, const QString &titleFilter, int ownedFilter, bool essentialsFilter, bool platinumFilter, bool essentialsOnly, bool platinumOnly, QObject *parent = nullptr);
+    explicit SortFilterProxyModel(const QVariantHash& params, /*int orderBy, int sortOrder, const QString &titleFilter,
+                                  int ownedFilter, bool essentialsFilter = true, bool platinumFilter = true,
+                                  bool essentialsOnly = false, bool platinumOnly = false, */QObject *parent = nullptr);
 
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) Q_DECL_OVERRIDE;
     void setSourceModel(QAbstractItemModel *sourceModel) Q_DECL_OVERRIDE;

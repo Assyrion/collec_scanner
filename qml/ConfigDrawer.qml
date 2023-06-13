@@ -14,14 +14,14 @@ Drawer {
     function showConfirmClearDB() {
         var obj = PopupMaker.showConfirmClearDB(mainWindow)
         obj.accepted.connect(function() {
-            dbManager.currentSQLModel.clearDB()
+            dbManager.currentSqlModel.clearDB()
         })
     }
 
     function showConfirmSaveDB() {
         var obj = PopupMaker.showConfirmSaveDB(mainWindow)
         obj.accepted.connect(function() {
-            dbManager.currentSQLModel.saveDBToFile(fileManager)
+            dbManager.currentSqlModel.saveDBToFile(fileManager)
         })
     }
 
@@ -67,7 +67,7 @@ Drawer {
                 Layout.preferredWidth: parent.width
 
                 placeholderText: qsTr("Search by name")                
-                text: sortFilterProxyModel?.titleFilter ?? ""
+                text: dbManager.currentProxyModel?.titleFilter ?? ""
 
             }
             RowLayout {
@@ -84,7 +84,7 @@ Drawer {
                     rightPadding: 12
 
                     onClicked: {
-                        sortFilterProxyModel.filterByTitle(filterName.text)
+                        dbManager.currentProxyModel.filterByTitle(filterName.text)
                         close()
                     }
                     Layout.fillWidth: true
@@ -134,11 +134,11 @@ Drawer {
             Layout.preferredWidth: parent.width * 0.4
 
             onModelChanged: currentIndex = 1
-            onActivated: sortFilterProxyModel.sort(currentIndex,
+            onActivated: dbManager.currentProxyModel.sort(currentIndex,
                                                   ascDescBox.currentValue)
             Component.onCompleted: {
-                model = dbManager.currentSQLModel.roleNamesList
-                currentIndex = sortFilterProxyModel.orderBy
+                model = dbManager.currentSqlModel.roleNamesList
+                currentIndex = dbManager.currentProxyModel.orderBy
             }
         }
         ComboBox {
@@ -152,11 +152,11 @@ Drawer {
                     {text: qsTr("DESC"), value: Qt.DescendingOrder}]
 
             onActivated: {
-                sortFilterProxyModel.sort(sortingComboBox.currentIndex,
+                dbManager.currentProxyModel.sort(sortingComboBox.currentIndex,
                                                   currentValue)
             }
             Component.onCompleted: {
-                currentIndex = sortFilterProxyModel.sortOrder
+                currentIndex = dbManager.currentProxyModel.sortOrder
             }
         }
     }
@@ -187,9 +187,9 @@ Drawer {
             id: ownedCheckBox
 
             onClicked: {
-                sortFilterProxyModel.filterByOwned(checked, notOwnedCheckBox.checked)
+                dbManager.currentProxyModel.filterByOwned(checked, notOwnedCheckBox.checked)
             }
-            checked : sortFilterProxyModel?.ownedFilter >= 1
+            checked : dbManager.currentProxyModel?.ownedFilter >= 1
         }
         Label {
             id: labelNotOwned
@@ -204,9 +204,9 @@ Drawer {
             id: notOwnedCheckBox
 
             onClicked: {
-                sortFilterProxyModel.filterByOwned(ownedCheckBox.checked, checked)
+                dbManager.currentProxyModel.filterByOwned(ownedCheckBox.checked, checked)
             }
-            checked : !(sortFilterProxyModel?.ownedFilter % 2)
+            checked : !(dbManager.currentProxyModel?.ownedFilter % 2)
         }
     }
     ColumnLayout {
@@ -238,10 +238,10 @@ Drawer {
 
                 onClicked: {
                     if(!checked)
-                        sortFilterProxyModel.filterOnlyEssentials(false)
-                    sortFilterProxyModel.filterEssentials(checked)
+                        dbManager.currentProxyModel.filterOnlyEssentials(false)
+                    dbManager.currentProxyModel.filterEssentials(checked)
                 }
-                checked : sortFilterProxyModel?.essentialsFilter
+                checked : dbManager.currentProxyModel?.essentialsFilter
             }
             Behavior on Layout.preferredHeight { NumberAnimation { duration : 100 } }
         }
@@ -268,10 +268,10 @@ Drawer {
                 id: essentialsOnlyCheckBox
 
                 onClicked: {
-                    sortFilterProxyModel.filterOnlyEssentials(checked)
+                    dbManager.currentProxyModel.filterOnlyEssentials(checked)
                 }
-                checked: sortFilterProxyModel?.essentialsOnly
-                         && sortFilterProxyModel?.essentialsFilter
+                checked: dbManager.currentProxyModel?.essentialsOnly
+                         && dbManager.currentProxyModel?.essentialsFilter
             }
         }
     }
@@ -303,10 +303,10 @@ Drawer {
 
                 onClicked: {
                     if(!checked)
-                        sortFilterProxyModel.filterOnlyPlatinum(false)
-                    sortFilterProxyModel.filterPlatinum(checked)
+                        dbManager.currentProxyModel.filterOnlyPlatinum(false)
+                    dbManager.currentProxyModel.filterPlatinum(checked)
                 }
-                checked : sortFilterProxyModel?.platinumFilter
+                checked : dbManager.currentProxyModel?.platinumFilter
             }
             Behavior on Layout.preferredHeight { NumberAnimation { duration : 100 } }
         }
@@ -334,10 +334,10 @@ Drawer {
                 id: platinumOnlyCheckBox
 
                 onClicked: {
-                    sortFilterProxyModel.filterOnlyPlatinum(checked)
+                    dbManager.currentProxyModel.filterOnlyPlatinum(checked)
                 }
-                checked: sortFilterProxyModel?.platinumOnly
-                         && sortFilterProxyModel?.platinumFilter
+                checked: dbManager.currentProxyModel?.platinumOnly
+                         && dbManager.currentProxyModel?.platinumFilter
             }
         }
     }

@@ -5,25 +5,34 @@
 #include <QHash>
 
 #include "sqltablemodel.h"
+#include "sortfilterproxymodel.h"
 
 class DatabaseManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(SqlTableModel* currentSQLModel READ currentSQLModel NOTIFY currentSQLModelChanged)
+    Q_PROPERTY(SqlTableModel* currentSqlModel READ currentSqlModel NOTIFY currentSqlModelChanged)
+    Q_PROPERTY(SortFilterProxyModel* currentProxyModel READ currentProxyModel NOTIFY currentProxyModelChanged)
 
 public:
-    explicit DatabaseManager(QObject *parent = nullptr);
+    explicit DatabaseManager(const QHash<QString, QVariantHash>& paramHash, QObject *parent = nullptr);
+    virtual ~DatabaseManager();
+
     int loadDB(const QString& platform);
 
-    SqlTableModel* currentSQLModel() const;
+    SqlTableModel* currentSqlModel() const;
+    SortFilterProxyModel* currentProxyModel() const;
 
 private:
-    QHash<QString, SqlTableModel*> m_modelHash;
+    QHash<QString, SortFilterProxyModel*> m_modelHash;
+    QHash<QString, QVariantHash> m_paramHash;
 
-    SqlTableModel* m_currentSQLModel;
+    SqlTableModel* m_currentSqlModel;
+    SortFilterProxyModel* m_currentProxyModel;
 
 signals:
-    void currentSQLModelChanged();
+    void currentSqlModelChanged();
+    void currentProxyModelChanged();
+
     void unknownDatabase();
 };
 

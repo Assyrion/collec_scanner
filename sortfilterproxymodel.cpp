@@ -3,16 +3,16 @@
 const QString platinum_code_marker = "/P";
 const QString essentials_code_marker = "/E";
 
-SortFilterProxyModel::SortFilterProxyModel(int orderBy, int sortOrder, const QString &titleFilter, int ownedFilter, bool essentialsFilter, bool platinumFilter, bool essentialsOnly, bool platinumOnly, QObject *parent)
+SortFilterProxyModel::SortFilterProxyModel(const QVariantHash &params, QObject *parent)
     : QSortFilterProxyModel(parent),
-    m_essentialsFilter(essentialsFilter),
-    m_essentialsOnly(essentialsOnly),
-    m_platinumFilter(platinumFilter),
-    m_platinumOnly(platinumOnly),
-    m_titleFilter(titleFilter),
-    m_ownedFilter(ownedFilter),
-    m_sortOrder(sortOrder),
-    m_orderBy(orderBy)
+    m_essentialsFilter(params["essentialsFilter"].toBool()),
+    m_essentialsOnly(params["essentialsOnly"].toBool()),
+    m_platinumFilter(params["platinumFilter"].toBool()),
+    m_platinumOnly(params["platinumOnly"].toBool()),
+    m_titleFilter(params["titleFilter"].toString()),
+    m_ownedFilter(params["ownedFilter"].toInt()),
+    m_sortOrder(params["sortOrder"].toInt()),
+    m_orderBy(params["orderBy"].toInt())
 {}
 
 void SortFilterProxyModel::sort(int column, Qt::SortOrder order)
