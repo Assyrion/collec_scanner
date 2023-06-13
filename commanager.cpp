@@ -143,7 +143,6 @@ void ComManager::uploadCovers()
 
 bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
 {
-    // Ouvrir le fichier PNG
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << "Impossible d'ouvrir le fichier";
@@ -158,10 +157,14 @@ bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
     QMimeDatabase mimeDatabase;
     QMimeType mimeType(mimeDatabase.mimeTypeForFile(QFileInfo(file)));
 
-    QString subfolder = fileName.section('/', -2, -2); // Obtient le nom du sous-dossier
-    QString subFile = fileName.section('/', -1); // Obtient le nom de fichier avec l'extension
+    QString fileBuild = fileName;
 
-    QString fileBuild = subfolder + ":" + subFile;
+    if(fileName.contains('/')) {
+        QString subfolder = fileName.section('/', -2, -2); // Obtient le nom du sous-dossier
+        QString subFile = fileName.section('/', -1); // Obtient le nom de fichier avec l'extension
+
+        fileBuild = subfolder + ":" + subFile;
+    }
 
     QHttpPart filePart;
     filePart.setHeader(QNetworkRequest::ContentTypeHeader, mimeType.name());

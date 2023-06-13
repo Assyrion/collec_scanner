@@ -21,8 +21,6 @@ Pane {
     property bool isOwned : (index < 0) || (model?.owned)
     property bool editMode: false
     property string currentTag: ""
-    property GameData currentGame:
-        GameDataMaker.createEmpty()
 
     Component.onCompleted: {
         if(index < 0 && currentTag === "") { // new game creation
@@ -79,7 +77,7 @@ Pane {
             sqlModel.setData(sqlModel.index(0, 5), codeInfo.entry)
             sqlModel.setData(sqlModel.index(0, 6), infoInfo.entry)
             sqlModel.setData(sqlModel.index(0, 7), ownedInfo.entry)
-            sqlModel.submitAll()
+            sqlModel.submitAll() // don't get why I have to do it
         }
         else {
             model.title = titleInfo.entry
@@ -88,12 +86,14 @@ Pane {
             model.developer = developerInfo.entry
             model.code = codeInfo.entry
             model.info = infoInfo.entry
+            sortFilterProxyModel.invalidate() // force to update model to reload covers
         }
     }
 
     function removeGame() {
         imageManager.removePics(currentTag)
         sortFilterProxyModel.removeRow(index)
+        dbManager.currentSQLModel.select() // reload DB content to avoid displaying a blank item
     }
 
     function cancelGame() {

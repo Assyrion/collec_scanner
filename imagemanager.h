@@ -19,11 +19,9 @@ public:
     Q_INVOKABLE void saveBackPic( const QString& tag, const QImage& pic) const;
 
 private:
-
     void savePic(  const QString& fileName, const QImage& pic) const;
     QString getPic(const QString& fileName) const;
     void removePic(const QString& fileName) const;
-
 };
 
 class CoverProvider : public QQuickImageProvider

@@ -229,6 +229,7 @@ int main(int argc, char *argv[])
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
     comManager.setProgressDialog(dialog);
 
+    QObject::connect(dialog, SIGNAL(aboutToHide()), sortFilterProxyModel, SLOT(invalidate()));
     QObject::connect(dialog, SIGNAL(aboutToHide()), &thread, SLOT(quit()));
     QObject::connect(&thread, &QThread::started, &comManager, [&]() {
         auto platformName = rootObject->property("platformName").toString();
