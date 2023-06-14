@@ -86,10 +86,3 @@ void SqlTableModel::saveDBToFile(FileManager* fileManager)
         fileManager->addEntry(game);
     }
 }
-
-void SqlTableModel::clearDB()
-{
-    QSqlQuery query;
-    query.exec(QString("DELETE FROM %1").arg(tableName()));
-    select();
-}

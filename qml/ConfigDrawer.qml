@@ -212,6 +212,8 @@ Drawer {
     ColumnLayout {
         id: essentialsColumn
 
+        visible: platformName == "ps3"
+
         anchors.top: ownedGrid.bottom
         anchors.topMargin: 10
         anchors.left: parent.left
@@ -277,6 +279,8 @@ Drawer {
     }
     ColumnLayout {
         id: platinumColumn
+
+        visible: platformName == "ps3"
 
         anchors.top: essentialsColumn.top
         anchors.right: parent.right
@@ -350,19 +354,6 @@ Drawer {
         width: parent.width
         spacing: 5
 
-        Button {
-            id: clearDBBtn
-            Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-            }, 80)
-
-            leftPadding: 12
-            rightPadding: 12
-
-            text: qsTr("clear DB")
-            onClicked: showConfirmClearDB()
-        }
         Button {
             id: saveDBBtn
             Layout.alignment: Qt.AlignCenter

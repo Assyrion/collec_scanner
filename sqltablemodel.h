@@ -22,7 +22,6 @@ public:
     QStringList roleNamesList() const;
 
     Q_INVOKABLE void saveDBToFile(FileManager* fileManager);
-    Q_INVOKABLE void clearDB();
 
 private:
 
