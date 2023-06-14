@@ -2,7 +2,7 @@
 #include "global.h"
 #include "qsqlerror.h"
 
-DatabaseManager::DatabaseManager(const QHash<QString, QVariantHash>& paramHash, QObject *parent)
+DatabaseManager::DatabaseManager(QHash<QString, QVariantHash>& paramHash, QObject *parent)
     : QObject{parent}, m_paramHash(paramHash)
 {
     //    qmlRegisterType<SqlTableModel>("SqlTableModel", 1, 0, "SqlTableModel");
@@ -42,8 +42,10 @@ int DatabaseManager::loadDB(const QString &platform)
     }
 
     m_currentProxyModel = m_modelHash.value(platform);
+//    m_currentProxyModel->invalidate();
 
     emit currentSqlModelChanged();
+    emit currentProxyModelChanged();
 
     return 0;
 }

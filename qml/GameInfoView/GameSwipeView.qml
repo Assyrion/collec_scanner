@@ -55,8 +55,17 @@ Item {
 
         Component.onCompleted: {
             model = dbManager.currentProxyModel
-            highlightMoveDuration = 0
         }
+
+        // update model
+        Connections {
+            target: dbManager
+            function onCurrentProxyModelChanged() {
+                swipeView.model = dbManager.currentProxyModel
+            }
+        }
+
+        highlightMoveDuration: 0
         snapMode : ListView.SnapOneItem
         highlightRangeMode: ListView.StrictlyEnforceRange
 

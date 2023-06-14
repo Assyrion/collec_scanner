@@ -7,17 +7,17 @@ class SortFilterProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool essentialsFilter MEMBER m_essentialsFilter NOTIFY essentialsFilterChanged)
-    Q_PROPERTY(bool essentialsOnly MEMBER m_essentialsOnly NOTIFY essentialsOnlyChanged)
-    Q_PROPERTY(bool platinumFilter MEMBER m_platinumFilter NOTIFY platinumFilterChanged)
-    Q_PROPERTY(bool platinumOnly MEMBER m_platinumOnly NOTIFY platinumOnlyChanged)
-    Q_PROPERTY(QString titleFilter MEMBER m_titleFilter NOTIFY titleFilterChanged)
-    Q_PROPERTY(int ownedFilter MEMBER m_ownedFilter NOTIFY ownedFilterChanged)
-    Q_PROPERTY(int sortOrder MEMBER m_sortOrder NOTIFY sortOrderChanged)
-    Q_PROPERTY(int orderBy MEMBER m_orderBy NOTIFY orderByChanged)
+    Q_PROPERTY(bool essentialsFilter READ getEssentialsFilter NOTIFY essentialsFilterChanged)
+    Q_PROPERTY(bool essentialsOnly READ getEssentialsOnly NOTIFY essentialsOnlyChanged)
+    Q_PROPERTY(bool platinumFilter READ getPlatinumFilter NOTIFY platinumFilterChanged)
+    Q_PROPERTY(bool platinumOnly READ getPlatinumOnly NOTIFY platinumOnlyChanged)
+    Q_PROPERTY(QString titleFilter READ getTitleFilter NOTIFY titleFilterChanged)
+    Q_PROPERTY(int ownedFilter READ getOwnedFilter NOTIFY ownedFilterChanged)
+    Q_PROPERTY(int sortOrder READ getSortOrder NOTIFY sortOrderChanged)
+    Q_PROPERTY(int orderBy READ getOrderBy NOTIFY orderByChanged)
 
 public:
-    explicit SortFilterProxyModel(const QVariantHash& params, /*int orderBy, int sortOrder, const QString &titleFilter,
+    explicit SortFilterProxyModel(QVariantHash &params, /*int orderBy, int sortOrder, const QString &titleFilter,
                                   int ownedFilter, bool essentialsFilter = true, bool platinumFilter = true,
                                   bool essentialsOnly = false, bool platinumOnly = false, */QObject *parent = nullptr);
 
@@ -34,11 +34,11 @@ public:
     Q_INVOKABLE void filterPlatinum(bool filter);
     Q_INVOKABLE void resetFilter();
 
-    QString getTitleFilter() const;
     bool getEssentialsFilter() const;
     bool getEssentialsOnly() const;
     bool getPlatinumFilter() const;
     bool getPlatinumOnly() const;
+    QString getTitleFilter() const;
     int getOwnedFilter() const;
     int getSortOrder() const;
     int getOrderBy() const;
@@ -47,14 +47,14 @@ protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE;
 
 private:
-    bool m_essentialsFilter;
-    bool m_essentialsOnly;
-    bool m_platinumFilter;
-    bool m_platinumOnly;
-    QString m_titleFilter;
-    int m_ownedFilter;
-    int m_sortOrder;
-    int m_orderBy;
+    QVariant& m_essentialsFilter;
+    QVariant& m_essentialsOnly;
+    QVariant& m_platinumFilter;
+    QVariant& m_platinumOnly;
+    QVariant& m_titleFilter;
+    QVariant& m_ownedFilter;
+    QVariant& m_sortOrder;
+    QVariant& m_orderBy;
 
 signals:
     void essentialsFilterChanged();

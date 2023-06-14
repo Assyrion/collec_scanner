@@ -10,11 +10,9 @@ GridView {
     signal showGameRequired(int idx)
     signal movingChanged(bool moving)
 
-    Component.onCompleted: {
-        model = dbManager.currentProxyModel
-        highlightMoveDuration = 0
-    }
+    model : dbManager.currentProxyModel
 
+    highlightMoveDuration: 0
     cellWidth: Math.min((width-5)/4, 169)
     cellHeight: cellWidth / Platforms.list[platformName].coverRatio
 

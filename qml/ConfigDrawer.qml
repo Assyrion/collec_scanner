@@ -189,7 +189,7 @@ Drawer {
             onClicked: {
                 dbManager.currentProxyModel.filterByOwned(checked, notOwnedCheckBox.checked)
             }
-            checked : dbManager.currentProxyModel?.ownedFilter >= 1
+            checked : dbManager?.currentProxyModel?.ownedFilter >= 1
         }
         Label {
             id: labelNotOwned
@@ -206,7 +206,7 @@ Drawer {
             onClicked: {
                 dbManager.currentProxyModel.filterByOwned(ownedCheckBox.checked, checked)
             }
-            checked : !(dbManager.currentProxyModel?.ownedFilter % 2)
+            checked : !(dbManager?.currentProxyModel?.ownedFilter % 2)
         }
     }
     ColumnLayout {
@@ -241,7 +241,7 @@ Drawer {
                         dbManager.currentProxyModel.filterOnlyEssentials(false)
                     dbManager.currentProxyModel.filterEssentials(checked)
                 }
-                checked : dbManager.currentProxyModel?.essentialsFilter
+                checked : dbManager?.currentProxyModel?.essentialsFilter
             }
             Behavior on Layout.preferredHeight { NumberAnimation { duration : 100 } }
         }
@@ -270,8 +270,8 @@ Drawer {
                 onClicked: {
                     dbManager.currentProxyModel.filterOnlyEssentials(checked)
                 }
-                checked: dbManager.currentProxyModel?.essentialsOnly
-                         && dbManager.currentProxyModel?.essentialsFilter
+                checked: dbManager?.currentProxyModel?.essentialsOnly
+                         && dbManager?.currentProxyModel?.essentialsFilter
             }
         }
     }
@@ -306,7 +306,7 @@ Drawer {
                         dbManager.currentProxyModel.filterOnlyPlatinum(false)
                     dbManager.currentProxyModel.filterPlatinum(checked)
                 }
-                checked : dbManager.currentProxyModel?.platinumFilter
+                checked : dbManager?.currentProxyModel?.platinumFilter
             }
             Behavior on Layout.preferredHeight { NumberAnimation { duration : 100 } }
         }
@@ -336,8 +336,8 @@ Drawer {
                 onClicked: {
                     dbManager.currentProxyModel.filterOnlyPlatinum(checked)
                 }
-                checked: dbManager.currentProxyModel?.platinumOnly
-                         && dbManager.currentProxyModel?.platinumFilter
+                checked: dbManager?.currentProxyModel?.platinumOnly
+                         && dbManager?.currentProxyModel?.platinumFilter
             }
         }
     }

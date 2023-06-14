@@ -14,7 +14,7 @@ class DatabaseManager : public QObject
     Q_PROPERTY(SortFilterProxyModel* currentProxyModel READ currentProxyModel NOTIFY currentProxyModelChanged)
 
 public:
-    explicit DatabaseManager(const QHash<QString, QVariantHash>& paramHash, QObject *parent = nullptr);
+    explicit DatabaseManager(QHash<QString, QVariantHash>& paramHash, QObject *parent = nullptr);
     virtual ~DatabaseManager();
 
     int loadDB(const QString& platform);
@@ -24,7 +24,7 @@ public:
 
 private:
     QHash<QString, SortFilterProxyModel*> m_modelHash;
-    QHash<QString, QVariantHash> m_paramHash;
+    QHash<QString, QVariantHash>& m_paramHash;
 
     SqlTableModel* m_currentSqlModel;
     SortFilterProxyModel* m_currentProxyModel;
