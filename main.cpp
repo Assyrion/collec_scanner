@@ -210,14 +210,14 @@ int main(int argc, char *argv[])
     QSignalMapper sm;
     sm.setMapping(rootObject, rootObject); // dummy mapping
 
-    QThread thread;
+    QThread dlCoversThread;
 
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
     comManager.setProgressDialog(dialog);
 
     QObject::connect(dialog, SIGNAL(aboutToHide()), dbManager.currentProxyModel(), SLOT(invalidate()));
-    QObject::connect(dialog, SIGNAL(aboutToHide()), &thread, SLOT(quit()));
-    QObject::connect(&thread, &QThread::started, &comManager, [&]() {
+    QObject::connect(dialog, SIGNAL(aboutToHide()), &dlCoversThread, SLOT(quit()));
+    QObject::connect(&dlCoversThread, &QThread::started, &comManager, [&]() {
         auto platformName = rootObject->property("platformName").toString();
         comManager.downloadCovers(platformName);
     });
@@ -225,10 +225,10 @@ int main(int argc, char *argv[])
     QObject::connect(&sm, &QSignalMapper::mappedObject, [&](QObject* obj){
         auto platformName = obj->property("platformName").toString();
         dbManager.loadDB(platformName);
-        thread.start();
+        dlCoversThread.start();
     });
 
-    comManager.moveToThread(&thread);
+    comManager.moveToThread(&dlCoversThread);
 
 #ifdef Q_OS_ANDROID
         // Because there is now way to catch aboutToClose signal with gesture navigation on Android
@@ -241,11 +241,11 @@ int main(int argc, char *argv[])
 #else
     QObject::connect(&app, &QGuiApplication::aboutToQuit, [&](){
         saveSettings();
-        thread.quit();
+        dlCoversThread.quit();
     });
 #endif
 
-    thread.start();
+    dlCoversThread.start();
 
     return app.exec();
 }

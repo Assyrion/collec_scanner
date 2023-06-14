@@ -13,7 +13,17 @@ SortFilterProxyModel::SortFilterProxyModel(QVariantHash &params, QObject *parent
     m_ownedFilter(params["ownedFilter"]),
     m_sortOrder(params["sortOrder"]),
     m_orderBy(params["orderBy"])
-{}
+{
+    // check validity
+    m_essentialsFilter = getEssentialsFilter();
+    m_essentialsOnly = getEssentialsOnly();
+    m_platinumFilter = getPlatinumFilter();
+    m_platinumOnly = getPlatinumOnly();
+    m_titleFilter = getTitleFilter();
+    m_ownedFilter = getOwnedFilter();
+    m_sortOrder = getSortOrder();
+    m_orderBy = getOrderBy();
+}
 
 void SortFilterProxyModel::sort(int column, Qt::SortOrder order)
 {
@@ -158,40 +168,48 @@ bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &so
 
 bool SortFilterProxyModel::getEssentialsFilter() const
 {
-    return m_essentialsFilter.toBool();
+    return m_essentialsFilter.isValid() ?
+               m_essentialsFilter.toBool() : true;
 }
 
 bool SortFilterProxyModel::getEssentialsOnly() const
 {
-    return m_essentialsOnly.toBool();
+    return m_essentialsOnly.isValid() ?
+               m_essentialsOnly.toBool() : false;
 }
 
 bool SortFilterProxyModel::getPlatinumFilter() const
 {
-    return m_platinumFilter.toBool();
+    return m_platinumFilter.isValid() ?
+               m_platinumFilter.toBool() : true;
 }
 
 bool SortFilterProxyModel::getPlatinumOnly() const
 {
-    return m_platinumOnly.toBool();
+    return m_platinumOnly.isValid() ?
+               m_platinumOnly.toBool() : false;
 }
 
 QString SortFilterProxyModel::getTitleFilter() const
 {
-    return m_titleFilter.toString();
+    return m_titleFilter.isValid() ?
+               m_titleFilter.toString() : "";
 }
 
 int SortFilterProxyModel::getOwnedFilter() const
 {
-    return m_ownedFilter.toInt();
+    return m_ownedFilter.isValid() ?
+               m_ownedFilter.toInt() : 2;
 }
 
 int SortFilterProxyModel::getSortOrder() const
 {
-    return m_sortOrder.toInt();
+    return m_sortOrder.isValid() ?
+               m_sortOrder.toInt() : 0;
 }
 
 int SortFilterProxyModel::getOrderBy() const
 {
-    return m_orderBy.toInt();
+    return m_orderBy.isValid() ?
+               m_orderBy.toInt() : 1;
 }
