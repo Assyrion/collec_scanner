@@ -105,12 +105,12 @@ Window {
     }
 
     function checkOwnedGame(idx) {
-        var modelIdx = sortFilterProxyModel.index(idx, 7) // 7 is owned !
+        var modelIdx = dbManager.currentProxyModel.index(idx, 7) // 7 is owned !
         console.log(modelIdx)
-        if(sortFilterProxyModel.data(modelIdx) === 0) {
+        if(dbManager.currentProxyModel.data(modelIdx) === 0) {
             var obj = PopupMaker.showGameNotOwned(mainWindow)
             obj.accepted.connect(function() {
-                sortFilterProxyModel.setData(modelIdx, 1) // force owned to 1
+                dbManager.currentProxyModel.setData(modelIdx, 1) // force owned to 1
             })
             obj.refused.connect(function() {
                 view.setCurrentIndex(2)
@@ -128,7 +128,7 @@ Window {
                 destroy()
             }
             onSaved: (tag) => {
-                         var idx = sortFilterProxyModel.getIndexFiltered(tag)
+                         var idx = dbManager.currentProxyModel.getIndexFiltered(tag)
                          if(idx >= 0) {
                              showGame(idx)
                              destroy()

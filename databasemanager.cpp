@@ -4,9 +4,7 @@
 
 DatabaseManager::DatabaseManager(QHash<QString, QVariantHash>& paramHash, QObject *parent)
     : QObject{parent}, m_paramHash(paramHash)
-{
-    //    qmlRegisterType<SqlTableModel>("SqlTableModel", 1, 0, "SqlTableModel");
-}
+{}
 
 DatabaseManager::~DatabaseManager()
 {

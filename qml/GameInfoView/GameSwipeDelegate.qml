@@ -91,7 +91,7 @@ Pane {
     }
 
     function removeGame() {
-        imageManager.removePics(currentTag)
+        imageManager.removePics(platformName + "/" + currentTag)
         dbManager.currentProxyModel.removeRow(index)
         dbManager.currentSqlModel.select() // reload DB content to avoid displaying a blank item
     }

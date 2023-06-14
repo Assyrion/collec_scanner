@@ -44,6 +44,7 @@ MenuBar {
             background: backgroundRec.createObject(root)
             ListView {
                 height: contentHeight
+                interactive: false
                 model: ListModel {
                     ListElement {
                         titleRole: qsTr("List")
@@ -75,6 +76,7 @@ MenuBar {
             background: backgroundRec.createObject(root)
             ListView {
                 height: contentHeight
+                interactive: false
                 model: Object.keys(Platforms.list)
                 delegate: MenuItem {
                     text: modelData
