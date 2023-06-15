@@ -79,7 +79,9 @@ MenuBar {
                 interactive: false
                 model: Object.keys(Platforms.list)
                 delegate: MenuItem {
-                    text: modelData
+                    icon.source: "qrc:/" + modelData
+                    icon.width: platformMenu.width*2/3
+
                     highlighted: modelData === platformName
                     onTriggered: {
                         platformName = modelData

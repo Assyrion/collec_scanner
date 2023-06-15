@@ -5,6 +5,7 @@ Popup {
     id: root
 
     function show() {
+        progressBar.value = 0
         visible = true
     }
 
@@ -13,15 +14,11 @@ Popup {
     }
 
     function setValue(value) {
-        progressBar.value = value;
-    }
-
-    function reset() {
-        progressBar.value = 0;
+        progressBar.value = value
     }
 
     function setMaxValue(value) {
-        progressBar.to = value;
+        progressBar.to = value
     }
 
     modal: true
@@ -39,7 +36,7 @@ Popup {
                    qsTr("Processing %1/%2")
                    .arg(progressBar.value)
                    .arg(progressBar.to)
-                 : qsTr("Processing covers...")
+                 : qsTr("Processing file...")
         color: "white"
         font.family: "Roboto"
         font.pointSize: 11
@@ -47,8 +44,7 @@ Popup {
 
     ProgressBar {
         id: progressBar
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.centerIn: parent
         value: 0
         indeterminate : value <= 0
         width: parent.width - 20

@@ -27,6 +27,7 @@ ComManager::~ComManager()
 
 void ComManager::downloadCovers(const QString& subfolder)
 {
+    // cannot use setProperty directly because thread separation
     QMetaObject::invokeMethod(m_progressDialog, "show");
 
     QDir picDir(Global::PICPATH_ABS);
@@ -76,9 +77,7 @@ void ComManager::downloadCovers(const QString& subfolder)
 
                     QDateTime localModifiedDate(remoteCreationDate);
 
-                    QString localPath = toDir.absolutePath()
-                                        + QDir::separator()
-                                        + remoteFileName;
+                    QString localPath = toDir.absolutePath() + "/" + remoteFileName;
 
                     if(QFile::exists(localPath)) {
                         QFileInfo localFileInfo(localPath);
