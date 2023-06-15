@@ -74,19 +74,51 @@ MenuBar {
             title: qsTr("Platform")
             width: root.width*2
             background: backgroundRec.createObject(root)
+            function updateContent() {
+                selectedPlatformList.model = selectedPlatforms
+            }
             ListView {
+                id: selectedPlatformList
                 height: contentHeight
-                interactive: false
-                model: Object.keys(Platforms.list)
+                interactive: count >= 10
+                model: selectedPlatforms
                 delegate: MenuItem {
-                    icon.source: "qrc:/" + modelData
-                    icon.width: platformMenu.width*2/3
+//                    icon.source: "qrc:/" + modelData
+//                    icon.width: platformMenu.width*2/3
+                    text: modelData
 
                     highlighted: modelData === platformName
                     onTriggered: {
                         platformName = modelData
                         platformMenu.close()
                         rootMenu.close()
+                    }
+                }
+            }
+            Menu {
+                icon.source: "qrc:/add_notag"
+                icon.height: 25
+                width: root.width*2.5
+                background: backgroundRec.createObject(root)
+                ListView {
+                    height: contentHeight
+                    model: Object.keys(Platforms.list).sort()
+
+                    delegate: MenuItem {
+                        text: modelData
+                        checkable: true
+                        checked: selectedPlatforms.includes(modelData)
+//                        enabled: selectedPlatformList.currentItem.highlighted
+                        highlighted: false
+                        onTriggered: {
+                            if(checked) {
+                                selectedPlatforms.push(modelData)
+                            }
+                            else {
+                                selectedPlatforms.splice(selectedPlatforms.indexOf(modelData), 1)
+                            }
+                            platformMenu.updateContent()
+                        }
                     }
                 }
             }

@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
 
     settings.beginGroup("platform");
     auto platformName = settings.value("name", "ps3").toString();
+    auto selectedPlatforms = settings.value("selected", QStringList() << "ps2" << "ps3" << "ps4" << "ps5").toStringList();
     settings.endGroup();
 
     settings.beginGroup("params");
@@ -153,7 +154,8 @@ int main(int argc, char *argv[])
         {"fileManager", QVariant::fromValue(&fileManager)},
         {"platformName", QVariant::fromValue(platformName)},
         {"imageManager", QVariant::fromValue(&imageManager)},
-        {"collectionView", QVariant::fromValue(collectionView)}
+        {"collectionView", QVariant::fromValue(collectionView)},
+        {"selectedPlatforms", QVariant::fromValue(selectedPlatforms)}
     });
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
@@ -190,6 +192,7 @@ int main(int argc, char *argv[])
 
         settings.beginGroup("platform");
         settings.setValue("name", rootObject->property("platformName"));
+        settings.setValue("selected", rootObject->property("selectedPlatforms").toStringList());
         settings.endGroup();
 
         settings.beginGroup("params");

@@ -14,6 +14,7 @@ import FileManager 1.0
 import ImageManager 1.0
 
 import "qml/utils/PopupMaker.js" as PopupMaker
+import "qml/utils/PlatformSelector.js" as Platforms
 
 Window {
     id: mainWindow
@@ -27,6 +28,7 @@ Window {
 
     required property int collectionView
     required property string platformName
+    required property var selectedPlatforms
 
     ConfigDrawer {
         id: drawer
