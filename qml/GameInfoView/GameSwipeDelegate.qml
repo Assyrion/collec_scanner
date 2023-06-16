@@ -184,8 +184,8 @@ Pane {
         GameInfoListDelegate {
             id: platformInfo
             name: qsTr("Platform")
-            entry: model?.platform ?? platformName;
-            editable: editMode
+            entry: platformName
+            editable: false
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40

@@ -45,6 +45,7 @@ Popup {
             active: false
             width: height * root.coverRatio
             height: 5*parent.height/6 - 10
+            scale: width > parent.width ? (parent.width/width) : 1
             anchors.top: parent.top
             anchors.topMargin: -12
             anchors.horizontalCenter:

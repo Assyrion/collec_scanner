@@ -108,7 +108,6 @@ Window {
 
     function checkOwnedGame(idx) {
         var modelIdx = dbManager.currentProxyModel.index(idx, 7) // 7 is owned !
-        console.log(modelIdx)
         if(dbManager.currentProxyModel.data(modelIdx) === 0) {
             var obj = PopupMaker.showGameNotOwned(mainWindow)
             obj.accepted.connect(function() {

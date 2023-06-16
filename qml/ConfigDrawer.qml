@@ -66,7 +66,7 @@ Drawer {
 
                 Layout.preferredWidth: parent.width
 
-                placeholderText: qsTr("Search by name")                
+                placeholderText: qsTr("Search by name")
                 text: dbManager.currentProxyModel?.titleFilter ?? ""
 
             }

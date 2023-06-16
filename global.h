@@ -14,6 +14,14 @@ struct Global {
     inline static const QString REMOTE_UPLOAD_PIC_SCRIPT = REMOTE_PATH + "upload_cover_platform.php";
     inline static const QString REMOTE_UPLOAD_DB_SCRIPT = REMOTE_PATH + "upload_db.php";
 
+    inline static const int DEFAULT_VIEW = 0;
+    inline static const int DEFAULT_WINDOW_X = 50;
+    inline static const int DEFAULT_WINDOW_Y = 50;
+    inline static const int DEFAULT_WINDOW_W = 512;
+    inline static const int DEFAULT_WINDOW_H = 773;
+    inline static const QString DEFAULT_PLATFORM_NAME = "ps3";
+    inline static const QStringList DEFAULT_SELECTED_PLATFORM = {"ps2", "ps3", "ps4", "ps5"};
+
 #ifdef Q_OS_ANDROID
     inline static const QString DATAPATH = ".";
     inline static const QString PICPATH_ABS = DATAPATH + "/" + PICPATH + "/";

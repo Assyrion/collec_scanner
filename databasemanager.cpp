@@ -36,11 +36,11 @@ int DatabaseManager::loadDB(const QString &platform)
         }
         auto proxyModel = new SortFilterProxyModel(m_paramHash[platform]);
         proxyModel->setSourceModel(new SqlTableModel(nullptr, db));
+
         m_modelHash.insert(platform, proxyModel);
     }
 
     m_currentProxyModel = m_modelHash.value(platform);
-//    m_currentProxyModel->invalidate();
 
     emit currentSqlModelChanged();
     emit currentProxyModelChanged();

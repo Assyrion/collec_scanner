@@ -76,7 +76,7 @@
         <translation>Jeux possédés</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="299"/>
+        <location filename="../qml/ConfigDrawer.qml" line="303"/>
         <source>Platinum</source>
         <translation type="unfinished"></translation>
     </message>
@@ -90,13 +90,13 @@
         <translation>Jeux non possédés</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="234"/>
+        <location filename="../qml/ConfigDrawer.qml" line="236"/>
         <source>Essentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="265"/>
-        <location filename="../qml/ConfigDrawer.qml" line="331"/>
+        <location filename="../qml/ConfigDrawer.qml" line="267"/>
+        <location filename="../qml/ConfigDrawer.qml" line="335"/>
         <source>only</source>
         <translation>uniquement</translation>
     </message>
@@ -105,12 +105,11 @@
         <translation type="vanished">Jeux Platinum</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="363"/>
         <source>clear DB</source>
-        <translation>Effacer BDD</translation>
+        <translation type="vanished">Effacer BDD</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="376"/>
+        <location filename="../qml/ConfigDrawer.qml" line="367"/>
         <source>file DB</source>
         <translation>Exporter BDD</translation>
     </message>
@@ -123,12 +122,12 @@
         <translation type="vanished">Les nouvelles jaquettes seront copiées sur le serveur.</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="389"/>
+        <location filename="../qml/ConfigDrawer.qml" line="380"/>
         <source>upload DB</source>
         <translation>envoyer BDD</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="402"/>
+        <location filename="../qml/ConfigDrawer.qml" line="393"/>
         <source>upload Covers</source>
         <translation>Envoyer jaquettes</translation>
     </message>
@@ -154,32 +153,32 @@ Cette action est irreversible.</translation>
 <context>
     <name>ConfigMenuBar</name>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="29"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="30"/>
         <source>Filter</source>
         <translation>Filtre</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="35"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="36"/>
         <source>New</source>
         <translation>Nouveau</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="42"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="43"/>
         <source>View</source>
         <translation>Vue</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="49"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="51"/>
         <source>List</source>
         <translation>Liste</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="54"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="56"/>
         <source>Grid</source>
         <translation>Grille</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="73"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="75"/>
         <source>Platform</source>
         <translation>Plateforme</translation>
     </message>
@@ -187,17 +186,21 @@ Cette action est irreversible.</translation>
 <context>
     <name>CoverProcessingPopup</name>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="39"/>
+        <location filename="../qml/CoverProcessingPopup.qml" line="36"/>
         <source>Processing %1/%2</source>
         <translation>En cours %1/%2</translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="42"/>
-        <source>Processing covers...</source>
-        <translation>Gestion des jaquettes en cours...</translation>
+        <location filename="../qml/CoverProcessingPopup.qml" line="39"/>
+        <source>Processing file...</source>
+        <translation>Gestion des fichiers en cours...</translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="58"/>
+        <source>Processing covers...</source>
+        <translation type="vanished">Gestion des jaquettes en cours...</translation>
+    </message>
+    <message>
+        <location filename="../qml/CoverProcessingPopup.qml" line="54"/>
         <source>cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -257,27 +260,27 @@ Cette action est irreversible.</translation>
         <translation type="vanished">Etes-vous sûr ?</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="87"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="96"/>
         <source>cancel</source>
         <translation>annuler</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="88"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="97"/>
         <source>close</source>
         <translation>fermer</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="106"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="115"/>
         <source>save</source>
         <translation>enregistrer</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="107"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="116"/>
         <source>edit</source>
         <translation>modifier</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="128"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="137"/>
         <source>delete</source>
         <translation>supprimer</translation>
     </message>

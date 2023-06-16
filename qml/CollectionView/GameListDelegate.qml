@@ -75,7 +75,7 @@ Item {
         font.pointSize:
             Math.min(17, parent.width/3 + 1)
         font.family: "Roboto"
-        text: model?.platform ?? "ps3"
+        text: platformName
     }
     MouseArea {
         id: mouseArea

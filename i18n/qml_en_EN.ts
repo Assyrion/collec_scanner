@@ -57,7 +57,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="299"/>
+        <location filename="../qml/ConfigDrawer.qml" line="303"/>
         <source>Platinum</source>
         <translation type="unfinished"></translation>
     </message>
@@ -67,33 +67,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="234"/>
+        <location filename="../qml/ConfigDrawer.qml" line="236"/>
         <source>Essentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="265"/>
-        <location filename="../qml/ConfigDrawer.qml" line="331"/>
+        <location filename="../qml/ConfigDrawer.qml" line="267"/>
+        <location filename="../qml/ConfigDrawer.qml" line="335"/>
         <source>only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="363"/>
-        <source>clear DB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/ConfigDrawer.qml" line="376"/>
+        <location filename="../qml/ConfigDrawer.qml" line="367"/>
         <source>file DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="389"/>
+        <location filename="../qml/ConfigDrawer.qml" line="380"/>
         <source>upload DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="402"/>
+        <location filename="../qml/ConfigDrawer.qml" line="393"/>
         <source>upload Covers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -101,32 +96,32 @@
 <context>
     <name>ConfigMenuBar</name>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="29"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="30"/>
         <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="35"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="36"/>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="42"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="43"/>
         <source>View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="49"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="51"/>
         <source>List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="54"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="56"/>
         <source>Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="73"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="75"/>
         <source>Platform</source>
         <translation type="unfinished"></translation>
     </message>
@@ -134,17 +129,17 @@
 <context>
     <name>CoverProcessingPopup</name>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="39"/>
+        <location filename="../qml/CoverProcessingPopup.qml" line="36"/>
         <source>Processing %1/%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="42"/>
-        <source>Processing covers...</source>
+        <location filename="../qml/CoverProcessingPopup.qml" line="39"/>
+        <source>Processing file...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="58"/>
+        <location filename="../qml/CoverProcessingPopup.qml" line="54"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -200,27 +195,27 @@
 <context>
     <name>GameSwipeView</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="87"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="96"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="88"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="97"/>
         <source>close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="106"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="115"/>
         <source>save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="107"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="116"/>
         <source>edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="128"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="137"/>
         <source>delete</source>
         <translation type="unfinished"></translation>
     </message>

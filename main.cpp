@@ -4,31 +4,21 @@
 #include <QSurfaceFormat>
 #include <QSignalMapper>
 #include <QQuickWindow>
-#include <QSqlDatabase>
 #include <QQmlContext>
-#include <QTranslator>
 #include <QQuickView>
-#include <QSqlError>
-#include <QSaveFile>
 #include <QSettings>
 #include <QZXing.h>
 #include <QThread>
 #include <QDebug>
+#include <QHash>
 #include <QDir>
 
-#include "sortfilterproxymodel.h"
 #include "databasemanager.h"
-#include "sqltablemodel.h"
 #include "imagemanager.h"
 #include "filemanager.h"
 #include "commanager.h"
 #include "gamedata.h"
 #include "global.h"
-
-#include <QSqlTableModel>
-#include <QHash>
-
-QHash<QString, SqlTableModel*> modelHash;
 
 int main(int argc, char *argv[])
 {
@@ -41,22 +31,13 @@ int main(int argc, char *argv[])
 
     QSettings settings(Global::DATAPATH + '/' + QString(APPNAME) + ".ini", QSettings::IniFormat);
 
-    if(settings.allKeys().isEmpty()) {
-        settings.setValue("mainView/view", 0);
-        settings.setValue("window/x", 50);
-        settings.setValue("window/y", 50);
-        settings.setValue("window/w", 512);
-        settings.setValue("window/h", 773);
-        settings.setValue("platform/name", "ps3");
-    }
-
     settings.beginGroup("mainView");
-    auto collectionView = settings.value("view").toInt();
+    auto collectionView = settings.value("view", Global::DEFAULT_VIEW).toInt();
     settings.endGroup();
 
     settings.beginGroup("platform");
-    auto platformName = settings.value("name", "ps3").toString();
-    auto selectedPlatforms = settings.value("selected", QStringList() << "ps2" << "ps3" << "ps4" << "ps5").toStringList();
+    auto platformName = settings.value("name", Global::DEFAULT_PLATFORM_NAME).toString();
+    auto selectedPlatforms = settings.value("selected", Global::DEFAULT_SELECTED_PLATFORM).toStringList();
     settings.endGroup();
 
     settings.beginGroup("params");
@@ -88,10 +69,10 @@ int main(int argc, char *argv[])
     }
 
     settings.beginGroup("window");
-    auto windowX = settings.value("x").toInt();
-    auto windowY = settings.value("y").toInt();
-    auto windowW = settings.value("w").toInt();
-    auto windowH = settings.value("h").toInt();
+    auto windowX = settings.value("x", Global::DEFAULT_WINDOW_X).toInt();
+    auto windowY = settings.value("y", Global::DEFAULT_WINDOW_Y).toInt();
+    auto windowW = settings.value("w", Global::DEFAULT_WINDOW_W).toInt();
+    auto windowH = settings.value("h", Global::DEFAULT_WINDOW_H).toInt();
     settings.endGroup();
 
     windowX = qMin(windowX, totalWidth  - windowW);

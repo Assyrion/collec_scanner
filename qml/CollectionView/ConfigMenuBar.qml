@@ -24,6 +24,7 @@ MenuBar {
         id: rootMenu
         title: "\u{1F527}"
         width: root.width*3
+        cascade: true
         background: backgroundRec.createObject(root)
         MenuItem {
             text: qsTr("Filter")
@@ -72,21 +73,23 @@ MenuBar {
         Menu {
             id: platformMenu
             title: qsTr("Platform")
-            width: root.width*2
+            width: root.width*2 + 25
+            cascade: true
             background: backgroundRec.createObject(root)
             function updateContent() {
                 selectedPlatformList.model = selectedPlatforms
             }
             ListView {
                 id: selectedPlatformList
-                height: contentHeight
+                height: Math.min(contentHeight, platformMenu.height * 0.921)
                 interactive: count >= 10
                 model: selectedPlatforms
+                snapMode: ListView.SnapToItem
                 delegate: MenuItem {
 //                    icon.source: "qrc:/" + modelData
 //                    icon.width: platformMenu.width*2/3
                     text: modelData
-
+                    font.pointSize: 12
                     highlighted: modelData === platformName
                     onTriggered: {
                         platformName = modelData
@@ -96,19 +99,21 @@ MenuBar {
                 }
             }
             Menu {
+                id: allPlatformsMenu
                 icon.source: "qrc:/add_notag"
                 icon.height: 25
-                width: root.width*2.5
+                width: root.width*3
+                cascade: true
                 background: backgroundRec.createObject(root)
                 ListView {
                     height: contentHeight
                     model: Object.keys(Platforms.list).sort()
-
                     delegate: MenuItem {
                         text: modelData
+                        font.pointSize: 12
                         checkable: true
                         checked: selectedPlatforms.includes(modelData)
-//                        enabled: selectedPlatformList.currentItem.highlighted
+                        enabled: modelData !== platformName
                         highlighted: false
                         onTriggered: {
                             if(checked) {

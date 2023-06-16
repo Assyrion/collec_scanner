@@ -54,10 +54,10 @@ Item {
         currentIndex: 0
 
         Component.onCompleted: {
-            model = dbManager.currentProxyModel
+            swipeView.model = dbManager.currentProxyModel // initial DB
         }
 
-        // update model
+        // update model when pointing to new DB
         Connections {
             target: dbManager
             function onCurrentProxyModelChanged() {
@@ -70,7 +70,7 @@ Item {
         highlightRangeMode: ListView.StrictlyEnforceRange
 
         delegate : GameSwipeDelegate {
-            index: swipeView.currentIndex
+            index: Math.max(swipeView.currentIndex, 0)
             count: swipeView.count
             editMode: root.editMode
             height: root.height

@@ -39,10 +39,7 @@ Item {
         id: titleText
         width: frontPicImg.width - 10
         visible: !imageManager?.getFrontPic(root.subfolderPic).includes(model.tag)
-        anchors.top : frontPicImg.top
-        anchors.topMargin: 7
-        anchors.horizontalCenter:
-            frontPicImg.horizontalCenter
+        anchors.centerIn: parent
         horizontalAlignment: Text.AlignHCenter
         text : model?.title
         font.family: "Roboto"
