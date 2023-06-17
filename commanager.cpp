@@ -16,7 +16,7 @@ static const QRegularExpression re("href=\"([^\"]+\\.png)\">.*?(\\d{4}-\\d{2}-\\
 ComManager::ComManager(QObject *parent)
     : QObject{parent}
 {
-    m_coversToUploadFile.setFileName(PICPATH_ABS + "covers_to_upload.txt");
+    m_coversToUploadFile.setFileName(Global::PICPATH_ABS + "covers_to_upload.txt");
 }
 
 ComManager::~ComManager()
@@ -25,18 +25,33 @@ ComManager::~ComManager()
         m_coversToUploadFile.close();
 }
 
-void ComManager::downloadCovers()
+void ComManager::downloadCovers(const QString& subfolder)
 {
+    // cannot use setProperty directly because thread separation
     QMetaObject::invokeMethod(m_progressDialog, "show");
 
-    QDir toDir(PICPATH_ABS);
+    QDir picDir(Global::PICPATH_ABS);
+    if(!picDir.exists()) picDir.mkpath(".");
+    picDir.setFilter(QDir::Files | QDir::NoSymLinks);
+    picDir.setNameFilters(QStringList() << "*.png");
+
+    QDir toDir(Global::PICPATH_ABS + '/' + subfolder);
     if(!toDir.exists()) toDir.mkpath(".");
     toDir.setFilter(QDir::Files | QDir::NoSymLinks);
     toDir.setNameFilters(QStringList() << "*.png");
+
+    // Before downloading, we check if a previsous version of the app already has cover in pic folder
+    QStringList fileList = picDir.entryList();
+    foreach (const QString &fileName, fileList) {
+        QString sourceFilePath = picDir.absoluteFilePath(fileName);
+        QString destinationFilePath = toDir.absoluteFilePath(fileName);
+        QFile::rename(sourceFilePath, destinationFilePath);
+    }
+
     int count = 0;
 
-    QUrl url(REMOTE_PIC_PATH);
-    QNetworkRequest request(url);
+    QString remotePicSubfolder = Global::REMOTE_PIC_PATH + subfolder;
+    QNetworkRequest request(remotePicSubfolder);
     QNetworkAccessManager manager;
     QNetworkReply *reply = manager.get(request);
 
@@ -62,9 +77,7 @@ void ComManager::downloadCovers()
 
                     QDateTime localModifiedDate(remoteCreationDate);
 
-                    QString localPath = toDir.absolutePath()
-                                        + QDir::separator()
-                                        + remoteFileName;
+                    QString localPath = toDir.absolutePath() + "/" + remoteFileName;
 
                     if(QFile::exists(localPath)) {
                         QFileInfo localFileInfo(localPath);
@@ -72,7 +85,7 @@ void ComManager::downloadCovers()
                     }
 
                     if(!QFile::exists(localPath) || (remoteCreationDate > localModifiedDate)) {
-                        downloadFile(REMOTE_PIC_PATH + remoteFileName, localPath);
+                        downloadFile(remotePicSubfolder + '/' + remoteFileName, localPath);
                         QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
                     } else {
                         QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, --remote_count));
@@ -105,7 +118,7 @@ void ComManager::uploadCovers()
     int count = 0;
 
     foreach (auto s, sl) {
-        if(!s.isEmpty() && uploadFile(PICPATH_ABS + s, REMOTE_UPLOAD_PIC_SCRIPT)) {
+        if(!s.isEmpty() && uploadFile(Global::PICPATH_ABS + s, Global::REMOTE_UPLOAD_PIC_SCRIPT)) {
 
             QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
 
@@ -129,7 +142,6 @@ void ComManager::uploadCovers()
 
 bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
 {
-    // Ouvrir le fichier PNG
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << "Impossible d'ouvrir le fichier";
@@ -144,9 +156,18 @@ bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
     QMimeDatabase mimeDatabase;
     QMimeType mimeType(mimeDatabase.mimeTypeForFile(QFileInfo(file)));
 
+    QString fileBuild = fileName;
+
+    if(fileName.contains('/')) {
+        QString subfolder = fileName.section('/', -2, -2); // Obtient le nom du sous-dossier
+        QString subFile = fileName.section('/', -1); // Obtient le nom de fichier avec l'extension
+
+        fileBuild = subfolder + ":" + subFile;
+    }
+
     QHttpPart filePart;
     filePart.setHeader(QNetworkRequest::ContentTypeHeader, mimeType.name());
-    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\"; filename=\"" + fileName + "\""));
+    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\"; filename=\"" + fileBuild + "\""));
     filePart.setHeader(QNetworkRequest::ContentLengthHeader, file.size());
     filePart.setBodyDevice(&file);
 
@@ -185,7 +206,7 @@ bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
 
 void ComManager::downloadDB()
 {
-    downloadFile(REMOTE_DB_PATH + DBNAME, DB_PATH_ABS_NAME);
+    downloadFile(Global::REMOTE_DB_PATH + Global::DBNAME, Global::DB_PATH_ABS_NAME);
 }
 
 void ComManager::downloadFile(const QString& remotePath, const QString& localPath)
@@ -219,7 +240,7 @@ void ComManager::uploadDB()
 {
     QMetaObject::invokeMethod(m_progressDialog, "show");
 
-    uploadFile(DB_PATH_ABS_NAME, REMOTE_UPLOAD_DB_SCRIPT);
+    uploadFile(Global::DB_PATH_ABS_NAME, Global::REMOTE_UPLOAD_DB_SCRIPT);
 
     QMetaObject::invokeMethod(m_progressDialog, "hide");
 }

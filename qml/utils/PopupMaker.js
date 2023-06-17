@@ -78,7 +78,7 @@ function showConfirmUploadCovers(parent) {
 function showUnknownGame(parent, tag) {
     var cpt = Qt.createComponent("CSActionPopup.qml")
     if (cpt.status === Component.Ready) {
-        return cpt.createObject(parent, {"contentText" : qsTr("Game with tag = %1 is new.<br><br>Add it ?").arg(tag),
+        return cpt.createObject(parent, {"contentText" : qsTr("Game with tag = %1 is not in %2 database.<br><br>Add it ?").arg(tag).arg(platformName),
                                     "width" : parent.width,
                                     "height": parent.height})
     }

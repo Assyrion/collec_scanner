@@ -9,11 +9,9 @@ ListView {
     signal showGameRequired(int idx)
     signal movingChanged(bool moving)
 
-    Component.onCompleted: {
-        model = sortFilterProxyModel
-        highlightMoveDuration = 0
-    }
+    model: dbManager.currentProxyModel
 
+    highlightMoveDuration: 0
     spacing: 5
 
     ScrollBar.vertical: ScrollBar {

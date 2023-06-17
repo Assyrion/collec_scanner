@@ -8,8 +8,8 @@
 
 #include <QDebug>
 
-SqlTableModel::SqlTableModel(QObject* parent)
-    : QSqlTableModel(parent)
+SqlTableModel::SqlTableModel(QObject* parent, const QSqlDatabase &db)
+    : QSqlTableModel(parent, db)
 {
     setEditStrategy(QSqlTableModel::OnFieldChange);
     setTable("games");
@@ -85,11 +85,4 @@ void SqlTableModel::saveDBToFile(FileManager* fileManager)
         auto game = GameDataMaker::get()->createComplete(list);
         fileManager->addEntry(game);
     }
-}
-
-void SqlTableModel::clearDB()
-{
-    QSqlQuery query;
-    query.exec(QString("DELETE FROM %1").arg(tableName()));
-    select();
 }

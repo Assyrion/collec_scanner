@@ -28,7 +28,7 @@ Item {
         var savedTag = root.currentItem.currentTag // index may have changed after edition
         root.currentItem.saveGame()
 
-        var idx = sortFilterProxyModel.getIndexFiltered(savedTag) // get the new index
+        var idx = dbManager.currentProxyModel.getIndexFiltered(savedTag) // get the new index
         if(idx >= 0)
             root.currentIndex = idx
         else
@@ -54,14 +54,23 @@ Item {
         currentIndex: 0
 
         Component.onCompleted: {
-            model = sortFilterProxyModel
-            highlightMoveDuration = 0
+            swipeView.model = dbManager.currentProxyModel // initial DB
         }
+
+        // update model when pointing to new DB
+        Connections {
+            target: dbManager
+            function onCurrentProxyModelChanged() {
+                swipeView.model = dbManager.currentProxyModel
+            }
+        }
+
+        highlightMoveDuration: 0
         snapMode : ListView.SnapOneItem
         highlightRangeMode: ListView.StrictlyEnforceRange
 
         delegate : GameSwipeDelegate {
-            index: swipeView.currentIndex
+            index: Math.max(swipeView.currentIndex, 0)
             count: swipeView.count
             editMode: root.editMode
             height: root.height

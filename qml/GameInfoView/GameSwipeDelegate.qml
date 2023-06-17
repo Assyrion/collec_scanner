@@ -4,6 +4,8 @@ import QtQuick.Controls 6.2
 
 import GameData 1.0
 
+import "../utils/PlatformSelector.js" as Platforms
+
 Pane {
     id: root
 
@@ -19,8 +21,6 @@ Pane {
     property bool isOwned : (index < 0) || (model?.owned)
     property bool editMode: false
     property string currentTag: ""
-    property GameData currentGame:
-        GameDataMaker.createEmpty()
 
     Component.onCompleted: {
         if(index < 0 && currentTag === "") { // new game creation
@@ -37,9 +37,11 @@ Pane {
     }
 
     function showSnapshotPopup(img) {
+        var coverRatio = Platforms.list[platformName].coverRatio
         var cpt = Qt.createComponent("TakeSnapshotPopup.qml")
         if (cpt.status === Component.Ready) {
             cpt.createObject(root, { "boundImg": img,
+                                 "coverRatio" : coverRatio,
                                  "width" : root.width * 0.8,
                                  "height": root.height * 0.6,
                                  "x"     : root.width * 0.1,
@@ -48,29 +50,34 @@ Pane {
     }
 
     function saveGame() {
+
         // handle cover before modifying DB !
+        var coverSubfolder = platformName + "/" + currentTag
+
         if(gameCoverRow.frontCoverData) {
-            imageManager.saveFrontPic(currentTag,
+            imageManager.saveFrontPic(coverSubfolder,
                                       gameCoverRow.frontCoverData)
-            comManager.handleFrontCover(currentTag)
+            comManager.handleFrontCover(coverSubfolder)
         }
         if(gameCoverRow.backCoverData) {
-            imageManager.saveBackPic(currentTag,
+            imageManager.saveBackPic(coverSubfolder,
                                      gameCoverRow.backCoverData)
-            comManager.handleBackCover(currentTag)
+            comManager.handleBackCover(coverSubfolder)
         }
 
         if(index < 0) {
-            sqlTableModel.insertRow(0)
-            sqlTableModel.setData(sqlTableModel.index(0, 0), currentTag)
-            sqlTableModel.setData(sqlTableModel.index(0, 1), titleInfo.entry)
-            sqlTableModel.setData(sqlTableModel.index(0, 2), platformInfo.entry)
-            sqlTableModel.setData(sqlTableModel.index(0, 3), publisherInfo.entry)
-            sqlTableModel.setData(sqlTableModel.index(0, 4), developerInfo.entry)
-            sqlTableModel.setData(sqlTableModel.index(0, 5), codeInfo.entry)
-            sqlTableModel.setData(sqlTableModel.index(0, 6), infoInfo.entry)
-            sqlTableModel.setData(sqlTableModel.index(0, 7), ownedInfo.entry)
-            sqlTableModel.submitAll()
+            var sqlModel = dbManager.currentSqlModel
+
+            sqlModel.insertRow(0)
+            sqlModel.setData(sqlModel.index(0, 0), currentTag)
+            sqlModel.setData(sqlModel.index(0, 1), titleInfo.entry)
+            sqlModel.setData(sqlModel.index(0, 2), platformInfo.entry)
+            sqlModel.setData(sqlModel.index(0, 3), publisherInfo.entry)
+            sqlModel.setData(sqlModel.index(0, 4), developerInfo.entry)
+            sqlModel.setData(sqlModel.index(0, 5), codeInfo.entry)
+            sqlModel.setData(sqlModel.index(0, 6), infoInfo.entry)
+            sqlModel.setData(sqlModel.index(0, 7), ownedInfo.entry)
+            sqlModel.submitAll() // don't get why I have to do it
         }
         else {
             model.title = titleInfo.entry
@@ -79,12 +86,14 @@ Pane {
             model.developer = developerInfo.entry
             model.code = codeInfo.entry
             model.info = infoInfo.entry
+            dbManager.currentProxyModel.invalidate() // force to update model to reload covers
         }
     }
 
     function removeGame() {
-        imageManager.removePics(currentTag)
-        sortFilterProxyModel.removeRow(index)
+        imageManager.removePics(platformName + "/" + currentTag)
+        dbManager.currentProxyModel.removeRow(index)
+        dbManager.currentSqlModel.select() // reload DB content to avoid displaying a blank item
     }
 
     function cancelGame() {
@@ -92,9 +101,9 @@ Pane {
             dataColumn.children[i].reset()
         }
         gameCoverRow.frontCoverUrl =
-            ("image://coverProvider/%1.front").arg(currentTag)
+            ("image://coverProvider/%1.front").arg(platformName + "/" + currentTag)
         gameCoverRow.backCoverUrl =
-            ("image://coverProvider/%1.back").arg(currentTag)
+            ("image://coverProvider/%1.back").arg(platformName + "/" + currentTag)
     }
 
     function setGameAsOwned() {
@@ -114,9 +123,9 @@ Pane {
         z: 1
 
         frontCoverUrl:
-            ("image://coverProvider/%1.front").arg(currentTag)
+            ("image://coverProvider/%1.front").arg(platformName + "/" + currentTag)
         backCoverUrl:
-            ("image://coverProvider/%1.back").arg(currentTag)
+            ("image://coverProvider/%1.back").arg(platformName + "/" + currentTag)
 
         onEditCoverRequired:(img) => showSnapshotPopup(img)
 
@@ -175,8 +184,8 @@ Pane {
         GameInfoListDelegate {
             id: platformInfo
             name: qsTr("Platform")
-            entry: model?.platform ?? "ps3";
-            editable: editMode
+            entry: platformName
+            editable: false
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40

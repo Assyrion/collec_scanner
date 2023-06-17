@@ -6,14 +6,15 @@ Item {
     id: root
 
     signal clicked
+    property string subfolderPic: platformName + "/" + model.tag
 
     Image {
-        id: mainImg
+        id: frontPicImg
         width: parent.width
         anchors.verticalCenter:
             parent.verticalCenter
+        source: ("image://coverProvider/%1.front").arg(root.subfolderPic)
         fillMode: Image.PreserveAspectFit
-        source: ("image://coverProvider/%1.front").arg(model.tag)
         cache: false
         mipmap: true
         smooth: true
@@ -27,22 +28,18 @@ Item {
 
     Colorize {
         visible: !model?.owned
-        anchors.fill: mainImg
-        source: mainImg
+        anchors.fill: frontPicImg
+        source: frontPicImg
         saturation: 0
         lightness: 0.6
         hue: 0
     }
 
     Text {
-        Component.onCompleted: {
-            visible = !imageManager.getFrontPic(model.tag).includes(model.tag)
-        }
-        width: mainImg.width - 10
-        anchors.top : mainImg.top
-        anchors.topMargin: 7
-        anchors.horizontalCenter:
-            mainImg.horizontalCenter
+        id: titleText
+        width: frontPicImg.width - 10
+        visible: !imageManager?.getFrontPic(root.subfolderPic).includes(model.tag)
+        anchors.centerIn: parent
         horizontalAlignment: Text.AlignHCenter
         text : model?.title
         font.family: "Roboto"

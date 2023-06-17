@@ -5,5 +5,10 @@
         <file alias="grid_view">img/gridview.png</file>
         <file alias="list_view">img/listview.png</file>
         <file alias="filter">img/filter.png</file>
+        <file alias="ps1">img/ps1_logo.png</file>
+        <file alias="ps2">img/ps2_logo.png</file>
+        <file alias="ps3">img/ps3_logo.png</file>
+        <file alias="ps4">img/ps4_logo.png</file>
+        <file alias="ps5">img/ps5_logo.png</file>
     </qresource>
 </RCC>

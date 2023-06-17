@@ -12,9 +12,9 @@ import "qml/BarcodeScannerView"
 import ComManager 1.0
 import FileManager 1.0
 import ImageManager 1.0
-import SQLTableModel 1.0
 
 import "qml/utils/PopupMaker.js" as PopupMaker
+import "qml/utils/PlatformSelector.js" as Platforms
 
 Window {
     id: mainWindow
@@ -25,9 +25,10 @@ Window {
     required property ComManager comManager
     required property FileManager fileManager
     required property ImageManager imageManager
-    required property SQLTableModel sqlTableModel
 
     required property int collectionView
+    required property string platformName
+    required property var selectedPlatforms
 
     ConfigDrawer {
         id: drawer
@@ -106,12 +107,11 @@ Window {
     }
 
     function checkOwnedGame(idx) {
-        var modelIdx = sortFilterProxyModel.index(idx, 7) // 7 is owned !
-        console.log(modelIdx)
-        if(sortFilterProxyModel.data(modelIdx) === 0) {
+        var modelIdx = dbManager.currentProxyModel.index(idx, 7) // 7 is owned !
+        if(dbManager.currentProxyModel.data(modelIdx) === 0) {
             var obj = PopupMaker.showGameNotOwned(mainWindow)
             obj.accepted.connect(function() {
-                sortFilterProxyModel.setData(modelIdx, 1) // force owned to 1
+                dbManager.currentProxyModel.setData(modelIdx, 1) // force owned to 1
             })
             obj.refused.connect(function() {
                 view.setCurrentIndex(2)
@@ -129,7 +129,7 @@ Window {
                 destroy()
             }
             onSaved: (tag) => {
-                         var idx = sortFilterProxyModel.getIndexFiltered(tag)
+                         var idx = dbManager.currentProxyModel.getIndexFiltered(tag)
                          if(idx >= 0) {
                              showGame(idx)
                              destroy()

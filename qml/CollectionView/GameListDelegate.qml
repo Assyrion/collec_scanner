@@ -8,6 +8,7 @@ Item {
     id: root
 
     signal clicked
+    property string subfolderPic: platformName + "/" + model.tag
 
     Item {
         id: frontPic
@@ -20,11 +21,9 @@ Item {
             id: frontPicImg
             width: parent.width + 5 // not sourceSize !
             anchors.top: parent.top
-            anchors.topMargin:
-                -implicitHeight/2 + 30
-            anchors.horizontalCenter:
-                parent.horizontalCenter
-            source: ("image://coverProvider/%1.front").arg(model.tag)
+            anchors.topMargin: -implicitHeight/2 + 30
+            anchors.horizontalCenter: parent.horizontalCenter
+            source: ("image://coverProvider/%1.front").arg(root.subfolderPic)
             fillMode: Image.PreserveAspectCrop
             antialiasing: true
             cache: false
@@ -76,7 +75,7 @@ Item {
         font.pointSize:
             Math.min(17, parent.width/3 + 1)
         font.family: "Roboto"
-        text: model?.platform ?? "ps3"
+        text: platformName
     }
     MouseArea {
         id: mouseArea

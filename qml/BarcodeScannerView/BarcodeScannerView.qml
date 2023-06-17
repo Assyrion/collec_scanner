@@ -32,8 +32,8 @@ Item {
             barcodeScanner.startScanning()
         })
         obj.accepted.connect(function() {
-            sortFilterProxyModel.resetFilter()
-            var idx = sortFilterProxyModel.getIndexFiltered(tag)
+            dbManager.currentProxyModel.resetFilter()
+            var idx = dbManager.currentProxyModel.getIndexFiltered(tag)
             showGameRequired(idx)
         })
     }
@@ -43,11 +43,11 @@ Item {
         anchors.fill: parent
         onBarcodeFound: (barcode) => {
                             barcodeScanner.stopScanning()
-                            var idx_f = sortFilterProxyModel.getIndexFiltered(barcode)
+                            var idx_f = dbManager.currentProxyModel.getIndexFiltered(barcode)
                             if(idx_f >= 0) {
                                 showGameRequired(idx_f)
                             } else {
-                                var idx_nf = sortFilterProxyModel.getIndexNotFiltered(barcode)
+                                var idx_nf = dbManager.currentProxyModel.getIndexNotFiltered(barcode)
                                 if(idx_nf >= 0) {
                                     showFilteredGame(barcode)
                                 } else {

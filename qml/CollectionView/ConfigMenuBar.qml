@@ -1,6 +1,7 @@
 import QtQuick 6.2
 import QtQuick.Controls 6.2
 
+import "../utils/PlatformSelector.js" as Platforms
 
 MenuBar {
     id: root
@@ -20,8 +21,10 @@ MenuBar {
     background: backgroundRec.createObject(root)
     font.pointSize: 16
     Menu {
+        id: rootMenu
         title: "\u{1F527}"
         width: root.width*3
+        cascade: true
         background: backgroundRec.createObject(root)
         MenuItem {
             text: qsTr("Filter")
@@ -36,18 +39,93 @@ MenuBar {
             highlighted: false
         }
         Menu {
+            id: viewMenu
             title: qsTr("View")
             width: root.width*3
             background: backgroundRec.createObject(root)
-            MenuItem {
-                text: qsTr("List")
-                icon.source: "qrc:/list_view"
-                onTriggered: root.listViewRequired()
+            ListView {
+                height: contentHeight
+                interactive: false
+                model: ListModel {
+                    ListElement {
+                        titleRole: qsTr("List")
+                        iconRole: "qrc:/list_view"
+                        triggerRole: () => root.listViewRequired()
+                    }
+                    ListElement {
+                        titleRole: qsTr("Grid")
+                        iconRole: "qrc:/grid_view"
+                        triggerRole: () => root.gridViewRequired()
+                    }
+                }
+                delegate : MenuItem {
+                    text: titleRole
+                    icon.source: iconRole
+                    highlighted: index === collectionView
+                    onTriggered: {
+                        triggerRole()
+                        viewMenu.close()
+                        rootMenu.close()
+                    }
+                }
             }
-            MenuItem {
-                text: qsTr("Grid")
-                icon.source: "qrc:/grid_view"
-                onTriggered: root.gridViewRequired()
+        }
+        Menu {
+            id: platformMenu
+            title: qsTr("Platform")
+            width: root.width*2 + 25
+            cascade: true
+            background: backgroundRec.createObject(root)
+            function updateContent() {
+                selectedPlatformList.model = selectedPlatforms
+            }
+            ListView {
+                id: selectedPlatformList
+                height: Math.min(contentHeight, platformMenu.height * 0.921)
+                interactive: count >= 10
+                model: selectedPlatforms
+                snapMode: ListView.SnapToItem
+                delegate: MenuItem {
+//                    icon.source: "qrc:/" + modelData
+//                    icon.width: platformMenu.width*2/3
+                    text: modelData
+                    font.pointSize: 12
+                    highlighted: modelData === platformName
+                    onTriggered: {
+                        platformName = modelData
+                        platformMenu.close()
+                        rootMenu.close()
+                    }
+                }
+            }
+            Menu {
+                id: allPlatformsMenu
+                icon.source: "qrc:/add_notag"
+                icon.height: 25
+                width: root.width*3
+                cascade: true
+                background: backgroundRec.createObject(root)
+                ListView {
+                    height: contentHeight
+                    model: Object.keys(Platforms.list).sort()
+                    delegate: MenuItem {
+                        text: modelData
+                        font.pointSize: 12
+                        checkable: true
+                        checked: selectedPlatforms.includes(modelData)
+                        enabled: modelData !== platformName
+                        highlighted: false
+                        onTriggered: {
+                            if(checked) {
+                                selectedPlatforms.push(modelData)
+                            }
+                            else {
+                                selectedPlatforms.splice(selectedPlatforms.indexOf(modelData), 1)
+                            }
+                            platformMenu.updateContent()
+                        }
+                    }
+                }
             }
         }
     }

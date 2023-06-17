@@ -3,6 +3,7 @@ import QtQuick.Controls 6.2
 import QtQuick.Layouts 6.2
 
 import "../utils"
+import "../utils/PlatformSelector.js" as Platforms
 
 RowLayout {
     id: root
@@ -52,6 +53,13 @@ RowLayout {
         Layout.maximumHeight: parent.height * 2
         Layout.alignment: Qt.AlignRight | Qt.AlignTop
 
+        transform: Scale {
+             origin.x: picFrontImg.width
+             origin.y: root.height/2
+             xScale: Math.min(1/Platforms.list[platformName].coverRatio, 1)
+             yScale: xScale
+        }
+
         imgUrl: "qrc:/no_pic" // default
         onClicked: {
             if(editMode) {
@@ -72,6 +80,13 @@ RowLayout {
         Layout.preferredHeight: Layout.minimumHeight
         Layout.maximumHeight: parent.height * 2
         Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+
+        transform: Scale {
+             origin.x: 0
+             origin.y: root.height/2
+             xScale: Math.min(1/Platforms.list[platformName].coverRatio, 1)
+             yScale: xScale
+        }
 
         imgUrl: "qrc:/no_pic" // default
         onClicked: {

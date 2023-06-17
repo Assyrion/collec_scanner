@@ -8,6 +8,8 @@ import "../utils"
 Popup {
     id: root
 
+    required property double coverRatio
+
     Component.onCompleted:  {
         open()
     }
@@ -41,8 +43,9 @@ Popup {
         Loader {
             id: loader
             active: false
-            width: 13*height/15
+            width: height * root.coverRatio
             height: 5*parent.height/6 - 10
+            scale: width > parent.width ? (parent.width/width) : 1
             anchors.top: parent.top
             anchors.topMargin: -12
             anchors.horizontalCenter:

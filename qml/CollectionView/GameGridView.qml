@@ -2,6 +2,7 @@ import QtQuick 6.2
 import QtQuick.Controls 6.2
 
 import "../utils"
+import "../utils/PlatformSelector.js" as Platforms
 
 GridView {
     id: root
@@ -9,13 +10,11 @@ GridView {
     signal showGameRequired(int idx)
     signal movingChanged(bool moving)
 
-    Component.onCompleted: {
-        model = sortFilterProxyModel
-        highlightMoveDuration = 0
-    }
+    model : dbManager.currentProxyModel
 
+    highlightMoveDuration: 0
     cellWidth: Math.min((width-5)/4, 169)
-    cellHeight: cellWidth * 1.23
+    cellHeight: cellWidth / Platforms.list[platformName].coverRatio
 
     ScrollBar.vertical: ScrollBar {
         policy: ScrollBar.AlwaysOn
