@@ -32,12 +32,12 @@
 <context>
     <name>ConfigDrawer</name>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="49"/>
+        <location filename="../qml/ConfigDrawer.qml" line="59"/>
         <source>Filter</source>
         <translation>Filtre</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="69"/>
+        <location filename="../qml/ConfigDrawer.qml" line="79"/>
         <source>Search by name</source>
         <translation>Chercher par titre</translation>
     </message>
@@ -46,57 +46,62 @@
         <translation type="vanished">OK</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="81"/>
+        <location filename="../qml/ConfigDrawer.qml" line="91"/>
         <source>Apply</source>
         <translation>Appliquer</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="96"/>
+        <location filename="../qml/ConfigDrawer.qml" line="106"/>
         <source>Remove</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="126"/>
+        <location filename="../qml/ConfigDrawer.qml" line="136"/>
         <source>Sort by</source>
         <translation>Trier par</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="151"/>
+        <location filename="../qml/ConfigDrawer.qml" line="161"/>
         <source>ASC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="152"/>
+        <location filename="../qml/ConfigDrawer.qml" line="162"/>
         <source>DESC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="184"/>
+        <location filename="../qml/ConfigDrawer.qml" line="194"/>
         <source>Games owned</source>
         <translation>Jeux possédés</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="303"/>
+        <location filename="../qml/ConfigDrawer.qml" line="313"/>
         <source>Platinum</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="377"/>
+        <source>reload DB</source>
+        <translation>recharger BDD</translation>
     </message>
     <message>
         <source>Essentials games</source>
         <translation type="vanished">Jeux Essentials</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="201"/>
+        <location filename="../qml/ConfigDrawer.qml" line="211"/>
         <source>Games not owned</source>
         <translation>Jeux non possédés</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="236"/>
+        <location filename="../qml/ConfigDrawer.qml" line="246"/>
         <source>Essentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="267"/>
-        <location filename="../qml/ConfigDrawer.qml" line="335"/>
+        <location filename="../qml/ConfigDrawer.qml" line="277"/>
+        <location filename="../qml/ConfigDrawer.qml" line="345"/>
         <source>only</source>
         <translation>uniquement</translation>
     </message>
@@ -109,7 +114,7 @@
         <translation type="vanished">Effacer BDD</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="367"/>
+        <location filename="../qml/ConfigDrawer.qml" line="390"/>
         <source>file DB</source>
         <translation>Exporter BDD</translation>
     </message>
@@ -122,12 +127,12 @@
         <translation type="vanished">Les nouvelles jaquettes seront copiées sur le serveur.</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="380"/>
+        <location filename="../qml/ConfigDrawer.qml" line="403"/>
         <source>upload DB</source>
         <translation>envoyer BDD</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="393"/>
+        <location filename="../qml/ConfigDrawer.qml" line="416"/>
         <source>upload Covers</source>
         <translation>Envoyer jaquettes</translation>
     </message>
@@ -329,21 +334,34 @@ Cette action est irreversible.</translation>
     </message>
     <message>
         <location filename="../qml/utils/PopupMaker.js" line="42"/>
-        <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
-        <translation>Le contenu de la BDD sera enregistré dans &lt;Téléchargements&gt;/game_list.csv</translation>
+        <source>%1 DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
+        <translation>Le contenu de la BDD %1 sera enregistré dans &lt;Téléchargements&gt;/game_list.csv</translation>
     </message>
     <message>
         <location filename="../qml/utils/PopupMaker.js" line="55"/>
-        <source>DB will be uploaded to server.</source>
-        <translation>La BDD sera copiée sur le serveur.</translation>
+        <source>%1 DB will be uploaded to server.</source>
+        <translation>La BDD %1 sera copiée sur le serveur.</translation>
     </message>
     <message>
         <location filename="../qml/utils/PopupMaker.js" line="68"/>
+        <source>%1 DB will be replaced by the latest on the server.&lt;br&gt;Filters will be reinitialized.</source>
+        <translation>La BDD %1 sera remplacée par la plus récente du serveur.&lt;br&gt;Les filtres seront réinitialisés.</translation>
+    </message>
+    <message>
+        <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
+        <translation type="vanished">Le contenu de la BDD sera enregistré dans &lt;Téléchargements&gt;/game_list.csv</translation>
+    </message>
+    <message>
+        <source>DB will be uploaded to server.</source>
+        <translation type="vanished">La BDD sera copiée sur le serveur.</translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="81"/>
         <source>New covers will be uploaded to server.</source>
         <translation>Les nouvelles jaquettes seront copiées sur le serveur.</translation>
     </message>
     <message>
-        <location filename="../qml/utils/PopupMaker.js" line="81"/>
+        <location filename="../qml/utils/PopupMaker.js" line="94"/>
         <source>Game with tag = %1 is not in %2 database.&lt;br&gt;&lt;br&gt;Add it ?</source>
         <translation>Le jeu dont le tag est = %1 n&apos;est pas dans la base de donnée %2.&lt;br&gt;&lt;br&gt;Voulez-vous l&apos;ajouter ?</translation>
     </message>
@@ -356,7 +374,7 @@ Cette action est irreversible.</translation>
         <translation type="vanished">Le jeu dont le tag est = %1 est nouveau.&lt;br&gt;&lt;br&gt;Voulez-vous l&apos;ajouter ?</translation>
     </message>
     <message>
-        <location filename="../qml/utils/PopupMaker.js" line="91"/>
+        <location filename="../qml/utils/PopupMaker.js" line="104"/>
         <source>Game with tag = %1 exists but has been filtered.&lt;br&gt;&lt;br&gt;Remove filter and show it ?</source>
         <translation>Le jeu dont le tag est = %1 existe mais a été filtré.&lt;br&gt;&lt;br&gt;Voulez vous supprimer le filtre et l&apos;afficher ?</translation>
     </message>

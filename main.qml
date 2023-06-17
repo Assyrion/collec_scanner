@@ -30,6 +30,13 @@ Window {
     required property string platformName
     required property var selectedPlatforms
 
+    Connections {
+        target: mainWindow
+        function onPlatformNameChanged() {
+            dbManager.loadDB(platformName)
+        }
+    }
+
     ConfigDrawer {
         id: drawer
         width: parent.width * 0.7

@@ -42,10 +42,25 @@ int DatabaseManager::loadDB(const QString &platform)
 
     m_currentProxyModel = m_modelHash.value(platform);
 
-    emit currentSqlModelChanged();
-    emit currentProxyModelChanged();
+    emit databaseChanged();
 
     return 0;
+}
+
+int DatabaseManager::reloadDB(const QString &platform)
+{
+    auto model = m_modelHash.take(platform);
+    model->deleteLater();
+
+    if(QSqlDatabase::contains(platform)) {
+        auto db = QSqlDatabase::database(platform, false);
+        db.close();
+    }
+    QSqlDatabase::removeDatabase(platform);
+
+    QFile::remove(Global::DB_PATH_ABS_NAME);
+
+    return loadDB(platform);
 }
 
 SortFilterProxyModel* DatabaseManager::currentProxyModel() const

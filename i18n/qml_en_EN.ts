@@ -17,78 +17,83 @@
 <context>
     <name>ConfigDrawer</name>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="49"/>
+        <location filename="../qml/ConfigDrawer.qml" line="59"/>
         <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="69"/>
+        <location filename="../qml/ConfigDrawer.qml" line="79"/>
         <source>Search by name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="81"/>
+        <location filename="../qml/ConfigDrawer.qml" line="91"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="96"/>
+        <location filename="../qml/ConfigDrawer.qml" line="106"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="126"/>
+        <location filename="../qml/ConfigDrawer.qml" line="136"/>
         <source>Sort by</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="151"/>
+        <location filename="../qml/ConfigDrawer.qml" line="161"/>
         <source>ASC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="152"/>
+        <location filename="../qml/ConfigDrawer.qml" line="162"/>
         <source>DESC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="184"/>
+        <location filename="../qml/ConfigDrawer.qml" line="194"/>
         <source>Games owned</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="303"/>
+        <location filename="../qml/ConfigDrawer.qml" line="313"/>
         <source>Platinum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="201"/>
+        <location filename="../qml/ConfigDrawer.qml" line="211"/>
         <source>Games not owned</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="236"/>
+        <location filename="../qml/ConfigDrawer.qml" line="246"/>
         <source>Essentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="267"/>
-        <location filename="../qml/ConfigDrawer.qml" line="335"/>
+        <location filename="../qml/ConfigDrawer.qml" line="277"/>
+        <location filename="../qml/ConfigDrawer.qml" line="345"/>
         <source>only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="367"/>
+        <location filename="../qml/ConfigDrawer.qml" line="377"/>
+        <source>reload DB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="390"/>
         <source>file DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="380"/>
+        <location filename="../qml/ConfigDrawer.qml" line="403"/>
         <source>upload DB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="393"/>
+        <location filename="../qml/ConfigDrawer.qml" line="416"/>
         <source>upload Covers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -263,26 +268,31 @@ This action is irreversible.</source>
     </message>
     <message>
         <location filename="../qml/utils/PopupMaker.js" line="42"/>
-        <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
+        <source>%1 DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/utils/PopupMaker.js" line="55"/>
-        <source>DB will be uploaded to server.</source>
+        <source>%1 DB will be uploaded to server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/utils/PopupMaker.js" line="68"/>
-        <source>New covers will be uploaded to server.</source>
+        <source>%1 DB will be replaced by the latest on the server.&lt;br&gt;Filters will be reinitialized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/utils/PopupMaker.js" line="81"/>
+        <source>New covers will be uploaded to server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="94"/>
         <source>Game with tag = %1 is not in %2 database.&lt;br&gt;&lt;br&gt;Add it ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/utils/PopupMaker.js" line="91"/>
+        <location filename="../qml/utils/PopupMaker.js" line="104"/>
         <source>Game with tag = %1 exists but has been filtered.&lt;br&gt;&lt;br&gt;Remove filter and show it ?</source>
         <translation type="unfinished"></translation>
     </message>

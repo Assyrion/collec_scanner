@@ -2,7 +2,6 @@
 
 #include <QGuiApplication>
 #include <QSurfaceFormat>
-#include <QSignalMapper>
 #include <QQuickWindow>
 #include <QQmlContext>
 #include <QQuickView>
@@ -84,16 +83,18 @@ int main(int argc, char *argv[])
 
     /************************* Database *****************************/
 
-    ComManager comManager;
+    ComManager comManager;    
+    DatabaseManager dbManager(paramHash);
 
-    auto downloadDB = [&]() {
+    // in case of unknown database detected, we fetch it on the server
+    QObject::connect(&dbManager, &DatabaseManager::unknownDatabase, [&]() {
         QQuickView *db_view = new QQuickView;
         db_view->setSource(QUrl(QStringLiteral("qrc:/download_db_view.qml")));
 
 #ifdef Q_OS_ANDROID
         db_view->setGeometry(screen->availableGeometry());
 #else
-        db_view->setGeometry(rect);
+            db_view->setGeometry(rect);
 #endif
 
         db_view->setResizeMode(QQuickView::SizeRootObjectToView);
@@ -104,11 +105,9 @@ int main(int argc, char *argv[])
         // remove view used for downloading DB once engine is loaded
         db_view->hide();
         db_view->deleteLater();
-    };
+    });
 
-    DatabaseManager dbManager(paramHash);
-    QObject::connect(&dbManager, &DatabaseManager::unknownDatabase, downloadDB);
-
+    // initial loading of database
     if(dbManager.loadDB(platformName) < 0)
         return -1;
 
@@ -190,10 +189,6 @@ int main(int argc, char *argv[])
         settings.sync();
     };
 
-
-    QSignalMapper sm;
-    sm.setMapping(rootObject, rootObject); // dummy mapping
-
     QThread dlCoversThread;
 
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
@@ -201,15 +196,10 @@ int main(int argc, char *argv[])
 
     QObject::connect(dialog, SIGNAL(aboutToHide()), dbManager.currentProxyModel(), SLOT(invalidate()));
     QObject::connect(dialog, SIGNAL(aboutToHide()), &dlCoversThread, SLOT(quit()));
+    QObject::connect(&dbManager, SIGNAL(databaseChanged()), &dlCoversThread, SLOT(start()));
     QObject::connect(&dlCoversThread, &QThread::started, &comManager, [&]() {
         auto platformName = rootObject->property("platformName").toString();
         comManager.downloadCovers(platformName);
-    });
-    QObject::connect(rootObject, SIGNAL(platformNameChanged()), &sm, SLOT(map()));
-    QObject::connect(&sm, &QSignalMapper::mappedObject, [&](QObject* obj){
-        auto platformName = obj->property("platformName").toString();
-        dbManager.loadDB(platformName);
-        dlCoversThread.start();
     });
 
     comManager.moveToThread(&dlCoversThread);
@@ -229,6 +219,7 @@ int main(int argc, char *argv[])
     });
 #endif
 
+    // initial downloading of covers
     dlCoversThread.start();
 
     return app.exec();

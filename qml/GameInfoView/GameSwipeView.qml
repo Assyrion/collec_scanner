@@ -60,7 +60,7 @@ Item {
         // update model when pointing to new DB
         Connections {
             target: dbManager
-            function onCurrentProxyModelChanged() {
+            function onDatabaseChanged() {
                 swipeView.model = dbManager.currentProxyModel
             }
         }

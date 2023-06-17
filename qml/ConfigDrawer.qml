@@ -25,6 +25,16 @@ Drawer {
         })
     }
 
+    function showConfirmReloadDB() {
+        var obj = PopupMaker.showConfirmReloadDB(mainWindow)
+        obj.accepted.connect(function() {
+            obj.close()
+            root.close()
+            dbManager.currentProxyModel.resetFilter()
+            dbManager.reloadDB(platformName)
+        })
+    }
+
     function showConfirmUploadDB() {
         var obj = PopupMaker.showConfirmUploadDB(mainWindow)
         obj.accepted.connect(function() {
@@ -354,8 +364,21 @@ Drawer {
         width: parent.width
         spacing: 5
 
+//        Button {
+//            id: clearDBBtn
+//            Layout.alignment: Qt.AlignCenter
+//            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
+//                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+//            }, 80)
+
+//            leftPadding: 12
+//            rightPadding: 12
+
+//            text: qsTr("clear DB")
+//            onClicked: showConfirmClearDB()
+//        }
         Button {
-            id: saveDBBtn
+            id: reloadDBBtn
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
                 return curr.implicitWidth > prev ? curr.implicitWidth : prev;
@@ -364,9 +387,22 @@ Drawer {
             leftPadding: 12
             rightPadding: 12
 
-            text: qsTr("file DB")
-            onClicked: showConfirmSaveDB()
+            text: qsTr("reload DB")
+            onClicked: showConfirmReloadDB()
         }
+//        Button {
+//            id: saveDBBtn
+//            Layout.alignment: Qt.AlignCenter
+//            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
+//                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
+//            }, 80)
+
+//            leftPadding: 12
+//            rightPadding: 12
+
+//            text: qsTr("file DB")
+//            onClicked: showConfirmSaveDB()
+//        }
         Button {
             id: exportDBBtn
             Layout.alignment: Qt.AlignCenter

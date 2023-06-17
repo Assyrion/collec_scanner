@@ -10,14 +10,15 @@
 class DatabaseManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(SqlTableModel* currentSqlModel READ currentSqlModel NOTIFY currentSqlModelChanged)
-    Q_PROPERTY(SortFilterProxyModel* currentProxyModel READ currentProxyModel NOTIFY currentProxyModelChanged)
+    Q_PROPERTY(SqlTableModel* currentSqlModel READ currentSqlModel NOTIFY databaseChanged)
+    Q_PROPERTY(SortFilterProxyModel* currentProxyModel READ currentProxyModel NOTIFY databaseChanged)
 
 public:
     explicit DatabaseManager(QHash<QString, QVariantHash>& paramHash, QObject *parent = nullptr);
     virtual ~DatabaseManager();
 
-    int loadDB(const QString& platform);
+    Q_INVOKABLE int loadDB(const QString& platform);
+    Q_INVOKABLE int reloadDB(const QString& platform);
 
     SqlTableModel* currentSqlModel() const;
     SortFilterProxyModel* currentProxyModel() const;
@@ -26,13 +27,10 @@ private:
     QHash<QString, SortFilterProxyModel*> m_modelHash;
     QHash<QString, QVariantHash>& m_paramHash;
 
-    SqlTableModel* m_currentSqlModel;
     SortFilterProxyModel* m_currentProxyModel;
 
 signals:
-    void currentSqlModelChanged();
-    void currentProxyModelChanged();
-
+    void databaseChanged();
     void unknownDatabase();
 };
 

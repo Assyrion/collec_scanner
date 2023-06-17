@@ -39,7 +39,7 @@ function showConfirmClearDB(parent) {
 function showConfirmSaveDB(parent) {
     var cpt = Qt.createComponent("CSActionPopup.qml")
     if (cpt.status === Component.Ready) {
-        return cpt.createObject(parent, {"contentText" : qsTr("DB content will be written in <DownloadPath>/game_list.csv"),
+        return cpt.createObject(parent, {"contentText" : qsTr("%1 DB content will be written in <DownloadPath>/game_list.csv").arg(platformName),
                                     "width" : 2*parent.width/3,
                                     "height": parent.height/4,
                                     "x"     : parent.width/6,
@@ -52,7 +52,20 @@ function showConfirmSaveDB(parent) {
 function showConfirmUploadDB(parent) {
     var cpt = Qt.createComponent("CSActionPopup.qml")
     if (cpt.status === Component.Ready) {
-        return cpt.createObject(parent, {"contentText" : qsTr("DB will be uploaded to server."),
+        return cpt.createObject(parent, {"contentText" : qsTr("%1 DB will be uploaded to server.").arg(platformName),
+                                    "width" : 2*parent.width/3,
+                                    "height": parent.height/4,
+                                    "x"     : parent.width/6,
+                                    "y"     : parent.height/4+50,
+                                    "z"     : 1})
+    }
+    return null
+}
+
+function showConfirmReloadDB(parent) {
+    var cpt = Qt.createComponent("CSActionPopup.qml")
+    if (cpt.status === Component.Ready) {
+        return cpt.createObject(parent, {"contentText" : qsTr("%1 DB will be replaced by the latest on the server.<br>Filters will be reinitialized.").arg(platformName),
                                     "width" : 2*parent.width/3,
                                     "height": parent.height/4,
                                     "x"     : parent.width/6,
