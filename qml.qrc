@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>qml/BarcodeScannerView/BarcodeScannerView.qml</file>
+        <file>qml/BarcodeScannerView/BarcodeScanner.qml</file>
+        <file>qml/CollectionView/CollectionView.qml</file>
+        <file>qml/CollectionView/GameListView.qml</file>
+        <file>qml/CollectionView/GameListDelegate.qml</file>
+        <file>qml/CollectionView/GameGridView.qml</file>
+        <file>qml/CollectionView/GameGridDelegate.qml</file>
+        <file>qml/GameInfoView/GameInfoCoverRow.qml</file>
+        <file>qml/GameInfoView/GameSwipeView.qml</file>
+        <file>qml/GameInfoView/GameSwipeDelegate.qml</file>
+        <file>qml/GameInfoView/TakeSnapshotPopup.qml</file>
+        <file>qml/GameInfoView/GameInfoListDelegate.qml</file>
+        <file>qml/utils/CSActionPopup.qml</file>
+        <file>qml/utils/CSGlowText.qml</file>
+        <file>qml/utils/CSGlowImage.qml</file>
+        <file>qml/utils/CSCameraOutput.qml</file>
+        <file>qml/ConfigDrawer.qml</file>
+        <file>qml/CoverProcessingPopup.qml</file>
+        <file>qml/GameInfoView/NewGameView.qml</file>
+        <file>download_db_view.qml</file>
+        <file>qml/CollectionView/ConfigMenuBar.qml</file>
+        <file>qml/utils/PopupMaker.js</file>
+        <file>qml/utils/PlatformSelector.js</file>
+    </qresource>
+</RCC>
