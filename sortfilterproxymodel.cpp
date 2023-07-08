@@ -12,6 +12,8 @@ SortFilterProxyModel::SortFilterProxyModel(QVariantHash &params, QObject *parent
     m_titleFilter(params["titleFilter"]),
     m_ownedFilter(params["ownedFilter"]),
     m_sortOrder(params["sortOrder"]),
+    m_palFilter(params["palFilter"]),
+    m_frFilter(params["frFilter"]),
     m_orderBy(params["orderBy"])
 {
     // check validity
@@ -52,6 +54,8 @@ void SortFilterProxyModel::resetFilter()
     m_platinumFilter = true;
     m_essentialsOnly = false;
     m_platinumOnly = false;
+    m_palFilter = false;
+    m_frFilter = false;
     m_titleFilter = "";
     m_ownedFilter = 2;
 
@@ -61,6 +65,8 @@ void SortFilterProxyModel::resetFilter()
     emit platinumOnlyChanged();
     emit titleFilterChanged();
     emit ownedFilterChanged();
+    emit palFilterChanged();
+    emit frFilterChanged();
 
     invalidateFilter();
 }
@@ -85,6 +91,22 @@ void SortFilterProxyModel::filterPlatinum(bool filter)
 {
     m_platinumFilter = filter;
     emit platinumFilterChanged();
+
+    invalidateFilter();
+}
+
+void SortFilterProxyModel::filterPal(bool filter)
+{
+    m_palFilter = filter;
+    emit palFilterChanged();
+
+    invalidateFilter();
+}
+
+void SortFilterProxyModel::filterFr(bool filter)
+{
+    m_frFilter = filter;
+    emit frFilterChanged();
 
     invalidateFilter();
 }
@@ -159,11 +181,23 @@ bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &so
         codeCheck &= !code.endsWith(platinum_code_marker);
     }
 
+    QModelIndex infoIndex= sourceModel()->index(sourceRow, 6, sourceParent);
+    QString info = sourceModel()->data(infoIndex).toString();
+    bool infoCheck = true;
+
+    if(m_palFilter.toBool()) {
+        infoCheck &= info.contains("#PAL");
+
+        if(m_frFilter.toBool()) {
+            infoCheck &= info.contains("#FR");
+        }
+    }
+
     QModelIndex ownedIndex= sourceModel()->index(sourceRow, 7, sourceParent);
     int owned = sourceModel()->data(ownedIndex).toInt();
     bool ownedCheck = (m_ownedFilter.toInt() == owned) || (m_ownedFilter.toInt() >= 2);
 
-    return titleCheck && codeCheck && ownedCheck;
+    return titleCheck && codeCheck && infoCheck && ownedCheck;
 }
 
 bool SortFilterProxyModel::getEssentialsFilter() const
@@ -200,6 +234,18 @@ int SortFilterProxyModel::getOwnedFilter() const
 {
     return m_ownedFilter.isValid() ?
                m_ownedFilter.toInt() : 2;
+}
+
+bool SortFilterProxyModel::getPalFilter() const
+{
+    return m_palFilter.isValid() ?
+               m_palFilter.toBool() : false;
+}
+
+bool SortFilterProxyModel::getFrFilter() const
+{
+    return m_frFilter.isValid() ?
+               m_frFilter.toBool() : false;
 }
 
 int SortFilterProxyModel::getSortOrder() const

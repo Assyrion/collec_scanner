@@ -110,7 +110,7 @@ Drawer {
 
                     onClicked: {
                         filterName.clear()
-                        sortFilterProxyModel.filterByTitle("")
+                        dbManager.currentProxyModel.filterByTitle("")
                         close()
                     }
                     Layout.fillWidth: true
@@ -219,12 +219,77 @@ Drawer {
             checked : !(dbManager?.currentProxyModel?.ownedFilter % 2)
         }
     }
+    RowLayout {
+        id: palfrRow
+
+        anchors.top: ownedGrid.bottom
+        anchors.topMargin: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+
+        RowLayout {
+            id: palRow
+
+            Layout.preferredWidth: palCheckBox.checked ?
+                                       palRow.implicitWidth : 0
+            Layout.alignment: Qt.AlignLeft
+            spacing: 5
+            Label {
+                id: palLabel
+                verticalAlignment:
+                    Label.AlignVCenter
+                font.family: "Roboto"
+                font.pixelSize: 14
+                color: "white"
+                text: qsTr("PAL")
+            }
+            CheckBox {
+                id: palCheckBox
+
+                onClicked: {
+                    if(!checked)
+                        dbManager.currentProxyModel.filterFr(false)
+                    dbManager.currentProxyModel.filterPal(checked)
+                }
+                checked : dbManager?.currentProxyModel?.palFilter
+            }
+            Behavior on Layout.preferredWidth { NumberAnimation { duration : 100 } }
+        }
+        RowLayout {
+            id: frRow
+
+            opacity : palRow.Layout.preferredWidth > 0 ? 1 : 0
+
+            spacing: 5
+
+            enabled : palCheckBox.checked
+
+            Label {
+                id: frLabel
+                verticalAlignment:
+                    Label.AlignVCenter
+                font.family: "Roboto"
+                font.pixelSize: 14
+                color: "white"
+                text: qsTr("FR")
+            }
+            CheckBox {
+                id: frCheckBox
+
+                onClicked: {
+                    dbManager.currentProxyModel.filterFr(checked)
+                }
+                checked: dbManager?.currentProxyModel?.frFilter
+                         && dbManager?.currentProxyModel?.palFilter
+            }
+        }
+    }
     ColumnLayout {
         id: essentialsColumn
 
         visible: platformName == "ps3"
 
-        anchors.top: ownedGrid.bottom
+        anchors.top: palfrRow.bottom
         anchors.topMargin: 10
         anchors.left: parent.left
         anchors.leftMargin: 10
@@ -237,7 +302,7 @@ Drawer {
             Layout.alignment: Qt.AlignLeft
             spacing: 5
             Label {
-                id: labelEssentials
+                id: essentialsLabel
                 verticalAlignment:
                     Label.AlignVCenter
                 font.family: "Roboto"
@@ -268,7 +333,7 @@ Drawer {
             enabled : essentialsCheckBox.checked
 
             Label {
-                id: labelOnlyEssentials
+                id: essentialsOnlyLabel
                 verticalAlignment:
                     Label.AlignVCenter
                 font.family: "Roboto"
@@ -304,7 +369,7 @@ Drawer {
             Layout.alignment: Qt.AlignLeft
             spacing: 5
             Label {
-                id: labelPlatinum
+                id: platinumLabel
                 verticalAlignment:
                     Label.AlignVCenter
                 font.family: "Roboto"
@@ -335,7 +400,7 @@ Drawer {
             enabled : platinumCheckBox.checked
 
             Label {
-                id: labelOnlyPlatinum
+                id: platinumOnlyLabel
 
                 verticalAlignment:
                     Label.AlignVCenter

@@ -13,7 +13,9 @@ class SortFilterProxyModel : public QSortFilterProxyModel
     Q_PROPERTY(bool platinumOnly READ getPlatinumOnly NOTIFY platinumOnlyChanged)
     Q_PROPERTY(QString titleFilter READ getTitleFilter NOTIFY titleFilterChanged)
     Q_PROPERTY(int ownedFilter READ getOwnedFilter NOTIFY ownedFilterChanged)
+    Q_PROPERTY(bool palFilter READ getPalFilter NOTIFY palFilterChanged)
     Q_PROPERTY(int sortOrder READ getSortOrder NOTIFY sortOrderChanged)
+    Q_PROPERTY(bool frFilter READ getFrFilter NOTIFY frFilterChanged)
     Q_PROPERTY(int orderBy READ getOrderBy NOTIFY orderByChanged)
 
 public:
@@ -26,12 +28,16 @@ public:
 
     Q_INVOKABLE int getIndexFiltered(const QString &tag);
     Q_INVOKABLE int getIndexNotFiltered(const QString &tag);
+
     Q_INVOKABLE void filterByOwned(bool owned, bool notOwned);
     Q_INVOKABLE void filterByTitle(const QString& title);
     Q_INVOKABLE void filterOnlyEssentials(bool filter);
     Q_INVOKABLE void filterOnlyPlatinum(bool filter);
     Q_INVOKABLE void filterEssentials(bool filter);
     Q_INVOKABLE void filterPlatinum(bool filter);
+    Q_INVOKABLE void filterPal(bool filter);
+    Q_INVOKABLE void filterFr(bool filter);
+
     Q_INVOKABLE void resetFilter();
 
     bool getEssentialsFilter() const;
@@ -40,6 +46,8 @@ public:
     bool getPlatinumOnly() const;
     QString getTitleFilter() const;
     int getOwnedFilter() const;
+    bool getPalFilter() const;
+    bool getFrFilter() const;
     int getSortOrder() const;
     int getOrderBy() const;
 
@@ -54,6 +62,8 @@ private:
     QVariant& m_titleFilter;
     QVariant& m_ownedFilter;
     QVariant& m_sortOrder;
+    QVariant& m_palFilter;
+    QVariant& m_frFilter;
     QVariant& m_orderBy;
 
 signals:
@@ -64,6 +74,8 @@ signals:
     void titleFilterChanged();
     void ownedFilterChanged();
     void sortOrderChanged();
+    void palFilterChanged();
+    void frFilterChanged();
     void orderByChanged();
 };
 
