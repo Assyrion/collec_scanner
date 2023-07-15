@@ -2,6 +2,8 @@ import QtQuick 6.2
 import QtQuick.Controls 6.2
 
 Item {
+    id: root
+
     property alias name:     labelName.text
     property alias entry:    textField.text
     property alias editable: textField.enabled
@@ -21,12 +23,13 @@ Item {
         font.family: "Roboto"
         font.pointSize: 14
         font.bold: true
-        color: "white"
+        color: "lightgray"
     }
     TextField {
         id: textField
         height: parent.height
-        topPadding: 3; bottomPadding: 3
+        topPadding: 3
+        bottomPadding: 3
         font.pointSize: 13
         anchors.right: parent.right
         anchors.left: labelName.right
@@ -35,5 +38,13 @@ Item {
         verticalAlignment:
             TextField.AlignVCenter
         wrapMode: Text.WordWrap
+        color: "white"
+        background: Rectangle {
+            color: root.editable ? "transparent" : "burlywood"
+            border.width: root.editable ? 1 : 0
+            border.color: root.editable ? "burlywood" : "transparent"
+            opacity: root.editable ? 1 : 0.1
+            radius: 8
+        }
     }
 }

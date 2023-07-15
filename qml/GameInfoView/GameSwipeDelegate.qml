@@ -151,7 +151,7 @@ Pane {
             editable: false
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
-            Layout.preferredHeight: 40
+            Layout.preferredHeight: 25
         }
         GameInfoListDelegate {
             id: indexInfo
@@ -161,7 +161,16 @@ Pane {
             editable: false
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
-            Layout.preferredHeight: 40
+            Layout.preferredHeight: 25
+        }
+        GameInfoListDelegate {
+            id: platformInfo
+            name: qsTr("Platform")
+            entry: platformName
+            editable: false
+            opacity: root.isOwned ? 1 : 0.4
+            Layout.fillWidth: true
+            Layout.preferredHeight: 25
         }
         GameInfoListDelegate {
             id: codeInfo
@@ -179,25 +188,7 @@ Pane {
             editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
-        }
-        GameInfoListDelegate {
-            id: platformInfo
-            name: qsTr("Platform")
-            entry: platformName
-            editable: false
-            opacity: root.isOwned ? 1 : 0.4
-            Layout.fillWidth: true
-            Layout.preferredHeight: 40
-        }
-        GameInfoListDelegate {
-            id: infoInfo
-            name: qsTr("info")
-            entry: model?.info ?? ""
-            editable: editMode
-            opacity: root.isOwned ? 1 : 0.4
-            Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 60
         }
         GameInfoListDelegate {
             id: publisherInfo
@@ -216,7 +207,16 @@ Pane {
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
-        }        
+        }
+        GameInfoListDelegate {
+            id: infoInfo
+            name: qsTr("info")
+            entry: model?.info ?? ""
+            editable: editMode
+            opacity: root.isOwned ? 1 : 0.4
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
         Item {
             id: ownedInfo
             Layout.fillWidth: true
@@ -236,7 +236,7 @@ Pane {
                 font.family: "Roboto"
                 font.pointSize: 14
                 font.bold: true
-                color: "white"
+                color: "lightgray"
                 text: qsTr("In my collection")
             }
             CheckBox {
