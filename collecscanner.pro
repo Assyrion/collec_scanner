@@ -5,6 +5,8 @@ DEFINES += APPNAME='\\"$${TARGET}\\"'
 
 android {
     QT += core-private
+    AHOME = $$system(echo %ANDROID_HOME%)
+    include($$AHOME/openSSL/openssl.pri)
 }
 
 # The following define makes your compiler emit warnings if you use
@@ -64,4 +66,3 @@ contains(ANDROID_TARGET_ARCH,arm64-v8a) {
     ANDROID_PACKAGE_SOURCE_DIR = \
         $$PWD/android
 }
-
