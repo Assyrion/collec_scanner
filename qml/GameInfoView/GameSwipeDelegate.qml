@@ -217,6 +217,24 @@ Pane {
             Layout.fillWidth: true
             Layout.fillHeight: true
         }
+        RowLayout {
+            visible: !currentTag.includes("notag")
+            function reset() {}
+            GameInfoListDelegate {
+                id: priceInfo
+                name: qsTr("ebay prices")
+                editable: false
+                opacity: root.isOwned ? 1 : 0.4
+                Layout.fillWidth: true
+                Layout.preferredHeight: 50
+            }
+            Button {
+                onClicked: {
+                    var list = comManager.getPriceFromEbay(currentTag)
+                    priceInfo.entry = list.join("€   ") + '€'
+                }
+            }
+        }
         Item {
             id: ownedInfo
             Layout.fillWidth: true
