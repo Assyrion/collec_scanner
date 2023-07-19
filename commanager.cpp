@@ -299,11 +299,11 @@ QStringList ComManager::getPriceFromEbay(const QString &tag)
                         auto title = item["title"].toArray()[0].toString();
                         auto price = item["sellingStatus"].toArray()[0].toObject()["convertedCurrentPrice"].toArray()[0].toObject()["__value__"].toString();;
 
-                        hash << price;
+                        hash << title + "\n\n" + price + " €";
 
-                        qDebug() << "Title:" << title;
-                        qDebug() << "Price:" << price;
-                        qDebug() << "----------------------";
+//                        qDebug() << "Title:" << title;
+//                        qDebug() << "Price:" << price;
+//                        qDebug() << "----------------------";
                     }
                 } else {
                     qDebug() << "No search result found.";

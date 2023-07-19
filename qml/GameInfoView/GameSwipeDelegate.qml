@@ -47,6 +47,17 @@ Pane {
                                  "x"     : root.width * 0.1,
                                  "y"     : root.height * 0.27})
         }
+    }    
+
+    function showPricesPopup() {
+        var cpt = Qt.createComponent("PricesPopup.qml")
+        if (cpt.status === Component.Ready) {
+            cpt.createObject(root, { "tag" : currentTag,
+                                 "width" : root.width * 0.8,
+                                 "height": root.height * 0.5,
+                                 "x"     : root.width * 0.1,
+                                 "y"     : root.height * 0.2})
+        }
     }
 
     function saveGame() {
@@ -217,24 +228,6 @@ Pane {
             Layout.fillWidth: true
             Layout.fillHeight: true
         }
-        RowLayout {
-            visible: !currentTag.includes("notag")
-            function reset() {}
-            GameInfoListDelegate {
-                id: priceInfo
-                name: qsTr("ebay prices")
-                editable: false
-                opacity: root.isOwned ? 1 : 0.4
-                Layout.fillWidth: true
-                Layout.preferredHeight: 50
-            }
-            Button {
-                onClicked: {
-                    var list = comManager.getPriceFromEbay(currentTag)
-                    priceInfo.entry = list.join("€   ") + '€'
-                }
-            }
-        }
         Item {
             id: ownedInfo
             Layout.fillWidth: true
@@ -266,6 +259,21 @@ Pane {
                 checked: root.isOwned
                 onClicked: model.owned = checked ? 1 : 0
             }
+        }
+    }
+
+    Button {
+        text: "€"
+        visible: !currentTag.includes("notag")
+        width: 50
+        height: 50
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 62
+        font.pixelSize: 20
+        onClicked: {
+            showPricesPopup()
         }
     }
 }
