@@ -4,11 +4,16 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QMimeDatabase>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 #include <QEventLoop>
 #include <QMimeType>
 #include <QHttpPart>
+#include <QUrlQuery>
 
 #include "commanager.h"
+#include "ebayobject.h"
 #include "global.h"
 
 static const QRegularExpression re("href=\"([^\"]+\\.png)\">.*?(\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2})");
@@ -250,6 +255,71 @@ void ComManager::handleBackCover(const QString &tag)
     m_coversToUploadFile.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Append);
     appendToList(tag + "_back.png");
     m_coversToUploadFile.close();
+}
+
+QVariant ComManager::getPriceFromEbay(const QString &tag)
+{
+    QString baseUrl = "https://svcs.ebay.com/services/search/FindingService/v1";
+    QString appId = "AntoineE-CollecSc-PRD-d53724fcb-60c8f9da";
+    QString operationName = "findItemsByKeywords";
+
+    QUrlQuery query;
+    query.addQueryItem("GLOBAL-ID", "EBAY-FR");
+    query.addQueryItem("OPERATION-NAME", operationName);
+    query.addQueryItem("SERVICE-VERSION", "1.13.0");
+    query.addQueryItem("SECURITY-APPNAME", appId);
+    query.addQueryItem("RESPONSE-DATA-FORMAT", "JSON");
+    query.addQueryItem("keywords", tag);
+
+    QUrl url(baseUrl);
+    url.setQuery(query);
+
+    QNetworkAccessManager manager;
+    QNetworkReply *reply = manager.get(QNetworkRequest(url));
+
+    QEventLoop loop;
+
+    QList<QObject*> itemList;
+    QObject::connect(reply, &QNetworkReply::finished, [&]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray data = reply->readAll();
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+
+            if (!jsonDoc.isNull() && jsonDoc.isObject()) {
+                QJsonObject jsonObj = jsonDoc.object();
+                QJsonArray findItemsResponseArray = jsonObj["findItemsByKeywordsResponse"].toArray();
+
+                if (!findItemsResponseArray.isEmpty()) {
+                    QJsonObject findItemsResponseObj = findItemsResponseArray[0].toObject();
+                    QJsonArray itemsArray = findItemsResponseObj["searchResult"].toArray()[0].toObject()["item"].toArray();
+
+                    for (const QJsonValue& itemValue : itemsArray) {
+                        QJsonObject item = itemValue.toObject();
+
+                        auto title = item["title"].toArray()[0].toString();
+                        auto price = item["sellingStatus"].toArray()[0].toObject()["convertedCurrentPrice"].toArray()[0].toObject()["__value__"].toString();;
+                        auto condition = item["condition"].toArray()[0].toObject()["conditionDisplayName"].toArray()[0].toString();
+                        auto itemUrl = QUrl::fromUserInput(item["viewItemURL"].toArray()[0].toString());
+
+                        itemList.append(new EbayObject(title, price, condition, itemUrl));
+                    }
+                } else {
+                    qDebug() << "No search result found.";
+                }
+            } else {
+                qDebug() << "Invalid JSON response.";
+            }
+        } else {
+            qDebug() << "Error:" << reply->errorString();
+        }
+
+        reply->deleteLater();
+        loop.quit();
+    });
+
+    loop.exec();
+
+    return QVariant::fromValue(itemList);
 }
 
 void ComManager::handleFrontCover(const QString &tag)

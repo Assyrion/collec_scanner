@@ -5,6 +5,8 @@ DEFINES += APPNAME='\\"$${TARGET}\\"'
 
 android {
     QT += core-private
+    AHOME = $$system(echo %ANDROID_HOME%)
+    include($$AHOME/openSSL/openssl.pri)
 }
 
 # The following define makes your compiler emit warnings if you use
@@ -21,6 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp \
     commanager.cpp \
     databasemanager.cpp \
+    ebayobject.cpp \
     filemanager.cpp \
     gamedata.cpp \
     imagemanager.cpp \
@@ -48,6 +51,7 @@ include (qzxing/QZXing.pri)
 HEADERS += \
     commanager.h \
     databasemanager.h \
+    ebayobject.h \
     filemanager.h \
     gamedata.h \
     imagemanager.h \
@@ -64,4 +68,3 @@ contains(ANDROID_TARGET_ARCH,arm64-v8a) {
     ANDROID_PACKAGE_SOURCE_DIR = \
         $$PWD/android
 }
-

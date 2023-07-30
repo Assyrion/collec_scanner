@@ -25,5 +25,6 @@
         <file>qml/CollectionView/ConfigMenuBar.qml</file>
         <file>qml/utils/PopupMaker.js</file>
         <file>qml/utils/PlatformSelector.js</file>
+        <file>qml/GameInfoView/PricesPopup.qml</file>
     </qresource>
 </RCC>
