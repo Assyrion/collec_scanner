@@ -20,7 +20,7 @@ public:
 
     Q_INVOKABLE void handleFrontCover(const QString &tag);
     Q_INVOKABLE void handleBackCover(const QString &tag);
-    Q_INVOKABLE QStringList getPriceFromEbay(const QString &tag);
+    Q_INVOKABLE QVariant getPriceFromEbay(const QString &tag);
 
     void setProgressDialog(QObject* dialog);
 

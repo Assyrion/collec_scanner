@@ -1,6 +1,6 @@
 import QtQuick 6.2
-import QtMultimedia 6.2
 import QtQuick.Controls 6.2
+import QtQuick.Layouts 6.2
 import Qt5Compat.GraphicalEffects
 
 import "../utils"
@@ -22,7 +22,7 @@ Popup {
     rightPadding: 1
 
     modal: true
-//    dim: false
+    //    dim: false
 
     background: RectangularGlow {
         glowRadius: 10
@@ -47,21 +47,68 @@ Popup {
                 width: 10
             }
 
-            delegate: Label {
+            delegate: Item {
                 width: root.width - 40
                 height: 70
-                leftPadding: 10
-                font.pixelSize: 12
-                verticalAlignment:
-                    Label.AlignVCenter
-                wrapMode: Text.WordWrap
-                color: "white"
-                text: modelData
-                background: Rectangle {
+                Rectangle {
+                    anchors.fill: parent
                     color: "burlywood"
                     border.color: "transparent"
                     opacity: 0.1
                     radius: 8
+                }
+
+                RowLayout {
+                    height: parent.height
+                    width: parent.width - 20
+                    anchors.horizontalCenter:
+                        parent.horizontalCenter
+                    spacing: 7
+
+                    Text {
+                        text: modelData.title
+                        font.pixelSize: 12
+                        color: "white"
+                        wrapMode: Text.WordWrap
+                        verticalAlignment: Text.AlignVCenter
+                        Layout.preferredWidth: parent.width * 0.55
+                    }
+                    ColumnLayout {
+                        Layout.maximumWidth: parent.width * 0.25
+                        Layout.minimumWidth: parent.width * 0.25
+                        Layout.fillHeight: true
+                        spacing: 10
+
+                        Text {
+                            text: modelData.condition
+                            font.pixelSize: 12
+                            wrapMode: Text.WordWrap
+
+                            color: "white"
+                            horizontalAlignment: Text.AlignLeft
+                        }
+                        Text {
+                            text: modelData.price + " €"
+                            font.pixelSize: 12
+                            color: "white"
+                            horizontalAlignment: Text.AlignLeft
+                        }
+                    }
+                    Button {
+                        Layout.preferredWidth: parent.width * 0.15
+                        Layout.preferredHeight: parent.height * 0.6
+                        Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                        text: "\u{1F517}"
+                        onClicked: {
+                            Qt.openUrlExternally(modelData.itemUrl);
+                        }
+                        leftPadding: 10
+                        rightPadding: 10
+                        topPadding: 10
+                        bottomPadding: 10
+
+                        font.pointSize: 10
+                    }
                 }
             }
         }

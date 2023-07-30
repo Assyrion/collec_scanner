@@ -12,10 +12,9 @@
 #include <QHttpPart>
 #include <QUrlQuery>
 
-
 #include "commanager.h"
+#include "ebayobject.h"
 #include "global.h"
-#include "qurlquery.h"
 
 static const QRegularExpression re("href=\"([^\"]+\\.png)\">.*?(\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2})");
 
@@ -258,7 +257,7 @@ void ComManager::handleBackCover(const QString &tag)
     m_coversToUploadFile.close();
 }
 
-QStringList ComManager::getPriceFromEbay(const QString &tag)
+QVariant ComManager::getPriceFromEbay(const QString &tag)
 {
     QString baseUrl = "https://svcs.ebay.com/services/search/FindingService/v1";
     QString appId = "AntoineE-CollecSc-PRD-d53724fcb-60c8f9da";
@@ -280,7 +279,7 @@ QStringList ComManager::getPriceFromEbay(const QString &tag)
 
     QEventLoop loop;
 
-    QStringList hash;
+    QList<QObject*> itemList;
     QObject::connect(reply, &QNetworkReply::finished, [&]() {
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray data = reply->readAll();
@@ -296,14 +295,13 @@ QStringList ComManager::getPriceFromEbay(const QString &tag)
 
                     for (const QJsonValue& itemValue : itemsArray) {
                         QJsonObject item = itemValue.toObject();
+
                         auto title = item["title"].toArray()[0].toString();
                         auto price = item["sellingStatus"].toArray()[0].toObject()["convertedCurrentPrice"].toArray()[0].toObject()["__value__"].toString();;
+                        auto condition = item["condition"].toArray()[0].toObject()["conditionDisplayName"].toArray()[0].toString();
+                        auto itemUrl = QUrl::fromUserInput(item["viewItemURL"].toArray()[0].toString());
 
-                        hash << title + "\n\n" + price + " €";
-
-//                        qDebug() << "Title:" << title;
-//                        qDebug() << "Price:" << price;
-//                        qDebug() << "----------------------";
+                        itemList.append(new EbayObject(title, price, condition, itemUrl));
                     }
                 } else {
                     qDebug() << "No search result found.";
@@ -321,7 +319,7 @@ QStringList ComManager::getPriceFromEbay(const QString &tag)
 
     loop.exec();
 
-    return hash;
+    return QVariant::fromValue(itemList);
 }
 
 void ComManager::handleFrontCover(const QString &tag)
