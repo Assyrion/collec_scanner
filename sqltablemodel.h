@@ -21,6 +21,8 @@ public:
     QHash<int, QByteArray> roleNames() const Q_DECL_OVERRIDE;
     QStringList roleNamesList() const;
 
+    Q_INVOKABLE void updateData(const QModelIndex &index, const QVariantList &data);
+
     Q_INVOKABLE void saveDBToFile(FileManager* fileManager);
 
 private:

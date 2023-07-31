@@ -76,29 +76,26 @@ Pane {
             comManager.handleBackCover(coverSubfolder)
         }
 
-        if(index < 0) {
-            var sqlModel = dbManager.currentSqlModel
+        var sqlModel = dbManager.currentSqlModel
+        var sourceIdx
 
+        if(index < 0) {
             sqlModel.insertRow(0)
-            sqlModel.setData(sqlModel.index(0, 0), currentTag)
-            sqlModel.setData(sqlModel.index(0, 1), titleInfo.entry)
-            sqlModel.setData(sqlModel.index(0, 2), platformInfo.entry)
-            sqlModel.setData(sqlModel.index(0, 3), publisherInfo.entry)
-            sqlModel.setData(sqlModel.index(0, 4), developerInfo.entry)
-            sqlModel.setData(sqlModel.index(0, 5), codeInfo.entry)
-            sqlModel.setData(sqlModel.index(0, 6), infoInfo.entry)
-            sqlModel.setData(sqlModel.index(0, 7), ownedInfo.entry)
-            sqlModel.submitAll() // don't get why I have to do it
+            sourceIdx = sqlModel.index(0, 0)
         }
         else {
-            model.title = titleInfo.entry
-            model.platform = platformInfo.entry
-            model.publisher = publisherInfo.entry
-            model.developer = developerInfo.entry
-            model.code = codeInfo.entry
-            model.info = infoInfo.entry
-            dbManager.currentProxyModel.invalidate() // force to update model to reload covers
+            var proxyModel = dbManager.currentProxyModel
+            sourceIdx = proxyModel.mapToSource(proxyModel.index(index, 0))
         }
+
+        sqlModel.updateData(sourceIdx, [currentTag,
+                                        titleInfo.entry,
+                                        platformInfo.entry,
+                                        publisherInfo.entry,
+                                        developerInfo.entry,
+                                        codeInfo.entry,
+                                        infoInfo.entry,
+                                        ownedInfo.entry])
     }
 
     function removeGame() {

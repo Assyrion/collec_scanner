@@ -46,6 +46,16 @@ QStringList SqlTableModel::roleNamesList() const
     return names;
 }
 
+void SqlTableModel::updateData(const QModelIndex &index, const QVariantList& data)
+{
+    QMap<int, QVariant> rolesData;
+    for(int i = 0; i < data.count(); i++) {
+        rolesData.insert(Qt::UserRole + i + 1, data[i]);
+    }
+
+    setItemData(index, rolesData);
+}
+
 QVariant SqlTableModel::data(const QModelIndex &index, int role) const
 {
     if (index.isValid()) {
