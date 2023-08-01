@@ -9,7 +9,7 @@ Popup {
     id: root
 
     required property string tag
-    property var priceModel
+    property var priceModel: null
 
     Component.onCompleted:  {
         open()
@@ -34,6 +34,8 @@ Popup {
     contentItem : Pane {
 
         ListView {
+            id: ebayItemListView
+
             width: parent.width
             height: parent.height * 0.85
             anchors.left: parent.left
@@ -111,6 +113,19 @@ Popup {
                     }
                 }
             }
+        }
+
+        BusyIndicator{
+            anchors.centerIn: parent
+            visible: priceModel === null
+        }
+        Text {
+            anchors.centerIn: parent
+            color: "white"
+            text: qsTr("No Data")
+            font.pointSize: 20
+            visible: priceModel !== null
+                     && ebayItemListView.count === 0
         }
     }
 }

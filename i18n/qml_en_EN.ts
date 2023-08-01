@@ -157,47 +157,47 @@
 <context>
     <name>GameSwipeDelegate</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="160"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="157"/>
         <source>Tag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="169"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="166"/>
         <source>Index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="188"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="185"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="197"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="194"/>
         <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="179"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="176"/>
         <source>Platform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="224"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="221"/>
         <source>info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="206"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="203"/>
         <source>Publisher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="215"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="212"/>
         <source>Developer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="251"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="248"/>
         <source>In my collection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -299,6 +299,14 @@ This action is irreversible.</source>
     <message>
         <location filename="../qml/utils/PopupMaker.js" line="104"/>
         <source>Game with tag = %1 exists but has been filtered.&lt;br&gt;&lt;br&gt;Remove filter and show it ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PricesPopup</name>
+    <message>
+        <location filename="../qml/GameInfoView/PricesPopup.qml" line="125"/>
+        <source>No Data</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
