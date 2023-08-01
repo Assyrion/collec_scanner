@@ -96,3 +96,32 @@ void SqlTableModel::saveDBToFile(FileManager* fileManager)
         fileManager->addEntry(game);
     }
 }
+
+QHash<QString, int> SqlTableModel::saveOwnedData()
+{
+    QHash<QString, int> ownedHash;
+
+    for (int row = 0; row < rowCount(); ++row) {
+        auto tag   = data(index(row, 0), Qt::UserRole + 1).toString(); // tag
+        auto owned = data(index(row, 0), Qt::UserRole + 8).toInt(); // owned
+
+        ownedHash.insert(tag, owned);
+    }
+
+    return ownedHash;
+}
+
+void SqlTableModel::restoreOwnedData(const QHash<QString, int>& ownedHash)
+{
+    QHash<QString, int>::const_iterator it;
+
+    for (it = ownedHash.constBegin(); it != ownedHash.constEnd(); ++it) {
+        QSqlQuery query(database());
+        query.prepare("UPDATE games SET owned = :owned WHERE tag = :tag");
+        query.bindValue(":owned", it.value());
+        query.bindValue(":tag", it.key());
+
+        query.exec();
+    }
+    select();
+}

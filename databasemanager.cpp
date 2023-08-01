@@ -49,6 +49,8 @@ int DatabaseManager::loadDB(const QString &platform)
 
 int DatabaseManager::reloadDB(const QString &platform)
 {
+    auto owned = currentSqlModel()->saveOwnedData();
+
     auto model = m_modelHash.take(platform);
     model->deleteLater();
 
@@ -60,7 +62,11 @@ int DatabaseManager::reloadDB(const QString &platform)
 
     QFile::remove(Global::DB_PATH_ABS_NAME);
 
-    return loadDB(platform);
+    int ret = loadDB(platform);
+
+    currentSqlModel()->restoreOwnedData(owned);
+
+    return ret;
 }
 
 SortFilterProxyModel* DatabaseManager::currentProxyModel() const

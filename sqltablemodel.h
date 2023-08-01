@@ -25,6 +25,9 @@ public:
 
     Q_INVOKABLE void saveDBToFile(FileManager* fileManager);
 
+    QHash<QString, int> saveOwnedData();
+    void restoreOwnedData(const QHash<QString, int>& ownedHash);
+
 private:
 
     QHash<int, QByteArray> m_roles;
