@@ -54,6 +54,8 @@ void SqlTableModel::updateData(const QModelIndex &index, const QVariantList& dat
     }
 
     setItemData(index, rolesData);
+
+    submitAll();
 }
 
 QVariant SqlTableModel::data(const QModelIndex &index, int role) const
