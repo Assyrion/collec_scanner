@@ -15,6 +15,24 @@
     </message>
 </context>
 <context>
+    <name>ComManager</name>
+    <message>
+        <location filename="../commanager.cpp" line="36"/>
+        <source>Download covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commanager.cpp" line="112"/>
+        <source>Upload covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commanager.cpp" line="244"/>
+        <source>Upload DB</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ConfigDrawer</name>
     <message>
         <location filename="../qml/ConfigDrawer.qml" line="59"/>
@@ -139,17 +157,17 @@
 <context>
     <name>CoverProcessingPopup</name>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="36"/>
-        <source>Processing %1/%2</source>
+        <location filename="../qml/CoverProcessingPopup.qml" line="40"/>
+        <source>%1 %2/%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="39"/>
-        <source>Processing file...</source>
+        <location filename="../qml/CoverProcessingPopup.qml" line="44"/>
+        <source>%1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="54"/>
+        <location filename="../qml/CoverProcessingPopup.qml" line="60"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>

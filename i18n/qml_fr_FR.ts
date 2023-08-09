@@ -30,6 +30,24 @@
     </message>
 </context>
 <context>
+    <name>ComManager</name>
+    <message>
+        <location filename="../commanager.cpp" line="36"/>
+        <source>Download covers</source>
+        <translation>Téléchargement des jaquettes</translation>
+    </message>
+    <message>
+        <location filename="../commanager.cpp" line="112"/>
+        <source>Upload covers</source>
+        <translation>Envoi des jaquettes</translation>
+    </message>
+    <message>
+        <location filename="../commanager.cpp" line="244"/>
+        <source>Upload DB</source>
+        <translation>Envoi de la BDD</translation>
+    </message>
+</context>
+<context>
     <name>ConfigDrawer</name>
     <message>
         <location filename="../qml/ConfigDrawer.qml" line="59"/>
@@ -200,21 +218,29 @@ Cette action est irreversible.</translation>
 <context>
     <name>CoverProcessingPopup</name>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="36"/>
         <source>Processing %1/%2</source>
-        <translation>En cours %1/%2</translation>
+        <translation type="vanished">En cours %1/%2</translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="39"/>
         <source>Processing file...</source>
-        <translation>Gestion des fichiers en cours...</translation>
+        <translation type="vanished">Gestion des fichiers en cours...</translation>
     </message>
     <message>
         <source>Processing covers...</source>
         <translation type="vanished">Gestion des jaquettes en cours...</translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="54"/>
+        <location filename="../qml/CoverProcessingPopup.qml" line="40"/>
+        <source>%1 %2/%3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/CoverProcessingPopup.qml" line="44"/>
+        <source>%1...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/CoverProcessingPopup.qml" line="60"/>
         <source>cancel</source>
         <translation>Annuler</translation>
     </message>

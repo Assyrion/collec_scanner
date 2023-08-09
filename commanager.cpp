@@ -33,7 +33,7 @@ ComManager::~ComManager()
 void ComManager::downloadCovers(const QString& subfolder)
 {
     // cannot use setProperty directly because thread separation
-    QMetaObject::invokeMethod(m_progressDialog, "show");
+    QMetaObject::invokeMethod(m_progressDialog, "show", Qt::QueuedConnection, Q_ARG(QVariant, tr("Download covers")));
 
     QDir picDir(Global::PICPATH_ABS);
     if(!picDir.exists()) picDir.mkpath(".");
@@ -109,7 +109,7 @@ void ComManager::downloadCovers(const QString& subfolder)
 
 void ComManager::uploadCovers()
 {
-    QMetaObject::invokeMethod(m_progressDialog, "show");
+    QMetaObject::invokeMethod(m_progressDialog, "show", Qt::QueuedConnection, Q_ARG(QVariant, tr("Upload covers")));
 
     m_coversToUploadFile.open(QIODevice::ReadOnly | QIODevice::Text);
 
@@ -152,8 +152,6 @@ bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
         qDebug() << "Impossible d'ouvrir le fichier";
         return false;
     }
-
-    QMetaObject::invokeMethod(m_progressDialog, "show");
 
     QUrl url(scriptPath);
     QNetworkRequest request(url);
@@ -243,7 +241,7 @@ void ComManager::downloadFile(const QString& remotePath, const QString& localPat
 
 void ComManager::uploadDB()
 {
-    QMetaObject::invokeMethod(m_progressDialog, "show");
+    QMetaObject::invokeMethod(m_progressDialog, "show", Qt::QueuedConnection, Q_ARG(QVariant, tr("Upload DB")));
 
     uploadFile(Global::DB_PATH_ABS_NAME, Global::REMOTE_UPLOAD_DB_SCRIPT);
 

@@ -39,7 +39,7 @@ Rectangle {
 
                     }
 
-                    videoSink:  cameraOutput.videoOutput.videoSink
+                    videoSink: cameraOutput.videoOutput.videoSink
                     orientation: cameraOutput.videoOutput.orientation
 
                     decoder {

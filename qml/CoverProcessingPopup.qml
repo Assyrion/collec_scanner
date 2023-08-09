@@ -4,7 +4,8 @@ import QtQuick.Controls 6.2
 Popup {
     id: root
 
-    function show() {
+    function show(title) {
+        titleText.titleActionText = title
         progressBar.value = 0
         visible = true
     }
@@ -32,11 +33,16 @@ Popup {
         anchors.topMargin: 5
         anchors.horizontalCenter:
             parent.horizontalCenter
+
+        property string titleActionText : ""
+
         text : progressBar.value > 0 ?
-                   qsTr("Processing %1/%2")
+                   qsTr("%1 %2/%3")
+                   .arg(titleActionText)
                    .arg(progressBar.value)
                    .arg(progressBar.to)
-                 : qsTr("Processing file...")
+                 : qsTr("%1...")
+                   .arg(titleActionText)
         color: "white"
         font.family: "Roboto"
         font.pointSize: 11
