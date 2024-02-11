@@ -10,6 +10,7 @@ MenuBar {
     signal listViewRequired
     signal newGameRequired
     signal configRequired
+    signal closing
 
     property Component backgroundRec : Rectangle {
         color: "#222222"
@@ -26,6 +27,8 @@ MenuBar {
         width: root.width*3
         cascade: true
         background: backgroundRec.createObject(root)
+        onAboutToHide: closing()
+
         MenuItem {
             text: qsTr("Filter")
             icon.source: "qrc:/filter"

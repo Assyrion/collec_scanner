@@ -42,6 +42,7 @@ Window {
         width: parent.width * 0.7
         height: parent.height
         interactive: view.currentItem == cv
+        onAboutToHide: view.focus = true
     }
 
     CoverProcessingPopup {
@@ -54,6 +55,18 @@ Window {
 
     SwipeView {
         id: view
+
+        focus: true
+        Keys.onReleased: function(event) {
+            if (event.key === Qt.Key_Back) {
+                event.accepted = true
+                if(cv != currentItem){
+                    view.setCurrentIndex(view.defaultIndex)
+                } else {
+                    Qt.quit()
+                }
+            }
+        }
 
         anchors.fill: parent
 
@@ -87,6 +100,7 @@ Window {
             onShowGameRequired: (idx) => showGame(idx)
             onShowNewGameRequired: showNewGame()
             onShowConfigRequired: showConfig()
+            onMenuClosing: view.focus = true
         }
         BarcodeScannerView {
             id: bsv

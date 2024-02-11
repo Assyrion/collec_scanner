@@ -204,19 +204,18 @@ int main(int argc, char *argv[])
 
     comManager.moveToThread(&dlCoversThread);
 
+    QObject::connect(&app, &QGuiApplication::aboutToQuit, [&](){
+        saveSettings();
+        dlCoversThread.quit();
+    });
+
 #ifdef Q_OS_ANDROID
-        // Because there is now way to catch aboutToClose signal with gesture navigation on Android
     QObject::connect(&app, &QGuiApplication::applicationStateChanged,
                      [&](Qt::ApplicationState state){
                          if(state != Qt::ApplicationActive) {
                              saveSettings();
                          }
                      });
-#else
-    QObject::connect(&app, &QGuiApplication::aboutToQuit, [&](){
-        saveSettings();
-        dlCoversThread.quit();
-    });
 #endif
 
     // initial downloading of covers
