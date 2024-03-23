@@ -107,3 +107,25 @@ function showFilteredGame(parent, tag) {
     }
     return null
 }
+
+function showFilteredGame(parent, tag) {
+    var cpt = Qt.createComponent("CSActionPopup.qml")
+    if (cpt.status === Component.Ready) {
+        return cpt.createObject(parent, {"contentText" : qsTr("Game with tag = %1 exists but has been filtered.<br><br>Remove filter and show it ?").arg(tag),
+                                    "width" : parent.width,
+                                    "height": parent.height})
+    }
+    return null
+}
+
+function showAllOwnedWarning(parent, tag) {
+    var cpt = Qt.createComponent("CSActionPopup.qml")
+    if (cpt.status === Component.Ready) {
+        return cpt.createObject(parent, {"contentText" : qsTr("This action will reset your sorting of owned games !"),
+                                    "width" : 2*parent.width/3,
+                                    "height": parent.height/4,
+                                    "x"     : parent.width/6,
+                                    "y"     : parent.height/4+50})
+    }
+    return null
+}

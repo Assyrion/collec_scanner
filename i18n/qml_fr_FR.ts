@@ -185,34 +185,44 @@ Cette action est irreversible.</translation>
 <context>
     <name>ConfigMenuBar</name>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="30"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="34"/>
         <source>Filter</source>
         <translation>Filtre</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="36"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="40"/>
         <source>New</source>
         <translation>Nouveau</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="43"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="47"/>
         <source>View</source>
         <translation>Vue</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="51"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="55"/>
         <source>List</source>
         <translation>Liste</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="56"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="60"/>
         <source>Grid</source>
         <translation>Grille</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="75"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="79"/>
         <source>Platform</source>
         <translation>Plateforme</translation>
+    </message>
+    <message>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="138"/>
+        <source>All not owned</source>
+        <translation>Tous non possédés</translation>
+    </message>
+    <message>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="139"/>
+        <source>All owned</source>
+        <translation>Tous possédés</translation>
     </message>
 </context>
 <context>
@@ -383,6 +393,11 @@ Cette action est irreversible.</translation>
         <translation>La BDD %1 sera remplacée par la plus récente du serveur.&lt;br&gt;Les filtres seront réinitialisés.</translation>
     </message>
     <message>
+        <location filename="../qml/utils/PopupMaker.js" line="124"/>
+        <source>This action will reset your sorting of owned games !</source>
+        <translation>Cette action reinitialisera votre tri des jeux marqués comme possédés !</translation>
+    </message>
+    <message>
         <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
         <translation type="vanished">Le contenu de la BDD sera enregistré dans &lt;Téléchargements&gt;/game_list.csv</translation>
     </message>
@@ -410,6 +425,7 @@ Cette action est irreversible.</translation>
     </message>
     <message>
         <location filename="../qml/utils/PopupMaker.js" line="104"/>
+        <location filename="../qml/utils/PopupMaker.js" line="114"/>
         <source>Game with tag = %1 exists but has been filtered.&lt;br&gt;&lt;br&gt;Remove filter and show it ?</source>
         <translation>Le jeu dont le tag est = %1 existe mais a été filtré.&lt;br&gt;&lt;br&gt;Voulez vous supprimer le filtre et l&apos;afficher ?</translation>
     </message>

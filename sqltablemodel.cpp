@@ -99,6 +99,16 @@ void SqlTableModel::saveDBToFile(FileManager* fileManager)
     }
 }
 
+void SqlTableModel::resetOwnedData(int owned)
+{
+    QSqlQuery query(database());
+    query.prepare("UPDATE games SET owned = :owned");
+    query.bindValue(":owned", owned);
+
+    query.exec();
+    select();
+}
+
 QHash<QString, int> SqlTableModel::saveOwnedData()
 {
     QHash<QString, int> ownedHash;

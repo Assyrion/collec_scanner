@@ -124,33 +124,43 @@
 <context>
     <name>ConfigMenuBar</name>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="30"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="34"/>
         <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="36"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="40"/>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="43"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="47"/>
         <source>View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="51"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="55"/>
         <source>List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="56"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="60"/>
         <source>Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="75"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="79"/>
         <source>Platform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="138"/>
+        <source>All not owned</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="139"/>
+        <source>All owned</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -316,7 +326,13 @@ This action is irreversible.</source>
     </message>
     <message>
         <location filename="../qml/utils/PopupMaker.js" line="104"/>
+        <location filename="../qml/utils/PopupMaker.js" line="114"/>
         <source>Game with tag = %1 exists but has been filtered.&lt;br&gt;&lt;br&gt;Remove filter and show it ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="124"/>
+        <source>This action will reset your sorting of owned games !</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -10,6 +10,7 @@ MenuBar {
     signal listViewRequired
     signal newGameRequired
     signal configRequired
+    signal resetOwnedRequired(bool reset)
     signal closing
 
     property Component backgroundRec : Rectangle {
@@ -129,7 +130,15 @@ MenuBar {
                         }
                     }
                 }
-            }
+            }        
+        }
+        MenuItem {
+            text: checked ? qsTr("All not owned")
+                          : qsTr("All owned")
+            font.pointSize: 9
+            highlighted: false
+            checkable: true
+            onTriggered: root.resetOwnedRequired(checked)
         }
     }
 }
