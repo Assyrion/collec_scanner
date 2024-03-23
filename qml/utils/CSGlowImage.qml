@@ -51,7 +51,7 @@ Item {
         anchors.fill: opacityMask
         source: opacityMask
         saturation: 0
-        lightness: 0.6
+        lightness: 0.3
         hue: 0
     }
 
