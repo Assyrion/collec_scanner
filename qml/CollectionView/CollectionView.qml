@@ -3,7 +3,6 @@ import QtQuick.Controls 6.2
 import QtQuick.Layouts 6.2
 
 import "../utils"
-import "../utils/PopupMaker.js" as PopupMaker
 
 Pane {
     id: root
@@ -22,13 +21,6 @@ Pane {
 
     function setCurrentIndex(idx) {
         gameStackView.currentItem.currentIndex = idx
-    }
-
-    function showConfirmResetOwned(owned) {
-        var obj = PopupMaker.showAllOwnedWarning(root)
-        obj.accepted.connect(function() {
-            dbManager.currentSqlModel.resetOwnedData(owned)
-        })
     }
 
     signal showGameRequired(int idx)
@@ -102,7 +94,6 @@ Pane {
         onGridViewRequired: root.diplayGridView()
         onNewGameRequired:  root.showNewGameRequired()
         onConfigRequired:   root.showConfigRequired()
-        onResetOwnedRequired: (reset) => root.showConfirmResetOwned(reset)
         onClosing: root.menuClosing()
 
         Behavior on opacity {

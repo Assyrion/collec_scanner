@@ -2,6 +2,7 @@ import QtQuick 6.2
 import QtQuick.Controls 6.2
 
 import "../utils/PlatformSelector.js" as Platforms
+import "../utils/PopupMaker.js" as PopupMaker
 
 MenuBar {
     id: root
@@ -10,8 +11,17 @@ MenuBar {
     signal listViewRequired
     signal newGameRequired
     signal configRequired
-    signal resetOwnedRequired(bool reset)
     signal closing
+
+    function showConfirmResetOwned(owned) {
+        var obj = PopupMaker.showAllOwnedWarning(root.parent, owned)
+        obj.accepted.connect(function() {
+            dbManager.currentSqlModel.resetOwnedData(owned)
+        })
+        obj.aboutToHide.connect(function() {
+            root.closing()
+        })
+    }
 
     property Component backgroundRec : Rectangle {
         color: "#222222"
@@ -122,8 +132,7 @@ MenuBar {
                         onTriggered: {
                             if(checked) {
                                 selectedPlatforms.push(modelData)
-                            }
-                            else {
+                            } else {
                                 selectedPlatforms.splice(selectedPlatforms.indexOf(modelData), 1)
                             }
                             platformMenu.updateContent()
@@ -133,12 +142,12 @@ MenuBar {
             }        
         }
         MenuItem {
-            text: checked ? qsTr("All not owned")
-                          : qsTr("All owned")
-            font.pointSize: 9
+            text: checked ? qsTr("Set not owned")
+                          : qsTr("Set owned")
+            font.pointSize: 8
             highlighted: false
             checkable: true
-            onTriggered: root.resetOwnedRequired(checked)
+            onTriggered: root.showConfirmResetOwned(checked)
         }
     }
 }

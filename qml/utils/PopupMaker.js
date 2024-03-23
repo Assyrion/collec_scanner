@@ -118,10 +118,10 @@ function showFilteredGame(parent, tag) {
     return null
 }
 
-function showAllOwnedWarning(parent, tag) {
+function showAllOwnedWarning(parent, owned) {
     var cpt = Qt.createComponent("CSActionPopup.qml")
     if (cpt.status === Component.Ready) {
-        return cpt.createObject(parent, {"contentText" : qsTr("This action will reset your sorting of owned games !"),
+        return cpt.createObject(parent, {"contentText" : qsTr("This action will set all %1 database games as %2 in your collection !").arg(platformName).arg(owned ? qsTr("owned") :  qsTr("not owned")),
                                     "width" : 2*parent.width/3,
                                     "height": parent.height/4,
                                     "x"     : parent.width/6,

@@ -185,44 +185,52 @@ Cette action est irreversible.</translation>
 <context>
     <name>ConfigMenuBar</name>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="34"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="44"/>
         <source>Filter</source>
         <translation>Filtre</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="40"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="50"/>
         <source>New</source>
         <translation>Nouveau</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="47"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="57"/>
         <source>View</source>
         <translation>Vue</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="55"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="65"/>
         <source>List</source>
         <translation>Liste</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="60"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="70"/>
         <source>Grid</source>
         <translation>Grille</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="79"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="89"/>
         <source>Platform</source>
         <translation>Plateforme</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="138"/>
-        <source>All not owned</source>
-        <translation>Tous non possédés</translation>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="147"/>
+        <source>Set not owned</source>
+        <translation>Marquer non possédés</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="139"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="148"/>
+        <source>Set owned</source>
+        <translation>Marquer possédés</translation>
+    </message>
+    <message>
+        <source>All not owned</source>
+        <translation type="vanished">Tous non possédés</translation>
+    </message>
+    <message>
         <source>All owned</source>
-        <translation>Tous possédés</translation>
+        <translation type="vanished">Tous possédés</translation>
     </message>
 </context>
 <context>
@@ -394,8 +402,30 @@ Cette action est irreversible.</translation>
     </message>
     <message>
         <location filename="../qml/utils/PopupMaker.js" line="124"/>
+        <source>This action will set all %1 database games as %2 in your collection !</source>
+        <translation>Cette action marquera tous les jeux de la base de données %1 comme %2 dans votre collection !</translation>
+    </message>
+    <message>
+        <source>This action will set all database games as %1 in your collection !</source>
+        <translation type="vanished">Cette action marquera tous les jeux de la base comme %1 dans votre collection !</translation>
+    </message>
+    <message>
+        <source>This action will set all database games as %1 !</source>
+        <translation type="vanished">Cette action marquera tous les jeux de la base comme %1 !</translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="124"/>
+        <source>owned</source>
+        <translation>possédés</translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="124"/>
+        <source>not owned</source>
+        <translation>non possédés</translation>
+    </message>
+    <message>
         <source>This action will reset your sorting of owned games !</source>
-        <translation>Cette action reinitialisera votre tri des jeux marqués comme possédés !</translation>
+        <translation type="vanished">Cette action reinitialisera votre tri des jeux marqués comme possédés !</translation>
     </message>
     <message>
         <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
