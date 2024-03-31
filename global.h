@@ -4,11 +4,15 @@
 #include <QStandardPaths>
 #include <QDir>
 
+#ifndef APPNAME
+    #include "cmake_global.h"
+#endif
+
 struct Global {
     inline static QString DBNAME = "games_ps3_complete.db"; // default DB
     inline static const QString PICPATH = "pic"; // pic
 
-    inline static const QString REMOTE_PATH = "http://collecscanner.freeboxos.fr/";
+    inline static const QString REMOTE_PATH = "http://82.64.232.235/";
     inline static const QString REMOTE_PIC_PATH = REMOTE_PATH + PICPATH + "/";
     inline static const QString REMOTE_DB_PATH = REMOTE_PATH + "db/";
     inline static const QString REMOTE_UPLOAD_PIC_SCRIPT = REMOTE_PATH + "upload_cover_platform.php";

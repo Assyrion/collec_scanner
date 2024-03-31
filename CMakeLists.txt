@@ -11,12 +11,14 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt6 COMPONENTS Core Sql Network LinguistTools Qml Quick QuickControls2 REQUIRED)
+set(APPNAME ${PROJECT_NAME})
+
+find_package(Qt6 REQUIRED COMPONENTS Core Sql Network LinguistTools Qml Quick QuickControls2)
+
+configure_file(cmake_global.h.in ${CMAKE_CURRENT_SOURCE_DIR}/cmake_global.h @ONLY)
 
 include_directories(".")
 add_subdirectory(qzxing)
-
-add_definitions(-DAPPNAME=\"${TARGET}\")
 
 set(SOURCES
     main.cpp
@@ -77,8 +79,11 @@ target_link_libraries(${PROJECT_NAME}
     qzxing
 )
 
+if (ANDROID_ABI STREQUAL "arm64-v8a")
+    set(ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android)
+endif()
+
 if(ANDROID)
-    find_package(OpenSSL REQUIRED)
     set(AHOME $ENV{ANDROID_HOME})
     include_directories(${AHOME}/openSSL)
 endif()

@@ -1,12 +1,10 @@
 #include <QQmlApplicationEngine>
-
 #include <QGuiApplication>
 #include <QSurfaceFormat>
 #include <QQuickWindow>
 #include <QQmlContext>
 #include <QQuickView>
 #include <QSettings>
-#include <QZXing.h>
 #include <QThread>
 #include <QDebug>
 #include <QHash>
@@ -98,7 +96,7 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_ANDROID
         db_view->setGeometry(screen->availableGeometry());
 #else
-            db_view->setGeometry(rect);
+        db_view->setGeometry(rect);
 #endif
 
         db_view->setResizeMode(QQuickView::SizeRootObjectToView);
