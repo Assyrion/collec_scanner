@@ -5,7 +5,7 @@
 #include <QDir>
 
 #ifndef APPNAME
-    #include "cmake_global.h"
+#include "cmake_global.h"
 #endif
 
 struct Global {
