@@ -12,6 +12,10 @@
 #include <QHash>
 #include <QDir>
 
+#include <QPermission>
+
+#include <qzxing/QZXing.h>
+
 #include "databasemanager.h"
 #include "imagemanager.h"
 #include "filemanager.h"
@@ -153,7 +157,15 @@ int main(int argc, char *argv[])
     }
 
 #ifdef Q_OS_ANDROID
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+    QCameraPermission cameraPermission;
+    if(qApp->checkPermission(cameraPermission) == Qt::PermissionStatus::Undetermined) {
+        qApp->requestPermission(QCameraPermission{}, [](const QPermission &permission) {});
+    }
+#endif
     window->setGeometry(screen->availableGeometry());
+
 #else
     window->setGeometry(rect);
 #endif
