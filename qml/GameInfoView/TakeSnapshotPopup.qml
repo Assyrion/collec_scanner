@@ -1,6 +1,6 @@
-import QtQuick 6.2
-import QtMultimedia 6.2
-import QtQuick.Controls 6.2
+import QtQuick 6.3
+import QtMultimedia 6.3
+import QtQuick.Controls 6.3
 import Qt5Compat.GraphicalEffects
 
 import "../utils"
