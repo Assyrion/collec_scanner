@@ -6,6 +6,9 @@
 #include <QSqlRecord>
 #include <QSqlField>
 
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+
 #include <QDebug>
 
 SqlTableModel::SqlTableModel(QObject* parent, const QSqlDatabase &db)
@@ -18,6 +21,7 @@ SqlTableModel::SqlTableModel(QObject* parent, const QSqlDatabase &db)
     for(int i = 0; i < rec.count(); i++) {
         m_roles.insert(Qt::UserRole + i + 1, rec.fieldName(i).toUtf8());
     }
+    m_roles.insert(Qt::UserRole + rec.count() + 1, "subgame"); // extra role
 
     select();
 }
@@ -43,6 +47,11 @@ bool SqlTableModel::select()
     }
 
     return ret;
+}
+
+int SqlTableModel::columnCount(const QModelIndex &parent) const
+{
+    return QSqlTableModel::columnCount(parent) + 1;
 }
 
 QStringList SqlTableModel::roleNamesList() const

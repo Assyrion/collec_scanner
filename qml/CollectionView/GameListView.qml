@@ -3,7 +3,7 @@ import QtQuick.Controls 6.3
 
 import "../utils"
 
-TreeView {
+ListView {
     id: root
 
     signal showGameRequired(int idx)

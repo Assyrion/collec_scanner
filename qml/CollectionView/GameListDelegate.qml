@@ -10,6 +10,13 @@ Item {
     signal clicked
     property string subfolderPic: platformName + "/" + model.tag
 
+    opacity: model.subgame === 1? 0.2 : 1
+
+    Component.onCompleted: {
+        console.log(model.subgame)
+        console.log(model.tag)
+    }
+
     Item {
         id: frontPic
 
@@ -17,6 +24,7 @@ Item {
 
         anchors.fill: parent
         visible: false
+
         Image {
             id: frontPicImg
             width: parent.width + 5 // not sourceSize !
