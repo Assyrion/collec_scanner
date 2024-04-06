@@ -7,30 +7,18 @@ import "../utils"
 ItemDelegate {
     id: root
 
-    property string subfolderPic: platformName + "/" + model.tag
+    checkable: true
 
     Item {
         id: frontPic
 
-        property alias frontSource : frontPicImg.source
+        anchors.top: parent.top
+        width: parent.width
+        height: 50
 
-        anchors.fill: parent
         visible: false
-
-        Image {
-            id: frontPicImg
-            width: parent.width + 5 // not sourceSize !
-            anchors.top: parent.top
-            anchors.topMargin: -implicitHeight/2 + 30
-            anchors.horizontalCenter: parent.horizontalCenter
-            source: ("image://coverProvider/%1.front").arg(root.subfolderPic)
-            fillMode: Image.PreserveAspectCrop
-            antialiasing: true
-            cache: false
-            mipmap: true
-            smooth: true
-        }
     }
+
     OpacityMask {
         id: opacityMask
         anchors.fill: frontPic
@@ -56,25 +44,52 @@ ItemDelegate {
         anchors.left: parent.left
         anchors.leftMargin: 10
         anchors.verticalCenter:
-            parent.verticalCenter
+            frontPic.verticalCenter
         anchors.right: platformText.left
         anchors.rightMargin: 10
         opacity: model?.owned ? 1 : 0.4
         font.pointSize:
             Math.min(17, parent.width/3 + 1)
         font.family: "Roboto"
-        text: model?.title ?? ""
+        text: (model?.title ?? "") + " - " + subgamesView.count + " variantes"
     }
     CSGlowText {
         id: platformText
         anchors.right: parent.right
         anchors.rightMargin: 10
         anchors.verticalCenter:
-            parent.verticalCenter
+            frontPic.verticalCenter
         opacity: model?.owned ? 1 : 0.4
         font.pointSize:
             Math.min(17, parent.width/3 + 1)
         font.family: "Roboto"
         text: platformName
+    }
+
+    Rectangle {
+        anchors.fill: frontPic
+        color: "transparent"
+        border.color: "white"
+        border.width: 5
+        radius: 10
+    }
+
+    ListView {
+        id: subgamesView
+        width: parent.width
+        height: 0
+        anchors.top: frontPic.bottom
+        interactive: false
+        spacing: 5
+        model: dbManager.currentProxyModel.getCodeFilterProxyModel(code)
+        delegate: GameListDelegate {
+            width:  root.width - 10
+            height: 50
+            onClicked: root.showGameRequired(index)
+        }
+    }
+
+    onClicked: {
+        subgamesView.height = checked ? 0 : subgamesView.contentHeight
     }
 }

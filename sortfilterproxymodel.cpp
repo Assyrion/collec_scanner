@@ -4,8 +4,7 @@ const QString platinum_code_marker = "/P";
 const QString essentials_code_marker = "/E";
 
 SortFilterProxyModel::SortFilterProxyModel(QVariantHash &params, QObject *parent)
-    : QSortFilterProxyModel(parent),
-    m_essentialsFilter(params["essentialsFilter"]),
+    : QSortFilterProxyModel(parent), m_essentialsFilter(params["essentialsFilter"]),
     m_essentialsOnly(params["essentialsOnly"]),
     m_platinumFilter(params["platinumFilter"]),
     m_platinumOnly(params["platinumOnly"]),
@@ -158,6 +157,17 @@ int SortFilterProxyModel::getIndexNotFiltered(const QString &tag)
     }
 
     return -1;
+}
+
+CodeFilterProxyModel* SortFilterProxyModel::getCodeFilterProxyModel(const QString& code)
+{
+    if(!m_codeFilterProxyMap.contains(code)) {
+        m_codeFilterProxyMap.insert(code, new CodeFilterProxyModel(code, this));
+    }
+    m_codeFilterProxyModel = m_codeFilterProxyMap[code];
+    m_codeFilterProxyModel->setSourceModel(this);
+
+    return m_codeFilterProxyModel;
 }
 
 bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const

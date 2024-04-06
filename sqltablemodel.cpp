@@ -49,11 +49,6 @@ bool SqlTableModel::select()
     return ret;
 }
 
-int SqlTableModel::columnCount(const QModelIndex &parent) const
-{
-    return QSqlTableModel::columnCount(parent) + 1;
-}
-
 QStringList SqlTableModel::roleNamesList() const
 {
     QStringList names;
@@ -78,6 +73,9 @@ void SqlTableModel::updateData(const QModelIndex &index, const QVariantList& dat
 QVariant SqlTableModel::data(const QModelIndex &index, int role) const
 {
     if (index.isValid()) {
+        if(role == Qt::UserRole + 9) {
+            return m_subgamesVector[index.row()];
+        }
         if (role >= Qt::UserRole) {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);
@@ -91,6 +89,10 @@ QVariant SqlTableModel::data(const QModelIndex &index, int role) const
 bool SqlTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (index.isValid()) {
+        if(role == Qt::UserRole + 9) {
+            m_subgamesVector[index.row()] = value.toInt();
+            return true;
+        }
         if (role >= Qt::UserRole) {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);

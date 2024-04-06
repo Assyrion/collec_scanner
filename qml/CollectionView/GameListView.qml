@@ -1,5 +1,6 @@
 import QtQuick 6.3
 import QtQuick.Controls 6.3
+import Qt.labs.qmlmodels
 
 import "../utils"
 
@@ -28,11 +29,33 @@ ListView {
         policy: ScrollBar.AlwaysOn
         width: 10
     }
-    delegate: GameListDelegate {
-        width:  root.width - 10
-        height: 50
-        onClicked: root.showGameRequired(index)
-    }
+    delegate: chooser
     onMovingChanged: root.movingChanged(moving)
+
+    DelegateChooser {
+        id: chooser
+        role: "subgame"
+        DelegateChoice {
+            roleValue: 0
+            GameListDelegate {
+                width:  root.width - 10
+                height: 50
+                onClicked: root.showGameRequired(index)
+            }
+        }
+        DelegateChoice {
+            roleValue: 1
+            GameListContainerDelegate {
+                width:  root.width - 10
+                implicitHeight: 200
+            }
+        }
+        DelegateChoice {
+            roleValue: 2
+            GameListDelegate {
+                visible: false
+            }
+        }
+    }
 }
 

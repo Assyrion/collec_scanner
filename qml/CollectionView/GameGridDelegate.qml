@@ -2,10 +2,9 @@ import QtQuick 6.3
 import QtQuick.Controls 6.3
 import Qt5Compat.GraphicalEffects
 
-Item {
+ItemDelegate {
     id: root
 
-    signal clicked
     property string subfolderPic: platformName + "/" + model.tag
 
     Image {
@@ -18,12 +17,6 @@ Item {
         cache: false
         mipmap: true
         smooth: true
-
-        MouseArea {
-            id: mouseArea
-            anchors.fill: parent
-            onClicked: root.clicked()
-        }
     }
 
     Colorize {

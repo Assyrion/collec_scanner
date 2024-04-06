@@ -16,10 +16,8 @@ public:
     SqlTableModel(QObject* parent = nullptr, const QSqlDatabase &db = QSqlDatabase());
     ~SqlTableModel() Q_DECL_OVERRIDE;
 
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     QHash<int, QByteArray> roleNames() const Q_DECL_OVERRIDE;
     bool select() Q_DECL_OVERRIDE;
 
@@ -37,6 +35,7 @@ public:
 private:
 
     QHash<int, QByteArray> m_roles;
+    QVector<int> m_subgamesVector;
 
 signals:
 

@@ -3,6 +3,39 @@
 
 #include <QSortFilterProxyModel>
 
+class CodeFilterProxyModel : public QSortFilterProxyModel
+{
+    Q_OBJECT
+
+public:
+    explicit CodeFilterProxyModel(QString code, QObject* parent = nullptr)
+        : QSortFilterProxyModel(parent), m_baseCode(code) {}
+
+    ~CodeFilterProxyModel() {}
+
+    QString baseCode() const { return m_baseCode; }
+    void setBaseCode(QString code) {
+        m_baseCode = code;
+        invalidateFilter();
+    }
+
+protected:
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE
+    {
+        QModelIndex codeIndex= sourceModel()->index(sourceRow, 5, sourceParent);
+        QString code = sourceModel()->data(codeIndex).toString();
+
+        // qDebug() << code << m_baseCode;
+        return code.contains(m_baseCode);
+    }
+
+private:
+    QString m_baseCode;
+
+signals:
+    void baseCodeChanged();
+};
+
 class SortFilterProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
@@ -17,6 +50,8 @@ class SortFilterProxyModel : public QSortFilterProxyModel
     Q_PROPERTY(int sortOrder READ getSortOrder NOTIFY sortOrderChanged)
     Q_PROPERTY(bool frFilter READ getFrFilter NOTIFY frFilterChanged)
     Q_PROPERTY(int orderBy READ getOrderBy NOTIFY orderByChanged)
+
+    // Q_PROPERTY(CodeFilterProxyModel* codeFilterProxyModel READ codeFilterProxyModel NOTIFY codeFilterProxyModelChanged)
 
 public:
     explicit SortFilterProxyModel(QVariantHash &params, /*int orderBy, int sortOrder, const QString &titleFilter,
@@ -52,6 +87,8 @@ public:
     int getSortOrder() const;
     int getOrderBy() const;
 
+    Q_INVOKABLE CodeFilterProxyModel* getCodeFilterProxyModel(const QString& code);
+
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE;
 
@@ -67,6 +104,9 @@ private:
     QVariant& m_frFilter;
     QVariant& m_orderBy;
 
+    CodeFilterProxyModel* m_codeFilterProxyModel;
+    QHash<QString, CodeFilterProxyModel*> m_codeFilterProxyMap;
+
 signals:
     void essentialsFilterChanged();
     void essentialsOnlyChanged();
@@ -78,6 +118,8 @@ signals:
     void palFilterChanged();
     void frFilterChanged();
     void orderByChanged();
+
+    void codeFilterProxyModelChanged();
 };
 
 #endif // SORTFILTERPROXYMODEL_H
