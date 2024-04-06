@@ -2,7 +2,7 @@
 #define SORTFILTERPROXYMODEL_H
 
 #include <QSortFilterProxyModel>
-#include "codefilterproxymodel.h"
+#include "titlefilterproxymodel.h"
 
 class SortFilterProxyModel : public QSortFilterProxyModel
 {
@@ -53,7 +53,7 @@ public:
     int getSortOrder() const;
     int getOrderBy() const;
 
-    Q_INVOKABLE CodeFilterProxyModel* getCodeFilterProxyModel(const QString& code);
+    Q_INVOKABLE TitleFilterProxyModel* getTitleFilterProxyModel(const QString& title);
 
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE;
@@ -70,7 +70,7 @@ private:
     QVariant& m_frFilter;
     QVariant& m_orderBy;
 
-    QHash<QString, CodeFilterProxyModel*> m_codeFilterProxyMap;
+    QHash<QString, TitleFilterProxyModel*> m_titleFilterProxyMap;
 
 signals:
     void essentialsFilterChanged();
@@ -83,8 +83,6 @@ signals:
     void palFilterChanged();
     void frFilterChanged();
     void orderByChanged();
-
-    void codeFilterProxyModelChanged();
 };
 
 #endif // SORTFILTERPROXYMODEL_H

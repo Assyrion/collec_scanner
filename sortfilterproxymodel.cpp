@@ -1,5 +1,5 @@
 #include "sortfilterproxymodel.h"
-#include "codefilterproxymodel.h"
+#include "titlefilterproxymodel.h"
 
 const QString platinum_code_marker = "/P";
 const QString essentials_code_marker = "/E";
@@ -160,14 +160,18 @@ int SortFilterProxyModel::getIndexNotFiltered(const QString &tag)
     return -1;
 }
 
-CodeFilterProxyModel* SortFilterProxyModel::getCodeFilterProxyModel(const QString& code)
+TitleFilterProxyModel* SortFilterProxyModel::getTitleFilterProxyModel(const QString& title)
 {
-    if(!m_codeFilterProxyMap.contains(code)) {
-        m_codeFilterProxyMap.insert(code, new CodeFilterProxyModel(code, this));
-        m_codeFilterProxyMap[code]->setSourceModel(this);
+    if(!m_titleFilterProxyMap.contains(title)) {
+        m_titleFilterProxyMap.insert(title, new TitleFilterProxyModel(this));
+
+        m_titleFilterProxyMap[title]->setSourceModel(this);
+        m_titleFilterProxyMap[title]->setFilterKeyColumn(1);
+        m_titleFilterProxyMap[title]->setFilterRegularExpression(QString("^%1$|^%1 \\(")
+                                                                     .arg(QRegularExpression::escape(title)));
     }
 
-    return m_codeFilterProxyMap[code];
+    return m_titleFilterProxyMap[title];
 }
 
 bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const

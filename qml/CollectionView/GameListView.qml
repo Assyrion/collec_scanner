@@ -51,9 +51,12 @@ ListView {
                 onSubGameClicked: (idx) => root.showGameRequired(idx)
             }
         }
-        DelegateChoice {
+        DelegateChoice { // have to create a fake item
             roleValue: 2
-            Item { visible: false }
+            Item {
+                visible: false;
+                height: -root.spacing
+            }
         }
     }
 }
