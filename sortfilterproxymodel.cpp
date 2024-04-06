@@ -1,4 +1,5 @@
 #include "sortfilterproxymodel.h"
+#include "codefilterproxymodel.h"
 
 const QString platinum_code_marker = "/P";
 const QString essentials_code_marker = "/E";
@@ -163,11 +164,10 @@ CodeFilterProxyModel* SortFilterProxyModel::getCodeFilterProxyModel(const QStrin
 {
     if(!m_codeFilterProxyMap.contains(code)) {
         m_codeFilterProxyMap.insert(code, new CodeFilterProxyModel(code, this));
+        m_codeFilterProxyMap[code]->setSourceModel(this);
     }
-    m_codeFilterProxyModel = m_codeFilterProxyMap[code];
-    m_codeFilterProxyModel->setSourceModel(this);
 
-    return m_codeFilterProxyModel;
+    return m_codeFilterProxyMap[code];
 }
 
 bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const

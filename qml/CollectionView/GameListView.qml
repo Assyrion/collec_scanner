@@ -47,14 +47,13 @@ ListView {
             roleValue: 1
             GameListContainerDelegate {
                 width:  root.width - 10
-                implicitHeight: 200
+                height: implicitHeight
+                onSubGameClicked: (idx) => root.showGameRequired(idx)
             }
         }
         DelegateChoice {
             roleValue: 2
-            GameListDelegate {
-                visible: false
-            }
+            Item { visible: false }
         }
     }
 }
