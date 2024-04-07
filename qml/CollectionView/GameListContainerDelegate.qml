@@ -9,6 +9,7 @@ Item {
     id: root
 
     implicitHeight: bckgndRec.height + subgamesView.height
+    state: "collapsed"
 
     property string rootTitle: model?.title ?? ""
 
@@ -21,24 +22,19 @@ Item {
 
     signal subGameClicked(int idx)
 
-    Rectangle {
+    Item {
         id: bckgndRec
 
         anchors.top: parent.top
         width: parent.width
-        height: 100
-
-        color: "transparent"
-        border.color: "white"
-        border.width: 1
-        radius: 10
+        height: 80
 
         MouseArea {
             anchors.fill: parent
             property bool checked: true
 
             onClicked: {
-                subgamesView.state = checked ? "expanded" : "collapsed"
+                root.state = checked ? "expanded" : "collapsed"
                 checked = !checked
             }
         }
@@ -53,16 +49,9 @@ Item {
         spacing: 3
         clip: true
 
-        property var children_width
+        property int children_width
         property int count: picRepeater.count
         onCountChanged: {
-            computeChildenWidth()
-        }
-        Component.onCompleted: {
-            computeChildenWidth()
-        }
-
-        function computeChildenWidth() {
             var i, w = 0;
             for (i in children) {
                 w += (children[i].implicitWidth + picRow.spacing)
@@ -101,12 +90,10 @@ Item {
 
     CSGlowText {
         id: titleText
-        anchors.left: parent.left
-        anchors.leftMargin: 10
+
+        // width: bckgndRec.width
         anchors.verticalCenter:
             bckgndRec.verticalCenter
-        anchors.right: bckgndRec.right
-        anchors.rightMargin: 10
         font.pointSize:
             Math.min(17, parent.width/3 + 1)
         font.family: "Roboto"
@@ -117,9 +104,7 @@ Item {
         id: subgamesView
         width: parent.width
         anchors.top: bckgndRec.bottom
-        anchors.topMargin: 5
         interactive: false
-        state: "collapsed"
         spacing: 5
         model: codeProxyModel
 
@@ -129,10 +114,10 @@ Item {
         }
 
         delegate: GameListDelegate {
-            width:  root.width - anchors.leftMargin
+            width:  root.width - 10
             height: 50
-            anchors.left: parent?.left
-            anchors.leftMargin: 50
+            anchors.horizontalCenter: parent?.horizontalCenter
+
             onClicked: {
                 var sourceIdx = subgamesView.codeProxyModel.mapIndexToSource(index)
                 root.subGameClicked(sourceIdx)
@@ -141,24 +126,45 @@ Item {
         ScrollBar.vertical: ScrollBar {
             visible: false
         }
+    }
 
-        transitions: Transition {
-            NumberAnimation {
-                properties: "height,opacity"
-                duration: 250
-                easing.type: Easing.InOutQuad
-            }
+    transitions: Transition {
+        NumberAnimation {
+            properties: "height,opacity"
+            duration: 250
+            easing.type: Easing.InOutQuad
         }
+        AnchorAnimation {
+            duration: 150
+        }
+    }
 
-        states: [
-            State {
-                name: "expanded"
-                PropertyChanges { target: subgamesView; height: (count * (50 + subgamesView.spacing)); opacity: 1 }
-            },
-            State {
-                name: "collapsed"
-                PropertyChanges { target: subgamesView; height: 0; opacity: 0 }
-            }
-        ]
+    states: [
+        State {
+            name: "expanded"
+            PropertyChanges { target: subgamesView; height: (subgamesView.count * (50 + subgamesView.spacing)); opacity: 1 }
+            PropertyChanges { target: picRow; opacity: 0 }
+            AnchorChanges { target: titleText; anchors.left: undefined; anchors.horizontalCenter: root.horizontalCenter }
+        },
+        State {
+            name: "collapsed"
+            PropertyChanges { target: subgamesView; height: 0; opacity: 0 }
+            PropertyChanges { target: picRow; opacity: 1 }
+            AnchorChanges { target: titleText; anchors.left: root.left; anchors.horizontalCenter: undefined }
+            PropertyChanges { target: titleText; width: root.width - 20; anchors.leftMargin: 10 }
+        }
+    ]
+
+    Rectangle {
+        id: borderRec
+
+        anchors.top: parent.top
+        width: parent.width
+        height: root.implicitHeight
+
+        color: "transparent"
+        border.color: "burlywood"
+        border.width: 1
+        radius: 10
     }
 }

@@ -72,6 +72,9 @@ private:
 
     QHash<QString, TitleFilterProxyModel*> m_titleFilterProxyMap;
 
+    void rebuildTitleMap();
+    void prepareInvalidateFilter();
+
 signals:
     void essentialsFilterChanged();
     void essentialsOnlyChanged();

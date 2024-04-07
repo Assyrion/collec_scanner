@@ -49,7 +49,7 @@ void SortFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
 
     sort(m_orderBy.toInt(), m_sortOrder.value<Qt::SortOrder>());
 
-    invalidateFilter();
+    prepareInvalidateFilter();
 }
 
 void SortFilterProxyModel::resetFilter()
@@ -72,7 +72,7 @@ void SortFilterProxyModel::resetFilter()
     emit palFilterChanged();
     emit frFilterChanged();
 
-    invalidateFilter();
+    prepareInvalidateFilter();
 }
 
 void SortFilterProxyModel::filterEssentials(bool filter)
@@ -80,7 +80,7 @@ void SortFilterProxyModel::filterEssentials(bool filter)
     m_essentialsFilter = filter;
     emit essentialsFilterChanged();
 
-    invalidateFilter();
+    prepareInvalidateFilter();
 }
 
 void SortFilterProxyModel::filterOnlyEssentials(bool filter)
@@ -88,7 +88,7 @@ void SortFilterProxyModel::filterOnlyEssentials(bool filter)
     m_essentialsOnly = filter;
     emit essentialsOnlyChanged();
 
-    invalidateFilter();
+    prepareInvalidateFilter();
 }
 
 void SortFilterProxyModel::filterPlatinum(bool filter)
@@ -96,7 +96,7 @@ void SortFilterProxyModel::filterPlatinum(bool filter)
     m_platinumFilter = filter;
     emit platinumFilterChanged();
 
-    invalidateFilter();
+    prepareInvalidateFilter();
 }
 
 void SortFilterProxyModel::filterPal(bool filter)
@@ -104,7 +104,7 @@ void SortFilterProxyModel::filterPal(bool filter)
     m_palFilter = filter;
     emit palFilterChanged();
 
-    invalidateFilter();
+    prepareInvalidateFilter();
 }
 
 void SortFilterProxyModel::filterFr(bool filter)
@@ -112,7 +112,7 @@ void SortFilterProxyModel::filterFr(bool filter)
     m_frFilter = filter;
     emit frFilterChanged();
 
-    invalidateFilter();
+    prepareInvalidateFilter();
 }
 
 void SortFilterProxyModel::filterOnlyPlatinum(bool filter)
@@ -120,7 +120,7 @@ void SortFilterProxyModel::filterOnlyPlatinum(bool filter)
     m_platinumOnly = filter;
     emit platinumOnlyChanged();
 
-    invalidateFilter();
+    prepareInvalidateFilter();
 }
 
 void SortFilterProxyModel::filterByTitle(const QString &title)
@@ -128,7 +128,7 @@ void SortFilterProxyModel::filterByTitle(const QString &title)
     m_titleFilter = title;
     emit titleFilterChanged();
 
-    invalidateFilter();
+    prepareInvalidateFilter();
 }
 
 void SortFilterProxyModel::filterByOwned(bool owned, bool notOwned)
@@ -137,7 +137,7 @@ void SortFilterProxyModel::filterByOwned(bool owned, bool notOwned)
                   | (notOwned ? 0b01 : 0)) - 1;
     emit ownedFilterChanged();
 
-    invalidateFilter();
+    prepareInvalidateFilter();
 }
 
 int SortFilterProxyModel::getIndexFiltered(const QString& tag)
@@ -172,6 +172,38 @@ TitleFilterProxyModel* SortFilterProxyModel::getTitleFilterProxyModel(const QStr
     }
 
     return m_titleFilterProxyMap[title];
+}
+
+void SortFilterProxyModel::rebuildTitleMap()
+{
+    QHash<QString, QList<QPair<int, QString>>> hash;
+    for (int row = 0; row < rowCount(); ++row) {
+
+        setData(index(row, 0), 0, Qt::UserRole + 9); // becomes a single game
+
+        auto title = data(index(row, 0), Qt::UserRole + 2).toString(); // get title
+
+        QRegularExpression regex("^(.*?)(?:\\(|$)");
+        QRegularExpressionMatch match = regex.match(title);
+
+        if (match.hasMatch()) {
+            QString titleCaptured = match.captured(1).trimmed();
+            hash[titleCaptured] << qMakePair(row, title);
+        }
+    }
+    hash.removeIf([](decltype(hash)::iterator i) { return i->count() == 1; }); // remove unique games
+
+    for (auto it = hash.begin(); it != hash.end(); ++it) {
+        auto& list = it.value();
+        std::sort(list.begin(), list.end(),
+                  [&](const auto &left, const auto &right) {
+                      setData(index(left.first,  0), 2, Qt::UserRole + 9); // becomes a subgame
+                      setData(index(right.first, 0), 2, Qt::UserRole + 9); // becomes a subgame
+                      return left.second < right.second;
+                  });
+
+        setData(index(list[0].first, 0), 1, Qt::UserRole + 9); // becomes a container
+    }
 }
 
 bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
@@ -216,6 +248,15 @@ bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &so
     bool ownedCheck = (m_ownedFilter.toInt() == owned) || (m_ownedFilter.toInt() >= 2);
 
     return titleCheck && codeCheck && infoCheck && ownedCheck;
+}
+
+void SortFilterProxyModel::prepareInvalidateFilter()
+{
+    invalidateRowsFilter();
+
+    beginResetModel();
+    rebuildTitleMap();
+    endResetModel();
 }
 
 bool SortFilterProxyModel::getEssentialsFilter() const
