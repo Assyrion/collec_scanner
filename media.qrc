@@ -10,5 +10,8 @@
         <file alias="ps3">img/ps3_logo.png</file>
         <file alias="ps4">img/ps4_logo.png</file>
         <file alias="ps5">img/ps5_logo.png</file>
+        <file alias="dl_db">img/download_db.png</file>
+        <file alias="ul_db">img/upload_db.png</file>
+        <file alias="ul_cover">img/upload_cover.png</file>
     </qresource>
 </RCC>

@@ -421,38 +421,21 @@ Drawer {
         }
     }
 
-    ColumnLayout {
+    RowLayout {
         id: btnColumn
 
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 5
-        width: parent.width
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width - 10
         spacing: 5
 
-//        Button {
-//            id: clearDBBtn
-//            Layout.alignment: Qt.AlignCenter
-//            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-//                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-//            }, 80)
-
-//            leftPadding: 12
-//            rightPadding: 12
-
-//            text: qsTr("clear DB")
-//            onClicked: showConfirmClearDB()
-//        }
         Button {
             id: reloadDBBtn
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-            }, 80)
 
-            leftPadding: 12
-            rightPadding: 12
-
-            text: qsTr("reload DB")
+            icon.source:  "qrc:/dl_db"
+            icon.width: 40
+            icon.height: 40
             onClicked: showConfirmReloadDB()
         }
 //        Button {
@@ -471,29 +454,20 @@ Drawer {
         Button {
             id: exportDBBtn
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-            }, 80)
 
-            leftPadding: 12
-            rightPadding: 12
-
-            text: qsTr("upload DB")
+            icon.source:  "qrc:/ul_db"
+            icon.width: 40
+            icon.height: 40
             onClicked: showConfirmUploadDB()
         }
         Button {
             id: uploadCoversBtn
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-            }, 80)
 
-            leftPadding: 12
-            rightPadding: 12
-
-            text: qsTr("upload Covers")
+            icon.source:  "qrc:/ul_cover"
+            icon.width: 40
+            icon.height: 40
             onClicked: showConfirmUploadCovers()
-
         }
     }
 }
