@@ -17,6 +17,7 @@ class SortFilterProxyModel : public QSortFilterProxyModel
     Q_PROPERTY(bool palFilter READ getPalFilter NOTIFY palFilterChanged)
     Q_PROPERTY(int sortOrder READ getSortOrder NOTIFY sortOrderChanged)
     Q_PROPERTY(bool frFilter READ getFrFilter NOTIFY frFilterChanged)
+    Q_PROPERTY(bool groupVar READ getGroupVar NOTIFY groupVarChanged)
     Q_PROPERTY(int orderBy READ getOrderBy NOTIFY orderByChanged)
 
 public:
@@ -40,6 +41,8 @@ public:
     Q_INVOKABLE void filterPal(bool filter);
     Q_INVOKABLE void filterFr(bool filter);
 
+    Q_INVOKABLE void setGroupVar(bool groupVar);
+
     Q_INVOKABLE void resetFilter();
 
     bool getEssentialsFilter() const;
@@ -51,6 +54,7 @@ public:
     bool getPalFilter() const;
     bool getFrFilter() const;
     int getSortOrder() const;
+    int getGroupVar() const;
     int getOrderBy() const;
 
     Q_INVOKABLE TitleFilterProxyModel* getTitleFilterProxyModel(const QString& title);
@@ -68,6 +72,7 @@ private:
     QVariant& m_sortOrder;
     QVariant& m_palFilter;
     QVariant& m_frFilter;
+    QVariant& m_groupVar;
     QVariant& m_orderBy;
 
     QHash<QString, TitleFilterProxyModel*> m_titleFilterProxyMap;
@@ -85,6 +90,7 @@ signals:
     void sortOrderChanged();
     void palFilterChanged();
     void frFilterChanged();
+    void groupVarChanged();
     void orderByChanged();
 };
 

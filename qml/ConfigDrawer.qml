@@ -420,6 +420,35 @@ Drawer {
             }
         }
     }
+    RowLayout {
+        id: subgameRow
+
+        anchors.top: platinumColumn.bottom
+        anchors.topMargin: 20
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        spacing: 5
+        Label {
+            id: varLabel
+            verticalAlignment:
+                Label.AlignVCenter
+            font.family: "Roboto"
+            font.pixelSize: 14
+            color: "white"
+            text: qsTr("Group variants")
+        }
+        CheckBox {
+            id: varCheckBox
+
+            onClicked: {
+                if(!checked) {
+                    dbManager.currentSqlModel.resetSubgameData()
+                }
+                dbManager.currentProxyModel.setGroupVar(checked)
+            }
+            checked : dbManager?.currentProxyModel?.groupVar
+        }
+    }
 
     RowLayout {
         id: btnColumn

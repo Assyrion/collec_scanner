@@ -109,9 +109,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="455"/>
+        <location filename="../qml/ConfigDrawer.qml" line="438"/>
+        <source>Group variants</source>
+        <translation>Grouper les variantes</translation>
+    </message>
+    <message>
         <source>reload DB</source>
-        <translation>recharger BDD</translation>
+        <translation type="vanished">recharger BDD</translation>
     </message>
     <message>
         <source>Essentials games</source>
@@ -154,14 +158,12 @@
         <translation type="vanished">Les nouvelles jaquettes seront copiées sur le serveur.</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="481"/>
         <source>upload DB</source>
-        <translation>envoyer BDD</translation>
+        <translation type="vanished">envoyer BDD</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="494"/>
         <source>upload Covers</source>
-        <translation>Envoyer jaquettes</translation>
+        <translation type="vanished">Envoyer jaquettes</translation>
     </message>
     <message>
         <source>DB will be entirely cleared.

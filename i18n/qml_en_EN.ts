@@ -90,6 +90,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../qml/ConfigDrawer.qml" line="438"/>
+        <source>Group variants</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qml/ConfigDrawer.qml" line="211"/>
         <source>Games not owned</source>
         <translation type="unfinished"></translation>
@@ -103,21 +108,6 @@
         <location filename="../qml/ConfigDrawer.qml" line="342"/>
         <location filename="../qml/ConfigDrawer.qml" line="410"/>
         <source>only</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/ConfigDrawer.qml" line="455"/>
-        <source>reload DB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/ConfigDrawer.qml" line="481"/>
-        <source>upload DB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/ConfigDrawer.qml" line="494"/>
-        <source>upload Covers</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

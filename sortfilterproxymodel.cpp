@@ -14,6 +14,7 @@ SortFilterProxyModel::SortFilterProxyModel(QVariantHash &params, QObject *parent
     m_sortOrder(params["sortOrder"]),
     m_palFilter(params["palFilter"]),
     m_frFilter(params["frFilter"]),
+    m_groupVar(params["groupVar"]),
     m_orderBy(params["orderBy"])
 {
     // check validity
@@ -24,6 +25,7 @@ SortFilterProxyModel::SortFilterProxyModel(QVariantHash &params, QObject *parent
     m_titleFilter = getTitleFilter();
     m_ownedFilter = getOwnedFilter();
     m_sortOrder = getSortOrder();
+    m_groupVar = getGroupVar();
     m_orderBy = getOrderBy();
 }
 
@@ -111,6 +113,14 @@ void SortFilterProxyModel::filterFr(bool filter)
 {
     m_frFilter = filter;
     emit frFilterChanged();
+
+    prepareInvalidateFilter();
+}
+
+void SortFilterProxyModel::setGroupVar(bool groupVar)
+{
+    m_groupVar = groupVar;
+    emit groupVarChanged();
 
     prepareInvalidateFilter();
 }
@@ -254,9 +264,11 @@ void SortFilterProxyModel::prepareInvalidateFilter()
 {
     invalidateRowsFilter();
 
-    beginResetModel();
-    rebuildTitleMap();
-    endResetModel();
+    if(m_groupVar.toBool()) {
+        beginResetModel();
+        rebuildTitleMap();
+        endResetModel();
+    }
 }
 
 bool SortFilterProxyModel::getEssentialsFilter() const
@@ -311,6 +323,12 @@ int SortFilterProxyModel::getSortOrder() const
 {
     return m_sortOrder.isValid() ?
                m_sortOrder.toInt() : 0;
+}
+
+int SortFilterProxyModel::getGroupVar() const
+{
+    return m_groupVar.isValid() ?
+               m_groupVar.toBool() : false;
 }
 
 int SortFilterProxyModel::getOrderBy() const

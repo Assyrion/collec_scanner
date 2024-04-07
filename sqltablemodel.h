@@ -28,6 +28,7 @@ public:
     Q_INVOKABLE void saveDBToFile(FileManager* fileManager);
 
     Q_INVOKABLE void resetOwnedData(int owned);
+    Q_INVOKABLE void resetSubgameData();
 
     QStringList saveOwnedData();
     void restoreOwnedData(QStringList& tagList);
