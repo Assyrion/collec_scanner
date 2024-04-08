@@ -1,5 +1,6 @@
 #include "sortfilterproxymodel.h"
 #include "titlefilterproxymodel.h"
+#include "sqltablemodel.h"
 
 const QString platinum_code_marker = "/P";
 const QString essentials_code_marker = "/E";
@@ -44,6 +45,13 @@ void SortFilterProxyModel::sort(int column, Qt::SortOrder order)
 void SortFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
     QSortFilterProxyModel::setSourceModel(sourceModel);
+
+    /* there is no signal perfectly adapted to detect that one item has been updated
+     (layoutChanged, only when row changed, and dataChanged called for every column...) */
+    QObject::connect(static_cast<SqlTableModel*>(sourceModel), &SqlTableModel::dataUpdated, [&](){
+        if(m_groupVar.toBool())
+            rebuildTitleMap();
+    });
 
     setFilterKeyColumn(0);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -144,7 +152,7 @@ void SortFilterProxyModel::filterByTitle(const QString &title)
 void SortFilterProxyModel::filterByOwned(bool owned, bool notOwned)
 {
     m_ownedFilter = ((owned ? 0b10 : 0)
-                  | (notOwned ? 0b01 : 0)) - 1;
+                     | (notOwned ? 0b01 : 0)) - 1;
     emit ownedFilterChanged();
 
     prepareInvalidateFilter();
@@ -214,6 +222,8 @@ void SortFilterProxyModel::rebuildTitleMap()
 
         setData(index(list[0].first, 0), 1, Qt::UserRole + 9); // becomes a container
     }
+
+    emit titleMappingChanged();
 }
 
 bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const

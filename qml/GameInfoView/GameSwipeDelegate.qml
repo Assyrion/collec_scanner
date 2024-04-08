@@ -80,7 +80,7 @@ Pane {
         var sourceIdx
 
         if(index < 0) {
-            sqlModel.insertRow(0)
+            sqlModel.prepareInsertRow()
             sourceIdx = sqlModel.index(0, 0)
         }
         else {
@@ -88,14 +88,16 @@ Pane {
             sourceIdx = proxyModel.mapToSource(proxyModel.index(index, 0))
         }
 
-        sqlModel.updateData(sourceIdx, [currentTag,
-                                        titleInfo.entry,
-                                        platformInfo.entry,
-                                        publisherInfo.entry,
-                                        developerInfo.entry,
-                                        codeInfo.entry,
-                                        infoInfo.entry,
-                                        ownedInfo.entry])
+        var dataList = [currentTag,
+                        titleInfo.entry,
+                        platformInfo.entry,
+                        publisherInfo.entry,
+                        developerInfo.entry,
+                        codeInfo.entry,
+                        infoInfo.entry,
+                        ownedInfo.entry]
+
+        sqlModel.updateData(sourceIdx, dataList)
     }
 
     function removeGame() {

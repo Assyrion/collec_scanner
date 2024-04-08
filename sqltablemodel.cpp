@@ -64,10 +64,13 @@ void SqlTableModel::updateData(const QModelIndex &index, const QVariantList& dat
     for(int i = 0; i < data.count(); i++) {
         rolesData.insert(Qt::UserRole + i + 1, data[i]);
     }
+    rolesData.insert(Qt::UserRole + 9, 0);
 
     setItemData(index, rolesData);
 
     submitAll();
+
+    emit dataUpdated();
 }
 
 QVariant SqlTableModel::data(const QModelIndex &index, int role) const
@@ -131,9 +134,23 @@ void SqlTableModel::resetOwnedData(int owned)
 QStringList SqlTableModel::saveOwnedData()
 {
     QStringList tagList;
+    m_subgamesVector.resize(rowCount());
+    m_subgamesVector.fill(0);
+    select();
+}
 
     QSqlQuery query(database());
     query.exec("SELECT tag FROM games WHERE owned = 1");
+void SqlTableModel::prepareInsertRow()
+{
+    m_subgamesVector.prepend(0);
+
+    insertRow(0);
+}
+
+QHash<QString, int> SqlTableModel::saveOwnedData()
+{
+    QHash<QString, int> ownedHash;
 
     while (query.next()) {
         tagList << query.value(0).toString();

@@ -22,6 +22,14 @@ ListView {
         }
     }
 
+    Connections {
+        target: dbManager.currentProxyModel
+        function onTitleMappingChanged() {
+            model = undefined
+            model = dbManager.currentProxyModel
+        }
+    }
+
     highlightMoveDuration: 0
     spacing: 5
 
@@ -29,10 +37,9 @@ ListView {
         policy: ScrollBar.AlwaysOn
         width: 10
     }
-    delegate: chooser
     onMovingChanged: root.movingChanged(moving)
 
-    DelegateChooser {
+    delegate: DelegateChooser {
         id: chooser
         role: "subgame"
         DelegateChoice {

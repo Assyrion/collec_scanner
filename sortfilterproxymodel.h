@@ -92,6 +92,8 @@ signals:
     void frFilterChanged();
     void groupVarChanged();
     void orderByChanged();
+
+    void titleMappingChanged();
 };
 
 #endif // SORTFILTERPROXYMODEL_H
