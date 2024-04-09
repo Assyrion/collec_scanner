@@ -143,12 +143,12 @@ Drawer {
             Layout.alignment : Qt.AlignVCenter
             Layout.preferredWidth: parent.width * 0.4
 
-            onModelChanged: currentIndex = 1
-            onActivated: dbManager.currentProxyModel.sort(currentIndex,
+            model: dbManager.currentSqlModel.roleNamesList
+            currentIndex: dbManager?.currentProxyModel?.orderBy
+
+            onActivated: {
+                dbManager.currentProxyModel.sort(currentIndex,
                                                   ascDescBox.currentValue)
-            Component.onCompleted: {
-                model = dbManager.currentSqlModel.roleNamesList
-                currentIndex = dbManager.currentProxyModel.orderBy
             }
         }
         ComboBox {
@@ -158,15 +158,15 @@ Drawer {
 
             textRole : "text"
             valueRole: "value"
+
             model: [{text: qsTr("ASC"),  value: Qt.AscendingOrder},
                     {text: qsTr("DESC"), value: Qt.DescendingOrder}]
+
+            currentIndex: dbManager?.currentProxyModel?.sortOrder
 
             onActivated: {
                 dbManager.currentProxyModel.sort(sortingComboBox.currentIndex,
                                                   currentValue)
-            }
-            Component.onCompleted: {
-                currentIndex = dbManager.currentProxyModel.sortOrder
             }
         }
     }
