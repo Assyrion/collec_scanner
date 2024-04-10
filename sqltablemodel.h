@@ -19,6 +19,8 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
     QHash<int, QByteArray> roleNames() const Q_DECL_OVERRIDE;
+    bool select() Q_DECL_OVERRIDE;
+
     QStringList roleNamesList() const;
 
     Q_INVOKABLE void updateData(const QModelIndex &index, const QVariantList &data);
@@ -27,8 +29,8 @@ public:
 
     Q_INVOKABLE void resetOwnedData(int owned);
 
-    QHash<QString, int> saveOwnedData();
-    void restoreOwnedData(const QHash<QString, int>& ownedHash);
+    QStringList saveOwnedData();
+    void restoreOwnedData(QStringList& tagList);
 
 private:
 

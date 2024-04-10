@@ -20,6 +20,20 @@ SqlTableModel::SqlTableModel(QObject* parent, const QSqlDatabase &db)
     }
 
     select();
+}
+
+SqlTableModel::~SqlTableModel()
+{
+}
+
+QHash<int, QByteArray> SqlTableModel::roleNames() const
+{
+    return m_roles;
+}
+
+bool SqlTableModel::select()
+{
+    auto ret = QSqlTableModel::select();
 
     auto driver = database().driver();
     if(!driver->hasFeature(QSqlDriver::QuerySize)) {
@@ -27,14 +41,8 @@ SqlTableModel::SqlTableModel(QObject* parent, const QSqlDatabase &db)
             fetchMore();
         }
     }
-}
 
-SqlTableModel::~SqlTableModel()
-{}
-
-QHash<int, QByteArray> SqlTableModel::roleNames() const
-{
-    return m_roles;
+    return ret;
 }
 
 QStringList SqlTableModel::roleNamesList() const
@@ -109,31 +117,36 @@ void SqlTableModel::resetOwnedData(int owned)
     select();
 }
 
-QHash<QString, int> SqlTableModel::saveOwnedData()
+QStringList SqlTableModel::saveOwnedData()
 {
-    QHash<QString, int> ownedHash;
+    QStringList tagList;
 
-    for (int row = 0; row < rowCount(); ++row) {
-        auto tag   = data(index(row, 0), Qt::UserRole + 1).toString(); // tag
-        auto owned = data(index(row, 0), Qt::UserRole + 8).toInt(); // owned
+    QSqlQuery query(database());
+    query.exec("SELECT tag FROM games WHERE owned = 1");
 
-        ownedHash.insert(tag, owned);
+    while (query.next()) {
+        tagList << query.value(0).toString();
     }
 
-    return ownedHash;
+    return tagList;
 }
 
-void SqlTableModel::restoreOwnedData(const QHash<QString, int>& ownedHash)
+void SqlTableModel::restoreOwnedData(QStringList &tagList)
 {
-    QHash<QString, int>::const_iterator it;
+    for (int row = 0; row < rowCount(); ++row) {
+        auto tag = data(index(row, 0), Qt::UserRole + 1).toString(); // tag
 
-    for (it = ownedHash.constBegin(); it != ownedHash.constEnd(); ++it) {
-        QSqlQuery query(database());
-        query.prepare("UPDATE games SET owned = :owned WHERE tag = :tag");
-        query.bindValue(":owned", it.value());
-        query.bindValue(":tag", it.key());
+        if(tagList.isEmpty()) break;
 
-        query.exec();
+        auto it = tagList.begin();
+        while(it != tagList.end()) {
+            if(*it == tag) {
+                setData(index(row, 0), 1, Qt::UserRole + 8); // owned
+                tagList.erase(it); break;
+            } else {
+                ++it;
+            }
+        }
     }
-    select();
+    submitAll();
 }

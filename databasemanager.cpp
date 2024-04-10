@@ -51,6 +51,9 @@ int DatabaseManager::reloadDB(const QString &platform)
 {
     auto owned = currentSqlModel()->saveOwnedData();
 
+    auto sourceModel = m_modelHash[platform]->sourceModel();
+    delete sourceModel; // delete immediatly to safely remove database afterwards
+
     auto model = m_modelHash.take(platform);
     model->deleteLater();
 

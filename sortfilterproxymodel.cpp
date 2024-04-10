@@ -27,6 +27,10 @@ SortFilterProxyModel::SortFilterProxyModel(QVariantHash &params, QObject *parent
     m_orderBy = getOrderBy();
 }
 
+SortFilterProxyModel::~SortFilterProxyModel()
+{
+}
+
 void SortFilterProxyModel::sort(int column, Qt::SortOrder order)
 {
     m_orderBy = column;

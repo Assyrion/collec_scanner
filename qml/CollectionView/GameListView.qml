@@ -9,7 +9,17 @@ ListView {
     signal showGameRequired(int idx)
     signal movingChanged(bool moving)
 
-    model: dbManager.currentProxyModel
+    Component.onCompleted: {
+        model = dbManager.currentProxyModel // initial DB
+    }
+
+    // update model when pointing to new DB
+    Connections {
+        target: dbManager
+        function onDatabaseChanged() {
+            model = dbManager.currentProxyModel
+        }
+    }
 
     highlightMoveDuration: 0
     spacing: 5

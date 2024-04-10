@@ -22,6 +22,7 @@ public:
     explicit SortFilterProxyModel(QVariantHash &params, /*int orderBy, int sortOrder, const QString &titleFilter,
                                   int ownedFilter, bool essentialsFilter = true, bool platinumFilter = true,
                                   bool essentialsOnly = false, bool platinumOnly = false, */QObject *parent = nullptr);
+    ~SortFilterProxyModel() Q_DECL_OVERRIDE;
 
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) Q_DECL_OVERRIDE;
     void setSourceModel(QAbstractItemModel *sourceModel) Q_DECL_OVERRIDE;
