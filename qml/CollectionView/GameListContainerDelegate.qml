@@ -106,11 +106,11 @@ Item {
         anchors.top: bckgndRec.bottom
         interactive: false
         spacing: 5
-        model: codeProxyModel
+        model: titleProxyModel
 
-        property var codeProxyModel
+        property var titleProxyModel
         Component.onCompleted: {
-            codeProxyModel = dbManager.currentProxyModel.getTitleFilterProxyModel(rootTitle)
+            titleProxyModel = dbManager.currentProxyModel.getTitleFilterProxyModel(rootTitle)
         }
 
         delegate: GameListDelegate {
@@ -119,7 +119,7 @@ Item {
             anchors.horizontalCenter: parent?.horizontalCenter
 
             onClicked: {
-                var sourceIdx = subgamesView.codeProxyModel.mapIndexToSource(index)
+                var sourceIdx = subgamesView.titleProxyModel.mapIndexToSource(index)
                 root.subGameClicked(sourceIdx)
             }
         }

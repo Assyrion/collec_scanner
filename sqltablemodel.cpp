@@ -24,6 +24,8 @@ SqlTableModel::SqlTableModel(QObject* parent, const QSqlDatabase &db)
     m_roles.insert(Qt::UserRole + rec.count() + 1, "subgame"); // extra role
 
     select();
+
+    m_subgamesVector.resize(rowCount());
 }
 
 SqlTableModel::~SqlTableModel()
@@ -131,16 +133,13 @@ void SqlTableModel::resetOwnedData(int owned)
     select();
 }
 
-QStringList SqlTableModel::saveOwnedData()
+void SqlTableModel::resetSubgameData()
 {
-    QStringList tagList;
     m_subgamesVector.resize(rowCount());
     m_subgamesVector.fill(0);
     select();
 }
 
-    QSqlQuery query(database());
-    query.exec("SELECT tag FROM games WHERE owned = 1");
 void SqlTableModel::prepareInsertRow()
 {
     m_subgamesVector.prepend(0);
@@ -148,9 +147,19 @@ void SqlTableModel::prepareInsertRow()
     insertRow(0);
 }
 
-QHash<QString, int> SqlTableModel::saveOwnedData()
+void SqlTableModel::prepareRemoveRow(int row)
 {
-    QHash<QString, int> ownedHash;
+    m_subgamesVector.removeAt(row);
+
+    emit dataUpdated();
+}
+
+QStringList SqlTableModel::saveOwnedData()
+{
+    QStringList tagList;
+
+    QSqlQuery query(database());
+    query.exec("SELECT tag FROM games WHERE owned = 1");
 
     while (query.next()) {
         tagList << query.value(0).toString();

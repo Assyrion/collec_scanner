@@ -8,7 +8,7 @@ class TitleFilterProxyModel : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    explicit TitleFilterProxyModel(QObject* parent = nullptr);
+    explicit TitleFilterProxyModel(const QString &title, QObject* parent = nullptr);
     ~TitleFilterProxyModel();
 
     Q_INVOKABLE int mapIndexToSource(int idx);

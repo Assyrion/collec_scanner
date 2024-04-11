@@ -29,6 +29,8 @@ public:
 
     Q_INVOKABLE void resetOwnedData(int owned);
     Q_INVOKABLE void resetSubgameData();
+    Q_INVOKABLE void prepareInsertRow();
+    Q_INVOKABLE void prepareRemoveRow(int row);
 
     QStringList saveOwnedData();
     void restoreOwnedData(QStringList& tagList);

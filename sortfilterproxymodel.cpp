@@ -40,6 +40,8 @@ void SortFilterProxyModel::sort(int column, Qt::SortOrder order)
     m_sortOrder = order;
 
     QSortFilterProxyModel::sort(column, order);
+
+    prepareInvalidateFilter();
 }
 
 void SortFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
@@ -58,8 +60,6 @@ void SortFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     setSortCaseSensitivity(Qt::CaseInsensitive);
 
     sort(m_orderBy.toInt(), m_sortOrder.value<Qt::SortOrder>());
-
-    prepareInvalidateFilter();
 }
 
 void SortFilterProxyModel::resetFilter()
@@ -181,12 +181,8 @@ int SortFilterProxyModel::getIndexNotFiltered(const QString &tag)
 TitleFilterProxyModel* SortFilterProxyModel::getTitleFilterProxyModel(const QString& title)
 {
     if(!m_titleFilterProxyMap.contains(title)) {
-        m_titleFilterProxyMap.insert(title, new TitleFilterProxyModel(this));
-
+        m_titleFilterProxyMap.insert(title, new TitleFilterProxyModel(title, this));
         m_titleFilterProxyMap[title]->setSourceModel(this);
-        m_titleFilterProxyMap[title]->setFilterKeyColumn(1);
-        m_titleFilterProxyMap[title]->setFilterRegularExpression(QString("^%1$|^%1 \\(")
-                                                                     .arg(QRegularExpression::escape(title)));
     }
 
     return m_titleFilterProxyMap[title];

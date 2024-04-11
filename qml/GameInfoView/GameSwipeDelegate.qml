@@ -60,8 +60,14 @@ Pane {
         }
     }
 
-    function saveGame() {
+    // return source index from this index
+    function getSourceIdx() {
+        var proxyModel = dbManager.currentProxyModel
+        var proxyIdx = proxyModel.index(index, 0)
+        return proxyModel.mapToSource(proxyIdx)
+    }
 
+    function saveGame() {
         // handle cover before modifying DB !
         var coverSubfolder = platformName + "/" + currentTag
 
@@ -76,16 +82,13 @@ Pane {
             comManager.handleBackCover(coverSubfolder)
         }
 
-        var sqlModel = dbManager.currentSqlModel
-        var sourceIdx
+        var sqlModel= dbManager.currentSqlModel
+        var sourceIdx = getSourceIdx()
 
+        // In case we're creating a new game
         if(index < 0) {
-            sqlModel.prepareInsertRow()
+            sqlModel.prepareInsertRow() // insert new row at the beginning
             sourceIdx = sqlModel.index(0, 0)
-        }
-        else {
-            var proxyModel = dbManager.currentProxyModel
-            sourceIdx = proxyModel.mapToSource(proxyModel.index(index, 0))
         }
 
         var dataList = [currentTag,
@@ -102,8 +105,16 @@ Pane {
 
     function removeGame() {
         imageManager.removePics(platformName + "/" + currentTag)
-        dbManager.currentProxyModel.removeRow(index)
-        dbManager.currentSqlModel.select() // reload DB content to avoid displaying a blank item
+
+        var sourceIdx = getSourceIdx()
+
+        var proxyModel = dbManager.currentProxyModel
+        proxyModel.removeRow(index) // remove from proxyModel and database
+
+        var sqlModel = dbManager.currentSqlModel
+        sqlModel.select() // need to be done before reevaluating sugbgame values
+
+        sqlModel.prepareRemoveRow(sourceIdx)
     }
 
     function cancelGame() {
@@ -114,10 +125,6 @@ Pane {
             ("image://coverProvider/%1.front").arg(platformName + "/" + currentTag)
         gameCoverRow.backCoverUrl =
             ("image://coverProvider/%1.back").arg(platformName + "/" + currentTag)
-    }
-
-    function setGameAsOwned() {
-        ownedCheckBox.checked = true
     }
 
     GameInfoCoverRow {
