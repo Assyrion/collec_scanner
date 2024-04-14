@@ -13,14 +13,14 @@ Item {
 
     property string rootTitle: model?.title ?? ""
 
+    signal subGameClicked(int idx)
+
     Component.onCompleted: {
         var idx = model.title.indexOf('(');
         if (idx !== -1) {
             rootTitle = model.title.slice(0, idx).trim()
         }
     }
-
-    signal subGameClicked(int idx)
 
     Item {
         id: bckgndRec
@@ -106,11 +106,12 @@ Item {
         anchors.top: bckgndRec.bottom
         interactive: false
         spacing: 5
-        model: titleProxyModel
 
-        property var titleProxyModel
+        property var titleProxyModel:
+            dbManager.currentProxyModel.getTitleFilterProxyModel(rootTitle)
+
         Component.onCompleted: {
-            titleProxyModel = dbManager.currentProxyModel.getTitleFilterProxyModel(rootTitle)
+            model = titleProxyModel
         }
 
         delegate: GameListDelegate {
@@ -120,7 +121,7 @@ Item {
 
             onClicked: {
                 var sourceIdx = subgamesView.titleProxyModel.mapIndexToSource(index)
-                root.subGameClicked(sourceIdx)
+                root.subGameClicked(sourceIdx) // source is SortFilterProxyModel
             }
         }
         ScrollBar.vertical: ScrollBar {
@@ -150,8 +151,8 @@ Item {
             name: "collapsed"
             PropertyChanges { target: subgamesView; height: 0; opacity: 0 }
             PropertyChanges { target: picRow; opacity: 1 }
-            AnchorChanges { target: titleText; anchors.left: root.left; anchors.horizontalCenter: undefined }
             PropertyChanges { target: titleText; width: root.width - 20; anchors.leftMargin: 10 }
+            AnchorChanges { target: titleText; anchors.left: root.left; anchors.horizontalCenter: undefined }
         }
     ]
 

@@ -10,23 +10,18 @@ ListView {
     signal showGameRequired(int idx)
     signal movingChanged(bool moving)
 
+    property var subgameFilterProxyModel:
+        dbManager.currentProxyModel.subgameFilterProxyModel
+
     Component.onCompleted: {
-        model = dbManager.currentProxyModel // initial DB
+        model = subgameFilterProxyModel // initial DB
     }
 
     // update model when pointing to new DB
     Connections {
         target: dbManager
         function onDatabaseChanged() {
-            model = dbManager.currentProxyModel
-        }
-    }
-
-    Connections {
-        target: dbManager.currentProxyModel
-        function onTitleMappingChanged() {
-            model = undefined
-            model = dbManager.currentProxyModel
+            model = subgameFilterProxyModel
         }
     }
 
@@ -47,7 +42,10 @@ ListView {
             GameListDelegate {
                 width:  root.width - 10
                 height: 50
-                onClicked: root.showGameRequired(index)
+                onClicked: {
+                    var sourceIdx = subgameFilterProxyModel.mapIndexToSource(index)
+                    root.showGameRequired(sourceIdx) // source is SortFilterProxyModel
+                }
             }
         }
         DelegateChoice {
@@ -56,13 +54,6 @@ ListView {
                 width:  root.width - 10
                 height: implicitHeight
                 onSubGameClicked: (idx) => root.showGameRequired(idx)
-            }
-        }
-        DelegateChoice { // have to create a fake item
-            roleValue: 2
-            Item {
-                visible: false;
-                height: -root.spacing
             }
         }
     }

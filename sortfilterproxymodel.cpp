@@ -16,7 +16,8 @@ SortFilterProxyModel::SortFilterProxyModel(QVariantHash &params, QObject *parent
     m_palFilter(params["palFilter"]),
     m_frFilter(params["frFilter"]),
     m_groupVar(params["groupVar"]),
-    m_orderBy(params["orderBy"])
+    m_orderBy(params["orderBy"]),
+    m_subgameFilterProxyModel(new SubgameFilterProxyModel(this))
 {
     // check validity
     m_essentialsFilter = getEssentialsFilter();
@@ -28,10 +29,13 @@ SortFilterProxyModel::SortFilterProxyModel(QVariantHash &params, QObject *parent
     m_sortOrder = getSortOrder();
     m_groupVar = getGroupVar();
     m_orderBy = getOrderBy();
+
+    m_subgameFilterProxyModel->setSourceModel(this);
 }
 
 SortFilterProxyModel::~SortFilterProxyModel()
 {
+    m_subgameFilterProxyModel->deleteLater();
 }
 
 void SortFilterProxyModel::sort(int column, Qt::SortOrder order)
@@ -49,7 +53,7 @@ void SortFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     QSortFilterProxyModel::setSourceModel(sourceModel);
 
     /* there is no signal perfectly adapted to detect that one item has been updated
-     (layoutChanged, only when row changed, and dataChanged called for every column...) */
+     (layoutChanged only when row changed, and dataChanged called for every column...) */
     QObject::connect(static_cast<SqlTableModel*>(sourceModel), &SqlTableModel::dataUpdated, [&](){
         if(m_groupVar.toBool())
             rebuildTitleMap();
@@ -197,8 +201,8 @@ void SortFilterProxyModel::rebuildTitleMap()
 
         auto title = data(index(row, 0), Qt::UserRole + 2).toString(); // get title
 
-        QRegularExpression regex("^(.*?)(?:\\(|$)");
-        QRegularExpressionMatch match = regex.match(title);
+        static const QRegularExpression regex("^(.*?)(?:\\(|$)");
+        const QRegularExpressionMatch match = regex.match(title);
 
         if (match.hasMatch()) {
             QString titleCaptured = match.captured(1).trimmed();
@@ -219,7 +223,7 @@ void SortFilterProxyModel::rebuildTitleMap()
         setData(index(list[0].first, 0), 1, Qt::UserRole + 9); // becomes a container
     }
 
-    emit titleMappingChanged();
+    m_subgameFilterProxyModel->invalidate();
 }
 
 bool SortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const

@@ -3,6 +3,7 @@
 
 #include <QSortFilterProxyModel>
 #include "titlefilterproxymodel.h"
+#include "subgamefilterproxymodel.h"
 
 class SortFilterProxyModel : public QSortFilterProxyModel
 {
@@ -19,6 +20,8 @@ class SortFilterProxyModel : public QSortFilterProxyModel
     Q_PROPERTY(bool frFilter READ getFrFilter NOTIFY frFilterChanged)
     Q_PROPERTY(bool groupVar READ getGroupVar NOTIFY groupVarChanged)
     Q_PROPERTY(int orderBy READ getOrderBy NOTIFY orderByChanged)
+
+    Q_PROPERTY(SubgameFilterProxyModel* subgameFilterProxyModel MEMBER m_subgameFilterProxyModel NOTIFY subgameFilterProxyModelChanged)
 
 public:
     explicit SortFilterProxyModel(QVariantHash &params, /*int orderBy, int sortOrder, const QString &titleFilter,
@@ -76,6 +79,7 @@ private:
     QVariant& m_orderBy;
 
     QHash<QString, TitleFilterProxyModel*> m_titleFilterProxyMap;
+    SubgameFilterProxyModel* m_subgameFilterProxyModel;
 
     void rebuildTitleMap();
     void prepareInvalidateFilter();
@@ -93,7 +97,7 @@ signals:
     void groupVarChanged();
     void orderByChanged();
 
-    void titleMappingChanged();
+    void subgameFilterProxyModelChanged();
 };
 
 #endif // SORTFILTERPROXYMODEL_H

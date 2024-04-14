@@ -19,7 +19,9 @@ Pane {
         collectionView = 1
     }
 
-    function setCurrentIndex(idx) {
+    function setCurrentIndex(sourceIdx) {
+        var proxyModel = dbManager.currentProxyModel.subgameFilterProxyModel
+        var idx = proxyModel.mapIndexFromSource(sourceIdx)
         gameStackView.currentItem.currentIndex = idx
     }
 
