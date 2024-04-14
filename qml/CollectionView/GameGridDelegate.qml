@@ -37,7 +37,7 @@ ItemDelegate {
         text : model?.title
         font.family: "Roboto"
         wrapMode: Text.WordWrap
-        font.pointSize: 12
+        font.pointSize: root.width > 80 ? 12 : 6
         opacity: model?.owned ? 1 : 0.4
         font.italic: !model?.owned
     }

@@ -27,5 +27,6 @@
         <file>qml/utils/PlatformSelector.js</file>
         <file>qml/GameInfoView/PricesPopup.qml</file>
         <file>qml/CollectionView/GameListContainerDelegate.qml</file>
+        <file>qml/CollectionView/GameGridContainerDelegate.qml</file>
     </qresource>
 </RCC>
