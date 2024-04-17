@@ -4,10 +4,12 @@ import Qt5Compat.GraphicalEffects
 
 import "../utils/PlatformSelector.js" as Platforms
 
-Item{
+ItemDelegate {
     id: root
 
     property string rootTitle: model?.title ?? ""
+    property var titleProxyModel:
+        dbManager.currentProxyModel.getTitleFilterProxyModel(rootTitle)
 
     signal subGameClicked(int idx)
 
@@ -18,55 +20,119 @@ Item{
         }
     }
 
-    Rectangle {
-        id: bckgndRec
+    onClicked: containerPopup.open()
 
-        anchors.fill: parent
+    background: Rectangle {
+        id: bckgndRec
 
         color: "transparent"
         border.color: "burlywood"
         border.width: 1
     }
 
-    GridView {
+    contentItem: GridView {
         id: subgamesView
-        anchors.fill: bckgndRec
-        anchors.margins: 3
-        anchors.centerIn: bckgndRec
-        interactive: subgamesView.count > 4
+        anchors.fill: parent
 
-        property var titleProxyModel:
-            dbManager.currentProxyModel.getTitleFilterProxyModel(rootTitle)
+        anchors.margins: 3
+        interactive: false
+        clip: true
 
         Component.onCompleted: {
-            model = titleProxyModel
+            model = root.titleProxyModel
         }
-
-        highlightRangeMode: GridView.StrictlyEnforceRange
 
         cellWidth: width/2
         cellHeight: cellWidth / Platforms.list[platformName].coverRatio
 
-        ScrollBar.vertical: ScrollBar {
-            visible: subgamesView.count > 4
-            width: 10
-        }
-
-        clip: true
         delegate: Item {
             width: subgamesView.cellWidth
             height: subgamesView.cellHeight
 
             GameGridDelegate {
-                property string subfolderPic: platformName + "/" + model.tag
-
                 anchors.centerIn: parent
-                width: parent.width - 3
-                height: parent.height - 3
+                width:  parent.width - 5
+                height: parent.height - 5
+                onClicked: containerPopup.open()
+            }
+        }
+    }
 
-                onClicked: {
-                    var sourceIdx = subgamesView.titleProxyModel.mapIndexToSource(index)
-                    root.subGameClicked(sourceIdx) // source is SortFilterProxyModel
+    Popup {
+        id: containerPopup
+
+        width: parent.width * 2 + 20
+        height: parent.height * 2 + 20
+
+        padding: 1
+
+        modal: true
+        dim: false
+
+        onAboutToShow: {
+            var windowRect = mainWindow.contentItem
+            var global_pt = mapToItem(windowRect, -width/4, -height/4)
+
+            if(global_pt.x < 0) {
+                x = 0
+            } else if((global_pt.x + width) > windowRect.width) {
+                x = -width/2
+            } else {
+                x = -width/4
+            }
+            if(global_pt.y < 0) {
+                y = 0
+            } else if((global_pt.y + height) > windowRect.height) {
+                y = -height/2
+            } else {
+                y = -height/4
+            }
+        }
+
+        background: Rectangle {
+            color: "transparent"
+            border.color: "burlywood"
+            border.width: 1
+        }
+
+        contentItem: Pane {
+            padding: 3
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: containerPopup.close()
+            }
+
+            GridView {
+                id: subgamesZoomedView
+                anchors.fill: parent
+
+                model: root.titleProxyModel
+                interactive: subgamesZoomedView.count > 4
+                highlightRangeMode: GridView.StrictlyEnforceRange
+                clip: true
+
+                cellWidth: width/2
+                cellHeight: cellWidth / Platforms.list[platformName].coverRatio
+
+                ScrollBar.vertical: ScrollBar {
+                    visible: subgamesZoomedView.count > 4
+                    width: 10
+                }
+
+                delegate: Item {
+                    width: subgamesZoomedView.cellWidth
+                    height: subgamesZoomedView.cellHeight
+
+                    GameGridDelegate {
+                        anchors.centerIn: parent
+                        width: parent.width - 5
+                        height: parent.height - 5
+                        onClicked: {
+                            var sourceIdx = root.titleProxyModel.mapIndexToSource(index)
+                            root.subGameClicked(sourceIdx) // source is SortFilterProxyModel
+                        }
+                    }
                 }
             }
         }

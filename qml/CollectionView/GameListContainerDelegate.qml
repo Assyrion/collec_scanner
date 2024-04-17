@@ -12,6 +12,8 @@ Item {
     state: "collapsed"
 
     property string rootTitle: model?.title ?? ""
+    property var titleProxyModel:
+        dbManager.currentProxyModel.getTitleFilterProxyModel(rootTitle)
 
     signal subGameClicked(int idx)
 
@@ -91,7 +93,6 @@ Item {
     CSGlowText {
         id: titleText
 
-        // width: bckgndRec.width
         anchors.verticalCenter:
             bckgndRec.verticalCenter
         font.pointSize:
@@ -107,11 +108,9 @@ Item {
         interactive: false
         spacing: 5
 
-        property var titleProxyModel:
-            dbManager.currentProxyModel.getTitleFilterProxyModel(rootTitle)
 
         Component.onCompleted: {
-            model = titleProxyModel
+            model = root.titleProxyModel
         }
 
         delegate: GameListDelegate {
@@ -120,7 +119,7 @@ Item {
             anchors.horizontalCenter: parent?.horizontalCenter
 
             onClicked: {
-                var sourceIdx = subgamesView.titleProxyModel.mapIndexToSource(index)
+                var sourceIdx = root.titleProxyModel.mapIndexToSource(index)
                 root.subGameClicked(sourceIdx) // source is SortFilterProxyModel
             }
         }
