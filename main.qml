@@ -60,7 +60,9 @@ Window {
         Keys.onReleased: function(event) {
             if (event.key === Qt.Key_Back) {
                 event.accepted = true
-                if(cv != currentItem){
+                if(gsv == currentItem){
+                    gsv.closed()
+                } else if(bsv == currentItem) {
                     view.setCurrentIndex(view.defaultIndex)
                 } else {
                     Qt.quit()

@@ -32,7 +32,6 @@ Popup {
     }
 
     contentItem : Pane {
-
         ListView {
             id: ebayItemListView
 
