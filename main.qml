@@ -1,7 +1,7 @@
-import QtQuick 6.2
-import QtQuick.Window 6.2
-import QtQuick.Controls 6.2
-import QtQuick.Layouts 6.2
+import QtQuick 6.3
+import QtQuick.Window 6.3
+import QtQuick.Controls 6.3
+import QtQuick.Layouts 6.3
 
 import "qml"
 import "qml/utils"

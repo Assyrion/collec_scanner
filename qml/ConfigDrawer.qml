@@ -1,6 +1,6 @@
-import QtQuick 6.2
-import QtQuick.Controls 6.2
-import QtQuick.Layouts 6.2
+import QtQuick 6.3
+import QtQuick.Controls 6.3
+import QtQuick.Layouts 6.3
 
 import "utils/PopupMaker.js" as PopupMaker
 
@@ -418,6 +418,35 @@ Drawer {
                 checked: dbManager?.currentProxyModel?.platinumOnly
                          && dbManager?.currentProxyModel?.platinumFilter
             }
+        }
+    }
+    RowLayout {
+        id: subgameRow
+
+        anchors.top: platinumColumn.bottom
+        anchors.topMargin: 20
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        spacing: 5
+        Label {
+            id: varLabel
+            verticalAlignment:
+                Label.AlignVCenter
+            font.family: "Roboto"
+            font.pixelSize: 14
+            color: "white"
+            text: qsTr("Group variants")
+        }
+        CheckBox {
+            id: varCheckBox
+
+            onClicked: {
+                if(!checked) {
+                    dbManager.currentSqlModel.resetSubgameData()
+                }
+                dbManager.currentProxyModel.setGroupVar(checked)
+            }
+            checked : dbManager?.currentProxyModel?.groupVar
         }
     }
 

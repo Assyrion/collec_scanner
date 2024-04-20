@@ -1,6 +1,7 @@
 #include "databasemanager.h"
 #include "global.h"
-#include "qsqlerror.h"
+
+#include <QSqlError>
 
 DatabaseManager::DatabaseManager(QHash<QString, QVariantHash>& paramHash, QObject *parent)
     : QObject{parent}, m_paramHash(paramHash)

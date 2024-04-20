@@ -1,6 +1,6 @@
-import QtQuick 6.2
-import QtQuick.Controls 6.2
-import QtQuick.Layouts 6.2
+import QtQuick 6.3
+import QtQuick.Controls 6.3
+import QtQuick.Layouts 6.3
 
 import "../utils"
 
@@ -19,7 +19,9 @@ Pane {
         collectionView = 1
     }
 
-    function setCurrentIndex(idx) {
+    function setCurrentIndex(sourceIdx) {
+        var proxyModel = dbManager.currentProxyModel.subgameFilterProxyModel
+        var idx = proxyModel.mapIndexFromSource(sourceIdx)
         gameStackView.currentItem.currentIndex = idx
     }
 

@@ -1,5 +1,6 @@
-import QtQuick 6.2
-import QtQuick.Controls 6.2
+import QtQuick 6.3
+import QtQuick.Controls 6.3
+import Qt.labs.qmlmodels
 
 import "../utils"
 
@@ -9,15 +10,18 @@ ListView {
     signal showGameRequired(int idx)
     signal movingChanged(bool moving)
 
+    property var subgameFilterProxyModel:
+        dbManager.currentProxyModel.subgameFilterProxyModel
+
     Component.onCompleted: {
-        model = dbManager.currentProxyModel // initial DB
+        model = subgameFilterProxyModel // initial DB
     }
 
     // update model when pointing to new DB
     Connections {
         target: dbManager
         function onDatabaseChanged() {
-            model = dbManager.currentProxyModel
+            model = subgameFilterProxyModel
         }
     }
 
@@ -28,11 +32,30 @@ ListView {
         policy: ScrollBar.AlwaysOn
         width: 10
     }
-    delegate: GameListDelegate {
-        width:  root.width - 10
-        height: 50
-        onClicked: root.showGameRequired(index)
-    }
     onMovingChanged: root.movingChanged(moving)
+
+    delegate: DelegateChooser {
+        id: chooser
+        role: "subgame"
+        DelegateChoice {
+            roleValue: 0
+            GameListDelegate {
+                width:  root.width - 10
+                height: 50
+                onClicked: {
+                    var sourceIdx = subgameFilterProxyModel.mapIndexToSource(index)
+                    root.showGameRequired(sourceIdx) // source is SortFilterProxyModel
+                }
+            }
+        }
+        DelegateChoice {
+            roleValue: 1
+            GameListContainerDelegate {
+                width:  root.width - 10
+                height: implicitHeight
+                onSubGameClicked: (idx) => root.showGameRequired(idx)
+            }
+        }
+    }
 }
 

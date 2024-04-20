@@ -1,7 +1,7 @@
 import QZXing 3.3
-import QtQuick 6.2
+import QtQuick 6.3
 import QtMultimedia
-import QtQuick.Controls 6.2
+import QtQuick.Controls 6.3
 import Qt.labs.platform 1.0
 
 import "../utils/PopupMaker.js" as PopupMaker

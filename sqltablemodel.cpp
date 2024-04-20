@@ -6,6 +6,9 @@
 #include <QSqlRecord>
 #include <QSqlField>
 
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+
 #include <QDebug>
 
 SqlTableModel::SqlTableModel(QObject* parent, const QSqlDatabase &db)
@@ -18,8 +21,11 @@ SqlTableModel::SqlTableModel(QObject* parent, const QSqlDatabase &db)
     for(int i = 0; i < rec.count(); i++) {
         m_roles.insert(Qt::UserRole + i + 1, rec.fieldName(i).toUtf8());
     }
+    m_roles.insert(Qt::UserRole + rec.count() + 1, "subgame"); // extra role
 
     select();
+
+    m_subgamesVector.resize(rowCount());
 }
 
 SqlTableModel::~SqlTableModel()
@@ -60,15 +66,21 @@ void SqlTableModel::updateData(const QModelIndex &index, const QVariantList& dat
     for(int i = 0; i < data.count(); i++) {
         rolesData.insert(Qt::UserRole + i + 1, data[i]);
     }
+    rolesData.insert(Qt::UserRole + 9, 0);
 
     setItemData(index, rolesData);
 
     submitAll();
+
+    emit dataUpdated();
 }
 
 QVariant SqlTableModel::data(const QModelIndex &index, int role) const
 {
     if (index.isValid()) {
+        if(role == Qt::UserRole + 9) {
+            return m_subgamesVector[index.row()];
+        }
         if (role >= Qt::UserRole) {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);
@@ -82,6 +94,10 @@ QVariant SqlTableModel::data(const QModelIndex &index, int role) const
 bool SqlTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (index.isValid()) {
+        if(role == Qt::UserRole + 9) {
+            m_subgamesVector[index.row()] = value.toInt();
+            return true;
+        }
         if (role >= Qt::UserRole) {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);
@@ -115,6 +131,27 @@ void SqlTableModel::resetOwnedData(int owned)
 
     query.exec();
     select();
+}
+
+void SqlTableModel::resetSubgameData()
+{
+    m_subgamesVector.resize(rowCount());
+    m_subgamesVector.fill(0);
+    select();
+}
+
+void SqlTableModel::prepareInsertRow()
+{
+    m_subgamesVector.prepend(0);
+
+    insertRow(0);
+}
+
+void SqlTableModel::prepareRemoveRow(int row)
+{
+    m_subgamesVector.removeAt(row);
+
+    emit dataUpdated();
 }
 
 QStringList SqlTableModel::saveOwnedData()
