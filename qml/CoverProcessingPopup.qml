@@ -4,6 +4,8 @@ import QtQuick.Controls 6.3
 Popup {
     id: root
 
+    signal cancelled
+
     function show(title) {
         titleText.titleActionText = title
         progressBar.value = 0
@@ -68,6 +70,7 @@ Popup {
         font.pointSize: 11
 
         onClicked: {
+            root.cancelled()
             root.close()
         }
     }

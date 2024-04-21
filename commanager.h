@@ -12,9 +12,10 @@ public:
     explicit ComManager(QObject *parent = nullptr);
     ~ComManager();
 
-    void downloadCovers(const QString &subfolder);
+    void downloadCovers();
     Q_INVOKABLE void uploadCovers();
 
+    bool checkNewDB() const;
     void downloadDB();
     Q_INVOKABLE void uploadDB();
 
@@ -29,11 +30,9 @@ private:
     QObject* m_progressDialog{nullptr};
 
     void appendToList(const QString& fileName);
+    bool checkNewFile(const QString& remotePath, const QString& localPath) const;
     void downloadFile(const QString& remotePath, const QString& localPath);
     bool uploadFile(const QString &fileName, const QString &scriptPath);
-
-signals:
-
 };
 
 #endif // COMMANAGER_H

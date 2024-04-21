@@ -15,12 +15,12 @@
 <context>
     <name>CSActionPopup</name>
     <message>
-        <location filename="../qml/utils/CSActionPopup.qml" line="57"/>
+        <location filename="../qml/utils/CSActionPopup.qml" line="56"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../qml/utils/CSActionPopup.qml" line="72"/>
+        <location filename="../qml/utils/CSActionPopup.qml" line="71"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -37,12 +37,12 @@
         <translation>Téléchargement des jaquettes</translation>
     </message>
     <message>
-        <location filename="../commanager.cpp" line="112"/>
+        <location filename="../commanager.cpp" line="114"/>
         <source>Upload covers</source>
         <translation>Envoi des jaquettes</translation>
     </message>
     <message>
-        <location filename="../commanager.cpp" line="244"/>
+        <location filename="../commanager.cpp" line="251"/>
         <source>Upload DB</source>
         <translation>Envoi de la BDD</translation>
     </message>
@@ -79,12 +79,12 @@
         <translation>Trier par</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="161"/>
+        <location filename="../qml/ConfigDrawer.qml" line="162"/>
         <source>ASC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="162"/>
+        <location filename="../qml/ConfigDrawer.qml" line="163"/>
         <source>DESC</source>
         <translation type="unfinished"></translation>
     </message>
@@ -268,47 +268,47 @@ Cette action est irreversible.</translation>
 <context>
     <name>GameSwipeDelegate</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="157"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="166"/>
         <source>Tag</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="166"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="175"/>
         <source>Index</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="185"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="194"/>
         <source>Code</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="194"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="203"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="176"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="185"/>
         <source>Platform</source>
         <translation>Plateforme</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="221"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="230"/>
         <source>info</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="203"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="212"/>
         <source>Publisher</source>
         <translation>Editeur</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="212"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="221"/>
         <source>Developer</source>
         <translation>Developpeur</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="248"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="257"/>
         <source>In my collection</source>
         <translation>Dans ma collection</translation>
     </message>
@@ -408,6 +408,15 @@ Cette action est irreversible.</translation>
         <translation>Cette action marquera tous les jeux de la base de données %1 comme %2 dans votre collection !</translation>
     </message>
     <message>
+        <location filename="../qml/utils/PopupMaker.js" line="136"/>
+        <source>A new %1 database is available on the server.&lt;br&gt;&lt;br&gt;Would you like to download it ?&lt;br&gt;&lt;br&gt;Warning : The current database will be replaced !</source>
+        <translation>Une nouvelle base de données %1 est disponible sur le serveur.&lt;br&gt;&lt;br&gt;Voulez-vous la télécharger ?&lt;br&gt;&lt;br&gt;Attention : La base de données actuelle sera remplacée !</translation>
+    </message>
+    <message>
+        <source>A new %1 database is available on the server.&lt;br&gt;&lt;br&gt;Would you like to download it ?&lt;br&gt;&lt;br&gt;! This will discard any change of the current database !</source>
+        <translation type="vanished">Une nouvelle base de données %1 est disponible sur le serveur.&lt;br&gt;&lt;br&gt;Voulez-vous la télécharger ?&lt;br&gt;&lt;br&gt;Cela effacera toute modification apportée à la base en cours !</translation>
+    </message>
+    <message>
         <source>This action will set all database games as %1 in your collection !</source>
         <translation type="vanished">Cette action marquera tous les jeux de la base comme %1 dans votre collection !</translation>
     </message>
@@ -465,7 +474,7 @@ Cette action est irreversible.</translation>
 <context>
     <name>PricesPopup</name>
     <message>
-        <location filename="../qml/GameInfoView/PricesPopup.qml" line="125"/>
+        <location filename="../qml/GameInfoView/PricesPopup.qml" line="124"/>
         <source>No Data</source>
         <translation>Pas de données</translation>
     </message>

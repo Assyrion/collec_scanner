@@ -30,10 +30,12 @@ ComManager::~ComManager()
         m_coversToUploadFile.close();
 }
 
-void ComManager::downloadCovers(const QString& subfolder)
+void ComManager::downloadCovers()
 {
     // cannot use setProperty directly because thread separation
     QMetaObject::invokeMethod(m_progressDialog, "show", Qt::QueuedConnection, Q_ARG(QVariant, tr("Download covers")));
+
+    const QString subfolder(Global::DBNAME.section('_', 1, 1)); // get platform name from db name
 
     QDir picDir(Global::PICPATH_ABS);
     if(!picDir.exists()) picDir.mkpath(".");
@@ -143,6 +145,11 @@ void ComManager::uploadCovers()
     m_coversToUploadFile.close();
 
     QMetaObject::invokeMethod(m_progressDialog, "hide");
+}
+
+bool ComManager::checkNewDB() const
+{
+    return checkNewFile(Global::REMOTE_DB_PATH + Global::DBNAME, Global::DB_PATH_ABS_NAME);
 }
 
 bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
@@ -342,5 +349,33 @@ void ComManager::appendToList(const QString &fileName)
     if(!sl.contains(fileName)) {
         ts << fileName << '\n';
     }
+}
+
+bool ComManager::checkNewFile(const QString& remotePath, const QString& localPath) const
+{
+    QNetworkAccessManager manager;
+    QNetworkRequest request((QUrl(remotePath)));
+    QNetworkReply* reply = manager.head(request);
+    QDateTime remoteLastModified;
+
+    QEventLoop loop;
+
+    QObject::connect(reply, &QNetworkReply::finished, [&]() {
+        if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << "Error:" << reply->errorString();
+        } else {
+            QVariant remoteLastModifiedHeader = reply->header(QNetworkRequest::LastModifiedHeader);
+            if (remoteLastModifiedHeader.isValid()) {
+                remoteLastModified = remoteLastModifiedHeader.toDateTime().toLocalTime();
+            }
+        }
+        reply->deleteLater();
+        loop.quit();
+    });
+
+    loop.exec();
+
+    QFileInfo localFI(localPath);
+    return remoteLastModified > localFI.lastModified();
 }
 

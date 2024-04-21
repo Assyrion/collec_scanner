@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_ANDROID
         db_view->setGeometry(screen->availableGeometry());
 #else
-            db_view->setGeometry(rect);
+        db_view->setGeometry(rect);
 #endif
 
         db_view->setResizeMode(QQuickView::SizeRootObjectToView);
@@ -201,24 +201,34 @@ int main(int argc, char *argv[])
         settings.sync();
     };
 
-    QThread dlCoversThread;
+    QThread checkDBThread;
 
     auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
     comManager.setProgressDialog(dialog);
 
+    QObject::connect(dialog, SIGNAL(cancelled()), &checkDBThread, SLOT(quit()));
     QObject::connect(dialog, SIGNAL(aboutToHide()), dbManager.currentProxyModel(), SLOT(invalidate()));
-    QObject::connect(dialog, SIGNAL(aboutToHide()), &dlCoversThread, SLOT(quit()));
-    QObject::connect(&dbManager, SIGNAL(databaseChanged()), &dlCoversThread, SLOT(start()));
-    QObject::connect(&dlCoversThread, &QThread::started, &comManager, [&]() {
-        auto platformName = rootObject->property("platformName").toString();
-        comManager.downloadCovers(platformName);
-    });
+    QObject::connect(&dbManager, SIGNAL(databaseChanged()), &checkDBThread, SLOT(start()));
 
-    comManager.moveToThread(&dlCoversThread);
+    QObject::connect(&checkDBThread, &QThread::started, [&]() {
+        if(comManager.checkNewDB()) {
+            QObject* popup;
+            QEventLoop loop;
+
+            QMetaObject::invokeMethod(rootObject, "showNewDatabase", Qt::BlockingQueuedConnection, Q_RETURN_ARG(QObject*, popup));
+            QObject::connect(popup, SIGNAL(closed()), &loop, SLOT(quit()));
+
+            loop.exec();
+        }
+        comManager.downloadCovers();
+
+        checkDBThread.quit();
+    });
+    comManager.moveToThread(&checkDBThread);
 
     QObject::connect(&app, &QGuiApplication::aboutToQuit, [&](){
         saveSettings();
-        dlCoversThread.quit();
+        checkDBThread.quit();
     });
 
 #ifdef Q_OS_ANDROID
@@ -230,8 +240,8 @@ int main(int argc, char *argv[])
                      });
 #endif
 
-    // initial downloading of covers
-    dlCoversThread.start();
+    // initial DB checking and downloading of covers
+    checkDBThread.start();
 
     return app.exec();
 }

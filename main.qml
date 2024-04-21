@@ -115,6 +115,16 @@ Window {
         }
     }
 
+    function showNewDatabase(): QtObject {
+        var obj = PopupMaker.showNewDatabase(mainWindow)
+        obj.accepted.connect(function() {
+            obj.close()
+            dbManager.currentProxyModel.resetFilter()
+            dbManager.reloadDB(platformName)
+        })
+        return obj;
+    }
+
     function showGame(idx) {
         view.setCurrentIndex(0)
         gsv.currentIndex = idx
