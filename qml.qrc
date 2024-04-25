@@ -19,7 +19,7 @@
         <file>qml/utils/CSGlowImage.qml</file>
         <file>qml/utils/CSCameraOutput.qml</file>
         <file>qml/ConfigDrawer.qml</file>
-        <file>qml/CoverProcessingPopup.qml</file>
+        <file>qml/DataProcessingPopup.qml</file>
         <file>qml/GameInfoView/NewGameView.qml</file>
         <file>download_db_view.qml</file>
         <file>qml/CollectionView/ConfigMenuBar.qml</file>

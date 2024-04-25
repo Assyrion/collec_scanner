@@ -32,24 +32,20 @@
 <context>
     <name>ComManager</name>
     <message>
-        <location filename="../commanager.cpp" line="36"/>
         <source>Download covers</source>
-        <translation>Téléchargement des jaquettes</translation>
+        <translation type="vanished">Téléchargement des jaquettes</translation>
     </message>
     <message>
-        <location filename="../commanager.cpp" line="114"/>
         <source>Upload covers</source>
-        <translation>Envoi des jaquettes</translation>
+        <translation type="vanished">Envoi des jaquettes</translation>
     </message>
     <message>
-        <location filename="../commanager.cpp" line="152"/>
         <source>Checking for new database</source>
-        <translation>Recherche de base de données</translation>
+        <translation type="vanished">Recherche de base de données</translation>
     </message>
     <message>
-        <location filename="../commanager.cpp" line="255"/>
         <source>Upload DB</source>
-        <translation>Envoi de la BDD</translation>
+        <translation type="vanished">Envoi de la BDD</translation>
     </message>
 </context>
 <context>
@@ -255,19 +251,26 @@ Cette action est irreversible.</translation>
         <translation type="vanished">Gestion des jaquettes en cours...</translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="42"/>
+        <source>cancel</source>
+        <translation type="vanished">Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>DataProcessingPopup</name>
+    <message>
+        <location filename="../qml/DataProcessingPopup.qml" line="43"/>
         <source>%1 %2/%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="46"/>
+        <location filename="../qml/DataProcessingPopup.qml" line="47"/>
         <source>%1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="62"/>
+        <location filename="../qml/DataProcessingPopup.qml" line="63"/>
         <source>cancel</source>
-        <translation>Annuler</translation>
+        <translation>annuler</translation>
     </message>
 </context>
 <context>
@@ -353,7 +356,7 @@ Cette action est irreversible.</translation>
 <context>
     <name>NewDatabasePopup</name>
     <message>
-        <location filename="../qml/NewDatabasePopup.qml" line="39"/>
+        <location filename="../qml/NewDatabasePopup.qml" line="38"/>
         <source>A new %1 database is available on the server.&lt;br&gt;Would you like to download it ?</source>
         <translation>Une nouvelle base de données %1 est disponible.&lt;br&gt;Voulez-vous la télécharger ?</translation>
     </message>
@@ -362,7 +365,7 @@ Cette action est irreversible.</translation>
         <translation type="vanished">Attention: La base de donnée actuelle sera ecrasée ! Si vous avez fait des modifications, veuillez cliquer sur le bouton ci-contre.</translation>
     </message>
     <message>
-        <location filename="../qml/NewDatabasePopup.qml" line="65"/>
+        <location filename="../qml/NewDatabasePopup.qml" line="64"/>
         <source>Warning : The current database will be replaced ! If you did any modifications, please press the button here</source>
         <translation>Attention: La base de donnée actuelle sera ecrasée ! Si vous avez fait des modifications, veuillez cliquer sur le bouton ci-contre</translation>
     </message>
@@ -443,6 +446,16 @@ Cette action est irreversible.</translation>
         <location filename="../qml/utils/PopupMaker.js" line="136"/>
         <source>A new %1 database is available on the server.&lt;br&gt;&lt;br&gt;Would you like to download it ?&lt;br&gt;&lt;br&gt;Warning : The current database will be replaced !</source>
         <translation>Une nouvelle base de données %1 est disponible sur le serveur.&lt;br&gt;&lt;br&gt;Voulez-vous la télécharger ?&lt;br&gt;&lt;br&gt;Attention : La base de données actuelle sera remplacée !</translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="150"/>
+        <source>Checking for new database</source>
+        <translation type="unfinished">Recherche de base de données</translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="163"/>
+        <source>Downloading covers</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>A new %1 database is available on the server.&lt;br&gt;&lt;br&gt;Would you like to download it ?&lt;br&gt;&lt;br&gt;! This will discard any change of the current database !</source>
@@ -528,6 +541,26 @@ Cette action est irreversible.</translation>
     <message>
         <source>You don&apos;t own this game. Would you want to add it to your collection ?</source>
         <translation type="vanished">Vous ne possédez pas ce jeu. Voulez-vous l&apos;ajouter à votre collection ?</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="162"/>
+        <source>Checking for new database</source>
+        <translation>Recherche de base de données</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="172"/>
+        <source>Uploading database</source>
+        <translation>Envoi de la base de données</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="182"/>
+        <source>Downloading covers</source>
+        <translation>Téléchargement des jaquettes</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="192"/>
+        <source>Uploading covers</source>
+        <translation>Envoi des jaquettes</translation>
     </message>
 </context>
 </TS>

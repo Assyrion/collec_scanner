@@ -15,29 +15,6 @@
     </message>
 </context>
 <context>
-    <name>ComManager</name>
-    <message>
-        <location filename="../commanager.cpp" line="36"/>
-        <source>Download covers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../commanager.cpp" line="114"/>
-        <source>Upload covers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../commanager.cpp" line="152"/>
-        <source>Checking for new database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../commanager.cpp" line="255"/>
-        <source>Upload DB</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ConfigDrawer</name>
     <message>
         <location filename="../qml/ConfigDrawer.qml" line="59"/>
@@ -160,19 +137,19 @@
     </message>
 </context>
 <context>
-    <name>CoverProcessingPopup</name>
+    <name>DataProcessingPopup</name>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="42"/>
+        <location filename="../qml/DataProcessingPopup.qml" line="43"/>
         <source>%1 %2/%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="46"/>
+        <location filename="../qml/DataProcessingPopup.qml" line="47"/>
         <source>%1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="62"/>
+        <location filename="../qml/DataProcessingPopup.qml" line="63"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -256,12 +233,12 @@
 <context>
     <name>NewDatabasePopup</name>
     <message>
-        <location filename="../qml/NewDatabasePopup.qml" line="39"/>
+        <location filename="../qml/NewDatabasePopup.qml" line="38"/>
         <source>A new %1 database is available on the server.&lt;br&gt;Would you like to download it ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/NewDatabasePopup.qml" line="65"/>
+        <location filename="../qml/NewDatabasePopup.qml" line="64"/>
         <source>Warning : The current database will be replaced ! If you did any modifications, please press the button here</source>
         <translation type="unfinished"></translation>
     </message>
@@ -368,6 +345,16 @@ This action is irreversible.</source>
         <source>A new %1 database is available on the server.&lt;br&gt;&lt;br&gt;Would you like to download it ?&lt;br&gt;&lt;br&gt;Warning : The current database will be replaced !</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="150"/>
+        <source>Checking for new database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="163"/>
+        <source>Downloading covers</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PricesPopup</name>
@@ -382,6 +369,29 @@ This action is irreversible.</source>
     <message>
         <location filename="../download_db_view.qml" line="15"/>
         <source>Downloading DB</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="../main.qml" line="162"/>
+        <source>Checking for new database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="172"/>
+        <source>Uploading database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="182"/>
+        <source>Downloading covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="192"/>
+        <source>Uploading covers</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

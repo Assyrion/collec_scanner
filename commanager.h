@@ -15,7 +15,7 @@ public:
     void downloadCovers();
     Q_INVOKABLE void uploadCovers();
 
-    bool checkNewDB() const;
+    bool checkNewDB();
     void downloadDB();
     Q_INVOKABLE void uploadDB();
 
@@ -23,16 +23,26 @@ public:
     Q_INVOKABLE void handleBackCover(const QString &tag);
     Q_INVOKABLE QVariant getPriceFromEbay(const QString &tag);
 
-    void setProgressDialog(QObject* dialog);
-
 private:
     QFile m_coversToUploadFile;
-    QObject* m_progressDialog{nullptr};
 
     void appendToList(const QString& fileName);
     bool checkNewFile(const QString& remotePath, const QString& localPath) const;
     void downloadFile(const QString& remotePath, const QString& localPath);
     bool uploadFile(const QString &fileName, const QString &scriptPath);
+
+signals:
+    void checkingNewDBStarted();
+    void checkingNewDBFinished();
+    void uploadingDBStarted();
+    void uploadingDBFinished();
+    void downloadingCoversStarted();
+    void downloadingCoversFinished();
+    void uploadingCoversStarted();
+    void uploadingCoversFinished();
+
+    void maxValueChanged(int val);
+    void valueChanged(int val);
 };
 
 #endif // COMMANAGER_H

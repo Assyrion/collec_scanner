@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
 
     /************************* Database *****************************/
 
-    ComManager comManager;    
+    ComManager comManager;
     DatabaseManager dbManager(paramHash);
 
     // in case of unknown database detected, we fetch it on the server
@@ -203,20 +203,32 @@ int main(int argc, char *argv[])
 
     QThread checkDBThread;
 
-    auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
-    comManager.setProgressDialog(dialog);
+    QObject::connect(&comManager, SIGNAL(uploadingDBStarted()), rootObject, SLOT(onUploadingDBStarted()));
+    QObject::connect(&comManager, SIGNAL(checkingNewDBStarted()), rootObject, SLOT(onCheckingNewDBStarted()));
+    QObject::connect(&comManager, SIGNAL(uploadingCoversStarted()), rootObject, SLOT(onUploadingCoversStarted()));
+    QObject::connect(&comManager, SIGNAL(downloadingCoversStarted()), rootObject, SLOT(onDownloadingCoversStarted()));
 
-    QObject::connect(dialog, SIGNAL(cancelled()), &checkDBThread, SLOT(quit()));
-    QObject::connect(dialog, SIGNAL(aboutToHide()), dbManager.currentProxyModel(), SLOT(invalidate()));
+    QObject::connect(&comManager, SIGNAL(uploadingDBFinished()), rootObject, SLOT(onProcessFinished()));
+    QObject::connect(&comManager, SIGNAL(checkingNewDBFinished()), rootObject, SLOT(onProcessFinished()));
+    QObject::connect(&comManager, SIGNAL(uploadingCoversFinished()), rootObject, SLOT(onProcessFinished()));
+    QObject::connect(&comManager, SIGNAL(downloadingCoversFinished()), rootObject, SLOT(onProcessFinished()));
+
+    QObject::connect(&comManager, SIGNAL(maxValueChanged(int)), rootObject, SLOT(onMaxValueChanged(int)));
+    QObject::connect(&comManager, SIGNAL(valueChanged(int)), rootObject, SLOT(onValueChanged(int)));
+
+    QObject::connect(rootObject, SIGNAL(processCancelled()), &checkDBThread, SLOT(quit()));
     QObject::connect(&dbManager, SIGNAL(databaseChanged()), &checkDBThread, SLOT(start()));
+
+    // QObject::connect(&checkDBThread, &QThread::finished, []() {
+    //     qDebug() << "thread DEAD";
+    // });
 
     QObject::connect(&checkDBThread, &QThread::started, [&]() {
         if(comManager.checkNewDB()) {
-            QObject* popup;
             QEventLoop loop;
 
-            QMetaObject::invokeMethod(rootObject, "showNewDatabase", Qt::BlockingQueuedConnection, Q_RETURN_ARG(QObject*, popup));
-            QObject::connect(popup, SIGNAL(closed()), &loop, SLOT(quit()));
+            QMetaObject::invokeMethod(rootObject, "onNewDataBaseDetected", Qt::BlockingQueuedConnection);
+            QObject::connect(rootObject, SIGNAL(newDatabasePopupClosed()), &loop, SLOT(quit()));
 
             loop.exec();
         }

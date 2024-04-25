@@ -6,11 +6,9 @@ Popup {
 
     signal cancelled
 
-    function show(title) {
-        titleText.titleActionText = title
-        progressBar.value = 0
-        open()
-    }
+    property string contentText
+
+    Component.onCompleted: open()
 
     function setValue(value) {
         progressBar.value = value
@@ -20,8 +18,8 @@ Popup {
         progressBar.to = value
     }
 
-    // modal: true
     dim: true
+    modal: true
     closePolicy : progressBar.value > 0 ?
                       Popup.NoAutoClose
                     : Popup.CloseOnPressOutside
@@ -37,11 +35,11 @@ Popup {
 
         text : progressBar.value > 0 ?
                    qsTr("%1 %2/%3")
-                   .arg(titleActionText)
+                   .arg(root.contentText)
                    .arg(progressBar.value)
                    .arg(progressBar.to)
                  : qsTr("%1...")
-                   .arg(titleActionText)
+                   .arg(root.contentText)
         color: "white"
         font.family: "Roboto"
         font.pointSize: 11

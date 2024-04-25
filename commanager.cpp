@@ -32,8 +32,7 @@ ComManager::~ComManager()
 
 void ComManager::downloadCovers()
 {
-    // cannot use setProperty directly because thread separation
-    QMetaObject::invokeMethod(m_progressDialog, "show", Qt::QueuedConnection, Q_ARG(QVariant, tr("Download covers")));
+    emit downloadingCoversStarted();
 
     const QString subfolder(Global::DBNAME.section('_', 1, 1)); // get platform name from db name
 
@@ -71,7 +70,7 @@ void ComManager::downloadCovers()
             QString data = QString::fromUtf8(reply->readAll());
             int remote_count = data.count(".png</a>");
 
-            QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, remote_count));
+            emit maxValueChanged(remote_count);
 
             QStringList htmlLineList = data.split("\n", Qt::SkipEmptyParts);
 
@@ -93,9 +92,9 @@ void ComManager::downloadCovers()
 
                     if(!QFile::exists(localPath) || (remoteCreationDate > localModifiedDate)) {
                         downloadFile(remotePicSubfolder + '/' + remoteFileName, localPath);
-                        QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
+                        emit valueChanged(++count);
                     } else {
-                        QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, --remote_count));
+                        emit maxValueChanged(--remote_count);
                     }
                 }
             }
@@ -106,12 +105,12 @@ void ComManager::downloadCovers()
 
     loop.exec();
 
-    QMetaObject::invokeMethod(m_progressDialog, "close");
+    emit downloadingCoversFinished();
 }
 
 void ComManager::uploadCovers()
 {
-    QMetaObject::invokeMethod(m_progressDialog, "show", Qt::QueuedConnection, Q_ARG(QVariant, tr("Upload covers")));
+    emit uploadingCoversStarted();
 
     m_coversToUploadFile.open(QIODevice::ReadOnly | QIODevice::Text);
 
@@ -121,13 +120,14 @@ void ComManager::uploadCovers()
     QString all(ts.readAll());
     QStringList sl(all.split('\n'));
 
-    QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, sl.count()));
+    emit maxValueChanged(sl.count());
+
     int count = 0;
 
     foreach (auto s, sl) {
         if(!s.isEmpty() && uploadFile(Global::PICPATH_ABS + s, Global::REMOTE_UPLOAD_PIC_SCRIPT)) {
 
-            QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
+            emit valueChanged(++count);
 
             sl.removeOne(s);
         }
@@ -144,16 +144,16 @@ void ComManager::uploadCovers()
 
     m_coversToUploadFile.close();
 
-    QMetaObject::invokeMethod(m_progressDialog, "close");
+    emit uploadingCoversFinished();
 }
 
-bool ComManager::checkNewDB() const
+bool ComManager::checkNewDB()
 {
-    QMetaObject::invokeMethod(m_progressDialog, "show", Qt::QueuedConnection, Q_ARG(QVariant, tr("Checking for new database")));
+    emit checkingNewDBStarted();
 
     bool ret = checkNewFile(Global::REMOTE_DB_PATH + Global::DBNAME, Global::DB_PATH_ABS_NAME);
 
-    QMetaObject::invokeMethod(m_progressDialog, "close");
+    emit checkingNewDBFinished();
 
     return ret;
 }
@@ -254,11 +254,11 @@ void ComManager::downloadFile(const QString& remotePath, const QString& localPat
 
 void ComManager::uploadDB()
 {
-    QMetaObject::invokeMethod(m_progressDialog, "show", Qt::QueuedConnection, Q_ARG(QVariant, tr("Upload DB")));
+    emit uploadingDBStarted();
 
     uploadFile(Global::DB_PATH_ABS_NAME, Global::REMOTE_UPLOAD_DB_SCRIPT);
 
-    QMetaObject::invokeMethod(m_progressDialog, "close");
+    emit uploadingDBFinished();
 }
 
 void ComManager::handleBackCover(const QString &tag)
@@ -340,11 +340,6 @@ void ComManager::handleFrontCover(const QString &tag)
     m_coversToUploadFile.close();
 }
 
-void ComManager::setProgressDialog(QObject *dialog)
-{
-    m_progressDialog = dialog;
-}
-
 void ComManager::appendToList(const QString &fileName)
 {
     QTextStream ts(&m_coversToUploadFile);
@@ -384,4 +379,3 @@ bool ComManager::checkNewFile(const QString& remotePath, const QString& localPat
     QFileInfo localFI(localPath);
     return remoteLastModified > localFI.lastModified();
 }
-

@@ -8,8 +8,10 @@ Popup {
     signal cancelled
 
     dim: true
-    // modal: true
+    modal: true
     closePolicy: Popup.NoAutoClose
+
+    Component.onCompleted: open()
 
     Image {
         id: iconImg
@@ -88,9 +90,9 @@ Popup {
         Button {
             text: qsTr("OK")
             onClicked: {
-                root.close()
                 dbManager.currentProxyModel.resetFilter()
                 dbManager.reloadDB(platformName)
+                root.close()
             }
             leftPadding: 12
             rightPadding: 12
