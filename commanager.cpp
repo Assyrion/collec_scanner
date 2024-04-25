@@ -106,7 +106,7 @@ void ComManager::downloadCovers()
 
     loop.exec();
 
-    QMetaObject::invokeMethod(m_progressDialog, "hide");
+    QMetaObject::invokeMethod(m_progressDialog, "close");
 }
 
 void ComManager::uploadCovers()
@@ -144,12 +144,18 @@ void ComManager::uploadCovers()
 
     m_coversToUploadFile.close();
 
-    QMetaObject::invokeMethod(m_progressDialog, "hide");
+    QMetaObject::invokeMethod(m_progressDialog, "close");
 }
 
 bool ComManager::checkNewDB() const
 {
-    return checkNewFile(Global::REMOTE_DB_PATH + Global::DBNAME, Global::DB_PATH_ABS_NAME);
+    QMetaObject::invokeMethod(m_progressDialog, "show", Qt::QueuedConnection, Q_ARG(QVariant, tr("Checking for new database")));
+
+    bool ret = checkNewFile(Global::REMOTE_DB_PATH + Global::DBNAME, Global::DB_PATH_ABS_NAME);
+
+    QMetaObject::invokeMethod(m_progressDialog, "close");
+
+    return ret;
 }
 
 bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
@@ -252,7 +258,7 @@ void ComManager::uploadDB()
 
     uploadFile(Global::DB_PATH_ABS_NAME, Global::REMOTE_UPLOAD_DB_SCRIPT);
 
-    QMetaObject::invokeMethod(m_progressDialog, "hide");
+    QMetaObject::invokeMethod(m_progressDialog, "close");
 }
 
 void ComManager::handleBackCover(const QString &tag)

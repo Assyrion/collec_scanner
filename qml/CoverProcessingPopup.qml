@@ -9,11 +9,7 @@ Popup {
     function show(title) {
         titleText.titleActionText = title
         progressBar.value = 0
-        visible = true
-    }
-
-    function hide() {
-        visible = false
+        open()
     }
 
     function setValue(value) {
@@ -24,7 +20,8 @@ Popup {
         progressBar.to = value
     }
 
-    modal: true
+    // modal: true
+    dim: true
     closePolicy : progressBar.value > 0 ?
                       Popup.NoAutoClose
                     : Popup.CloseOnPressOutside

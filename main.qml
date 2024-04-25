@@ -53,6 +53,14 @@ Window {
         anchors.centerIn: parent
     }
 
+    NewDatabasePopup {
+        id: newDatabasePopup
+        objectName: "newDatabasePopup"
+        width: 3*parent.width/4
+        height: parent.height * 0.4
+        anchors.centerIn: parent
+    }
+
     SwipeView {
         id: view
 
@@ -113,16 +121,6 @@ Window {
                                 }
             onShowNewGameRequired: (tag) => showNewGame(tag)
         }
-    }
-
-    function showNewDatabase(): QtObject {
-        var obj = PopupMaker.showNewDatabase(mainWindow)
-        obj.accepted.connect(function() {
-            obj.close()
-            dbManager.currentProxyModel.resetFilter()
-            dbManager.reloadDB(platformName)
-        })
-        return obj;
     }
 
     function showGame(idx) {

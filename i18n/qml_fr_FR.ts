@@ -15,12 +15,12 @@
 <context>
     <name>CSActionPopup</name>
     <message>
-        <location filename="../qml/utils/CSActionPopup.qml" line="56"/>
+        <location filename="../qml/utils/CSActionPopup.qml" line="49"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../qml/utils/CSActionPopup.qml" line="71"/>
+        <location filename="../qml/utils/CSActionPopup.qml" line="64"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -42,7 +42,12 @@
         <translation>Envoi des jaquettes</translation>
     </message>
     <message>
-        <location filename="../commanager.cpp" line="251"/>
+        <location filename="../commanager.cpp" line="152"/>
+        <source>Checking for new database</source>
+        <translation>Recherche de base de données</translation>
+    </message>
+    <message>
+        <location filename="../commanager.cpp" line="255"/>
         <source>Upload DB</source>
         <translation>Envoi de la BDD</translation>
     </message>
@@ -250,17 +255,17 @@ Cette action est irreversible.</translation>
         <translation type="vanished">Gestion des jaquettes en cours...</translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="40"/>
+        <location filename="../qml/CoverProcessingPopup.qml" line="42"/>
         <source>%1 %2/%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="44"/>
+        <location filename="../qml/CoverProcessingPopup.qml" line="46"/>
         <source>%1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="60"/>
+        <location filename="../qml/CoverProcessingPopup.qml" line="62"/>
         <source>cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -343,6 +348,33 @@ Cette action est irreversible.</translation>
         <location filename="../qml/GameInfoView/GameSwipeView.qml" line="137"/>
         <source>delete</source>
         <translation>supprimer</translation>
+    </message>
+</context>
+<context>
+    <name>NewDatabasePopup</name>
+    <message>
+        <location filename="../qml/NewDatabasePopup.qml" line="39"/>
+        <source>A new %1 database is available on the server.&lt;br&gt;Would you like to download it ?</source>
+        <translation>Une nouvelle base de données %1 est disponible.&lt;br&gt;Voulez-vous la télécharger ?</translation>
+    </message>
+    <message>
+        <source>Warning : The current database will be replaced ! Do you want to upload it before ?</source>
+        <translation type="vanished">Attention: La base de donnée actuelle sera ecrasée ! Si vous avez fait des modifications, veuillez cliquer sur le bouton ci-contre.</translation>
+    </message>
+    <message>
+        <location filename="../qml/NewDatabasePopup.qml" line="65"/>
+        <source>Warning : The current database will be replaced ! If you did any modifications, please press the button here</source>
+        <translation>Attention: La base de donnée actuelle sera ecrasée ! Si vous avez fait des modifications, veuillez cliquer sur le bouton ci-contre</translation>
+    </message>
+    <message>
+        <location filename="../qml/NewDatabasePopup.qml" line="91"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/NewDatabasePopup.qml" line="107"/>
+        <source>Cancel</source>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>

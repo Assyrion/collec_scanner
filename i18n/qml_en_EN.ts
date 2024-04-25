@@ -4,12 +4,12 @@
 <context>
     <name>CSActionPopup</name>
     <message>
-        <location filename="../qml/utils/CSActionPopup.qml" line="56"/>
+        <location filename="../qml/utils/CSActionPopup.qml" line="49"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/utils/CSActionPopup.qml" line="71"/>
+        <location filename="../qml/utils/CSActionPopup.qml" line="64"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -27,7 +27,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../commanager.cpp" line="251"/>
+        <location filename="../commanager.cpp" line="152"/>
+        <source>Checking for new database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commanager.cpp" line="255"/>
         <source>Upload DB</source>
         <translation type="unfinished"></translation>
     </message>
@@ -157,17 +162,17 @@
 <context>
     <name>CoverProcessingPopup</name>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="40"/>
+        <location filename="../qml/CoverProcessingPopup.qml" line="42"/>
         <source>%1 %2/%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="44"/>
+        <location filename="../qml/CoverProcessingPopup.qml" line="46"/>
         <source>%1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="60"/>
+        <location filename="../qml/CoverProcessingPopup.qml" line="62"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -245,6 +250,29 @@
     <message>
         <location filename="../qml/GameInfoView/GameSwipeView.qml" line="137"/>
         <source>delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NewDatabasePopup</name>
+    <message>
+        <location filename="../qml/NewDatabasePopup.qml" line="39"/>
+        <source>A new %1 database is available on the server.&lt;br&gt;Would you like to download it ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/NewDatabasePopup.qml" line="65"/>
+        <source>Warning : The current database will be replaced ! If you did any modifications, please press the button here</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/NewDatabasePopup.qml" line="91"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/NewDatabasePopup.qml" line="107"/>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
