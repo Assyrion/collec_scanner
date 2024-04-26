@@ -8,11 +8,7 @@ Item {
     property alias entry:    textField.text
     property alias editable: textField.enabled
 
-    function reset() {
-        while(textField.canUndo) {
-            textField.undo() // reset text to origin
-        }
-    }
+    function reset() {}
 
     Label {
         id: labelName
