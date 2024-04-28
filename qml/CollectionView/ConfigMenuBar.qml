@@ -96,9 +96,9 @@ MenuBar {
             ListView {
                 id: selectedPlatformList
                 height: Math.min(contentHeight, platformMenu.height * 0.921)
+                boundsBehavior: Flickable.StopAtBounds
                 interactive: count >= 10
                 model: selectedPlatforms
-                snapMode: ListView.SnapToItem
                 delegate: MenuItem {
 //                    icon.source: "qrc:/" + modelData
 //                    icon.width: platformMenu.width*2/3
@@ -122,6 +122,7 @@ MenuBar {
                 ListView {
                     height: contentHeight
                     model: Object.keys(Platforms.list).sort()
+                    boundsBehavior: Flickable.StopAtBounds
                     delegate: MenuItem {
                         text: modelData
                         font.pointSize: 12
