@@ -8,7 +8,6 @@ ListView {
     id: root
 
     signal showGameRequired(int idx)
-    signal movingChanged(bool moving)
 
     property var subgameFilterProxyModel:
         dbManager.currentProxyModel.subgameFilterProxyModel
@@ -32,7 +31,6 @@ ListView {
         policy: ScrollBar.AlwaysOn
         width: 10
     }
-    onMovingChanged: root.movingChanged(moving)
 
     delegate: DelegateChooser {
         id: chooser

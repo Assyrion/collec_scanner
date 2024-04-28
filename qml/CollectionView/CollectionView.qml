@@ -52,9 +52,6 @@ Pane {
             function onShowGameRequired(idx) {
                 root.showGameRequired(idx)
             }
-            function onMovingChanged(moving) {
-                configMenuBar.opacity = !moving
-            }
         }
 
         replaceEnter: Transition {
