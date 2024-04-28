@@ -1,6 +1,7 @@
 #include "databasemanager.h"
 #include "global.h"
-#include "qsqlerror.h"
+
+#include <QSqlError>
 
 DatabaseManager::DatabaseManager(QHash<QString, QVariantHash>& paramHash, QObject *parent)
     : QObject{parent}, m_paramHash(paramHash)
@@ -49,6 +50,11 @@ int DatabaseManager::loadDB(const QString &platform)
 
 int DatabaseManager::reloadDB(const QString &platform)
 {
+    auto owned = currentSqlModel()->saveOwnedData();
+
+    auto sourceModel = m_modelHash[platform]->sourceModel();
+    delete sourceModel; // delete immediatly to safely remove database afterwards
+
     auto model = m_modelHash.take(platform);
     model->deleteLater();
 
@@ -60,7 +66,11 @@ int DatabaseManager::reloadDB(const QString &platform)
 
     QFile::remove(Global::DB_PATH_ABS_NAME);
 
-    return loadDB(platform);
+    int ret = loadDB(platform);
+
+    currentSqlModel()->restoreOwnedData(owned);
+
+    return ret;
 }
 
 SortFilterProxyModel* DatabaseManager::currentProxyModel() const

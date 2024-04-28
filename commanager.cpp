@@ -4,11 +4,16 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QMimeDatabase>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 #include <QEventLoop>
 #include <QMimeType>
 #include <QHttpPart>
+#include <QUrlQuery>
 
 #include "commanager.h"
+#include "ebayobject.h"
 #include "global.h"
 
 static const QRegularExpression re("href=\"([^\"]+\\.png)\">.*?(\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2})");
@@ -25,10 +30,11 @@ ComManager::~ComManager()
         m_coversToUploadFile.close();
 }
 
-void ComManager::downloadCovers(const QString& subfolder)
+void ComManager::downloadCovers()
 {
-    // cannot use setProperty directly because thread separation
-    QMetaObject::invokeMethod(m_progressDialog, "show");
+    emit downloadingCoversStarted();
+
+    const QString subfolder(Global::DBNAME.section('_', 1, 1)); // get platform name from db name
 
     QDir picDir(Global::PICPATH_ABS);
     if(!picDir.exists()) picDir.mkpath(".");
@@ -64,7 +70,7 @@ void ComManager::downloadCovers(const QString& subfolder)
             QString data = QString::fromUtf8(reply->readAll());
             int remote_count = data.count(".png</a>");
 
-            QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, remote_count));
+            emit maxValueChanged(remote_count);
 
             QStringList htmlLineList = data.split("\n", Qt::SkipEmptyParts);
 
@@ -86,9 +92,9 @@ void ComManager::downloadCovers(const QString& subfolder)
 
                     if(!QFile::exists(localPath) || (remoteCreationDate > localModifiedDate)) {
                         downloadFile(remotePicSubfolder + '/' + remoteFileName, localPath);
-                        QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
+                        emit valueChanged(++count);
                     } else {
-                        QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, --remote_count));
+                        emit maxValueChanged(--remote_count);
                     }
                 }
             }
@@ -99,12 +105,12 @@ void ComManager::downloadCovers(const QString& subfolder)
 
     loop.exec();
 
-    QMetaObject::invokeMethod(m_progressDialog, "hide");
+    emit downloadingCoversFinished();
 }
 
 void ComManager::uploadCovers()
 {
-    QMetaObject::invokeMethod(m_progressDialog, "show");
+    emit uploadingCoversStarted();
 
     m_coversToUploadFile.open(QIODevice::ReadOnly | QIODevice::Text);
 
@@ -114,13 +120,14 @@ void ComManager::uploadCovers()
     QString all(ts.readAll());
     QStringList sl(all.split('\n'));
 
-    QMetaObject::invokeMethod(m_progressDialog, "setMaxValue", Q_ARG(QVariant, sl.count()));
+    emit maxValueChanged(sl.count());
+
     int count = 0;
 
     foreach (auto s, sl) {
         if(!s.isEmpty() && uploadFile(Global::PICPATH_ABS + s, Global::REMOTE_UPLOAD_PIC_SCRIPT)) {
 
-            QMetaObject::invokeMethod(m_progressDialog, "setValue", Q_ARG(QVariant, ++count));
+            emit valueChanged(++count);
 
             sl.removeOne(s);
         }
@@ -137,7 +144,18 @@ void ComManager::uploadCovers()
 
     m_coversToUploadFile.close();
 
-    QMetaObject::invokeMethod(m_progressDialog, "hide");
+    emit uploadingCoversFinished();
+}
+
+bool ComManager::checkNewDB()
+{
+    emit checkingNewDBStarted();
+
+    bool ret = checkNewFile(Global::REMOTE_DB_PATH + Global::DBNAME, Global::DB_PATH_ABS_NAME);
+
+    emit checkingNewDBFinished();
+
+    return ret;
 }
 
 bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
@@ -147,8 +165,6 @@ bool ComManager::uploadFile(const QString& fileName, const QString& scriptPath)
         qDebug() << "Impossible d'ouvrir le fichier";
         return false;
     }
-
-    QMetaObject::invokeMethod(m_progressDialog, "show");
 
     QUrl url(scriptPath);
     QNetworkRequest request(url);
@@ -238,11 +254,11 @@ void ComManager::downloadFile(const QString& remotePath, const QString& localPat
 
 void ComManager::uploadDB()
 {
-    QMetaObject::invokeMethod(m_progressDialog, "show");
+    emit uploadingDBStarted();
 
     uploadFile(Global::DB_PATH_ABS_NAME, Global::REMOTE_UPLOAD_DB_SCRIPT);
 
-    QMetaObject::invokeMethod(m_progressDialog, "hide");
+    emit uploadingDBFinished();
 }
 
 void ComManager::handleBackCover(const QString &tag)
@@ -252,16 +268,76 @@ void ComManager::handleBackCover(const QString &tag)
     m_coversToUploadFile.close();
 }
 
+QVariant ComManager::getPriceFromEbay(const QString &tag)
+{
+    QString baseUrl = "https://svcs.ebay.com/services/search/FindingService/v1";
+    QString appId = "AntoineE-CollecSc-PRD-d53724fcb-60c8f9da";
+    QString operationName = "findItemsByKeywords";
+
+    QUrlQuery query;
+    query.addQueryItem("GLOBAL-ID", "EBAY-FR");
+    query.addQueryItem("OPERATION-NAME", operationName);
+    query.addQueryItem("SERVICE-VERSION", "1.13.0");
+    query.addQueryItem("SECURITY-APPNAME", appId);
+    query.addQueryItem("RESPONSE-DATA-FORMAT", "JSON");
+    query.addQueryItem("keywords", tag);
+
+    QUrl url(baseUrl);
+    url.setQuery(query);
+
+    QNetworkAccessManager manager;
+    QNetworkReply *reply = manager.get(QNetworkRequest(url));
+
+    QEventLoop loop;
+
+    QList<QObject*> itemList;
+    QObject::connect(reply, &QNetworkReply::finished, [&]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QByteArray data = reply->readAll();
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+
+            if (!jsonDoc.isNull() && jsonDoc.isObject()) {
+                QJsonObject jsonObj = jsonDoc.object();
+                QJsonArray findItemsResponseArray = jsonObj["findItemsByKeywordsResponse"].toArray();
+
+                if (!findItemsResponseArray.isEmpty()) {
+                    QJsonObject findItemsResponseObj = findItemsResponseArray[0].toObject();
+                    QJsonArray itemsArray = findItemsResponseObj["searchResult"].toArray()[0].toObject()["item"].toArray();
+
+                    for (const QJsonValue& itemValue : itemsArray) {
+                        QJsonObject item = itemValue.toObject();
+
+                        auto title = item["title"].toArray()[0].toString();
+                        auto price = item["sellingStatus"].toArray()[0].toObject()["convertedCurrentPrice"].toArray()[0].toObject()["__value__"].toString();;
+                        auto condition = item["condition"].toArray()[0].toObject()["conditionDisplayName"].toArray()[0].toString();
+                        auto itemUrl = QUrl::fromUserInput(item["viewItemURL"].toArray()[0].toString());
+
+                        itemList.append(new EbayObject(title, price, condition, itemUrl));
+                    }
+                } else {
+                    qDebug() << "No search result found.";
+                }
+            } else {
+                qDebug() << "Invalid JSON response.";
+            }
+        } else {
+            qDebug() << "Error:" << reply->errorString();
+        }
+
+        reply->deleteLater();
+        loop.quit();
+    });
+
+    loop.exec();
+
+    return QVariant::fromValue(itemList);
+}
+
 void ComManager::handleFrontCover(const QString &tag)
 {
     m_coversToUploadFile.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Append);
     appendToList(tag + "_front.png");
     m_coversToUploadFile.close();
-}
-
-void ComManager::setProgressDialog(QObject *dialog)
-{
-    m_progressDialog = dialog;
 }
 
 void ComManager::appendToList(const QString &fileName)
@@ -276,3 +352,30 @@ void ComManager::appendToList(const QString &fileName)
     }
 }
 
+bool ComManager::checkNewFile(const QString& remotePath, const QString& localPath) const
+{
+    QNetworkAccessManager manager;
+    QNetworkRequest request((QUrl(remotePath)));
+    QNetworkReply* reply = manager.head(request);
+    QDateTime remoteLastModified;
+
+    QEventLoop loop;
+
+    QObject::connect(reply, &QNetworkReply::finished, [&]() {
+        if (reply->error() != QNetworkReply::NoError) {
+            qDebug() << "Error:" << reply->errorString();
+        } else {
+            QVariant remoteLastModifiedHeader = reply->header(QNetworkRequest::LastModifiedHeader);
+            if (remoteLastModifiedHeader.isValid()) {
+                remoteLastModified = remoteLastModifiedHeader.toDateTime().toLocalTime();
+            }
+        }
+        reply->deleteLater();
+        loop.quit();
+    });
+
+    loop.exec();
+
+    QFileInfo localFI(localPath);
+    return remoteLastModified > localFI.lastModified();
+}

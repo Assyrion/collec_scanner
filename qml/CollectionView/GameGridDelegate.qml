@@ -1,11 +1,10 @@
-import QtQuick 6.2
-import QtQuick.Controls 6.2
+import QtQuick 6.3
+import QtQuick.Controls 6.3
 import Qt5Compat.GraphicalEffects
 
-Item {
+ItemDelegate {
     id: root
 
-    signal clicked
     property string subfolderPic: platformName + "/" + model.tag
 
     Image {
@@ -18,12 +17,6 @@ Item {
         cache: false
         mipmap: true
         smooth: true
-
-        MouseArea {
-            id: mouseArea
-            anchors.fill: parent
-            onClicked: root.clicked()
-        }
     }
 
     Colorize {
@@ -31,7 +24,7 @@ Item {
         anchors.fill: frontPicImg
         source: frontPicImg
         saturation: 0
-        lightness: 0.6
+        lightness: 0.3
         hue: 0
     }
 
@@ -44,7 +37,7 @@ Item {
         text : model?.title
         font.family: "Roboto"
         wrapMode: Text.WordWrap
-        font.pointSize: 12
+        font.pointSize: root.width > 80 ? 12 : 6
         opacity: model?.owned ? 1 : 0.4
         font.italic: !model?.owned
     }

@@ -1,6 +1,6 @@
-import QtQuick 6.2
-import QtQuick.Layouts 6.2
-import QtQuick.Controls 6.2
+import QtQuick 6.3
+import QtQuick.Layouts 6.3
+import QtQuick.Controls 6.3
 
 import GameData 1.0
 
@@ -47,10 +47,27 @@ Pane {
                                  "x"     : root.width * 0.1,
                                  "y"     : root.height * 0.27})
         }
+    }    
+
+    function showPricesPopup() {
+        var cpt = Qt.createComponent("PricesPopup.qml")
+        if (cpt.status === Component.Ready) {
+            cpt.createObject(root, { "tag" : currentTag,
+                                 "width" : root.width * 0.8,
+                                 "height": root.height * 0.5,
+                                 "x"     : root.width * 0.1,
+                                 "y"     : root.height * 0.2})
+        }
+    }
+
+    // return source index from this index
+    function getSourceIdx() {
+        var proxyModel = dbManager.currentProxyModel
+        var proxyIdx = proxyModel.index(index, 0)
+        return proxyModel.mapToSource(proxyIdx)
     }
 
     function saveGame() {
-
         // handle cover before modifying DB !
         var coverSubfolder = platformName + "/" + currentTag
 
@@ -65,35 +82,39 @@ Pane {
             comManager.handleBackCover(coverSubfolder)
         }
 
-        if(index < 0) {
-            var sqlModel = dbManager.currentSqlModel
+        var sqlModel= dbManager.currentSqlModel
+        var sourceIdx = getSourceIdx()
 
-            sqlModel.insertRow(0)
-            sqlModel.setData(sqlModel.index(0, 0), currentTag)
-            sqlModel.setData(sqlModel.index(0, 1), titleInfo.entry)
-            sqlModel.setData(sqlModel.index(0, 2), platformInfo.entry)
-            sqlModel.setData(sqlModel.index(0, 3), publisherInfo.entry)
-            sqlModel.setData(sqlModel.index(0, 4), developerInfo.entry)
-            sqlModel.setData(sqlModel.index(0, 5), codeInfo.entry)
-            sqlModel.setData(sqlModel.index(0, 6), infoInfo.entry)
-            sqlModel.setData(sqlModel.index(0, 7), ownedInfo.entry)
-            sqlModel.submitAll() // don't get why I have to do it
+        // In case we're creating a new game
+        if(index < 0) {
+            sqlModel.prepareInsertRow() // insert new row at the beginning
+            sourceIdx = sqlModel.index(0, 0)
         }
-        else {
-            model.title = titleInfo.entry
-            model.platform = platformInfo.entry
-            model.publisher = publisherInfo.entry
-            model.developer = developerInfo.entry
-            model.code = codeInfo.entry
-            model.info = infoInfo.entry
-            dbManager.currentProxyModel.invalidate() // force to update model to reload covers
-        }
+
+        var dataList = [currentTag,
+                        titleInfo.entry,
+                        platformInfo.entry,
+                        publisherInfo.entry,
+                        developerInfo.entry,
+                        codeInfo.entry,
+                        infoInfo.entry,
+                        ownedInfo.entry]
+
+        sqlModel.updateData(sourceIdx, dataList)
     }
 
     function removeGame() {
         imageManager.removePics(platformName + "/" + currentTag)
-        dbManager.currentProxyModel.removeRow(index)
-        dbManager.currentSqlModel.select() // reload DB content to avoid displaying a blank item
+
+        var sourceIdx = getSourceIdx()
+
+        var proxyModel = dbManager.currentProxyModel
+        proxyModel.removeRow(index) // remove from proxyModel and database
+
+        var sqlModel = dbManager.currentSqlModel
+        sqlModel.select() // need to be done before reevaluating sugbgame values
+
+        sqlModel.prepareRemoveRow(sourceIdx)
     }
 
     function cancelGame() {
@@ -104,10 +125,6 @@ Pane {
             ("image://coverProvider/%1.front").arg(platformName + "/" + currentTag)
         gameCoverRow.backCoverUrl =
             ("image://coverProvider/%1.back").arg(platformName + "/" + currentTag)
-    }
-
-    function setGameAsOwned() {
-        ownedCheckBox.checked = true
     }
 
     GameInfoCoverRow {
@@ -151,7 +168,7 @@ Pane {
             editable: false
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
-            Layout.preferredHeight: 40
+            Layout.preferredHeight: 25
         }
         GameInfoListDelegate {
             id: indexInfo
@@ -161,7 +178,16 @@ Pane {
             editable: false
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
-            Layout.preferredHeight: 40
+            Layout.preferredHeight: 25
+        }
+        GameInfoListDelegate {
+            id: platformInfo
+            name: qsTr("Platform")
+            entry: platformName
+            editable: false
+            opacity: root.isOwned ? 1 : 0.4
+            Layout.fillWidth: true
+            Layout.preferredHeight: 25
         }
         GameInfoListDelegate {
             id: codeInfo
@@ -171,6 +197,9 @@ Pane {
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
+            function reset() {
+                entry = model.code
+            }
         }
         GameInfoListDelegate {
             id: titleInfo
@@ -179,25 +208,10 @@ Pane {
             editable: editMode
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
-            Layout.preferredHeight: 50
-        }
-        GameInfoListDelegate {
-            id: platformInfo
-            name: qsTr("Platform")
-            entry: platformName
-            editable: false
-            opacity: root.isOwned ? 1 : 0.4
-            Layout.fillWidth: true
-            Layout.preferredHeight: 40
-        }
-        GameInfoListDelegate {
-            id: infoInfo
-            name: qsTr("info")
-            entry: model?.info ?? ""
-            editable: editMode
-            opacity: root.isOwned ? 1 : 0.4
-            Layout.fillWidth: true
-            Layout.preferredHeight: 50
+            Layout.preferredHeight: 60
+            function reset() {
+                entry = model.title
+            }
         }
         GameInfoListDelegate {
             id: publisherInfo
@@ -207,6 +221,9 @@ Pane {
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
+            function reset() {
+                entry = model.publisher
+            }
         }
         GameInfoListDelegate {
             id: developerInfo
@@ -216,7 +233,22 @@ Pane {
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
-        }        
+            function reset() {
+                entry = model.developer
+            }
+        }
+        GameInfoListDelegate {
+            id: infoInfo
+            name: qsTr("info")
+            entry: model?.info ?? ""
+            editable: editMode
+            opacity: root.isOwned ? 1 : 0.4
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            function reset() {
+                entry = model.info
+            }
+        }
         Item {
             id: ownedInfo
             Layout.fillWidth: true
@@ -236,7 +268,7 @@ Pane {
                 font.family: "Roboto"
                 font.pointSize: 14
                 font.bold: true
-                color: "white"
+                color: "lightgray"
                 text: qsTr("In my collection")
             }
             CheckBox {
@@ -248,6 +280,21 @@ Pane {
                 checked: root.isOwned
                 onClicked: model.owned = checked ? 1 : 0
             }
+        }
+    }
+
+    Button {
+        text: "€"
+        visible: !currentTag.includes("notag")
+        width: 50
+        height: 50
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 62
+        font.pixelSize: 20
+        onClicked: {
+            showPricesPopup()
         }
     }
 }

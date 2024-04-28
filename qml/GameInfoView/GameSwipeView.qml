@@ -1,6 +1,6 @@
-import QtQuick 6.2
-import QtQuick.Layouts 6.2
-import QtQuick.Controls 6.2
+import QtQuick 6.3
+import QtQuick.Layouts 6.3
+import QtQuick.Controls 6.3
 
 import "../utils/PopupMaker.js" as PopupMaker
 
@@ -144,7 +144,7 @@ Item {
 
             font.pointSize: 11
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: root.currentItem?.isOwned ? btnRow.children.reduce(function(prev, curr) {
+            Layout.preferredWidth: root.currentItem?.isOwned && !root.editMode ? btnRow.children.reduce(function(prev, curr) {
                     return curr.implicitWidth > prev ? curr.implicitWidth : prev;
             }, 80) : 0
             Behavior on Layout.preferredWidth { NumberAnimation { duration: 150 } }

@@ -1,6 +1,6 @@
-import QtQuick 6.2
-import QtQuick.Controls 6.2
-import QtQuick.Layouts 6.2
+import QtQuick 6.3
+import QtQuick.Controls 6.3
+import QtQuick.Layouts 6.3
 
 import "utils/PopupMaker.js" as PopupMaker
 
@@ -110,7 +110,7 @@ Drawer {
 
                     onClicked: {
                         filterName.clear()
-                        sortFilterProxyModel.filterByTitle("")
+                        dbManager.currentProxyModel.filterByTitle("")
                         close()
                     }
                     Layout.fillWidth: true
@@ -143,12 +143,12 @@ Drawer {
             Layout.alignment : Qt.AlignVCenter
             Layout.preferredWidth: parent.width * 0.4
 
-            onModelChanged: currentIndex = 1
-            onActivated: dbManager.currentProxyModel.sort(currentIndex,
+            model: dbManager.currentSqlModel.roleNamesList
+            currentIndex: dbManager?.currentProxyModel?.orderBy
+
+            onActivated: {
+                dbManager.currentProxyModel.sort(currentIndex,
                                                   ascDescBox.currentValue)
-            Component.onCompleted: {
-                model = dbManager.currentSqlModel.roleNamesList
-                currentIndex = dbManager.currentProxyModel.orderBy
             }
         }
         ComboBox {
@@ -158,15 +158,15 @@ Drawer {
 
             textRole : "text"
             valueRole: "value"
+
             model: [{text: qsTr("ASC"),  value: Qt.AscendingOrder},
                     {text: qsTr("DESC"), value: Qt.DescendingOrder}]
+
+            currentIndex: dbManager?.currentProxyModel?.sortOrder
 
             onActivated: {
                 dbManager.currentProxyModel.sort(sortingComboBox.currentIndex,
                                                   currentValue)
-            }
-            Component.onCompleted: {
-                currentIndex = dbManager.currentProxyModel.sortOrder
             }
         }
     }
@@ -219,12 +219,77 @@ Drawer {
             checked : !(dbManager?.currentProxyModel?.ownedFilter % 2)
         }
     }
+    RowLayout {
+        id: palfrRow
+
+        anchors.top: ownedGrid.bottom
+        anchors.topMargin: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+
+        RowLayout {
+            id: palRow
+
+            Layout.preferredWidth: palCheckBox.checked ?
+                                       palRow.implicitWidth : 0
+            Layout.alignment: Qt.AlignLeft
+            spacing: 5
+            Label {
+                id: palLabel
+                verticalAlignment:
+                    Label.AlignVCenter
+                font.family: "Roboto"
+                font.pixelSize: 14
+                color: "white"
+                text: qsTr("PAL")
+            }
+            CheckBox {
+                id: palCheckBox
+
+                onClicked: {
+                    if(!checked)
+                        dbManager.currentProxyModel.filterFr(false)
+                    dbManager.currentProxyModel.filterPal(checked)
+                }
+                checked : dbManager?.currentProxyModel?.palFilter
+            }
+            Behavior on Layout.preferredWidth { NumberAnimation { duration : 100 } }
+        }
+        RowLayout {
+            id: frRow
+
+            opacity : palRow.Layout.preferredWidth > 0 ? 1 : 0
+
+            spacing: 5
+
+            enabled : palCheckBox.checked
+
+            Label {
+                id: frLabel
+                verticalAlignment:
+                    Label.AlignVCenter
+                font.family: "Roboto"
+                font.pixelSize: 14
+                color: "white"
+                text: qsTr("FR")
+            }
+            CheckBox {
+                id: frCheckBox
+
+                onClicked: {
+                    dbManager.currentProxyModel.filterFr(checked)
+                }
+                checked: dbManager?.currentProxyModel?.frFilter
+                         && dbManager?.currentProxyModel?.palFilter
+            }
+        }
+    }
     ColumnLayout {
         id: essentialsColumn
 
         visible: platformName == "ps3"
 
-        anchors.top: ownedGrid.bottom
+        anchors.top: palfrRow.bottom
         anchors.topMargin: 10
         anchors.left: parent.left
         anchors.leftMargin: 10
@@ -237,7 +302,7 @@ Drawer {
             Layout.alignment: Qt.AlignLeft
             spacing: 5
             Label {
-                id: labelEssentials
+                id: essentialsLabel
                 verticalAlignment:
                     Label.AlignVCenter
                 font.family: "Roboto"
@@ -268,7 +333,7 @@ Drawer {
             enabled : essentialsCheckBox.checked
 
             Label {
-                id: labelOnlyEssentials
+                id: essentialsOnlyLabel
                 verticalAlignment:
                     Label.AlignVCenter
                 font.family: "Roboto"
@@ -304,7 +369,7 @@ Drawer {
             Layout.alignment: Qt.AlignLeft
             spacing: 5
             Label {
-                id: labelPlatinum
+                id: platinumLabel
                 verticalAlignment:
                     Label.AlignVCenter
                 font.family: "Roboto"
@@ -335,7 +400,7 @@ Drawer {
             enabled : platinumCheckBox.checked
 
             Label {
-                id: labelOnlyPlatinum
+                id: platinumOnlyLabel
 
                 verticalAlignment:
                     Label.AlignVCenter
@@ -355,39 +420,51 @@ Drawer {
             }
         }
     }
+    RowLayout {
+        id: subgameRow
 
-    ColumnLayout {
+        anchors.top: platinumColumn.bottom
+        anchors.topMargin: 20
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        spacing: 5
+        Label {
+            id: varLabel
+            verticalAlignment:
+                Label.AlignVCenter
+            font.family: "Roboto"
+            font.pixelSize: 14
+            color: "white"
+            text: qsTr("Group variants")
+        }
+        CheckBox {
+            id: varCheckBox
+
+            onClicked: {
+                if(!checked) {
+                    dbManager.currentSqlModel.resetSubgameData()
+                }
+                dbManager.currentProxyModel.setGroupVar(checked)
+            }
+            checked : dbManager?.currentProxyModel?.groupVar
+        }
+    }
+
+    RowLayout {
         id: btnColumn
 
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 5
-        width: parent.width
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width - 10
         spacing: 5
 
-//        Button {
-//            id: clearDBBtn
-//            Layout.alignment: Qt.AlignCenter
-//            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-//                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-//            }, 80)
-
-//            leftPadding: 12
-//            rightPadding: 12
-
-//            text: qsTr("clear DB")
-//            onClicked: showConfirmClearDB()
-//        }
         Button {
             id: reloadDBBtn
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-            }, 80)
 
-            leftPadding: 12
-            rightPadding: 12
-
-            text: qsTr("reload DB")
+            icon.source:  "qrc:/dl_db"
+            icon.width: 40
+            icon.height: 40
             onClicked: showConfirmReloadDB()
         }
 //        Button {
@@ -406,29 +483,20 @@ Drawer {
         Button {
             id: exportDBBtn
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-            }, 80)
 
-            leftPadding: 12
-            rightPadding: 12
-
-            text: qsTr("upload DB")
+            icon.source:  "qrc:/ul_db"
+            icon.width: 40
+            icon.height: 40
             onClicked: showConfirmUploadDB()
         }
         Button {
             id: uploadCoversBtn
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: btnColumn.children.reduce(function(prev, curr) {
-                return curr.implicitWidth > prev ? curr.implicitWidth : prev;
-            }, 80)
 
-            leftPadding: 12
-            rightPadding: 12
-
-            text: qsTr("upload Covers")
+            icon.source:  "qrc:/ul_cover"
+            icon.width: 40
+            icon.height: 40
             onClicked: showConfirmUploadCovers()
-
         }
     }
 }

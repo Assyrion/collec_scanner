@@ -1,4 +1,4 @@
-import QtQuick 6.2
+import QtQuick 6.3
 import Qt5Compat.GraphicalEffects
 
 Item {
@@ -51,7 +51,7 @@ Item {
         anchors.fill: opacityMask
         source: opacityMask
         saturation: 0
-        lightness: 0.6
+        lightness: 0.3
         hue: 0
     }
 

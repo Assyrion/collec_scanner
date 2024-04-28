@@ -107,3 +107,39 @@ function showFilteredGame(parent, tag) {
     }
     return null
 }
+
+function showFilteredGame(parent, tag) {
+    var cpt = Qt.createComponent("CSActionPopup.qml")
+    if (cpt.status === Component.Ready) {
+        return cpt.createObject(parent, {"contentText" : qsTr("Game with tag = %1 exists but has been filtered.<br><br>Remove filter and show it ?").arg(tag),
+                                    "width" : parent.width,
+                                    "height": parent.height})
+    }
+    return null
+}
+
+function showAllOwnedWarning(parent, owned) {
+    var cpt = Qt.createComponent("CSActionPopup.qml")
+    if (cpt.status === Component.Ready) {
+        return cpt.createObject(parent, {"contentText" : qsTr("This action will set all %1 database games as %2 in your collection !").arg(platformName).arg(owned ? qsTr("owned") :  qsTr("not owned")),
+                                    "width" : 2*parent.width/3,
+                                    "height": parent.height/4,
+                                    "x"     : parent.width/6,
+                                    "y"     : parent.height/4+50})
+    }
+    return null
+}
+
+function showNewDatabase(parent) {
+    var cpt = Qt.createComponent("CSActionPopup.qml")
+    if (cpt.status === Component.Ready) {
+        return cpt.createObject(parent, {"contentText" : qsTr("A new %1 database is available on the server.<br><br>Would you like to download it ?<br><br>Warning : The current database will be replaced !").arg(platformName),
+                                    "width" : 3*parent.width/4,
+                                    "height": parent.height/3,
+                                    "x"     : parent.width/8,
+                                    "y"     : parent.height/4+50,
+                                    "z"     : 1})
+
+    }
+    return null
+}

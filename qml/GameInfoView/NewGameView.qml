@@ -1,6 +1,6 @@
-import QtQuick 6.2
-import QtQuick.Layouts 6.2
-import QtQuick.Controls 6.2
+import QtQuick 6.3
+import QtQuick.Layouts 6.3
+import QtQuick.Controls 6.3
 
 Item {
     id: root

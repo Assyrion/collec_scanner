@@ -1,7 +1,7 @@
-import QtQuick 6.2
-import QtQuick.Window 6.2
-import QtQuick.Controls 6.2
-import QtQuick.Layouts 6.2
+import QtQuick 6.3
+import QtQuick.Window 6.3
+import QtQuick.Controls 6.3
+import QtQuick.Layouts 6.3
 
 import "qml"
 import "qml/utils"
@@ -42,18 +42,25 @@ Window {
         width: parent.width * 0.7
         height: parent.height
         interactive: view.currentItem == cv
-    }
-
-    CoverProcessingPopup {
-        id: coverProcessingPopup
-        objectName: "coverProcessingPopup"
-        width: 2*parent.width/3
-        height: parent.height/5
-        anchors.centerIn: parent
+        onAboutToHide: view.focus = true
     }
 
     SwipeView {
         id: view
+
+        focus: true
+        Keys.onReleased: function(event) {
+            if (event.key === Qt.Key_Back) {
+                event.accepted = true
+                if(gsv == currentItem){
+                    gsv.closed()
+                } else if(bsv == currentItem) {
+                    view.setCurrentIndex(view.defaultIndex)
+                } else {
+                    Qt.quit()
+                }
+            }
+        }
 
         anchors.fill: parent
 
@@ -87,6 +94,7 @@ Window {
             onShowGameRequired: (idx) => showGame(idx)
             onShowNewGameRequired: showNewGame()
             onShowConfigRequired: showConfig()
+            onMenuClosing: view.focus = true
         }
         BarcodeScannerView {
             id: bsv
@@ -124,6 +132,115 @@ Window {
                 view.setCurrentIndex(2)
             })
         }
+    }
+
+    signal processCancelled
+    signal newDatabasePopupClosed
+
+    Loader {
+        id: popupProcessingLoader
+        anchors.fill: parent
+    }
+
+    Loader {
+        id: popupNewDBLoader
+        anchors.fill: parent
+    }
+
+    Component {
+        id: newDatabasePopupCpt
+        NewDatabasePopup {
+            anchors.centerIn: parent
+            width: 3*mainWindow.width/4
+            height: mainWindow.height * 0.4
+        }
+    }
+
+    Component {
+        id: databaseCheckingPopupCpt
+        DataProcessingPopup {
+            contentText: qsTr("Checking for new database")
+            anchors.centerIn: parent
+            width: 2*mainWindow.width/3
+            height: mainWindow.height/5
+        }
+    }
+
+    Component {
+        id: databaseUploadingPopupCpt
+        DataProcessingPopup {
+            contentText: qsTr("Uploading database")
+            anchors.centerIn: parent
+            width: 2*mainWindow.width/3
+            height: mainWindow.height/5
+        }
+    }
+
+    Component {
+        id: coverDownloadingPopupCpt
+        DataProcessingPopup {
+            contentText: qsTr("Downloading covers")
+            anchors.centerIn: parent
+            width: 2*mainWindow.width/3
+            height: mainWindow.height/5
+        }
+    }
+
+    Component {
+        id: coverUploadingPopupCpt
+        DataProcessingPopup {
+            contentText: qsTr("Uploading covers")
+            anchors.centerIn: parent
+            width: 2*mainWindow.width/3
+            height: mainWindow.height/5
+        }
+    }
+
+    function onNewDataBaseDetected() {
+        popupNewDBLoader.sourceComponent = newDatabasePopupCpt
+        popupNewDBLoader.item.closed.connect(() => {
+                                                 popupNewDBLoader.sourceComponent = undefined
+                                                 newDatabasePopupClosed()
+                                             })
+    }
+    function onUploadingDBStarted() {
+        popupProcessingLoader.sourceComponent = databaseUploadingPopupCpt
+        popupProcessingLoader.item.cancelled.connect(() => {
+                                                         onProcessFinished()
+                                                         processCancelled()
+                                                     })
+    }
+    function onCheckingNewDBStarted() {
+        popupProcessingLoader.sourceComponent = databaseCheckingPopupCpt
+        popupProcessingLoader.item.cancelled.connect(() =>  {
+                                                         onProcessFinished()
+                                                         processCancelled()
+                                                     })
+    }
+    function onDownloadingCoversStarted() {
+        popupProcessingLoader.sourceComponent = coverDownloadingPopupCpt
+        popupProcessingLoader.item.cancelled.connect(() => {
+                                                         onProcessFinished()
+                                                         processCancelled()
+                                                     })
+    }
+    function onUploadingCoversStarted() {
+        popupProcessingLoader.sourceComponent = coverUploadingPopupCpt
+        popupProcessingLoader.item.cancelled.connect(() => {
+                                                         onProcessFinished()
+                                                         processCancelled()
+                                                     })
+    }
+    function onProcessFinished() {
+        popupProcessingLoader.sourceComponent = undefined
+    }
+    function onMaxValueChanged(value: int) {
+        if(popupProcessingLoader.item)
+            popupProcessingLoader.item.setMaxValue(value)
+    }
+    function onValueChanged(value: int) {
+        if(popupProcessingLoader.item)
+            popupProcessingLoader.item.setValue(value)
     }
 
     Component {

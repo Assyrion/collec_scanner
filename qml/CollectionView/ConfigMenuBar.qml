@@ -1,7 +1,8 @@
-import QtQuick 6.2
-import QtQuick.Controls 6.2
+import QtQuick 6.3
+import QtQuick.Controls 6.3
 
 import "../utils/PlatformSelector.js" as Platforms
+import "../utils/PopupMaker.js" as PopupMaker
 
 MenuBar {
     id: root
@@ -10,6 +11,17 @@ MenuBar {
     signal listViewRequired
     signal newGameRequired
     signal configRequired
+    signal closing
+
+    function showConfirmResetOwned(owned) {
+        var obj = PopupMaker.showAllOwnedWarning(root.parent, owned)
+        obj.accepted.connect(function() {
+            dbManager.currentSqlModel.resetOwnedData(owned)
+        })
+        obj.aboutToHide.connect(function() {
+            root.closing()
+        })
+    }
 
     property Component backgroundRec : Rectangle {
         color: "#222222"
@@ -26,6 +38,8 @@ MenuBar {
         width: root.width*3
         cascade: true
         background: backgroundRec.createObject(root)
+        onAboutToHide: closing()
+
         MenuItem {
             text: qsTr("Filter")
             icon.source: "qrc:/filter"
@@ -118,15 +132,22 @@ MenuBar {
                         onTriggered: {
                             if(checked) {
                                 selectedPlatforms.push(modelData)
-                            }
-                            else {
+                            } else {
                                 selectedPlatforms.splice(selectedPlatforms.indexOf(modelData), 1)
                             }
                             platformMenu.updateContent()
                         }
                     }
                 }
-            }
+            }        
+        }
+        MenuItem {
+            text: checked ? qsTr("Set not owned")
+                          : qsTr("Set owned")
+            font.pointSize: 8
+            highlighted: false
+            checkable: true
+            onTriggered: root.showConfirmResetOwned(checked)
         }
     }
 }

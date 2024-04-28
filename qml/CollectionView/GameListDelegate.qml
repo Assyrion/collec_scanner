@@ -1,13 +1,12 @@
-import QtQuick 6.2
-import QtQuick.Controls 6.2
+import QtQuick 6.3
+import QtQuick.Controls 6.3
 import Qt5Compat.GraphicalEffects
 
 import "../utils"
 
-Item {
+ItemDelegate {
     id: root
 
-    signal clicked
     property string subfolderPic: platformName + "/" + model.tag
 
     Item {
@@ -17,6 +16,7 @@ Item {
 
         anchors.fill: parent
         visible: false
+
         Image {
             id: frontPicImg
             width: parent.width + 5 // not sourceSize !
@@ -47,7 +47,7 @@ Item {
         anchors.fill: opacityMask
         source: opacityMask
         saturation: 0
-        lightness: 0.6
+        lightness: 0.3
         hue: 0
     }
 
@@ -76,10 +76,5 @@ Item {
             Math.min(17, parent.width/3 + 1)
         font.family: "Roboto"
         text: platformName
-    }
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        onClicked: root.clicked()
     }
 }

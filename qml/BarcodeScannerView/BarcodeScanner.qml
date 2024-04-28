@@ -1,6 +1,6 @@
-import QtQuick 6.2
+import QtQuick 6.3
 import QtMultimedia
-import QtQuick.Controls 6.2
+import QtQuick.Controls 6.3
 import QZXing 3.3
 
 import "../utils"
@@ -34,12 +34,12 @@ Rectangle {
                     id: zxingFilter
                     captureRect: {
                         var rec = cameraOutput.videoOutput.sourceRect
-                        return Qt.rect(rec.width * 0.125, rec.height * 0.25,
-                                       rec.width * 0.75,  rec.height * 0.5)
+                        return Qt.rect(rec.height * 0.125, rec.width * 0.25,
+                                       rec.height * 0.75,  rec.width * 0.5)
 
                     }
 
-                    videoSink:  cameraOutput.videoOutput.videoSink
+                    videoSink: cameraOutput.videoOutput.videoSink
                     orientation: cameraOutput.videoOutput.orientation
 
                     decoder {
@@ -52,10 +52,11 @@ Rectangle {
                     color: "transparent"
                     border.color: "yellow"
                     border.width: 1
-                    width: root.width * 0.75
-                    height: root.height * 0.5
-                    x: root.width/2 - width/2
-                    y: root.height/2 - height/2
+                    property var rec: cameraOutput.videoOutput.contentRect
+                    width: rec.width * 0.75
+                    height: rec.height * 0.5
+                    x: rec.x + rec.width * 0.125
+                    y: rec.y + rec.height * 0.25
                 }
             }
         }

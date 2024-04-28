@@ -15,18 +15,37 @@
 <context>
     <name>CSActionPopup</name>
     <message>
-        <location filename="../qml/utils/CSActionPopup.qml" line="57"/>
+        <location filename="../qml/utils/CSActionPopup.qml" line="49"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../qml/utils/CSActionPopup.qml" line="72"/>
+        <location filename="../qml/utils/CSActionPopup.qml" line="64"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
         <source>cancel</source>
         <translation type="vanished">annuler</translation>
+    </message>
+</context>
+<context>
+    <name>ComManager</name>
+    <message>
+        <source>Download covers</source>
+        <translation type="vanished">Téléchargement des jaquettes</translation>
+    </message>
+    <message>
+        <source>Upload covers</source>
+        <translation type="vanished">Envoi des jaquettes</translation>
+    </message>
+    <message>
+        <source>Checking for new database</source>
+        <translation type="vanished">Recherche de base de données</translation>
+    </message>
+    <message>
+        <source>Upload DB</source>
+        <translation type="vanished">Envoi de la BDD</translation>
     </message>
 </context>
 <context>
@@ -61,12 +80,12 @@
         <translation>Trier par</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="161"/>
+        <location filename="../qml/ConfigDrawer.qml" line="162"/>
         <source>ASC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="162"/>
+        <location filename="../qml/ConfigDrawer.qml" line="163"/>
         <source>DESC</source>
         <translation type="unfinished"></translation>
     </message>
@@ -76,14 +95,28 @@
         <translation>Jeux possédés</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="313"/>
+        <location filename="../qml/ConfigDrawer.qml" line="244"/>
+        <source>PAL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="274"/>
+        <source>FR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/ConfigDrawer.qml" line="378"/>
         <source>Platinum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="377"/>
+        <location filename="../qml/ConfigDrawer.qml" line="438"/>
+        <source>Group variants</source>
+        <translation>Grouper les variantes</translation>
+    </message>
+    <message>
         <source>reload DB</source>
-        <translation>recharger BDD</translation>
+        <translation type="vanished">recharger BDD</translation>
     </message>
     <message>
         <source>Essentials games</source>
@@ -95,13 +128,13 @@
         <translation>Jeux non possédés</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="246"/>
+        <location filename="../qml/ConfigDrawer.qml" line="311"/>
         <source>Essentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="277"/>
-        <location filename="../qml/ConfigDrawer.qml" line="345"/>
+        <location filename="../qml/ConfigDrawer.qml" line="342"/>
+        <location filename="../qml/ConfigDrawer.qml" line="410"/>
         <source>only</source>
         <translation>uniquement</translation>
     </message>
@@ -114,9 +147,8 @@
         <translation type="vanished">Effacer BDD</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="390"/>
         <source>file DB</source>
-        <translation>Exporter BDD</translation>
+        <translation type="vanished">Exporter BDD</translation>
     </message>
     <message>
         <source>DB will be uploaded to server.</source>
@@ -127,14 +159,12 @@
         <translation type="vanished">Les nouvelles jaquettes seront copiées sur le serveur.</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="403"/>
         <source>upload DB</source>
-        <translation>envoyer BDD</translation>
+        <translation type="vanished">envoyer BDD</translation>
     </message>
     <message>
-        <location filename="../qml/ConfigDrawer.qml" line="416"/>
         <source>upload Covers</source>
-        <translation>Envoyer jaquettes</translation>
+        <translation type="vanished">Envoyer jaquettes</translation>
     </message>
     <message>
         <source>DB will be entirely cleared.
@@ -158,102 +188,135 @@ Cette action est irreversible.</translation>
 <context>
     <name>ConfigMenuBar</name>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="30"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="44"/>
         <source>Filter</source>
         <translation>Filtre</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="36"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="50"/>
         <source>New</source>
         <translation>Nouveau</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="43"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="57"/>
         <source>View</source>
         <translation>Vue</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="51"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="65"/>
         <source>List</source>
         <translation>Liste</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="56"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="70"/>
         <source>Grid</source>
         <translation>Grille</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="75"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="89"/>
         <source>Platform</source>
         <translation>Plateforme</translation>
+    </message>
+    <message>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="147"/>
+        <source>Set not owned</source>
+        <translation>Marquer non possédés</translation>
+    </message>
+    <message>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="148"/>
+        <source>Set owned</source>
+        <translation>Marquer possédés</translation>
+    </message>
+    <message>
+        <source>All not owned</source>
+        <translation type="vanished">Tous non possédés</translation>
+    </message>
+    <message>
+        <source>All owned</source>
+        <translation type="vanished">Tous possédés</translation>
     </message>
 </context>
 <context>
     <name>CoverProcessingPopup</name>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="36"/>
         <source>Processing %1/%2</source>
-        <translation>En cours %1/%2</translation>
+        <translation type="vanished">En cours %1/%2</translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="39"/>
         <source>Processing file...</source>
-        <translation>Gestion des fichiers en cours...</translation>
+        <translation type="vanished">Gestion des fichiers en cours...</translation>
     </message>
     <message>
         <source>Processing covers...</source>
         <translation type="vanished">Gestion des jaquettes en cours...</translation>
     </message>
     <message>
-        <location filename="../qml/CoverProcessingPopup.qml" line="54"/>
         <source>cancel</source>
-        <translation>Annuler</translation>
+        <translation type="vanished">Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>DataProcessingPopup</name>
+    <message>
+        <location filename="../qml/DataProcessingPopup.qml" line="43"/>
+        <source>%1 %2/%3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/DataProcessingPopup.qml" line="47"/>
+        <source>%1...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/DataProcessingPopup.qml" line="63"/>
+        <source>cancel</source>
+        <translation>annuler</translation>
     </message>
 </context>
 <context>
     <name>GameSwipeDelegate</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="149"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="166"/>
         <source>Tag</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="158"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="175"/>
         <source>Index</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="168"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="194"/>
         <source>Code</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="177"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="203"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="186"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="185"/>
         <source>Platform</source>
         <translation>Plateforme</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="195"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="230"/>
         <source>info</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="204"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="212"/>
         <source>Publisher</source>
         <translation>Editeur</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="213"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="221"/>
         <source>Developer</source>
         <translation>Developpeur</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="240"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="257"/>
         <source>In my collection</source>
         <translation>Dans ma collection</translation>
     </message>
@@ -288,6 +351,33 @@ Cette action est irreversible.</translation>
         <location filename="../qml/GameInfoView/GameSwipeView.qml" line="137"/>
         <source>delete</source>
         <translation>supprimer</translation>
+    </message>
+</context>
+<context>
+    <name>NewDatabasePopup</name>
+    <message>
+        <location filename="../qml/NewDatabasePopup.qml" line="38"/>
+        <source>A new %1 database is available on the server.&lt;br&gt;Would you like to download it ?</source>
+        <translation>Une nouvelle base de données %1 est disponible.&lt;br&gt;Voulez-vous la télécharger ?</translation>
+    </message>
+    <message>
+        <source>Warning : The current database will be replaced ! Do you want to upload it before ?</source>
+        <translation type="vanished">Attention: La base de donnée actuelle sera ecrasée ! Si vous avez fait des modifications, veuillez cliquer sur le bouton ci-contre.</translation>
+    </message>
+    <message>
+        <location filename="../qml/NewDatabasePopup.qml" line="64"/>
+        <source>Warning : The current database will be replaced ! If you did any modifications, please press the button here</source>
+        <translation>Attention: La base de donnée actuelle sera ecrasée ! Si vous avez fait des modifications, veuillez cliquer sur le bouton ci-contre</translation>
+    </message>
+    <message>
+        <location filename="../qml/NewDatabasePopup.qml" line="91"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/NewDatabasePopup.qml" line="107"/>
+        <source>Cancel</source>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -348,6 +438,52 @@ Cette action est irreversible.</translation>
         <translation>La BDD %1 sera remplacée par la plus récente du serveur.&lt;br&gt;Les filtres seront réinitialisés.</translation>
     </message>
     <message>
+        <location filename="../qml/utils/PopupMaker.js" line="124"/>
+        <source>This action will set all %1 database games as %2 in your collection !</source>
+        <translation>Cette action marquera tous les jeux de la base de données %1 comme %2 dans votre collection !</translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="136"/>
+        <source>A new %1 database is available on the server.&lt;br&gt;&lt;br&gt;Would you like to download it ?&lt;br&gt;&lt;br&gt;Warning : The current database will be replaced !</source>
+        <translation>Une nouvelle base de données %1 est disponible sur le serveur.&lt;br&gt;&lt;br&gt;Voulez-vous la télécharger ?&lt;br&gt;&lt;br&gt;Attention : La base de données actuelle sera remplacée !</translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="150"/>
+        <source>Checking for new database</source>
+        <translation type="unfinished">Recherche de base de données</translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="163"/>
+        <source>Downloading covers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A new %1 database is available on the server.&lt;br&gt;&lt;br&gt;Would you like to download it ?&lt;br&gt;&lt;br&gt;! This will discard any change of the current database !</source>
+        <translation type="vanished">Une nouvelle base de données %1 est disponible sur le serveur.&lt;br&gt;&lt;br&gt;Voulez-vous la télécharger ?&lt;br&gt;&lt;br&gt;Cela effacera toute modification apportée à la base en cours !</translation>
+    </message>
+    <message>
+        <source>This action will set all database games as %1 in your collection !</source>
+        <translation type="vanished">Cette action marquera tous les jeux de la base comme %1 dans votre collection !</translation>
+    </message>
+    <message>
+        <source>This action will set all database games as %1 !</source>
+        <translation type="vanished">Cette action marquera tous les jeux de la base comme %1 !</translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="124"/>
+        <source>owned</source>
+        <translation>possédés</translation>
+    </message>
+    <message>
+        <location filename="../qml/utils/PopupMaker.js" line="124"/>
+        <source>not owned</source>
+        <translation>non possédés</translation>
+    </message>
+    <message>
+        <source>This action will reset your sorting of owned games !</source>
+        <translation type="vanished">Cette action reinitialisera votre tri des jeux marqués comme possédés !</translation>
+    </message>
+    <message>
         <source>DB content will be written in &lt;DownloadPath&gt;/game_list.csv</source>
         <translation type="vanished">Le contenu de la BDD sera enregistré dans &lt;Téléchargements&gt;/game_list.csv</translation>
     </message>
@@ -375,8 +511,17 @@ Cette action est irreversible.</translation>
     </message>
     <message>
         <location filename="../qml/utils/PopupMaker.js" line="104"/>
+        <location filename="../qml/utils/PopupMaker.js" line="114"/>
         <source>Game with tag = %1 exists but has been filtered.&lt;br&gt;&lt;br&gt;Remove filter and show it ?</source>
         <translation>Le jeu dont le tag est = %1 existe mais a été filtré.&lt;br&gt;&lt;br&gt;Voulez vous supprimer le filtre et l&apos;afficher ?</translation>
+    </message>
+</context>
+<context>
+    <name>PricesPopup</name>
+    <message>
+        <location filename="../qml/GameInfoView/PricesPopup.qml" line="124"/>
+        <source>No Data</source>
+        <translation>Pas de données</translation>
     </message>
 </context>
 <context>
@@ -396,6 +541,26 @@ Cette action est irreversible.</translation>
     <message>
         <source>You don&apos;t own this game. Would you want to add it to your collection ?</source>
         <translation type="vanished">Vous ne possédez pas ce jeu. Voulez-vous l&apos;ajouter à votre collection ?</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="162"/>
+        <source>Checking for new database</source>
+        <translation>Recherche de base de données</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="172"/>
+        <source>Uploading database</source>
+        <translation>Envoi de la base de données</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="182"/>
+        <source>Downloading covers</source>
+        <translation>Téléchargement des jaquettes</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="192"/>
+        <source>Uploading covers</source>
+        <translation>Envoi des jaquettes</translation>
     </message>
 </context>
 </TS>

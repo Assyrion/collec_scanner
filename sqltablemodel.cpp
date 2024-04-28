@@ -6,6 +6,9 @@
 #include <QSqlRecord>
 #include <QSqlField>
 
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+
 #include <QDebug>
 
 SqlTableModel::SqlTableModel(QObject* parent, const QSqlDatabase &db)
@@ -18,8 +21,25 @@ SqlTableModel::SqlTableModel(QObject* parent, const QSqlDatabase &db)
     for(int i = 0; i < rec.count(); i++) {
         m_roles.insert(Qt::UserRole + i + 1, rec.fieldName(i).toUtf8());
     }
+    m_roles.insert(Qt::UserRole + rec.count() + 1, "subgame"); // extra role
 
     select();
+
+    m_subgamesVector.resize(rowCount());
+}
+
+SqlTableModel::~SqlTableModel()
+{
+}
+
+QHash<int, QByteArray> SqlTableModel::roleNames() const
+{
+    return m_roles;
+}
+
+bool SqlTableModel::select()
+{
+    auto ret = QSqlTableModel::select();
 
     auto driver = database().driver();
     if(!driver->hasFeature(QSqlDriver::QuerySize)) {
@@ -27,14 +47,8 @@ SqlTableModel::SqlTableModel(QObject* parent, const QSqlDatabase &db)
             fetchMore();
         }
     }
-}
 
-SqlTableModel::~SqlTableModel()
-{}
-
-QHash<int, QByteArray> SqlTableModel::roleNames() const
-{
-    return m_roles;
+    return ret;
 }
 
 QStringList SqlTableModel::roleNamesList() const
@@ -46,9 +60,27 @@ QStringList SqlTableModel::roleNamesList() const
     return names;
 }
 
+void SqlTableModel::updateData(const QModelIndex &index, const QVariantList& data)
+{
+    QMap<int, QVariant> rolesData;
+    for(int i = 0; i < data.count(); i++) {
+        rolesData.insert(Qt::UserRole + i + 1, data[i]);
+    }
+    rolesData.insert(Qt::UserRole + 9, 0);
+
+    setItemData(index, rolesData);
+
+    submitAll();
+
+    emit dataUpdated();
+}
+
 QVariant SqlTableModel::data(const QModelIndex &index, int role) const
 {
     if (index.isValid()) {
+        if(role == Qt::UserRole + 9) {
+            return m_subgamesVector[index.row()];
+        }
         if (role >= Qt::UserRole) {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);
@@ -62,6 +94,10 @@ QVariant SqlTableModel::data(const QModelIndex &index, int role) const
 bool SqlTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (index.isValid()) {
+        if(role == Qt::UserRole + 9) {
+            m_subgamesVector[index.row()] = value.toInt();
+            return true;
+        }
         if (role >= Qt::UserRole) {
             int columnIdx = role - Qt::UserRole - 1;
             QModelIndex modelIndex = this->index(index.row(), columnIdx);
@@ -85,4 +121,69 @@ void SqlTableModel::saveDBToFile(FileManager* fileManager)
         auto game = GameDataMaker::get()->createComplete(list);
         fileManager->addEntry(game);
     }
+}
+
+void SqlTableModel::resetOwnedData(int owned)
+{
+    QSqlQuery query(database());
+    query.prepare("UPDATE games SET owned = :owned");
+    query.bindValue(":owned", owned);
+
+    query.exec();
+    select();
+}
+
+void SqlTableModel::resetSubgameData()
+{
+    m_subgamesVector.resize(rowCount());
+    m_subgamesVector.fill(0);
+    select();
+}
+
+void SqlTableModel::prepareInsertRow()
+{
+    m_subgamesVector.prepend(0);
+
+    insertRow(0);
+}
+
+void SqlTableModel::prepareRemoveRow(int row)
+{
+    m_subgamesVector.removeAt(row);
+
+    emit dataUpdated();
+}
+
+QStringList SqlTableModel::saveOwnedData()
+{
+    QStringList tagList;
+
+    QSqlQuery query(database());
+    query.exec("SELECT tag FROM games WHERE owned = 1");
+
+    while (query.next()) {
+        tagList << query.value(0).toString();
+    }
+
+    return tagList;
+}
+
+void SqlTableModel::restoreOwnedData(QStringList &tagList)
+{
+    for (int row = 0; row < rowCount(); ++row) {
+        auto tag = data(index(row, 0), Qt::UserRole + 1).toString(); // tag
+
+        if(tagList.isEmpty()) break;
+
+        auto it = tagList.begin();
+        while(it != tagList.end()) {
+            if(*it == tag) {
+                setData(index(row, 0), 1, Qt::UserRole + 8); // owned
+                tagList.erase(it); break;
+            } else {
+                ++it;
+            }
+        }
+    }
+    submitAll();
 }

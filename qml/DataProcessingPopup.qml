@@ -1,17 +1,14 @@
-import QtQuick 6.2
-import QtQuick.Controls 6.2
+import QtQuick 6.3
+import QtQuick.Controls 6.3
 
 Popup {
     id: root
 
-    function show() {
-        progressBar.value = 0
-        visible = true
-    }
+    signal cancelled
 
-    function hide() {
-        visible = false
-    }
+    property string contentText
+
+    Component.onCompleted: open()
 
     function setValue(value) {
         progressBar.value = value
@@ -21,6 +18,7 @@ Popup {
         progressBar.to = value
     }
 
+    dim: true
     modal: true
     closePolicy : progressBar.value > 0 ?
                       Popup.NoAutoClose
@@ -32,11 +30,16 @@ Popup {
         anchors.topMargin: 5
         anchors.horizontalCenter:
             parent.horizontalCenter
+
+        property string titleActionText : ""
+
         text : progressBar.value > 0 ?
-                   qsTr("Processing %1/%2")
+                   qsTr("%1 %2/%3")
+                   .arg(root.contentText)
                    .arg(progressBar.value)
                    .arg(progressBar.to)
-                 : qsTr("Processing file...")
+                 : qsTr("%1...")
+                   .arg(root.contentText)
         color: "white"
         font.family: "Roboto"
         font.pointSize: 11
@@ -62,6 +65,7 @@ Popup {
         font.pointSize: 11
 
         onClicked: {
+            root.cancelled()
             root.close()
         }
     }

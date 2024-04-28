@@ -12,6 +12,10 @@
 #include <QHash>
 #include <QDir>
 
+#include <QPermission>
+
+#include <qzxing/QZXing.h>
+
 #include "databasemanager.h"
 #include "imagemanager.h"
 #include "filemanager.h"
@@ -83,7 +87,7 @@ int main(int argc, char *argv[])
 
     /************************* Database *****************************/
 
-    ComManager comManager;    
+    ComManager comManager;
     DatabaseManager dbManager(paramHash);
 
     // in case of unknown database detected, we fetch it on the server
@@ -94,7 +98,7 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_ANDROID
         db_view->setGeometry(screen->availableGeometry());
 #else
-            db_view->setGeometry(rect);
+        db_view->setGeometry(rect);
 #endif
 
         db_view->setResizeMode(QQuickView::SizeRootObjectToView);
@@ -153,7 +157,15 @@ int main(int argc, char *argv[])
     }
 
 #ifdef Q_OS_ANDROID
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+    QCameraPermission cameraPermission;
+    if(qApp->checkPermission(cameraPermission) == Qt::PermissionStatus::Undetermined) {
+        qApp->requestPermission(QCameraPermission{}, [](const QPermission &permission) {});
+    }
+#endif
     window->setGeometry(screen->availableGeometry());
+
 #else
     window->setGeometry(rect);
 #endif
@@ -189,38 +201,59 @@ int main(int argc, char *argv[])
         settings.sync();
     };
 
-    QThread dlCoversThread;
+    QThread checkDBThread;
 
-    auto dialog = rootObject->findChild<QObject*>("coverProcessingPopup");
-    comManager.setProgressDialog(dialog);
+    QObject::connect(&comManager, SIGNAL(uploadingDBStarted()), rootObject, SLOT(onUploadingDBStarted()));
+    QObject::connect(&comManager, SIGNAL(checkingNewDBStarted()), rootObject, SLOT(onCheckingNewDBStarted()));
+    QObject::connect(&comManager, SIGNAL(uploadingCoversStarted()), rootObject, SLOT(onUploadingCoversStarted()));
+    QObject::connect(&comManager, SIGNAL(downloadingCoversStarted()), rootObject, SLOT(onDownloadingCoversStarted()));
 
-    QObject::connect(dialog, SIGNAL(aboutToHide()), dbManager.currentProxyModel(), SLOT(invalidate()));
-    QObject::connect(dialog, SIGNAL(aboutToHide()), &dlCoversThread, SLOT(quit()));
-    QObject::connect(&dbManager, SIGNAL(databaseChanged()), &dlCoversThread, SLOT(start()));
-    QObject::connect(&dlCoversThread, &QThread::started, &comManager, [&]() {
-        auto platformName = rootObject->property("platformName").toString();
-        comManager.downloadCovers(platformName);
+    QObject::connect(&comManager, SIGNAL(uploadingDBFinished()), rootObject, SLOT(onProcessFinished()));
+    QObject::connect(&comManager, SIGNAL(checkingNewDBFinished()), rootObject, SLOT(onProcessFinished()));
+    QObject::connect(&comManager, SIGNAL(uploadingCoversFinished()), rootObject, SLOT(onProcessFinished()));
+    QObject::connect(&comManager, SIGNAL(downloadingCoversFinished()), rootObject, SLOT(onProcessFinished()));
+
+    QObject::connect(&comManager, SIGNAL(maxValueChanged(int)), rootObject, SLOT(onMaxValueChanged(int)));
+    QObject::connect(&comManager, SIGNAL(valueChanged(int)), rootObject, SLOT(onValueChanged(int)));
+
+    QObject::connect(rootObject, SIGNAL(processCancelled()), &checkDBThread, SLOT(quit()));
+    QObject::connect(&dbManager, SIGNAL(databaseChanged()), &checkDBThread, SLOT(start()));
+
+    // QObject::connect(&checkDBThread, &QThread::finished, []() {
+    //     qDebug() << "thread DEAD";
+    // });
+
+    QObject::connect(&checkDBThread, &QThread::started, [&]() {
+        if(comManager.checkNewDB()) {
+            QEventLoop loop;
+
+            QMetaObject::invokeMethod(rootObject, "onNewDataBaseDetected", Qt::BlockingQueuedConnection);
+            QObject::connect(rootObject, SIGNAL(newDatabasePopupClosed()), &loop, SLOT(quit()));
+
+            loop.exec();
+        }
+        comManager.downloadCovers();
+
+        checkDBThread.quit();
+    });
+    comManager.moveToThread(&checkDBThread);
+
+    QObject::connect(&app, &QGuiApplication::aboutToQuit, [&](){
+        saveSettings();
+        checkDBThread.quit();
     });
 
-    comManager.moveToThread(&dlCoversThread);
-
 #ifdef Q_OS_ANDROID
-        // Because there is now way to catch aboutToClose signal with gesture navigation on Android
     QObject::connect(&app, &QGuiApplication::applicationStateChanged,
                      [&](Qt::ApplicationState state){
                          if(state != Qt::ApplicationActive) {
                              saveSettings();
                          }
                      });
-#else
-    QObject::connect(&app, &QGuiApplication::aboutToQuit, [&](){
-        saveSettings();
-        dlCoversThread.quit();
-    });
 #endif
 
-    // initial downloading of covers
-    dlCoversThread.start();
+    // initial DB checking and downloading of covers
+    checkDBThread.start();
 
     return app.exec();
 }
