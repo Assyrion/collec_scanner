@@ -8,7 +8,7 @@ Item {
     property alias entry:    textField.text
     property alias editable: textField.enabled
 
-    function reset() {}
+    signal reset
 
     Label {
         id: labelName

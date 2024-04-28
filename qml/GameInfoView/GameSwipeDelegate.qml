@@ -197,9 +197,7 @@ Pane {
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
-            function reset() {
-                entry = model.code
-            }
+            onReset: entry = model.code
         }
         GameInfoListDelegate {
             id: titleInfo
@@ -209,9 +207,7 @@ Pane {
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 60
-            function reset() {
-                entry = model.title
-            }
+            onReset: entry = model.title
         }
         GameInfoListDelegate {
             id: publisherInfo
@@ -221,9 +217,7 @@ Pane {
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
-            function reset() {
-                entry = model.publisher
-            }
+            onReset: entry = model.publisher
         }
         GameInfoListDelegate {
             id: developerInfo
@@ -233,9 +227,7 @@ Pane {
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.preferredHeight: 40
-            function reset() {
-                entry = model.developer
-            }
+            onReset: entry = model.developer
         }
         GameInfoListDelegate {
             id: infoInfo
@@ -245,9 +237,7 @@ Pane {
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
             Layout.fillHeight: true
-            function reset() {
-                entry = model.info
-            }
+            onReset: entry = model.info
         }
         Item {
             id: ownedInfo
@@ -255,7 +245,8 @@ Pane {
             Layout.preferredHeight: 30
 
             property alias entry: ownedCheckBox.checked
-            function reset() {}
+
+            signal reset
 
             enabled: (index >= 0)
 
