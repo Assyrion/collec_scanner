@@ -108,7 +108,6 @@ Item {
         interactive: false
         spacing: 5
 
-
         Component.onCompleted: {
             model = root.titleProxyModel
         }

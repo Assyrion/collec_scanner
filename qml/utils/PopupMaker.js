@@ -129,17 +129,3 @@ function showAllOwnedWarning(parent, owned) {
     }
     return null
 }
-
-function showNewDatabase(parent) {
-    var cpt = Qt.createComponent("CSActionPopup.qml")
-    if (cpt.status === Component.Ready) {
-        return cpt.createObject(parent, {"contentText" : qsTr("A new %1 database is available on the server.<br><br>Would you like to download it ?<br><br>Warning : The current database will be replaced !").arg(platformName),
-                                    "width" : 3*parent.width/4,
-                                    "height": parent.height/3,
-                                    "x"     : parent.width/8,
-                                    "y"     : parent.height/4+50,
-                                    "z"     : 1})
-
-    }
-    return null
-}

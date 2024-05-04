@@ -10,8 +10,8 @@ Item {
     property bool editMode: false
     property alias currentIndex:
         swipeView.currentIndex
-    property alias currentItem:
-        swipeView.currentItem
+    property var currentItem:
+        swipeView.itemAtIndex(currentIndex) // because real currentItem is not always the current item at currentIndex in ListView
 
     signal closed
 
@@ -51,7 +51,6 @@ Item {
 
         interactive: !editMode
         orientation: Qt.Vertical
-        currentIndex: 0
 
         Component.onCompleted: {
             swipeView.model = dbManager.currentProxyModel // initial DB
@@ -70,13 +69,13 @@ Item {
         highlightRangeMode: ListView.StrictlyEnforceRange
 
         delegate : GameSwipeDelegate {
-            index: Math.max(swipeView.currentIndex, 0)
+            _index: index
             count: swipeView.count
             editMode: root.editMode
             height: root.height
             width: root.width
-            onIsOwnedChanged: {
-                if(!isOwned) {
+            onOwnedClicked: (owned) => {
+                if(!owned) {
                     root.cancelGame()
                 }
             }

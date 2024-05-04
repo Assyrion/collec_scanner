@@ -71,6 +71,7 @@ void SqlTableModel::updateData(const QModelIndex &index, const QVariantList& dat
     setItemData(index, rolesData);
 
     submitAll();
+    select();
 
     emit dataUpdated();
 }

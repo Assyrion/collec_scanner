@@ -16,14 +16,16 @@ Pane {
     bottomPadding: 0
 
     property int count: 0
-    property int index: -1
+    property int _index: -1
 
-    property bool isOwned : (index < 0) || (model?.owned)
+    property bool isOwned : (_index < 0) || (model?.owned)
     property bool editMode: false
     property string currentTag: ""
 
+    signal ownedClicked(bool owned)
+
     Component.onCompleted: {
-        if(index < 0 && currentTag === "") { // new game creation
+        if(_index < 0 && currentTag === "") { // new game creation
             var rand = Math.random().toFixed(6)
             currentTag = Qt.binding(function() {
                 var _in  = "notag_" + titleInfo.entry
@@ -31,7 +33,7 @@ Pane {
                 _in = _in.replace(/\W/g,'')
                 return _in
             })
-        } else if(index >= 0){
+        } else if(_index >= 0){
             currentTag = Qt.binding(() => { return model.tag })
         }
     }
@@ -63,7 +65,7 @@ Pane {
     // return source index from this index
     function getSourceIdx() {
         var proxyModel = dbManager.currentProxyModel
-        var proxyIdx = proxyModel.index(index, 0)
+        var proxyIdx = proxyModel.index(_index, 0)
         return proxyModel.mapToSource(proxyIdx)
     }
 
@@ -86,7 +88,7 @@ Pane {
         var sourceIdx = getSourceIdx()
 
         // In case we're creating a new game
-        if(index < 0) {
+        if(_index < 0) {
             sqlModel.prepareInsertRow() // insert new row at the beginning
             sourceIdx = sqlModel.index(0, 0)
         }
@@ -109,7 +111,7 @@ Pane {
         var sourceIdx = getSourceIdx()
 
         var proxyModel = dbManager.currentProxyModel
-        proxyModel.removeRow(index) // remove from proxyModel and database
+        proxyModel.removeRow(_index) // remove from proxyModel and database
 
         var sqlModel = dbManager.currentSqlModel
         sqlModel.select() // need to be done before reevaluating sugbgame values
@@ -173,8 +175,8 @@ Pane {
         GameInfoListDelegate {
             id: indexInfo
             name: qsTr("Index");
-            entry: (index < 0) ? ""
-                               : (index+1) + "/" + count
+            entry: (_index < 0) ? ""
+                               : (_index+1) + "/" + count
             editable: false
             opacity: root.isOwned ? 1 : 0.4
             Layout.fillWidth: true
@@ -248,7 +250,7 @@ Pane {
 
             signal reset
 
-            enabled: (index >= 0)
+            enabled: (_index >= 0)
 
             Label {
                 id: labelName
@@ -269,7 +271,10 @@ Pane {
                 anchors.verticalCenter:
                     labelName.verticalCenter
                 checked: root.isOwned
-                onClicked: model.owned = checked ? 1 : 0
+                onClicked: {
+                    model.owned = checked ? 1 : 0
+                    root.ownedClicked(model.owned)
+                }
             }
         }
     }

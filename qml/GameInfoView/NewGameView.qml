@@ -16,7 +16,7 @@ Item {
         currentTag: tag
         editMode: true
         isOwned: true
-        index: -1
+        _index: -1
     }
 
     RowLayout {
