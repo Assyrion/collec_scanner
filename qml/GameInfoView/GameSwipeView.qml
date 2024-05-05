@@ -8,10 +8,8 @@ Item {
     id: root
 
     property bool editMode: false
-    property alias currentIndex:
-        swipeView.currentIndex
-    property var currentItem:
-        swipeView.itemAtIndex(currentIndex) // because real currentItem is not always the current item at currentIndex in ListView
+    property alias currentIndex: swipeView.currentIndex
+    property alias currentItem:  swipeView.currentItem
 
     signal closed
 
@@ -69,7 +67,7 @@ Item {
         highlightRangeMode: ListView.StrictlyEnforceRange
 
         delegate : GameSwipeDelegate {
-            _index: index
+            _index: Math.max(currentIndex, 0) // prevent accidental -1 index
             count: swipeView.count
             editMode: root.editMode
             height: root.height
