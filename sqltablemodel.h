@@ -42,7 +42,6 @@ private:
 
 signals:
 
-    void dataUpdated();
     void roleNamesListChanged();
 };
 

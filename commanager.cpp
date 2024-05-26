@@ -46,7 +46,7 @@ void ComManager::downloadCovers()
     toDir.setFilter(QDir::Files | QDir::NoSymLinks);
     toDir.setNameFilters(QStringList() << "*.png");
 
-    // Before downloading, we check if a previsous version of the app already has cover in pic folder
+    // Before downloading, we check if a previous version of the app already has cover in pic folder
     QStringList fileList = picDir.entryList();
     foreach (const QString &fileName, fileList) {
         QString sourceFilePath = picDir.absoluteFilePath(fileName);

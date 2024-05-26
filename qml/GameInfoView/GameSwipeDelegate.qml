@@ -20,7 +20,9 @@ Pane {
 
     property bool isOwned : (_index < 0) || (model?.owned)
     property bool editMode: false
+
     property string currentTag: ""
+    property string currentTitle: ""
 
     signal ownedClicked(bool owned)
 
@@ -84,13 +86,16 @@ Pane {
             comManager.handleBackCover(coverSubfolder)
         }
 
-        var sqlModel= dbManager.currentSqlModel
+        var proxyModel = dbManager.currentProxyModel
+        var sqlModel = dbManager.currentSqlModel
         var sourceIdx = getSourceIdx()
 
         // In case we're creating a new game
         if(_index < 0) {
             sqlModel.prepareInsertRow() // insert new row at the beginning
             sourceIdx = sqlModel.index(0, 0)
+        } else {
+            currentTitle = model.title // save old title
         }
 
         var dataList = [currentTag,
@@ -103,6 +108,12 @@ Pane {
                         ownedInfo.entry]
 
         sqlModel.updateData(sourceIdx, dataList)
+
+        if(titleInfo.entry != currentTitle) {
+            if(proxyModel.groupVar) {
+                proxyModel.rebuildTitleMap()
+            }
+        }
     }
 
     function removeGame() {
@@ -110,13 +121,17 @@ Pane {
 
         var sourceIdx = getSourceIdx()
 
+        var sqlModel = dbManager.currentSqlModel
         var proxyModel = dbManager.currentProxyModel
+
         proxyModel.removeRow(_index) // remove from proxyModel and database
 
-        var sqlModel = dbManager.currentSqlModel
+        sqlModel.prepareRemoveRow(sourceIdx)
         sqlModel.select() // need to be done before reevaluating sugbgame values
 
-        sqlModel.prepareRemoveRow(sourceIdx)
+        if(proxyModel.groupVar) {
+            proxyModel.rebuildTitleMap() // reevaluating sugbgame values
+        }
     }
 
     function cancelGame() {

@@ -45,25 +45,20 @@ void SortFilterProxyModel::sort(int column, Qt::SortOrder order)
 
     QSortFilterProxyModel::sort(column, order);
 
-    prepareInvalidateFilter();
+    invalidateRowsFilter(); // no need to rebuild map
 }
 
 void SortFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
     QSortFilterProxyModel::setSourceModel(sourceModel);
 
-    /* there is no signal perfectly adapted to detect that one item has been updated
-     (layoutChanged only when row changed, and dataChanged called for every column...) */
-    QObject::connect(static_cast<SqlTableModel*>(sourceModel), &SqlTableModel::dataUpdated, [&](){
-        if(m_groupVar.toBool())
-            rebuildTitleMap();
-    });
-
     setFilterKeyColumn(0);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
     setSortCaseSensitivity(Qt::CaseInsensitive);
 
     sort(m_orderBy.toInt(), m_sortOrder.value<Qt::SortOrder>());
+
+    prepareInvalidateFilter();
 }
 
 void SortFilterProxyModel::resetFilter()

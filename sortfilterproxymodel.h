@@ -47,6 +47,7 @@ public:
     Q_INVOKABLE void setGroupVar(bool groupVar);
 
     Q_INVOKABLE void resetFilter();
+    Q_INVOKABLE void rebuildTitleMap();
 
     bool getEssentialsFilter() const;
     bool getEssentialsOnly() const;
@@ -81,7 +82,6 @@ private:
     QHash<QString, TitleFilterProxyModel*> m_titleFilterProxyMap;
     SubgameFilterProxyModel* m_subgameFilterProxyModel;
 
-    void rebuildTitleMap();
     void prepareInvalidateFilter();
 
 signals:

@@ -72,8 +72,6 @@ void SqlTableModel::updateData(const QModelIndex &index, const QVariantList& dat
 
     submitAll();
     select();
-
-    emit dataUpdated();
 }
 
 QVariant SqlTableModel::data(const QModelIndex &index, int role) const
@@ -151,8 +149,6 @@ void SqlTableModel::prepareInsertRow()
 void SqlTableModel::prepareRemoveRow(int row)
 {
     m_subgamesVector.removeAt(row);
-
-    emit dataUpdated();
 }
 
 QStringList SqlTableModel::saveOwnedData()
