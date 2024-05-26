@@ -24,6 +24,7 @@ Item {
     function saveGame() {
         root.editMode = false
         var savedTag = root.currentItem.currentTag // index may have changed after edition
+
         root.currentItem.saveGame()
 
         var idx = dbManager.currentProxyModel.getIndexFiltered(savedTag) // get the new index
@@ -76,6 +77,9 @@ Item {
                 if(!owned) {
                     root.cancelGame()
                 }
+                var idx = dbManager.currentProxyModel.getIndexFiltered(currentTag) // get the new index
+                if(idx < 0)
+                    root.closed()
             }
         }
     }
