@@ -109,7 +109,7 @@ Pane {
 
         sqlModel.updateData(sourceIdx, dataList)
 
-        if(titleInfo.entry != currentTitle) {
+        if(titleInfo.entry != currentTitle || currentTitle.length === 0) { // either the title has changed or it has been left empty
             if(proxyModel.groupVar) {
                 proxyModel.rebuildTitleMap()
             }
