@@ -9,6 +9,7 @@ Popup {
     id: root
 
     required property double coverRatio
+    readonly property int maxSize: 500
 
     Component.onCompleted:  {
         open()
@@ -68,11 +69,20 @@ Popup {
             anchors.horizontalCenter:
                 parent.horizontalCenter
             onClicked: {
+                var w, h
+
+                if(root.coverRatio <= 1) {
+                    h = Math.min(root.maxSize, loader.height*2)
+                    w = h * root.coverRatio
+                } else {
+                    w = Math.min(root.maxSize, loader.width*2)
+                    h = w / root.coverRatio
+                }
+
                 loader.item.grabToImage(function(result) {
                     boundImg.imgData = result.image;
                     boundImg.imgUrl  = result.url;
-                }, Qt.size(loader.width*2,
-                           loader.height*2));
+                }, Qt.size(w, h));
             }
         }
     }

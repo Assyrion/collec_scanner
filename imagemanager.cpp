@@ -64,9 +64,17 @@ void ImageManager::saveBackPic(const QString& tag, const QImage& pic) const
 
 void ImageManager::savePic(const QString& fileName, const QImage& pic) const
 {
+    QImage pic_resized(pic);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+    float dpr = pic.devicePixelRatioF(); // devicePixelRatio is took in account when grabToImage from Qt6.7
+    pic_resized = pic.scaled(pic.width()/dpr,
+                             pic.height()/dpr);
+#endif
+
     QString path = Global::PICPATH_ABS + fileName;
-    if(!pic.isNull()) {
-        pic.save(path);
+    if(!pic_resized.isNull()) {
+        pic_resized.save(path);
     }
 }
 
