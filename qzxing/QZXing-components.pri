@@ -409,20 +409,23 @@ qzxing_multimedia {
     DEFINES += QZXING_MULTIMEDIA
 	PRL_EXPORT_DEFINES += QZXING_MULTIMEDIA
 
-   lessThan(QT_VERSION, 6.2) {
-        HEADERS += \
-            $$PWD/QZXingFilter.h
+    VERSION_LIST = $$split(QT_VERSION, .)
+    QT_VERSION_SECOND = $$member(VERSION_LIST, 1) # get mid digit version of Qt
 
-        SOURCES += \
-          $$PWD/QZXingFilter.cpp
-  }
-  greaterThan(QT_VERSION, 6.1) {
-    QT += concurrent
-    HEADERS += \
-        $$PWD/QZXingFilterVideoSink.h
-    SOURCES += \
-        $$PWD/QZXingFilterVideoSink.cpp
-  }
+    # Have to double check because comparison string fail with >= Qt6.10
+    lessThan(QT_VERSION, 6.2) : lessThan(QT_VERSION_SECOND, 2) {
+         HEADERS += \
+             $$PWD/QZXingFilter.h
+
+         SOURCES += \
+           $$PWD/QZXingFilter.cpp
+    } else {
+      QT += concurrent
+      HEADERS += \
+          $$PWD/QZXingFilterVideoSink.h
+      SOURCES += \
+          $$PWD/QZXingFilterVideoSink.cpp
+    }
 }
 
 qzxing_qml {
