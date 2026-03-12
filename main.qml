@@ -1,4 +1,4 @@
-import QtQuick 6.3
+import QtQuick 6.9
 import QtQuick.Window 6.3
 import QtQuick.Controls 6.3
 import QtQuick.Layouts 6.3
@@ -21,6 +21,7 @@ Window {
 
     visible: true
     visibility: Window.AutomaticVisibility
+    color: Material.backgroundColor
 
     required property ComManager comManager
     required property FileManager fileManager
@@ -63,6 +64,11 @@ Window {
         }
 
         anchors.fill: parent
+        anchors.topMargin: parent.SafeArea.margins.top
+        anchors.bottomMargin: parent.SafeArea.margins.bottom
+        anchors.leftMargin: parent.SafeArea.margins.left
+        anchors.rightMargin: parent.SafeArea.margins.right
+        clip: true
 
         readonly property int defaultIndex: 1
         // Need to check when the item is fully loaded on the view
@@ -246,8 +252,8 @@ Window {
     Component {
         id: newGameCpt
         NewGameView {
-            width: mainWindow.width
-            height: mainWindow.height
+            width: view.width
+            height: view.height
             onClosed: {
                 view.setCurrentIndex(view.defaultIndex)
                 destroy()

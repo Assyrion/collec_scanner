@@ -19,4 +19,6 @@ gameData/pic/5055277005499_back\.png
 
 gameData/pic/5055277005499_front\.png
 
+build/*
+
 *.qm

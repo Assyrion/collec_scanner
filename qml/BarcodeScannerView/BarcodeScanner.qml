@@ -18,7 +18,7 @@ Rectangle {
         loader.active = false
     }
 
-    color: "black"
+    color: Material.backgroundColor
 
     Loader {
         id: loader
