@@ -66,7 +66,6 @@ void SqlTableModel::updateData(const QModelIndex &index, const QVariantList& dat
     for(int i = 0; i < data.count(); i++) {
         rolesData.insert(Qt::UserRole + i + 1, data[i]);
     }
-    rolesData.insert(Qt::UserRole + 9, 0);
 
     setItemData(index, rolesData);
 

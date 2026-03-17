@@ -72,6 +72,16 @@ Pane {
     }
 
     function saveGame() {
+
+        var dataList = [currentTag,
+                        titleInfo.entry,
+                        platformInfo.entry,
+                        publisherInfo.entry,
+                        developerInfo.entry,
+                        codeInfo.entry,
+                        infoInfo.entry,
+                        ownedInfo.entry]
+
         // handle cover before modifying DB !
         var coverSubfolder = platformName + "/" + currentTag
 
@@ -98,18 +108,11 @@ Pane {
             currentTitle = model.title // save old title
         }
 
-        var dataList = [currentTag,
-                        titleInfo.entry,
-                        platformInfo.entry,
-                        publisherInfo.entry,
-                        developerInfo.entry,
-                        codeInfo.entry,
-                        infoInfo.entry,
-                        ownedInfo.entry]
-
         sqlModel.updateData(sourceIdx, dataList)
 
-        if(titleInfo.entry != currentTitle || currentTitle.length === 0) { // either the title has changed or it has been left empty
+        // either the title has changed or it has been left empty
+        // do not use titleInfo.entry directly because it changes after updateData is called
+        if(dataList[1] !== currentTitle || currentTitle.length === 0) {
             if(proxyModel.groupVar) {
                 proxyModel.rebuildTitleMap()
             }

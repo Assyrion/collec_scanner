@@ -1,6 +1,7 @@
 #include "sortfilterproxymodel.h"
 #include "titlefilterproxymodel.h"
-#include "sqltablemodel.h"
+
+using namespace Qt::StringLiterals;
 
 const QString platinum_code_marker = "/P";
 const QString essentials_code_marker = "/E";
@@ -189,33 +190,35 @@ TitleFilterProxyModel* SortFilterProxyModel::getTitleFilterProxyModel(const QStr
 
 void SortFilterProxyModel::rebuildTitleMap()
 {
-    QHash<QString, QList<QPair<int, QString>>> hash;
-    for (int row = 0; row < rowCount(); ++row) {
+    using GameType = QPair<int, QString>;
+    QHash<QString, QList<GameType>> hash;
 
+    for(int row : std::views::iota(0, rowCount())) {
         setData(index(row, 0), 0, Qt::UserRole + 9); // becomes a single game
 
         auto title = data(index(row, 0), Qt::UserRole + 2).toString(); // get title
 
-        static const QRegularExpression regex("^(.*?)(?:\\(|$)");
-        const QRegularExpressionMatch match = regex.match(title);
+        static const QRegularExpression regex(uR"(^(.*?)(?:\(|$))"_s); // extract title before any '('
+        const auto match = regex.match(title);
 
         if (match.hasMatch()) {
-            QString titleCaptured = match.captured(1).trimmed();
-            hash[titleCaptured] << qMakePair(row, title);
+            auto titleCaptured = match.captured(1).trimmed();
+            hash[titleCaptured].emplaceBack(row, title);
         }
     }
     hash.removeIf([](decltype(hash)::iterator i) { return i->count() == 1; }); // remove unique games
 
-    for (auto it = hash.begin(); it != hash.end(); ++it) {
-        auto& list = it.value();
-        std::sort(list.begin(), list.end(),
-                  [&](const auto &left, const auto &right) {
-                      setData(index(left.first,  0), 2, Qt::UserRole + 9); // becomes a subgame
-                      setData(index(right.first, 0), 2, Qt::UserRole + 9); // becomes a subgame
-                      return left.second < right.second;
-                  });
+    for (auto [titleCaptured, list] : hash.asKeyValueRange()) {
 
-        setData(index(list[0].first, 0), 1, Qt::UserRole + 9); // becomes a container
+        std::ranges::sort(list, {}, &GameType::second);
+
+        bool isFirst = true;
+        for (const auto& [originalRow, fullTitle] : std::as_const(list)) {
+            const int status = isFirst ? 1 : 2; // 1 is for container, 2 is for subgame
+
+            setData(index(originalRow, 0), status, Qt::UserRole + 9);
+            isFirst = false;
+        }
     }
 
     m_subgameFilterProxyModel->invalidate();
