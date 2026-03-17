@@ -218,12 +218,12 @@ Cette action est irreversible.</translation>
         <translation>Plateforme</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="147"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="146"/>
         <source>Set not owned</source>
         <translation>Marquer non possédés</translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="148"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="147"/>
         <source>Set owned</source>
         <translation>Marquer possédés</translation>
     </message>
@@ -258,65 +258,73 @@ Cette action est irreversible.</translation>
 <context>
     <name>DataProcessingPopup</name>
     <message>
-        <location filename="../qml/DataProcessingPopup.qml" line="43"/>
+        <location filename="../qml/DataProcessingPopup.qml" line="37"/>
         <source>%1 %2/%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/DataProcessingPopup.qml" line="47"/>
+        <location filename="../qml/DataProcessingPopup.qml" line="41"/>
         <source>%1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/DataProcessingPopup.qml" line="63"/>
+        <location filename="../qml/DataProcessingPopup.qml" line="57"/>
         <source>cancel</source>
         <translation>annuler</translation>
     </message>
 </context>
 <context>
+    <name>EbayPricesPopup</name>
+    <message>
+        <location filename="../qml/GameInfoView/EbayPricesPopup.qml" line="121"/>
+        <source>No Data</source>
+        <translation>Pas de données</translation>
+    </message>
+</context>
+<context>
     <name>GameSwipeDelegate</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="166"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="186"/>
         <source>Tag</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="175"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="195"/>
         <source>Index</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="194"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="214"/>
         <source>Code</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="203"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="224"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="185"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="205"/>
         <source>Platform</source>
         <translation>Plateforme</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="230"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="254"/>
         <source>info</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="212"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="234"/>
         <source>Publisher</source>
         <translation>Editeur</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="221"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="244"/>
         <source>Developer</source>
         <translation>Developpeur</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="257"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="283"/>
         <source>In my collection</source>
         <translation>Dans ma collection</translation>
     </message>
@@ -328,27 +336,27 @@ Cette action est irreversible.</translation>
         <translation type="vanished">Etes-vous sûr ?</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="96"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="97"/>
         <source>cancel</source>
         <translation>annuler</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="97"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="98"/>
         <source>close</source>
         <translation>fermer</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="115"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="116"/>
         <source>save</source>
         <translation>enregistrer</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="116"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="117"/>
         <source>edit</source>
         <translation>modifier</translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="137"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="138"/>
         <source>delete</source>
         <translation>supprimer</translation>
     </message>
@@ -443,19 +451,12 @@ Cette action est irreversible.</translation>
         <translation>Cette action marquera tous les jeux de la base de données %1 comme %2 dans votre collection !</translation>
     </message>
     <message>
-        <location filename="../qml/utils/PopupMaker.js" line="136"/>
         <source>A new %1 database is available on the server.&lt;br&gt;&lt;br&gt;Would you like to download it ?&lt;br&gt;&lt;br&gt;Warning : The current database will be replaced !</source>
-        <translation>Une nouvelle base de données %1 est disponible sur le serveur.&lt;br&gt;&lt;br&gt;Voulez-vous la télécharger ?&lt;br&gt;&lt;br&gt;Attention : La base de données actuelle sera remplacée !</translation>
+        <translation type="vanished">Une nouvelle base de données %1 est disponible sur le serveur.&lt;br&gt;&lt;br&gt;Voulez-vous la télécharger ?&lt;br&gt;&lt;br&gt;Attention : La base de données actuelle sera remplacée !</translation>
     </message>
     <message>
-        <location filename="../qml/utils/PopupMaker.js" line="150"/>
         <source>Checking for new database</source>
-        <translation type="unfinished">Recherche de base de données</translation>
-    </message>
-    <message>
-        <location filename="../qml/utils/PopupMaker.js" line="163"/>
-        <source>Downloading covers</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Recherche de base de données</translation>
     </message>
     <message>
         <source>A new %1 database is available on the server.&lt;br&gt;&lt;br&gt;Would you like to download it ?&lt;br&gt;&lt;br&gt;! This will discard any change of the current database !</source>
@@ -519,9 +520,8 @@ Cette action est irreversible.</translation>
 <context>
     <name>PricesPopup</name>
     <message>
-        <location filename="../qml/GameInfoView/PricesPopup.qml" line="124"/>
         <source>No Data</source>
-        <translation>Pas de données</translation>
+        <translation type="vanished">Pas de données</translation>
     </message>
 </context>
 <context>
@@ -543,22 +543,22 @@ Cette action est irreversible.</translation>
         <translation type="vanished">Vous ne possédez pas ce jeu. Voulez-vous l&apos;ajouter à votre collection ?</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="162"/>
+        <location filename="../main.qml" line="170"/>
         <source>Checking for new database</source>
         <translation>Recherche de base de données</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="172"/>
+        <location filename="../main.qml" line="180"/>
         <source>Uploading database</source>
         <translation>Envoi de la base de données</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="182"/>
+        <location filename="../main.qml" line="190"/>
         <source>Downloading covers</source>
         <translation>Téléchargement des jaquettes</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="192"/>
+        <location filename="../main.qml" line="200"/>
         <source>Uploading covers</source>
         <translation>Envoi des jaquettes</translation>
     </message>

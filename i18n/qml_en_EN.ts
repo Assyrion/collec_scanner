@@ -126,12 +126,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="147"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="146"/>
         <source>Set not owned</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="148"/>
+        <location filename="../qml/CollectionView/ConfigMenuBar.qml" line="147"/>
         <source>Set owned</source>
         <translation type="unfinished"></translation>
     </message>
@@ -139,65 +139,73 @@
 <context>
     <name>DataProcessingPopup</name>
     <message>
-        <location filename="../qml/DataProcessingPopup.qml" line="43"/>
+        <location filename="../qml/DataProcessingPopup.qml" line="37"/>
         <source>%1 %2/%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/DataProcessingPopup.qml" line="47"/>
+        <location filename="../qml/DataProcessingPopup.qml" line="41"/>
         <source>%1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/DataProcessingPopup.qml" line="63"/>
+        <location filename="../qml/DataProcessingPopup.qml" line="57"/>
         <source>cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EbayPricesPopup</name>
+    <message>
+        <location filename="../qml/GameInfoView/EbayPricesPopup.qml" line="121"/>
+        <source>No Data</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>GameSwipeDelegate</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="166"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="186"/>
         <source>Tag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="175"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="195"/>
         <source>Index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="194"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="214"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="203"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="224"/>
         <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="185"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="205"/>
         <source>Platform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="230"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="254"/>
         <source>info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="212"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="234"/>
         <source>Publisher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="221"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="244"/>
         <source>Developer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="257"/>
+        <location filename="../qml/GameInfoView/GameSwipeDelegate.qml" line="283"/>
         <source>In my collection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -205,27 +213,27 @@
 <context>
     <name>GameSwipeView</name>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="96"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="97"/>
         <source>cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="97"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="98"/>
         <source>close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="115"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="116"/>
         <source>save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="116"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="117"/>
         <source>edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="137"/>
+        <location filename="../qml/GameInfoView/GameSwipeView.qml" line="138"/>
         <source>delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -340,29 +348,6 @@ This action is irreversible.</source>
         <source>not owned</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../qml/utils/PopupMaker.js" line="136"/>
-        <source>A new %1 database is available on the server.&lt;br&gt;&lt;br&gt;Would you like to download it ?&lt;br&gt;&lt;br&gt;Warning : The current database will be replaced !</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/utils/PopupMaker.js" line="150"/>
-        <source>Checking for new database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/utils/PopupMaker.js" line="163"/>
-        <source>Downloading covers</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PricesPopup</name>
-    <message>
-        <location filename="../qml/GameInfoView/PricesPopup.qml" line="124"/>
-        <source>No Data</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>download_db_view</name>
@@ -375,22 +360,22 @@ This action is irreversible.</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.qml" line="162"/>
+        <location filename="../main.qml" line="170"/>
         <source>Checking for new database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="172"/>
+        <location filename="../main.qml" line="180"/>
         <source>Uploading database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="182"/>
+        <location filename="../main.qml" line="190"/>
         <source>Downloading covers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="192"/>
+        <location filename="../main.qml" line="200"/>
         <source>Uploading covers</source>
         <translation type="unfinished"></translation>
     </message>

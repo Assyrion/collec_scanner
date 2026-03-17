@@ -53,8 +53,8 @@ Pane {
         }
     }    
 
-    function showPricesPopup() {
-        var cpt = Qt.createComponent("PricesPopup.qml")
+    function showEbayPricesPopup() {
+        var cpt = Qt.createComponent("EbayPricesPopup.qml")
         if (cpt.status === Component.Ready) {
             cpt.createObject(root, { "tag" : currentTag,
                                  "width" : root.width * 0.8,
@@ -308,7 +308,7 @@ Pane {
         anchors.bottomMargin: 62
         font.pixelSize: 20
         onClicked: {
-            showPricesPopup()
+            showEbayPricesPopup()
         }
     }
 }

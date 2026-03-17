@@ -11,14 +11,16 @@ struct Global {
     inline static const QString REMOTE_PATH = "http://collecscanner.freeboxos.fr/";
     inline static const QString REMOTE_PIC_PATH = REMOTE_PATH + PICPATH + "/";
     inline static const QString REMOTE_DB_PATH = REMOTE_PATH + "db/";
-    inline static const QString REMOTE_UPLOAD_PIC_SCRIPT = REMOTE_PATH + "upload_cover_platform.php";
     inline static const QString REMOTE_UPLOAD_DB_SCRIPT = REMOTE_PATH + "upload_db.php";
+    inline static const QString REMOTE_UPLOAD_PIC_SCRIPT = REMOTE_PATH + "upload_cover_platform.php";
+    inline static const QString REMOTE_EBAYAPIKEYS_SCRIPT = REMOTE_PATH + "ebayapi_keys.php";
 
     inline static const int DEFAULT_VIEW = 0;
     inline static const int DEFAULT_WINDOW_X = 50;
     inline static const int DEFAULT_WINDOW_Y = 50;
     inline static const int DEFAULT_WINDOW_W = 512;
     inline static const int DEFAULT_WINDOW_H = 773;
+    inline static const QString DEFAULT_EBAYTOKEN = "dummy";
     inline static const QString DEFAULT_PLATFORM_NAME = "ps3";
     inline static const QStringList DEFAULT_SELECTED_PLATFORM = {"ps2", "ps3", "ps4", "ps5"};
 

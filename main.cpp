@@ -17,6 +17,7 @@
 #include <qzxing/QZXing.h>
 
 #include "databasemanager.h"
+#include "ebayapimanager.h"
 #include "imagemanager.h"
 #include "filemanager.h"
 #include "commanager.h"
@@ -26,6 +27,7 @@
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+    app.setApplicationName(APPNAME);
 
     /*************************** Init *****************************/
 
@@ -34,21 +36,24 @@ int main(int argc, char *argv[])
 
     QSettings settings(Global::DATAPATH + '/' + QString(APPNAME) + ".ini", QSettings::IniFormat);
 
-    settings.beginGroup("mainView");
-    auto collectionView = settings.value("view", Global::DEFAULT_VIEW).toInt();
-    settings.endGroup();
+    auto getSetting = [&](const QString &group, const QString &key, const QVariant &def) {
+        settings.beginGroup(group);
+        auto val = settings.value(key, def);
+        settings.endGroup();
+        return val;
+    };
 
-    settings.beginGroup("platform");
-    auto platformName = settings.value("name", Global::DEFAULT_PLATFORM_NAME).toString();
-    auto selectedPlatforms = settings.value("selected", Global::DEFAULT_SELECTED_PLATFORM).toStringList();
-    settings.endGroup();
+    auto collecView = getSetting("mainView", "view", Global::DEFAULT_VIEW).toInt();
+    auto ebayToken = getSetting("ebayapi", "token", Global::DEFAULT_EBAYTOKEN).toString();
+    auto platformName = getSetting("platform", "name", Global::DEFAULT_PLATFORM_NAME).toString();
+    auto selPlatforms = getSetting("platform", "selected", Global::DEFAULT_SELECTED_PLATFORM).toStringList();
 
     settings.beginGroup("params");
     QHash<QString, QVariantHash> paramHash;
-    for(const QString &group : settings.childGroups()) {
+    for(const auto &group : settings.childGroups()) {
         QVariantHash params;
         settings.beginGroup(group);
-        for(const QString &key : settings.childKeys()) {
+        for(const auto &key : settings.childKeys()) {
             params.insert(key, settings.value(key));
         }
         paramHash.insert(group, params);
@@ -122,12 +127,14 @@ int main(int argc, char *argv[])
     qmlRegisterType<ComManager>("ComManager", 1, 0, "ComManager");
     qmlRegisterType<FileManager>("FileManager", 1, 0, "FileManager");
     qmlRegisterType<ImageManager>("ImageManager", 1, 0, "ImageManager");
+    qmlRegisterType<EbayAPIManager>("EbayAPIManager", 1, 0, "EbayAPIManager");
 
     QQmlApplicationEngine engine;
 
-    ImageManager  imageManager;
-    FileManager   fileManager;
+    FileManager fileManager;
+    ImageManager imageManager;
     CoverProvider coverProvider(&imageManager);
+    EbayAPIManager ebayAPIManager(ebayToken);
 
     engine.rootContext()->setContextProperty("dbManager",
                                              &dbManager);
@@ -138,8 +145,9 @@ int main(int argc, char *argv[])
         {"fileManager", QVariant::fromValue(&fileManager)},
         {"platformName", QVariant::fromValue(platformName)},
         {"imageManager", QVariant::fromValue(&imageManager)},
-        {"collectionView", QVariant::fromValue(collectionView)},
-        {"selectedPlatforms", QVariant::fromValue(selectedPlatforms)}
+        {"collectionView", QVariant::fromValue(collecView)},
+        {"ebayAPIManager", QVariant::fromValue(&ebayAPIManager)},
+        {"selectedPlatforms", QVariant::fromValue(selPlatforms)}
     });
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
@@ -180,6 +188,10 @@ int main(int argc, char *argv[])
         settings.setValue("y", window->y());
         settings.setValue("w", window->width());
         settings.setValue("h", window->height());
+        settings.endGroup();
+
+        settings.beginGroup("ebayapi");
+        settings.setValue("token", ebayAPIManager.token());
         settings.endGroup();
 
         settings.beginGroup("platform");

@@ -13,16 +13,15 @@ Popup {
 
     Component.onCompleted:  {
         open()
-        priceModel = comManager.getPriceFromEbay(tag)
+        priceModel = ebayAPIManager.getCurrentSales(tag)
     }
 
-    topPadding: 1
-    bottomPadding: 1
-    leftPadding: 1
-    rightPadding: 1
+    topPadding: 0
+    bottomPadding: 0
+    leftPadding: 0
+    rightPadding: 0
 
     modal: true
-    //    dim: false
 
     background: RectangularGlow {
         glowRadius: 10
@@ -35,11 +34,9 @@ Popup {
         ListView {
             id: ebayItemListView
 
-            width: parent.width
-            height: parent.height * 0.85
-            anchors.left: parent.left
-            anchors.verticalCenter:
-                parent.verticalCenter
+            anchors.fill: parent
+            clip: true
+
             model: priceModel
             spacing: 10
             snapMode: ListView.SnapToItem
@@ -89,7 +86,7 @@ Popup {
                             horizontalAlignment: Text.AlignLeft
                         }
                         Text {
-                            text: modelData.price + " €"
+                            text: modelData.price
                             font.pixelSize: 12
                             color: "white"
                             horizontalAlignment: Text.AlignLeft
